@@ -1,0 +1,6 @@
+[book]
+authors = ["itowlson"]
+language = "en"
+multilingual = false
+src = "src"
+title = "The WebAssembly Component Model"

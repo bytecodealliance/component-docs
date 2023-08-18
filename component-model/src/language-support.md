@@ -144,7 +144,7 @@ emerging WebAssembly Components specification in JavaScript.
 ### Building a Component with `jco`
 
 A component can be created from a JS module using `jco componentize`. First, install `jco` and
-`componetize-js`:
+`componentize-js`:
 
 ```sh
 $ npm install @bytecodealliance/jco
@@ -194,7 +194,7 @@ Transpiled JS Component Files:
 A core module and JavaScript bindings have been outputted to the `out-dir`.
 
 Now, you can import the resultant `add.js` file and run it from a JavaScript application. This
-example imports it as an ECMAScript module for ease of running locally with node:
+example renames it and imports it as an ECMAScript module for ease of running locally with node:
 
 ```mjs
 // app.mjs
@@ -271,9 +271,8 @@ Now, generate the bindings to be able to call the component from a Python host a
 $ python3 -m wasmtime.bindgen add.wasm --out-dir add
 ```
 
-The generated package `add` has all of the requisite exports/imports into the component bound. The
-`add` package is additionally annotated with types to assist with type-checking and
-self-documentation as much as possible.
+The generated package `add` has all of the requisite exports/imports for the component and is
+annotated with types to assist with type-checking and self-documentation as much as possible.
 
 Now, create a Python program to run the component. Note that imports for WASI preview 2 are
 explicitly set to null. This is because when creating a component from a Python module,

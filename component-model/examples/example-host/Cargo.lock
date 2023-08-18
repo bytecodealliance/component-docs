@@ -3,18 +3,6 @@
 version = 3
 
 [[package]]
-name = "add-host"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-std",
- "clap",
- "wasi-cap-std-sync",
- "wasmtime",
- "wasmtime-wasi",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -768,6 +756,18 @@ name = "event-listener"
 version = "2.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
+
+[[package]]
+name = "example-host"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-std",
+ "clap",
+ "wasi-cap-std-sync",
+ "wasmtime",
+ "wasmtime-wasi",
+]
 
 [[package]]
 name = "fallible-iterator"

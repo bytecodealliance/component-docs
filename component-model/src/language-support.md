@@ -132,7 +132,7 @@ Rust bindings, bring in WASI worlds, and execute the component.
 
 ```sh
 $ cd examples/add-host
-$ cargo run -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
 1 + 2 = 3
 ```
 
@@ -168,11 +168,9 @@ OK Successfully written add.wasm with imports ().
 
 Now, run the component using the Rust `add` host:
 
-> Note: it can take over 20 seconds to complete
-
 ```sh
 $ cd component-model/examples/add-host
-$ cargo run -- 1 2 ../path/to/add.wasm
+$ cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
 ```
 
@@ -243,11 +241,9 @@ Component built successfully
 
 To test the component, run it using the Rust `add` host:
 
-> Note: it can take over 30 seconds to complete
-
 ```sh
 $ cd component-model/examples/add-host
-$ cargo run -- 1 2 ../path/to/add.wasm
+$ cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
 ```
 

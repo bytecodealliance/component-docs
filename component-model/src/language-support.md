@@ -4,7 +4,7 @@ WebAssembly can be targeted by the majority of top programming
 languages; however, the level of
 support varies. This document details the subset of languages that target WASI and support
 components. This is a living document, so if you are aware of advancements in a toolchain, please do
-not hesitate to [contribute documentation](contributing.md). Each section covers how to build and
+not hesitate to [contribute documentation](../../CONTRIBUTING.md). Each section covers how to build and
 run components for a given toolchain.
 
 One of the benefits of components is their portability across host runtimes. The runtime only needs
@@ -281,7 +281,7 @@ from wasmtime import Store
 
 def main():
     store = Store()
-    component = Root(store, RootImports(language=Host(), poll=None, monotonic_clock=None, wall_clock=None, streams=None, filesystem=None, random=None, environment=None, preopens=None, exit=None, stdin=None, stdout=None, stderr=None))
+    component = Root(store, RootImports(poll=None, monotonic_clock=None, wall_clock=None, streams=None, filesystem=None, random=None, environment=None, preopens=None, exit=None, stdin=None, stdout=None, stderr=None))
     print("1 + 2 = ", component.add(store, 1, 2))
 
 if __name__ == '__main__':

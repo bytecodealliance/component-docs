@@ -1,0 +1,12 @@
+[package]
+name = "example-host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-std = { version = "1.12.0", features = ["attributes"] }
+clap = { version = "4.3.19", features = ["derive"] }
+wasmtime = { git = "https://github.com/bytecodealliance/wasmtime", rev = "7b9189b", features = ["component-model"] }
+wasmtime-wasi = { git = "https://github.com/bytecodealliance/wasmtime", rev = "7b9189b" }
+wasi-cap-std-sync = { git = "https://github.com/bytecodealliance/wasmtime", rev = "7b9189b" }
+anyhow = "1.0.72"

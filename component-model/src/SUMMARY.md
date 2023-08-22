@@ -5,6 +5,7 @@
   - [Concepts](./concepts.md)
   - [An Overview of WIT](./wit-overview.md)
 - [Language Support for Components](./language-support.md)
+  - [Rust](./language-support/rust.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)

@@ -5,7 +5,7 @@ use wasmtime::{Config, Engine, Store};
 use wasmtime_wasi::preview2::{command, Table, WasiCtx, WasiCtxBuilder, WasiView};
 
 wasmtime::component::bindgen!({
-    path: "../add.wit",
+    path: "add.wit",
     world: "example",
     async: true
 });

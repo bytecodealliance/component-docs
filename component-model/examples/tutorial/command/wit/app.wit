@@ -1,0 +1,5 @@
+package demo:app@0.1.0
+
+world app {
+    import docs:calculator/calculate@0.1.0
+}                

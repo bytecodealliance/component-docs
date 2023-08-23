@@ -10,7 +10,7 @@ run components for a given toolchain.
 One of the benefits of components is their portability across host runtimes. The runtime only needs
 to know what world the component is targeting in order to import or execute the component. This
 language guide hopes to demonstrate that with a prevailing `example` world defined in
-[`../examples/add.wit`](../examples/add.wit). Furthermore, an example host that understands the `example`
+[`../examples/example-host/add.wit`](../examples/example-host/add.wit). Furthermore, an example host that understands the `example`
 world has been provided in [`../examples/add-host`](../examples/add-host/) for running components. Each
 toolchain section walks through creating a component of this world, which can be run either in the
 example host or from an application of that toolchain. This aims to provide a full story for using
@@ -37,7 +37,7 @@ components within and among toolchains.
 [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) provides a suite of subcommands for
 working with WebAssembly modules and components.
 
-`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`example` world](../examples/add.wit) and simply adds two numbers.
+`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`example` world](../examples/example-host/add.wit) and simply adds two numbers.
 
 1. Install [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools/tree/main#installation), a
    tool for low-level manipulation of Wasm modules and components.
@@ -125,7 +125,7 @@ world root {
 ### Running a Component from Rust Applications
 
 To verify that our component works, lets run it from a Rust application that knows how to import a
-component of the [`example` world](../examples/add.wit).
+component of the [`example` world](../examples/example-host/add.wit).
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
@@ -151,7 +151,7 @@ $ npm install @bytecodealliance/jco
 $ npm install @bytecodealliance/componentize-js
 ```
 
-Create a JavaScript module that implements the `add` function in [`add.wit`](../examples/add.wit):
+Create a JavaScript module that implements the `add` function in [`add.wit`](../examples/example-host/add.wit):
 
 ```js 
 export function add (x, y) {
@@ -217,7 +217,7 @@ $ node app.mjs
 application to a WebAssembly component.
 
 Create a Python program that implements the `add` function in the [`example`
-world](../examples/add.wit). Note that it imports the bindings that will be created by
+world](../examples/example-host/add.wit). Note that it imports the bindings that will be created by
 `componentize-py`:
 
 ```sh
@@ -235,7 +235,7 @@ generate a component from `guest.py`.
 
 ```sh
 $ pip install componentize-py
-$ componentize-py -d ../examples/add.wit -w example componentize guest -o add.wasm 
+$ componentize-py -d ../examples/example-host/add.wit -w example componentize guest -o add.wasm 
 Component built successfully
 ```
 

@@ -11,3 +11,4 @@
   - [Composing Components](./creating-and-consuming/composing.md)
   - [Running Components](./creating-and-consuming/running.md)
   - [Distributing Components](./creating-and-consuming/distributing.md)
+- [Tutorial](./tutorial.md)

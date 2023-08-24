@@ -1,7 +1,8 @@
 # Summary
 
-- [Design](./design.md)
+- [Introduction](./introduction.md)
   - [What is a Component?](./what-is-a-component.md)
+- [Design](./design.md)
   - [Concepts](./concepts.md)
   - [An Overview of WIT](./wit-overview.md)
 - [Language Support for Components](./language-support.md)

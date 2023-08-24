@@ -11,6 +11,5 @@ cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-co
 clap = { version = "4.3.19", features = ["derive"] }
 
 [package.metadata.component.target]
-path = "wit"
-[package.metadata.component.target.dependencies]
-"docs:calculator" = { path = "../wit/calculator.wit" }  
+path = "../wit/calculator.wit"
+world = "app"

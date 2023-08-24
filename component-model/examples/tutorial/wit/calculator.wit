@@ -19,3 +19,7 @@ world calculator {
     export calculate
     import add
 }
+
+world app {
+    import calculate
+}

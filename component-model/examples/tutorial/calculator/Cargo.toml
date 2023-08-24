@@ -3,8 +3,6 @@ name = "calculator"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
 
@@ -17,6 +15,3 @@ package = "docs:calculator"
 [package.metadata.component.target]
 path = "../wit/calculator.wit"
 world = "calculator"
-
-[package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/add.wit" }  

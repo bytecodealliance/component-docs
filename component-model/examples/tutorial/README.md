@@ -40,8 +40,6 @@ To compose a calculator component with an add operator, run the following:
 (cd adder && cargo component build --release)
 wasm-tools compose calculator/target/wasm32-wasi/release/calculator.wasm -d adder/target/wasm32-wasi/release/adder.wasm -o composed.wasm
 wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.wasm -o command.wasm
-./target/release/wasmtime run --wasm-features component-model command.wasm 1 2 add
-1 + 2 = 3
 ```
 
 Now, run the component with wasmtime:

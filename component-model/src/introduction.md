@@ -10,7 +10,7 @@ The book does not cover the _implementation_ of the component model, such as bui
 
 ## Status
 
-The component model is a work in progress. Although the architecture is well-defined, details are still evolving. This version of the guide is current as at late August 2023.
+The component model is a work in progress. Although the architecture is well-defined, details are still evolving. This version of the guide is current as of late August 2023.
 
 ## Get started
 

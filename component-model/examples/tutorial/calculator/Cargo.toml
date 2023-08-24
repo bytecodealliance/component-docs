@@ -1,0 +1,17 @@
+[package]
+name = "calculator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "docs:calculator"
+
+[package.metadata.component.target]
+path = "../wit/calculator.wit"
+world = "calculator"

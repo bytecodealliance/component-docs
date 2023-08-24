@@ -1,0 +1,34 @@
+name: Publish Component Model book
+on:
+  push:
+    paths:
+      - component-model/**
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install mdbook
+        run: |
+          wget https://github.com/rust-lang/mdBook/releases/download/v0.4.34/mdbook-v0.4.34-x86_64-unknown-linux-gnu.tar.gz
+          tar xvf mdbook-v0.4.34-x86_64-unknown-linux-gnu.tar.gz
+
+      - name: Build book
+        run: ./mdbook build component-model
+
+      - name: Install Spin
+        uses: fermyon/actions/spin/setup@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish book
+        uses: fermyon/actions/spin/deploy@v1
+        with:
+          manifest_file: component-model/spin.toml
+          fermyon_token: ${{ secrets.FERMYON_CLOUD_TOKEN }}

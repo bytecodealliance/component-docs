@@ -33,9 +33,9 @@ The WIT (Wasm Interface Type) language is used to define Component Model interfa
 
 ## Structure of a WIT file
 
-A WIT file contains one or more **interfaces** or **worlds**. An interface can define **types** and/or **functions**.
+A WIT file contains one or more **interfaces** or **worlds**. An interface or world can define **types** and/or **functions**.
 
-> Types and functions can't be defined outside of interfaces.
+> Types and functions can't be defined outside of interfaces or worlds.
 
 A file may optionally start with a **package** declaration.
 
@@ -102,7 +102,7 @@ WIT defines the following primitive types:
 
 ### Lists
 
-`list<T>` for any type T denotes an ordered sequence of values of type T.  T can be any type, built-im or user-defined:
+`list<T>` for any type T denotes an ordered sequence of values of type T.  T can be any type, built-in or user-defined:
 
 ```
 list<u8>        // byte buffer
@@ -113,7 +113,7 @@ This is similar to Rust `Vec`, or Java `List`.
 
 ### Options
 
-`option<T>` for any type T may contain a value of type T, or may contain no value.  T can be any type, built-im or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
+`option<T>` for any type T may contain a value of type T, or may contain no value.  T can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
 
 ```
 option<customer>
@@ -121,7 +121,7 @@ option<customer>
 
 This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
-> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a record type for every value type, and to enable it to be mapped idiomatically into languages with option types.
+> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every value type, and to enable it to be mapped idiomatically into languages with option types.
 
 ### Results
 
@@ -133,7 +133,7 @@ result<http-response, http-error>
 
 This is similar to Rust `Result`, or Haskell `Either`.
 
-> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a record type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
+> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
 
 Sometimes there is no data associated with one or both of the cases. For example, a `print` function could return an error code if it fails, but has nothing to return if it succeeds. In this case, you can omit the corresponding type as follows:
 
@@ -156,7 +156,7 @@ This is similar to tuples in Rust or OCaml.
 
 ## User-defined types
 
-You can define your own types within an `interface`. WIT offers several ways of defining new types.
+You can define your own types within an `interface` or `world`. WIT offers several ways of defining new types.
 
 ### Records
 
@@ -235,7 +235,7 @@ flags allowed-methods {
 
 ### Type aliases
 
-You can define convenience names for types using `type ... = ...`. This can be useful for giving shorter or more meaningful names to types:
+You can define a new named type using `type ... = ...`. This can be useful for giving shorter or more meaningful names to types:
 
 ```
 type buffer = list<u8>
@@ -356,7 +356,7 @@ Interfaces can be declared inline in a world:
 
 ```
 world toy {
-    export example : interface {
+    export example: interface {
         do-nothing: func()
     }
 }

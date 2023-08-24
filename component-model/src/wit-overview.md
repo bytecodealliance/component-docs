@@ -19,7 +19,6 @@ The WIT (Wasm Interface Type) language is used to define Component Model interfa
     - [Records](#records)
     - [Variants](#variants)
     - [Enums](#enums)
-    - [Unions](#unions)
     - [Flags](#flags)
     - [Type aliases](#type-aliases)
   - [Functions](#functions)
@@ -204,19 +203,6 @@ enum color {
 ```
 
 This can provide a simpler representation in languages without discriminated unions. For example, a WIT enum can translate directly to a C++ `enum`.
-
-### Unions
-
-A union type is similar to a variant type, except that the cases are distinguished solely by data type. All cases must have a type, and all types must be different.
-
-```
-union int-or-string {
-    u64,
-    string,
-}
-```
-
-Unions are similar to pure (untagged) C `union`s, though in most languages a WIT union will translate to a tagged form so that a consumer can safely detect which case is in play.
 
 ### Flags
 

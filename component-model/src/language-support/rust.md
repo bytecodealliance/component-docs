@@ -70,37 +70,7 @@ The world file (`wit/world.wit`) generated for you by `cargo component new --rea
 
 If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
-For example, suppose you have created and built an adder component as explained in the [previous section](#exporting-an-interface-with-cargo-component):
-
-```
-// in the 'adder' project
-
-// wit/world.wit
-package docs:adder@0.1.0
-
-interface add {
-    add: func(a: u32, b: u32) -> u32
-}
-
-world adder {
-    export add
-}
-
-// src/lib.rs
-cargo_component_bindings::generate!();
-
-use bindings::exports::docs::adder::add::Guest;
-
-struct Component;
-
-impl Guest for Component {
-    fn add(a: u32, b: u32) -> u32 {
-        a + b
-    }
-}
-```
-
-and that you now want to use that component in a calculator component. Here is a partial example world for a calculator:
+For example, suppose you have created and built an adder component as explained in the [exporting an interface section](#exporting-an-interface-with-cargo-component) and want to use that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 
 ```
 // in the 'calculator' project

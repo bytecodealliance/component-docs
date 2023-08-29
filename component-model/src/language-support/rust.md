@@ -1,6 +1,7 @@
 # Components in Rust
 
-Rust has first-class support for the component model via [the `cargo component` tool](https://github.com/bytecodealliance/cargo-component).
+Rust has first-class support for the component model via [the `cargo component` tool](https://github.com/bytecodealliance/cargo-component). It is a `cargo` subcommand for
+creating WebAssembly components using Rust as the component's implementation language.
 
 ## Installing `cargo component`
 
@@ -21,14 +22,14 @@ See [the language guide](../language-support.md#building-a-component-with-cargo-
 The [sample `add.wit` file](../../examples/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```
-package docs:sample
+package docs:adder@0.1.0
 
-interface demo {
-    test: func(text: string) -> string
+interface add {
+    add: func(a: u32, b: u32) -> u32
 }
 
-world sample {
-    export demo
+world adder {
+    export add
 }
 ```
 
@@ -38,13 +39,13 @@ you would write the following Rust code:
 cargo_component_bindings::generate!();
 
 // Separating out the interface puts it in a sub-module
-use bindings::exports::docs::sample::demo::Demo;
+use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 
-impl Demo for Component {
-    fn test(text: String) -> String {
-        todo!()
+impl Guest for Component {
+    fn add(a: u32, b: u32) -> u32 {
+        a + b
     }
 }
 ```
@@ -55,11 +56,11 @@ When `cargo component build` exports an interface, it sets the version to the pa
 
 ```toml
 [package]
-name = "sample"
+name = "adder"
 version = "0.2.0"
 ```
 
-then the interface is exported as `docs:sample@0.2.0`. This can be important when working with binary tools that care about interface versions.
+then the interface is exported as `docs:adder@0.2.0`. This can be important when working with binary tools that care about interface versions.
 
 ## Importing an interface with `cargo component`
 
@@ -69,7 +70,7 @@ The world file (`wit/world.wit`) generated for you by `cargo component new --rea
 
 If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
-For example, suppose you have created and built an adder component:
+For example, suppose you have created and built an adder component as explained in the [previous section](#exporting-an-interface-with-cargo-component):
 
 ```
 // in the 'adder' project
@@ -88,11 +89,11 @@ world adder {
 // src/lib.rs
 cargo_component_bindings::generate!();
 
-use bindings::exports::docs::adder::add::Add;
+use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 
-impl Add for Component {
+impl Guest for Component {
     fn add(a: u32, b: u32) -> u32 {
         a + b
     }
@@ -136,14 +137,14 @@ Now the declaration of `add` in the adder's WIT file is visible to the `calculat
 // src/lib.rs
 cargo_component_bindings::generate!();
 
-use bindings::exports::docs::calculator::calculate::Calculate;
+use bindings::exports::docs::calculator::calculate::Guest;
 
 // Bring the imported add function into scope
 use bindings::docs::adder::add::add;
 
 struct Component;
 
-impl Calculate for Component {
+impl Guest for Component {
     fn eval_expression(expr: String) -> u32 {
         // Cleverly parse `expr` into values and operations, and evaluate
         // them meticulously.
@@ -250,7 +251,7 @@ fn main() {
 
 5. Run the composed component:
 
-```
+```sh
 $ wasmtime run --wasm-features component-model ./my-composed-command.wasm
 1 + 1 = 579  # might need to go back and do some work on the calculator implementation
 ```

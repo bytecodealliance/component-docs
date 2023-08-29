@@ -1,4 +1,4 @@
-mod add_wasi;
+mod add;
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -18,7 +18,7 @@ struct AddApp {
 
 impl AddApp {
     async fn run(self) -> anyhow::Result<()> {
-        let sum = add_wasi::add(self.component, self.x, self.y).await?;
+        let sum = add::add(self.component, self.x, self.y).await?;
         println!("{} + {} = {sum}", self.x, self.y);
         Ok(())
     }

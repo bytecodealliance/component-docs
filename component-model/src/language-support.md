@@ -73,7 +73,11 @@ working with WebAssembly modules and components.
 
 ### Running a Component with Wasmtime
 
-Coming soon. Work is currently underway to enable running components from the [`wasmtime`](https://github.com/bytecodealliance/wasmtime) CLI.
+You can "run" a component by calling one of its exports. Hosts and runtimes often only support
+running components with certain exports. The [`wasmtime`](https://github.com/bytecodealliance/wasmtime) CLI can only run "command" components, so in
+order to run the `add` function above, it first must be composed with a primary "command" component
+that calls it. See [documentation on running components](./creating-and-consuming/running.md) for
+more details.
 
 ## Rust Tooling
 
@@ -95,17 +99,22 @@ package name to `example`. The `component` section of `Cargo.toml` should look l
 package = "component:example"
 ```
 
-Implement the `add` function in `add/src/lib.rs`. It should look similar to the following:
+`cargo-component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
 
 ```rs
-impl Example for Component {
+cargo_component_bindings::generate!();
+use bindings::Guest;
+
+struct Component;
+
+impl Guest for Component {
     fn add(x: i32, y: i32) -> i32 {
         x + y
     }
 }
 ```
 
-Now, build the component:
+Now, build the component, being sure to optimize with a release build.
 
 ```sh
 $ cargo component build --release

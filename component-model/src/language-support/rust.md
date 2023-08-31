@@ -50,18 +50,6 @@ impl Guest for Component {
 }
 ```
 
-## Export versioning
-
-When `cargo component build` exports an interface, it sets the version to the package version, as listed in `Cargo.toml`. For example, given the interface above, if `Cargo.toml` contains:
-
-```toml
-[package]
-name = "adder"
-version = "0.2.0"
-```
-
-then the interface is exported as `docs:adder@0.2.0`. This can be important when working with binary tools that care about interface versions.
-
 ## Importing an interface with `cargo component`
 
 The world file (`wit/world.wit`) generated for you by `cargo component new --reactor` doesn't specify any imports.

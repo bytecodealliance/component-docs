@@ -1,6 +1,6 @@
 # Composing Components
 
-Because the WebAssmbly component model packages code in a portable binary format, and provides machine-readable interfaces in [WIT](../wit-overview.md) with a standardised ABI (Application Binary Interface), it anables applications and components to work together, no matter what languages they were originally written in. In the same way that, for example, a Rust package (crate) can be compiled together with other Rust code to create a higher-level library or an application, a Wasm component can be linked with other components.
+Because the WebAssembly component model packages code in a portable binary format, and provides machine-readable interfaces in [WIT](../wit-overview.md) with a standardised ABI (Application Binary Interface), it enables applications and components to work together, no matter what languages they were originally written in. In the same way that, for example, a Rust package (crate) can be compiled together with other Rust code to create a higher-level library or an application, a Wasm component can be linked with other components.
 
 > Component model interoperation is more convenient and expressive than language-specific foreign function interfaces. A typical C FFI involves language-specific types, so it is not possible to link between arbitrary languages without at least some C-language wrapping or conversion. The component model, by contrast, provides a common way of expressing interfaces, and a standard binary representation of those interfaces. So if an import and an export have the same shape, they fit together directly.
 
@@ -9,7 +9,7 @@ Because the WebAssmbly component model packages code in a portable binary format
 When you compose components, you wire up the imports of one "primary" component to the exports of one or more other "dependency" components, creating a new component. The new component, like the original components, is a `.wasm` file, and its interface is defined as:
 
 * The new component _exports_ the same exports as the primary component
-* The new component _does not export_ the exports of the depedencies
+* The new component _does not export_ the exports of the dependencies
 * The new component _imports_ all the imports of the dependency components
 * The new component _imports_ any imports of the primary component imports that the dependencies didn't satisfy
 * If several components import the same interface, the new component imports that interface - it doesn't "remember" that the import was declared in several different places
@@ -63,7 +63,7 @@ Here `component.wasm` is the component that imports interfaces from `dep1.wasm` 
 
 > This syntax doesn't cover transitive dependencies. If, for example, `dep1.wasm` has unsatisfied imports that you want to satisfy from `dep3.wasm`, you'll need to use a [configuration file](https://github.com/bytecodealliance/wasm-tools/blob/main/crates/wasm-compose/CONFIG.md). (Or you can compose `dep1.wasm` with `dep3.wasm` first, then refer to that composed component instead of `dep1.wasm`. This doesn't scale to lots of transitive dependencies though!)
 
-For full information about `wasm-tools compose` including how to configure more advanced scenarios, see [the `wasm-tools compose` documenation](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-compose).
+For full information about `wasm-tools compose` including how to configure more advanced scenarios, see [the `wasm-tools compose` documentation](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-compose).
 
 ## Composing components with a visual interface
 

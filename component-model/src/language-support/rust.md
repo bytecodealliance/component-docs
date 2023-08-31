@@ -205,7 +205,7 @@ path = "wit"
 
 > If the external package refers to other packages, you need to provide the paths to them as well.
 
-3. Use the imported interface in your Rust code:
+4. Use the imported interface in your Rust code:
 
 ```rust
 use bindings::docs::calculator::calculate::eval_expression;
@@ -217,9 +217,9 @@ fn main() {
 }
 ```
 
-4. [Compose the command component with the `.wasm` components that implement the imports.](../creating-and-consuming/composing.md)
+5. [Compose the command component with the `.wasm` components that implement the imports.](../creating-and-consuming/composing.md)
 
-5. Run the composed component:
+6. Run the composed component:
 
 ```sh
 $ wasmtime run --wasm-features component-model ./my-composed-command.wasm

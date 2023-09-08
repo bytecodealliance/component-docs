@@ -9,7 +9,7 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 | [Interfaces]             |                      | [Distributing]    |
 | [Worlds]                 |                      |                   |
 
-[Why Components?]: ./what-is-a-component.md
+[Why Components?]: ./design/why-component-model.md
 [Components]: ./design/components.md
 [Interfaces]: ./design/interfaces.md
 [Worlds]: ./design/worlds.md

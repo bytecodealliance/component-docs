@@ -20,6 +20,6 @@ To dive in to using the component model, see the [Tutorial](./tutorial.md), whic
 
 ## Contributing
 
-If you find a mistake, omission, ambiguity, or other problem, please let us know via https://github.com/bytecodealliance/component-docs/issues.
+If you find a mistake, omission, ambiguity, or other problem, please let us know via [GitHub issues](https://github.com/bytecodealliance/component-docs/issues).
 
-If you'd like to contribute content to the guide, please see https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md for information on how to contribute.
+If you'd like to contribute content to the guide, please see the [contribution guide](https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md) for information on how to contribute.

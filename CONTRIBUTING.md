@@ -10,18 +10,19 @@ You can run the website locally using the [mdBook](https://rust-lang.github.io/m
 
 To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html) installed on your workstation.
 
-
 ### Running the website locally
 
 After installing mdBook, you'll need to clone the code via git and navigate to the directory.
 
-```
+```bash
 git clone https://github.com/bytecodealliance/component-docs
-cd component-model
+cd component-docs
 ```
+
 To build and test the site locally, run:
 
-```
+```bash
+cd component-model
 mdbook serve --open
 ```
 

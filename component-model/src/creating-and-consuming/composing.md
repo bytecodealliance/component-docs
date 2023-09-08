@@ -67,7 +67,7 @@ For full information about `wasm-tools compose` including how to configure more 
 
 ## Composing components with a visual interface
 
-You can compose components visually using the builder app at https://wasmbuilder.app/.
+You can compose components visually using the builder app at the [Wasm Builder website](https://wasmbuilder.app/).
 
 1. Use the Add Component Button to upload the `.wasm` component files you want to compose. The components appear in the sidebar.
 

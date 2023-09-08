@@ -4,7 +4,7 @@ If you've tried out WebAssembly, you'll be familiar with the concept of a _modul
 
 Core modules are, however, limited to describing themselves in terms of a small number of core WebAssembly types such as integers and floating-point numbers. Just as in native assembly code, richer types, such as strings or records (structs), have to be represented in terms of integers and floating point numbers, for example by the use of pointers and offsets. And just as in native code, those representations are not interchangeable. A string in C might be represented entirely differently from a string in Rust, or a string in JavaScript.
 
-For Wasm modules to interoperate, therefore, there needs to be an agreed-upon way of defining those richer types, and an agreed-upon way of expressing them at module boundaries.
+For Wasm modules to interoperate, therefore, there needs to be an agreed-upon way for defining those richer types, and an agreed-upon way of expressing them at module boundaries.
 
 In the component model, these type definitions are written in a language called WIT (Wasm Interface Type), and the way they translate into bits and bytes is called the Canonical ABI (Application Binary Interface).
 

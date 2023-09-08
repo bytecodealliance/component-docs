@@ -1,4 +1,4 @@
-# What is a Component?
+# Why the Component Model?
 
 If you've tried out WebAssembly, you'll be familiar with the concept of a _module_. Roughly speaking, a module corresponds to a single `.wasm` file, with functions, memory, imports and exports, and so on. These "core" modules can run in the browser, or via a separate runtime such as Wasmtime or WAMR. A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/), and if you compile a program written in Rust, C, Go or whatever for the browser, then a core module is what you'll get.
 
@@ -13,5 +13,3 @@ Such an agreement adds a new dimension to Wasm portability. Not only are compone
 Combined with Wasm's strong sandboxing, this opens the door to yet further benefits.  By expressing higher-level semantics than integers and floats, it becomes possible to statically analyse and reason about a component's behaviour - to enforce and guarantee properties just by looking at the surface of the component. The relationships within a graph of components can be analysed, for example to verify that a component containing business logic has no access to a component containing personally identifiable information.
 
 Moreover, components interact _only_ through the Canonical ABI. Specifically, unlike core modules, components may not export Wasm memory. This not only reinforces sandboxing, but enables interoperation between languages that make different assumptions about memory - for example, allowing a component that relies on Wasm GC (garbage collected) memory to collaborate with one that uses conventional linear memory.
-
-This guide doesn't try to formally specify what a component _is_. Physically, components are Wasm data, such as `.wasm` files, with a specific internal format. Logically, components are containers for modules - or other components - which express their interfaces and dependencies via WIT and the Canonical ABI. Conceptually, components are self-describing units of code that interact only through interfaces instead of shared memory.

@@ -7,4 +7,4 @@ title = "The WebAssembly Component Model"
 
 [output.html]
 git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/main/component-model"
-edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model{path}"
+edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"

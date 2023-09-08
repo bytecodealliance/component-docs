@@ -40,7 +40,7 @@ A file may optionally start with a **package** declaration.
 
 ## Comments
 
-WIT comment syntax is similar to the C++ family of languages:
+WIT comment syntax is similar to the one used by the C++ family of languages:
 
 * Everything from `//` to end of line is a comment.
 * Any text enclosed in `/*` ... `*/` is a comment.
@@ -67,7 +67,7 @@ print-hello: func()
 
 ## Identifiers
 
-WIT identifiers have a slightly different set of rules from what you might be familiar with from, say, C, Rust, or Java.  These rules apply to all names - types, functions, interfaces, and worlds. (Package identifiers are a little more complex and will be covered in the Packages section.)
+WIT identifiers have a slightly different set of rules from what you might be familiar with from, say, C, Rust, or Java.  These rules apply to all names - types, functions, interfaces, and worlds. (Package identifiers are a little more complex and will be covered in the [Packages section](#packages).)
 
 * Identifiers are restricted to ASCII `kebab-case` - sequences of words, separated by single hyphens.
   * Double hyphens (`--`) are not allowed.
@@ -176,7 +176,7 @@ Records are similar to C or Rust `struct`s.
 
 ### Variants
 
-A variant type declares one or more cases. Each case has a name, and optionally a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
+A variant type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
 
 ```
 variant allowed-destinations {
@@ -334,7 +334,7 @@ world http-proxy {
 
 > As this example shows, import and export apply at the interface level, not the package level. You can import one interface defined in a package, while exporting another interface defined in the same package. Packages group definitions; they don't represent behaviour.
 
-(WIT does not define how packages are resolved - different tools may resolve them in different ways.)
+WIT does not define how packages are resolved - different tools may resolve them in different ways.
 
 ### Inline interfaces
 

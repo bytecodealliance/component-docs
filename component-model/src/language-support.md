@@ -160,7 +160,7 @@ $ npm install @bytecodealliance/jco
 $ npm install @bytecodealliance/componentize-js
 ```
 
-Create a JavaScript module that implements the `add` function in [`add.wit`](../examples/example-host/add.wit):
+Create a JavaScript module that implements the `add` function in [`add.wit`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit):
 
 ```js 
 export function add (x, y) {

@@ -1,14 +1,19 @@
 # Summary
 
 - [Introduction](./introduction.md)
-- [Design](./design.md)
-  - [Why the Component Model?](./design/why-component-model.md)
-  - [Components](./design/components.md)
-  - [Interfaces](./design/interfaces.md)
-  - [WIT](./wit-overview.md)
-  - [Worlds](./design/worlds.md)
-  - [Packages](./design/packages.md)
-  - [Canonical ABI](./design/canonical-abi.md)
+
+# Understanding Component Model
+
+- [Why the Component Model?](./design/why-component-model.md)
+- [Components](./design/components.md)
+- [Interfaces](./design/interfaces.md)
+- [WIT](./wit-overview.md)
+- [Worlds](./design/worlds.md)
+- [Packages](./design/packages.md)
+- [Canonical ABI](./design/canonical-abi.md)
+
+# Using Component Model
+
 - [Language Support for Components](./language-support.md)
   - [Rust](./language-support/rust.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
@@ -16,7 +21,9 @@
   - [Composing Components](./creating-and-consuming/composing.md)
   - [Running Components](./creating-and-consuming/running.md)
   - [Distributing Components](./creating-and-consuming/distributing.md)
-- [Implementations](./implementations.md)
-  - [Wasmtime](./implementations/wasmtime.md)
-  - [jco](./implementations/jco.md)
 - [Tutorial](./tutorial.md)
+
+# Runtime Support
+
+- [Wasmtime](./implementations/wasmtime.md)
+- [jco](./implementations/jco.md)

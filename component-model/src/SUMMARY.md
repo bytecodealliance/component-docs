@@ -7,6 +7,8 @@
   - [An Overview of WIT](./wit-overview.md)
 - [Language Support for Components](./language-support.md)
   - [Rust](./language-support/rust.md)
+  - [Javascript](./language-support/javascript.md)
+  - [Python](./language-support/python.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)

@@ -8,15 +8,12 @@ You can run the website locally using the [mdBook](https://rust-lang.github.io/m
 
 ### Prerequisites
 
-To use this repository, you need the following installed locally
-
-[Rust & Cargo](https://www.rust-lang.org/tools/install)
-[mdBook](https://rust-lang.github.io/mdBook/guide/installation.html)
+To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html) on your workstation.
 
 
 ### Running the website locally
 
-After installing the above dependencies, you'll need to clone the code via git and navigate to the directory.
+After installing mdBook, you'll need to clone the code via git and navigate to the directory.
 
 ```
 git clone https://github.com/bytecodealliance/component-docs

@@ -10,8 +10,8 @@ run components for a given toolchain.
 One of the benefits of components is their portability across host runtimes. The runtime only needs
 to know what world the component is targeting in order to import or execute the component. This
 language guide hopes to demonstrate that with a prevailing `example` world defined in
-[`../examples/example-host/add.wit`](../examples/example-host/add.wit). Furthermore, an example host that understands the `example`
-world has been provided in [`../examples/add-host`](../examples/add-host/) for running components. Each
+[`examples/example-host/add.wit`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit). Furthermore, an example host that understands the `example`
+world has been provided in [`examples/example-host`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/README.md) for running components. Each
 toolchain section walks through creating a component of this world, which can be run either in the
 example host or from an application of that toolchain. This aims to provide a full story for using
 components within and among toolchains.

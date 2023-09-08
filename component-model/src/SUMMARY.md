@@ -12,4 +12,7 @@
   - [Composing Components](./creating-and-consuming/composing.md)
   - [Running Components](./creating-and-consuming/running.md)
   - [Distributing Components](./creating-and-consuming/distributing.md)
+- [Implementations](./implementations.md)
+  - [Wasmtime](./implementations/wasmtime.md)
+  - [jco](./implementations/jco.md)
 - [Tutorial](./tutorial.md)

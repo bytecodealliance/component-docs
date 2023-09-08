@@ -16,12 +16,13 @@ After installing mdBook, you'll need to clone the code via git and navigate to t
 
 ```bash
 git clone https://github.com/bytecodealliance/component-docs
-cd component-model
+cd component-docs
 ```
 
 To build and test the site locally, run:
 
 ```bash
+cd component-model
 mdbook serve --open
 ```
 

@@ -1,4 +1,4 @@
-# What is a Component?
+# Why the Component Model?
 
 If you've tried out WebAssembly, you'll be familiar with the concept of a _module_. Roughly speaking, a module corresponds to a single `.wasm` file, with functions, memory, imports and exports, and so on. These "core" modules can run in the browser, or via a separate runtime such as Wasmtime or WAMR. A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/), and if you compile a program written in Rust, C, Go or whatever for the browser, then a core module is what you'll get.
 

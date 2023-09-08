@@ -1,22 +1,31 @@
-# Introduction
+# Home
 
-This book introduces the WebAssembly Component Model, a broad-reaching architecture for building interoperable Wasm libraries, applications, and environments.
+The WebAssembly Component Model is a broad-reaching architecture for building interoperable Wasm libraries, applications, and environments.
 
-## Who is this book for?
+| Understanding components | Building components  | Using components  |
+|--------------------------|----------------------|-------------------|
+| [Why Components?]        | [Tutorial]           | [Composing]       |
+| [Components]             | [Rust]               | [Running]         |
+| [Interfaces]             |                      | [Distributing]    |
+| [Worlds]                 |                      |                   |
 
-This book is aimed at _users_ of the component model - developers building libraries and applications. It covers how to build Wasm components, and how to use Wasm components to build applications or higher-level libraries.
+[Why Components?]: ./what-is-a-component.md
+[Components]: ./concepts.md#components
+[Interfaces]: ./concepts.md#interfaces
+[Worlds]: ./concepts.md#worlds
 
-The book does not cover the _implementation_ of the component model, such as building Wasm runtimes or hosts.
+[Tutorial]: ./tutorial.md
+[Rust]: ./language-support/rust.md
+
+[Composing]: ./creating-and-consuming/composing.md
+[Running]: ./creating-and-consuming/running.md
+[Distributing]: ./creating-and-consuming/distributing.md
+
+> ⓘ This documentation is aimed at _users_ of the component model: developers of libraries and applications. _Compiler and Wasm runtime developers_ can take a look at the [Component Model specification](https://github.com/WebAssembly/component-model) to see how to add support for the component model to their project.
 
 ## Status
 
 The component model is a work in progress. Although the architecture is well-defined, details are still evolving. This version of the guide is current as of late August 2023.
-
-## Get started
-
-To get a sense for what the component model is, and what motivates it, see [What is a component?](./what-is-a-component.md).
-
-To dive in to using the component model, see the [Tutorial](./tutorial.md), which walks you through creating components and building an application out of them, or the [Language Guide](./language-support.md), which provides a survey of high-level language tooling for building and consuming components.
 
 ## Contributing
 

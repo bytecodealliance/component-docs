@@ -24,7 +24,7 @@ generate a component from `guest.py`.
 
 ```sh
 $ pip install componentize-py
-$ componentize-py -d ../examples/example-host/add.wit -w example componentize guest -o add.wasm
+$ componentize-py -d /path/to/examples/example-host/add.wit -w example componentize guest -o add.wasm
 Component built successfully
 ```
 

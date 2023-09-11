@@ -81,7 +81,7 @@ See [the language guide](../language-support.md#building-a-component-with-cargo-
 
 ## Exporting an interface with `cargo component`
 
-The [sample `add.wit` file](../../examples/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
+The [sample `add.wit` file](../../examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```
 package docs:adder@0.1.0

@@ -6,7 +6,7 @@
 application to a WebAssembly component.
 
 Create a Python program that implements the `add` function in the [`example`
-world](../examples/example-host/add.wit). Note that it imports the bindings that will be created by
+world](../../examples/example-host/add.wit). Note that it imports the bindings that will be created by
 `componentize-py`:
 
 ```sh

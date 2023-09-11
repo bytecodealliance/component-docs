@@ -16,7 +16,7 @@ cargo install --git https://github.com/bytecodealliance/cargo-component --locked
 ## Building a Component with `cargo component`
 
 Create a Rust program that implements the `add` function in the [`example`
-world](../examples/example-host/add.wit). Note that it imports the bindings that will be created by
+world](../../examples/example-host/add.wit). Note that it imports the bindings that will be created by
 `cargo-component`. First scaffold a project:
 
 ```sh
@@ -66,7 +66,7 @@ world root {
 ### Running a Component from Rust Applications
 
 To verify that our component works, lets run it from a Rust application that knows how to import a
-component of the [`example` world](../examples/example-host/add.wit).
+component of the [`example` world](../../examples/example-host/add.wit).
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.

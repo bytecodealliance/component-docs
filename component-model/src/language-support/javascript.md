@@ -28,7 +28,7 @@ $ jco componentize add.js --wit add.wit -n example -o add.wasm
 OK Successfully written add.wasm with imports ().
 ```
 
-Now, run the component using the Rust `add` host:
+Now, run the component using the [Rust `add` host](./rust.md#creating-a-command-component-with-cargo-component):
 
 ```sh
 $ cd component-model/examples/add-host

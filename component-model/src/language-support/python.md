@@ -28,7 +28,7 @@ $ componentize-py -d ../examples/example-host/add.wit -w example componentize gu
 Component built successfully
 ```
 
-To test the component, run it using the Rust `add` host:
+To test the component, run it using the [Rust `add` host](./rust.md#creating-a-command-component-with-cargo-component):
 
 ```sh
 $ cd component-model/examples/add-host

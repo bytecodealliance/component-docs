@@ -15,10 +15,9 @@ cargo install --git https://github.com/bytecodealliance/cargo-component --locked
 
 ## Building a Component with `cargo component`
 
-[`cargo-component`](https://github.com/bytecodealliance/cargo-component) is a `cargo` subcommand for
-creating WebAssembly components using Rust as the component's implementation language.
-
-Let's create the same `add` component using the `cargo-component` tooling. First scaffold a project:
+Create a Rust program that implements the `add` function in the [`example`
+world](../examples/example-host/add.wit). Note that it imports the bindings that will be created by
+`cargo-component`. First scaffold a project:
 
 ```sh
 $ cargo component new add --reactor && cd add

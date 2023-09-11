@@ -1,6 +1,6 @@
 # Running Components
 
-You can "run" a component by calling one of its exports. In some cases, this requires a custom host. For "command" components, though, you can use the `wasmtime` command line. This can be a convenient tool for testing components and exploring the component model.
+You can "run" a component by calling one of its exports. In some cases, this requires a custom host. For "command" components, though, you can use the `wasmtime` command line. This can be a convenient tool for testing components and exploring the component model. Other runtimes are also available - see the [Implementations](../implementations.md) section.
 
 > A "command" component is one that exports the `wasi:cli/run` interface, and imports only interfaces listed in the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit).
 

@@ -4,14 +4,14 @@ WebAssembly can be targeted by the majority of top programming
 languages; however, the level of
 support varies. This document details the subset of languages that target WASI and support
 components. This is a living document, so if you are aware of advancements in a toolchain, please do
-not hesitate to [contribute documentation](../../CONTRIBUTING.md). Each section covers how to build and
+not hesitate to [contribute documentation](../../CONTRIBUTING.md). You can find more information about the development of support for specific languages [here](https://github.com/bytecodealliance/governance/blob/main/SIGs/SIG-guest-languages/proposal.md). Each section covers how to build and
 run components for a given toolchain.
 
 One of the benefits of components is their portability across host runtimes. The runtime only needs
 to know what world the component is targeting in order to import or execute the component. This
 language guide hopes to demonstrate that with a prevailing `example` world defined in
-[`../examples/example-host/add.wit`](../examples/example-host/add.wit). Furthermore, an example host that understands the `example`
-world has been provided in [`../examples/add-host`](../examples/add-host/) for running components. Each
+[`examples/example-host/add.wit`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit). Furthermore, an example host that understands the `example`
+world has been provided in [`examples/example-host`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/README.md) for running components. Each
 toolchain section walks through creating a component of this world, which can be run either in the
 example host or from an application of that toolchain. This aims to provide a full story for using
 components within and among toolchains.
@@ -37,7 +37,7 @@ components within and among toolchains.
 [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) provides a suite of subcommands for
 working with WebAssembly modules and components.
 
-`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`example` world](../examples/example-host/add.wit) and simply adds two numbers.
+`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`example` world](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit) and simply adds two numbers.
 
 1. Install [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools/tree/main#installation), a
    tool for low-level manipulation of Wasm modules and components.

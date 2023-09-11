@@ -1,10 +1,19 @@
 # Summary
 
 - [Introduction](./introduction.md)
-  - [What is a Component?](./what-is-a-component.md)
-- [Design](./design.md)
-  - [Concepts](./concepts.md)
-  - [An Overview of WIT](./wit-overview.md)
+
+# Understanding Component Model
+
+- [Why the Component Model?](./design/why-component-model.md)
+- [Components](./design/components.md)
+- [Interfaces](./design/interfaces.md)
+- [WIT](./wit-overview.md)
+- [Worlds](./design/worlds.md)
+- [Packages](./design/packages.md)
+- [Canonical ABI](./design/canonical-abi.md)
+
+# Using Component Model
+
 - [Language Support for Components](./language-support.md)
   - [Rust](./language-support/rust.md)
   - [Javascript](./language-support/javascript.md)
@@ -15,3 +24,8 @@
   - [Running Components](./creating-and-consuming/running.md)
   - [Distributing Components](./creating-and-consuming/distributing.md)
 - [Tutorial](./tutorial.md)
+
+# Runtime Support
+
+- [Wasmtime](./implementations/wasmtime.md)
+- [jco](./implementations/jco.md)

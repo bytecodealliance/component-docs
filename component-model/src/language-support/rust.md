@@ -13,13 +13,75 @@ cargo install --git https://github.com/bytecodealliance/cargo-component --locked
 
 > There is currently no binary or `crates.io` distribution of `cargo component`.
 
-## Creating a library component with `cargo component`
+## Building a Component with `cargo component`
+
+Create a Rust program that implements the `add` function in the [`example`
+world](../../examples/example-host/add.wit). Note that it imports the bindings that will be created by
+`cargo-component`. First scaffold a project:
+
+```sh
+$ cargo component new add --reactor && cd add
+```
+
+Update `wit/world.wit` to match `add.wit` and modify the component package reference to change the
+package name to `example`. The `component` section of `Cargo.toml` should look like the following:
+
+```toml
+[package.metadata.component]
+package = "component:example"
+```
+
+`cargo-component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
+
+```rs
+cargo_component_bindings::generate!();
+use bindings::Guest;
+
+struct Component;
+
+impl Guest for Component {
+    fn add(x: i32, y: i32) -> i32 {
+        x + y
+    }
+}
+```
+
+Now, build the component, being sure to optimize with a release build.
+
+```sh
+$ cargo component build --release
+```
+
+You can use `wasm-tools component wit` to output the WIT package of the component:
+
+```sh
+$ wasm-tools component wit add/target/wasm32-wasi/release/add.wasm
+package root:component
+
+world root {
+  export add: func(x: s32, y: s32) -> s32
+}
+```
+
+### Running a Component from Rust Applications
+
+To verify that our component works, lets run it from a Rust application that knows how to import a
+component of the [`example` world](../../examples/example-host/add.wit).
+
+The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
+Rust bindings, bring in WASI worlds, and execute the component.
+
+```sh
+$ cd examples/add-host
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
+1 + 2 = 3
+```
 
 See [the language guide](../language-support.md#building-a-component-with-cargo-component).
 
 ## Exporting an interface with `cargo component`
 
-The [sample `add.wit` file](../../examples/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
+The [sample `add.wit` file](../../examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```
 package docs:adder@0.1.0
@@ -143,9 +205,9 @@ cargo component new <name>
 
 Unlike library components, this does _not_ have the `--reactor` flag. You will see that the created project is different too:
 
-* It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasm:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
-* Because there's no `.wit` file, `Cargo.toml` doesn't contain a `package.metadata.component.target` section.
-* The Rust file is called `main.rs` instead of `lib.rs`, and contains a `main` function instead of an interface implementation.
+- It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasm:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
+- Because there's no `.wit` file, `Cargo.toml` doesn't contain a `package.metadata.component.target` section.
+- The Rust file is called `main.rs` instead of `lib.rs`, and contains a `main` function instead of an interface implementation.
 
 You can write Rust in this project, just as you normally would, including importing your own or third-party crates.
 

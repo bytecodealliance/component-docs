@@ -1,6 +1,6 @@
 # Running Components
 
-You can "run" a component by calling one of its exports. In some cases, this requires a custom host. For "command" components, though, you can use the `wasmtime` command line. This can be a convenient tool for testing components and exploring the component model. Other runtimes are also available - see the [Implementations](../implementations.md) section.
+You can "run" a component by calling one of its exports. In some cases, this requires a custom host. For "command" components, though, you can use the `wasmtime` command line. This can be a convenient tool for testing components and exploring the component model. Other runtimes are also available - see the "Runtimes" section of the sidebar for more info.
 
 > A "command" component is one that exports the `wasi:cli/run` interface, and imports only interfaces listed in the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit).
 
@@ -22,7 +22,7 @@ If you're writing a library-style component - that is, one that exports a custom
 
 2. Build your library component to a `.wasm` file.
 
-3. Write your command component. The component's world (`.wit` file) must import the interface exported from the library. Write the command to call the library's API. See the [language support guide](../language-support) for how to call an imported interface.
+3. Write your command component. The component's world (`.wit` file) must import the interface exported from the library. Write the command to call the library's API. See the [language support guide](../language-support.md) for how to call an imported interface.
 
 4. Build your command component to a `.wasm` file. You will not be able to run this in `wasmtime` yet, as its imports are not yet satisfied.
 

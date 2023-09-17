@@ -26,6 +26,22 @@ cd component-model
 mdbook serve --open
 ```
 
+You can use mdbook-linkcheck to check the links in the docs automatically. First, add the lines following lines in `book.toml`.
+
+```toml
+[output.linkcheck]
+follow-web-links = true
+```
+
+After this, install the extension and build the project again. You should see the link checker do its work in the console output.
+
+```bash
+cargo install mdbook-linkcheck
+mdbook build
+```
+
+Don't forget to remove the changes in `book.toml` before you commit!
+
 ## Submitting Changes
 
 You can click the Fork button in the upper-right area of the screen to create a copy of this repository in your GitHub account. This copy is called a fork. Make any changes you want in your fork, and when you are ready to submit those changes, go to your fork and create a new pull request to let us know about it.

@@ -16,7 +16,7 @@ cargo install --git https://github.com/bytecodealliance/cargo-component --locked
 ## Building a Component with `cargo component`
 
 Create a Rust program that implements the `add` function in the [`example`
-world](../../examples/example-host/add.wit). Note that it imports the bindings that will be created by
+world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit). Note that it imports the bindings that will be created by
 `cargo-component`. First scaffold a project:
 
 ```sh
@@ -66,7 +66,7 @@ world root {
 ### Running a Component from Rust Applications
 
 To verify that our component works, lets run it from a Rust application that knows how to import a
-component of the [`example` world](../../examples/example-host/add.wit).
+component of the [`example` world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit).
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
@@ -81,7 +81,7 @@ See [the language guide](../language-support.md#building-a-component-with-cargo-
 
 ## Exporting an interface with `cargo component`
 
-The [sample `add.wit` file](../../examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
+The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```
 package docs:adder@0.1.0
@@ -249,9 +249,11 @@ path = "wit"
 
 3. Edit `Cargo.toml` to tell `cargo component` where to find external package WITs:
 
+```toml
 [package.metadata.component.target.dependencies]
 "docs:calculator" = { path = "../calculator/wit" }
 "docs:adder" = { path = "../adder/wit" }
+```
 
 > If the external package refers to other packages, you need to provide the paths to them as well.
 

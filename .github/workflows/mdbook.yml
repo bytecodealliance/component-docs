@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MDBOOK_VERSION: 0.4.21
+      SITEMAP_GEN_VERSION: 0.2.0
+      PUBLISH_DOMAIN: component-model.bytecodealliance.org
     steps:
       - uses: actions/checkout@v3
       - name: Install mdBook
@@ -37,11 +39,17 @@ jobs:
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
           rustup update
           cargo install --version ${MDBOOK_VERSION} mdbook
+          cargo install --version ${SITEMAP_GEN_VERSION} mdbook-sitemap-generator
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
       - name: Build with mdBook
         run: mdbook build component-model
+      - name: Generate sitemap
+        run: |
+          cd component-model
+          mdbook-sitemap-generator -d ${PUBLISH_DOMAIN} -o book/sitemap.xml
+          cd ..
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

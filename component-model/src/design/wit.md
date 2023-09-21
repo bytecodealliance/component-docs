@@ -2,8 +2,6 @@
 
 The WIT (Wasm Interface Type) language is used to define Component Model interfaces and worlds. WIT isn't a general-purpose coding language and doesn't define behaviour; it defines only _contracts_ between components. This topic provides an overview of key elements of the WIT language.
 
-> For a comprehensive specification, see https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md.
-
 - [An Overview of WIT](#an-overview-of-wit)
   - [Structure of a WIT file](#structure-of-a-wit-file)
   - [Comments](#comments)
@@ -401,3 +399,5 @@ world proxy {
     import outgoing-handler
 }
 ```
+
+> ⓘ For a more formal definition of the WIT language, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

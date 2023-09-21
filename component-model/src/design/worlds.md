@@ -1,6 +1,6 @@
-# Worlds
+# WIT Worlds
 
-A **world** is a higher-level contract that describes a component's capabilities and needs.
+A **WIT world** is a higher-level contract that describes a component's capabilities and needs.
 
 In one sense, a world _defines_ a component - it says what interfaces the component exposes for other code to call, and what interfaces the component depends on - but it defines only the surface of a component, not the internal behaviour. This is a useful way to think about "business logic" components, like libraries that export APIs for other components to use. If you're an application or library developer, you'll define custom worlds to expose the functionality of each component you create - and to declare the functionality your component depends on.
 
@@ -13,3 +13,5 @@ For a component to run, its imports must be fulfilled, by a host or by other com
 * A (trivial) "HTTP proxy" world would export a "receive HTTP requests" interface, and import a "send HTTP requests" interface. A host, or another component, would call the exported "receive" interface, passing an HTTP request; the component would forward it on via the imported "send" interface. To be a _useful_ proxy, the component may also need to import interfaces such as I/O and clock time - without those imports the component could not perform, for example, on-disk caching.
 * The "WASI (WebAssembly System Interface) command line" world is a classic example of a "hosting environment" use of the world concept. This world exports APIs such as file I/O, sockets, random number generation, and other POSIX-style functionality, so that application components that depend on this world - that is, command line applications - can use those familiar capabilities.
 * A "regex parser" world would export a "parse regex" function, and would import nothing. This declares not only that the component implementing this world can parse regular expressions, but also that it calls no other APIs. A user of such a parser could know, without looking at the implementation, that is does not access the file system, or send the user's regexes to a network service.
+
+> ⓘ For a more formal definition of what a WIT world is, take a look at the [WIT world specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#wit-worlds).

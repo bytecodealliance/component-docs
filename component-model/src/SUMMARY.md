@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD025 -->
 # Summary
 
 - [Introduction](./introduction.md)
@@ -7,7 +8,7 @@
 - [Why the Component Model?](./design/why-component-model.md)
 - [Components](./design/components.md)
 - [Interfaces](./design/interfaces.md)
-- [WIT](./wit-overview.md)
+- [WIT](./design/wit.md)
 - [Worlds](./design/worlds.md)
 - [Packages](./design/packages.md)
 - [Canonical ABI](./design/canonical-abi.md)
@@ -27,5 +28,5 @@
 
 # Runtime Support
 
-- [Wasmtime](./implementations/wasmtime.md)
-- [jco](./implementations/jco.md)
+- [Wasmtime](./runtimes/wasmtime.md)
+- [jco](./runtimes/jco.md)

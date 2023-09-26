@@ -46,6 +46,6 @@ wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.w
 Now, run the component with wasmtime:
 
 ```sh
-wasmtime run --wasm-features component-model command.wasm 1 2 add
+wasmtime run --wasm component-model command.wasm 1 2 add
 1 + 2 = 3
 ```

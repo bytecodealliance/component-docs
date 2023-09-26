@@ -7,7 +7,7 @@
 To run a component with wasmtime, run:
 
 ```sh
-wasmtime run --wasm-features component-model <path-to-wasm-file>
+wasmtime run --wasm component-model <path-to-wasm-file>
 ```
 
 By default, Wasmtime denies the component access to all system resources. For example, the component cannot access the file system or environment variables. See the [Wasmtime guide](https://docs.wasmtime.dev/) for information on granting access, and for other Wasmtime features.

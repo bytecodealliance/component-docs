@@ -11,7 +11,7 @@ You must use a recent version of `wasmtime` - currently, you must use the [`dev`
 To run your component, run:
 
 ```
-wasmtime run --wasm-features component-model <path-to-wasm-file>
+wasmtime run --wasm component-model <path-to-wasm-file>
 ```
 
 ## Running components with custom exports
@@ -28,6 +28,6 @@ If you're writing a library-style component - that is, one that exports a custom
 
 5. Compose your command component with your library component by running `wasm-tools compose <path/to/command.wasm> -d <path/to/library.wasm> -o main.wasm`.
 
-6. Run the composed component using `wasmtime run --wasm-features component-model main.wasm`
+6. Run the composed component using `wasmtime run --wasm component-model main.wasm`
 
 See [Composing Components](./composing.md) for more details.

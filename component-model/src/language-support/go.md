@@ -68,7 +68,7 @@ wasm-tools component new -o add.component.wasm --adapt wasi_snapshot_preview1="$
 We now have an add component!
 
 ```sh
-$ wasm-tools component wit add.component.wit
+$ wasm-tools component wit add.component.wasm
 package root:component
 
 world root {

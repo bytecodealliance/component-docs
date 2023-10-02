@@ -13,7 +13,7 @@ world example {
 ```
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime)
-crates to generate Rust bindings, bring in WASI worlds, and executes the `run`
+crates to generate Rust bindings, bring in WASI worlds, and executes the `add`
 function of the component.
 
 It takes in two operands and a path to a component. It passes the operands to

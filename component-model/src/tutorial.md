@@ -133,7 +133,7 @@ Now it all adds up! Run the command component with the `wasmtime` CLI, ensuring 
 the `wasmtime` command line do not include component model support.
 
 ```sh
-wasmtime run --wasm-features component-model command.wasm 1 2 add
+wasmtime run --wasm component-model command.wasm 1 2 add
 1 + 2 = 3
 ```
 

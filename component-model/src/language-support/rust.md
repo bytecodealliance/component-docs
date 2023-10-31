@@ -217,7 +217,7 @@ To run your command component:
 
 ```
 cargo component build
-wasmtime run --wasm-features component-model ./target/wasm32-wasi/debug/<name>.wasm
+wasmtime run --wasm component-model ./target/wasm32-wasi/debug/<name>.wasm
 ```
 
 > **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
@@ -274,6 +274,6 @@ fn main() {
 6. Run the composed component:
 
 ```sh
-$ wasmtime run --wasm-features component-model ./my-composed-command.wasm
+$ wasmtime run --wasm component-model ./my-composed-command.wasm
 1 + 1 = 579  # might need to go back and do some work on the calculator implementation
 ```

@@ -19,7 +19,7 @@ pub async fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
 
     // Add the command world (aka WASI CLI) to the linker
     command::add_to_linker(&mut linker).context("Failed to link command world")?;
-    let wasi_view = ServerWasiView::new()?;
+    let wasi_view = ServerWasiView::new();
     let mut store = Store::new(&engine, wasi_view);
 
     let component = Component::from_file(&engine, path).context("Component file not found")?;
@@ -39,11 +39,11 @@ struct ServerWasiView {
 }
 
 impl ServerWasiView {
-    fn new() -> Result<Self, anyhow::Error> {
-        let mut table = Table::new();
-        let ctx = WasiCtxBuilder::new().inherit_stdio().build(&mut table)?;
+    fn new() -> Self {
+        let table = Table::new();
+        let ctx = WasiCtxBuilder::new().inherit_stdio().build();
 
-        Ok(Self { table, ctx })
+        Self { table, ctx }
     }
 }
 

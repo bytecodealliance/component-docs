@@ -20,6 +20,7 @@ components within and among toolchains.
   - [Language Agnostic Tooling](#language-agnostic-tooling)
     - [Building a Component with `wasm-tools`](#building-a-component-with-wasm-tools)
     - [Running a Component with Wasmtime](#running-a-component-with-wasmtime)
+    - [Serving a HTTP Component with Wasmtime](#serving-a-http-component-with-wasmtime)
   - [Rust Tooling](./language-support/rust.md)
     - [Building a Component with `cargo component`](./language-support/rust.md#building-a-component-with-cargo-component)
     - [Running a Component from Rust Applications](./language-support/rust.md#running-a-component-from-rust-appliacations)

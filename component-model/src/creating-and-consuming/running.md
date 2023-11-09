@@ -4,7 +4,7 @@ You can "run" a component by calling one of its exports. In some cases, this req
 
 > A "command" component is one that exports the `wasi:cli/run` interface, and imports only interfaces listed in the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit).
 
-You must use a recent version of `wasmtime` ([`v14.0.0 or greater](https://github.com/bytecodealliance/wasmtime/releases)), as earlier releases of the `wasmtime` command line do not include component model support.
+You must use a recent version of `wasmtime` ([`v14.0.0` or greater](https://github.com/bytecodealliance/wasmtime/releases)), as earlier releases of the `wasmtime` command line do not include component model support.
 
 > If you build the `wasmtime` CLI from source, you must pass `--features component-model` to the build command.
 

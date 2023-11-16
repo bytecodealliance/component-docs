@@ -7,11 +7,11 @@ creating WebAssembly components using Rust as the component's implementation lan
 
 To install `cargo component`, run:
 
-```
-cargo install --git https://github.com/bytecodealliance/cargo-component --locked cargo-component
+```sh
+cargo install cargo-component
 ```
 
-> There is currently no binary or `crates.io` distribution of `cargo component`.
+> You can find more details about `cargo component` in its [crates.io page](https://crates.io/crates/cargo-component).
 
 ## Building a Component with `cargo component`
 

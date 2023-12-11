@@ -8,7 +8,7 @@
 
 First, install the CLI for [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen#cli-installation), [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools), and the [`WASI SDK`](https://github.com/webassembly/wasi-sdk). Note that you can also use your installed system or emscripten `clang` by building with `--target=wasm32-wasi` but you will need some artifacts from WASI SDK to enable and link that build target (more information is available in WASI SDK's docs).
 
-Start by generating a C skeleton from `wit-bindgen` using the [sample `add.wit` file](../../examples/add.wit): 
+Start by generating a C skeleton from `wit-bindgen` using the [sample `add.wit` file](../../examples/example-host/add.wit): 
 ```sh
 >wit-bindgen c add.wit
 Generating "example.c"

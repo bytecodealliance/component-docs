@@ -71,7 +71,7 @@ wasm-tools component new add-core.wasm --adapt wasi_snapshot_preview1.wasm -o ad
 
 Finally, you can inspect the embedded wit to see your component (including any WASI imports if necessary):
 ```sh
->wasm-tools component wit ./component.wasm
+>wasm-tools component wit add-component.wasm
 package root:component
 
 world root {

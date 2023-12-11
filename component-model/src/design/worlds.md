@@ -1,23 +1,6 @@
-# Concepts
+# WIT Worlds
 
-The Component Model is predicated on a small number of fundamental concepts:
-
-## Interfaces
-
-An **interface** describes a single-focus, composable contract, through which components can interact with each other and with hosts. Interfaces describe the types and functions used to carry out that interaction. For example:
-
-* A "receive HTTP requests" interface might have only a single "handle request" function, but contain types representing incoming requests, outgoing responses, HTTP methods and headers, and so on.
-* A "wall clock" interface might have two functions, one to get the current time and one to get the granularity of the timer. It would also include a type to represent an instant in time.
-
-## Canonical ABI
-
-An ABI is an **application binary interface** - an agreement on how to pass data around in a binary format. ABIs are specifically concerned with data layout at the bits-and-bytes level. For example, an ABI might define how integers are represented (big-endian or little-endian?), how strings are represented (pointer to null-terminated character sequence or length-prefixed? UTF-8 or UTF-16 encoded?), and how composite types are represented (the offsets of each field from the start of the structure).
-
-The component model defines a **canonical ABI** - an ABI to which all components adhere. This guarantees that components can talk to each other without confusion, even if they are built in different languages. Internally, a C component might represent strings in a quite different way from a Rust component, but the canonical ABI provides a format for them to pass strings across the boundary between them.
-
-## Worlds
-
-A **world** is a higher-level contract that describes a component's capabilities and needs.
+A **WIT world** is a higher-level contract that describes a component's capabilities and needs.
 
 In one sense, a world _defines_ a component - it says what interfaces the component exposes for other code to call, and what interfaces the component depends on - but it defines only the surface of a component, not the internal behaviour. This is a useful way to think about "business logic" components, like libraries that export APIs for other components to use. If you're an application or library developer, you'll define custom worlds to expose the functionality of each component you create - and to declare the functionality your component depends on.
 
@@ -31,16 +14,4 @@ For a component to run, its imports must be fulfilled, by a host or by other com
 * The "WASI (WebAssembly System Interface) command line" world is a classic example of a "hosting environment" use of the world concept. This world exports APIs such as file I/O, sockets, random number generation, and other POSIX-style functionality, so that application components that depend on this world - that is, command line applications - can use those familiar capabilities.
 * A "regex parser" world would export a "parse regex" function, and would import nothing. This declares not only that the component implementing this world can parse regular expressions, but also that it calls no other APIs. A user of such a parser could know, without looking at the implementation, that is does not access the file system, or send the user's regexes to a network service.
 
-## Components
-
-Physically, a **component** is a specially-formatted WebAssembly file. Internally, the component could include multiple traditional ("core") WebAssembly modules, and sub-components, composed via their imports and exports.
-
-The external interface of a component - its imports and exports - corresponds to a world. The component, however, internally defines how that world is implemented.
-
-## Packages
-
-A **package** is a set of one or more WIT (Wasm Interface Type) files containing a related set of interfaces and worlds. WIT is an IDL (interface definition language) for the Component Model. Packages provide a way for worlds and interfaces to refer to each other, and thus for an ecosystem of components to share common definitions.
-
-A package is not a world. It's a way of grouping related interfaces and worlds together for ease of discovery and reference, more like a namespace.
-
-* The WebAssembly System Interface (WASI) defines a number of packages, including one named `wasi:clocks`. Our HTTP proxy world could import the `wall-clock` interface from the `wasi:clocks` package, rather than having to define a custom clock interface.
+> ⓘ For a more formal definition of what a WIT world is, take a look at the [WIT world specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#wit-worlds).

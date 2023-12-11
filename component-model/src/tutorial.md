@@ -68,14 +68,14 @@ world app {
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
 `adder` world of `calculator.wit`. For reference, see the completed
-[example](../examples/tutorial/adder/).
+[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).
 
 ## Create a `calculator` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
 `calculator` world of `calculator.wit`. For reference, see the completed
-[example](../examples/tutorial/calculator/). The component should import the `add` function from the
+[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/calculator/). The component should import the `add` function from the
 `adder` world and call it if the `op` enum matches `add`.
 
 ## Crate a `command` component
@@ -91,7 +91,7 @@ with a `command` component:
 cargo component new command --command
 ```
 
-This component will implement the [`app`](../examples/tutorial/wit/calculator.wit) world, which
+This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
 imports the `calculate` interface. In `Cargo.toml`, point `cargo-component` to the WIT file and
 specify that it should pull in bindings for the `app` world:
 
@@ -107,7 +107,7 @@ Now, implement a command line application that:
 2. parses the operator name and ensures it is supported in the `op` enum
 3. calls the `calculate` interface's `eval_expression`, passing in the arguments.
 
-For reference, see a completed [example](../examples/tutorial/command/).
+For reference, see a completed [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/).
 
 ## Composing the calculator
 
@@ -129,11 +129,11 @@ wasm-tools compose command.wasm -d composed.wasm -o command.wasm
 ## Running the calculator
 
 Now it all adds up! Run the command component with the `wasmtime` CLI, ensuring you are using a
-[`dev` release](https://github.com/bytecodealliance/wasmtime/releases/tag/dev), as early releases of
+[`v14.0.0 or greater release](https://github.com/bytecodealliance/wasmtime/releases), as earlier releases of
 the `wasmtime` command line do not include component model support.
 
 ```sh
-wasmtime run --wasm-features component-model command.wasm 1 2 add
+wasmtime run --wasm component-model command.wasm 1 2 add
 1 + 2 = 3
 ```
 

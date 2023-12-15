@@ -5,10 +5,10 @@ This is a native Rust CLI application that can run components of the following
 parameters.
 
 ```wit
-package example:component
+package example:component;
 
 world example {
-    export add: func(x: s32, y: s32) -> s32
+    export add: func(x: s32, y: s32) -> s32;
 }
 ```
 

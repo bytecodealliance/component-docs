@@ -45,10 +45,10 @@ working with WebAssembly modules and components.
 2. The `add` function is defined inside the following `example` world:
 
    ```wit
-   package example:component
+   package example:component;
 
    world example {
-       export add: func(x: s32, y: s32) -> s32
+       export add: func(x: s32, y: s32) -> s32;
    }
    ```
 

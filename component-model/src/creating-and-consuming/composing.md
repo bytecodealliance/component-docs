@@ -16,28 +16,28 @@ When you compose components, you wire up the imports of one "primary" component 
 
 For example, consider two components with the following worlds:
 
-```
+```wit
 // component `validator`
-package docs:validator@0.1.0
+package docs:validator@0.1.0;
 
 interface validator {
-    validate-text: func(text: string) -> string
+    validate-text: func(text: string) -> string;
 }
 
 world {
-    export validator
-    import docs:regex/match@0.1.0
+    export validator;
+    import docs:regex/match@0.1.0;
 }
 
 // component 'regex'
-package docs:regex@0.1.0
+package docs:regex@0.1.0;
 
 interface match {
-    first-match: func(regex: string, text: string) -> string
+    first-match: func(regex: string, text: string) -> string;
 }
 
 world {
-    export match
+    export match;
 }
 ```
 

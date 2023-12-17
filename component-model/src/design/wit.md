@@ -53,14 +53,14 @@ WIT defines special comment formats for documentation:
 
 For example:
 
-```rust
+```wit
 /// Prints "hello".
-print-hello: func()
+print-hello: func();
 
 /**
 Prints "hello".
 */
-print-hello: func()
+print-hello: func();
 ```
 
 ## Identifiers
@@ -101,7 +101,7 @@ WIT defines the following primitive types:
 
 `list<T>` for any type T denotes an ordered sequence of values of type T.  T can be any type, built-in or user-defined:
 
-```
+```wit
 list<u8>        // byte buffer
 list<customer>  // a list of customers
 ```
@@ -112,7 +112,7 @@ This is similar to Rust `Vec`, or Java `List`.
 
 `option<T>` for any type T may contain a value of type T, or may contain no value.  T can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
 
-```
+```wit
 option<customer>
 ```
 
@@ -124,7 +124,7 @@ This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
 `result<T, E>` for any types T and E may contain a value of type T _or_ a value of type E (but not both). This is typically used for "value or error" situations; for example, a HTTP request function might return a result, with the success case (the T type) representing a HTTP response, and the error case (the E type) representing the various kinds of error that might occur:
 
-```
+```wit
 result<http-response, http-error>
 ```
 
@@ -134,7 +134,7 @@ This is similar to Rust `Result`, or Haskell `Either`.
 
 Sometimes there is no data associated with one or both of the cases. For example, a `print` function could return an error code if it fails, but has nothing to return if it succeeds. In this case, you can omit the corresponding type as follows:
 
-```
+```wit
 result<u32>     // no data associated with the error case
 result<_, u32>  // no data associated with the success case
 result          // no data associated with either case
@@ -144,7 +144,7 @@ result          // no data associated with either case
 
 A tuple type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
 
-```
+```wit
 tuple<u64, string>  // An integer and a string
 tuple<u64, string, u64>  // An integer, then a string, then an integer
 ```
@@ -159,7 +159,7 @@ You can define your own types within an `interface` or `world`. WIT offers sever
 
 A record type declares a set of named fields, each of the form `name: type`, separated by commas. A record instance contains a value for every field. Field types can be built-in or user-defined. The syntax is as follows:
 
-```
+```wit
 record customer {
     id: u64,
     name: string,
@@ -176,7 +176,7 @@ Records are similar to C or Rust `struct`s.
 
 A variant type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
 
-```
+```wit
 variant allowed-destinations {
     none,
     any,
@@ -192,7 +192,7 @@ Variants are similar to Rust `enum`s or OCaml discriminated unions. The closest 
 
 An enum type is a variant type where none of the cases have associated data:
 
-```
+```wit
 enum color {
     hot-pink,
     lime-green,
@@ -206,7 +206,7 @@ This can provide a simpler representation in languages without discriminated uni
 
 A flags type is a set of named booleans.  In an instance of the type, each flag will be either true or false.
 
-```
+```wit
 flags allowed-methods {
     get,
     post,
@@ -221,34 +221,34 @@ flags allowed-methods {
 
 You can define a new named type using `type ... = ...`. This can be useful for giving shorter or more meaningful names to types:
 
-```
-type buffer = list<u8>
-type http-result = result<http-response, http-error>
+```wit
+type buffer = list<u8>;
+type http-result = result<http-response, http-error>;
 ```
 
 ## Functions
 
-A function is defined by a name and a function type.  Like in record fields, the name is separated from the type by a colon:
+A function is defined by a name and a function type. Like in record fields, the name is separated from the type by a colon:
 
-```
-do-nothing: func()
+```wit
+do-nothing: func();
 ```
 
 The function type is the word `func`, followed by a parenthesised, comma-separated list of parameters (names and types). If the function returns a value, this is expressed as an arrow symbol (`->`) followed by the return type:
 
-```
+```wit
 // This function does not return a value
-print: func(message: string)
+print: func(message: string);
 
 // These functions return values
-add: func(a: u64, b: u64) -> u64
-lookup: func(store: kv-store, key: string) -> option<string>
+add: func(a: u64, b: u64) -> u64;
+lookup: func(store: kv-store, key: string) -> option<string>;
 ```
 
 A function can have multiple return values. In this case the return values must be named, similar to the parameter list. All return values must be populated (in the same way as tuple or record fields).
 
-```
-get-customers-paged: func(cont: continuation-token) -> (customers: list<customer>, cont: continuation-token)
+```wit
+get-customers-paged: func(cont: continuation-token) -> (customers: list<customer>, cont: continuation-token);
 ```
 
 A function can be declared as part of an [interface](#interfaces), or can be declared as an import or export in a [world](#worlds).
@@ -257,16 +257,16 @@ A function can be declared as part of an [interface](#interfaces), or can be dec
 
 An interface is a named set of types and functions, enclosed in braces and introduced with the `interface` keyword:
 
-```
+```wit
 interface canvas {
-    type canvas-id = u64
+    type canvas-id = u64;
 
     record point {
         x: u32,
         y: u32,
     }
 
-    draw-line: func(canvas: canvas-id, from: point, to: point)
+    draw-line: func(canvas: canvas-id, from: point, to: point);
 }
 ```
 
@@ -276,9 +276,9 @@ Notice that items in an interface are _not_ comma-separated.
 
 An interface can reuse types declared in another interface via a `use` directive. The `use` directive must give the interface where the types are declared, then a dot, then a braced list of the types to be reused. The interface can then refer to the types named in the `use`.
 
-```
+```wit
 interface types {
-    type dimension = u32
+    type dimension = u32;
     record point {
         x: dimension,
         y: dimension,
@@ -286,9 +286,9 @@ interface types {
 }
 
 interface canvas {
-    use types.{dimension, point}
-    type canvas-id = u64
-    draw-line: func(canvas: canvas-id, from: point, to: point, thickness: dimension)
+    use types.{dimension, point};
+    type canvas-id = u64;
+    draw-line: func(canvas: canvas-id, from: point, to: point, thickness: dimension);
 }
 ```
 
@@ -300,22 +300,22 @@ This works across files as long as the files are in the same package (effectivel
 
 A world describes a set of imports and exports, enclosed in braces and introduced with the `world` keyword. Roughly, a world describes the contract of a component. Exports are provided by the component, and define what consumers of the component may call; imports are things the component may call. The imports and exports may be interfaces or individual functions.
 
-```
+```wit
 interface printer {
-    print: func(text: string)
+    print: func(text: string);
 }
 
 interface error-reporter {
-    report-error: func(error-message: string)
+    report-error: func(error-message: string);
 }
 
 world multi-function-device {
     // The component implements the `printer` interface
-    export printer
+    export printer;
     // The component implements the `scan` function
-    export scan: func() -> list<u8>
+    export scan: func() -> list<u8>;
     // The component needs to be supplied with an `error-reporter`
-    import error-reporter
+    import error-reporter;
 }
 ```
 
@@ -323,10 +323,10 @@ world multi-function-device {
 
 You can import and export interfaces defined in other packages. This can be done using `package/name` syntax:
 
-```
+```wit
 world http-proxy {
-    export wasi:http/incoming-handler
-    import wasi:http/outgoing-handler
+    export wasi:http/incoming-handler;
+    import wasi:http/outgoing-handler;
 }
 ```
 
@@ -338,10 +338,10 @@ WIT does not define how packages are resolved - different tools may resolve them
 
 Interfaces can be declared inline in a world:
 
-```
+```wit
 world toy {
     export example: interface {
-        do-nothing: func()
+        do-nothing: func();
     }
 }
 ```
@@ -350,12 +350,12 @@ world toy {
 
 You can `include` another world. This causes your world to export all that world's exports, and import all that world's imports.
 
-```
+```wit
 world glow-in-the-dark-multi-function-device {
     // The component provides all the same exports, and depends on all the same imports, as a `multi-function-device`...
-    include multi-function-device
+    include multi-function-device;
     // ...but also exports a function to make it glow in the dark
-    export glow: func(brightness: u8)
+    export glow: func(brightness: u8);
 }
 ```
 
@@ -365,14 +365,14 @@ As with `use` directives, you can `include` worlds from other packages.
 
 A package is a set of interfaces and worlds, potentially defined across multiple files. To declare a package, use the `package` directive to specify the package ID. This must include a namespace and name, separated by a colon, and may optionally include a semver-compliant version:
 
-```
-package documentation:example
-package documentation:example@1.0.1
+```wit
+package documentation:example;
+package documentation:example@1.0.1;
 ```
 
 If a package spans multiple files, only one file needs to contain a package declaration (but if multiple files contain declarations then they must all be the same). All files must have the `.wit` extension and must be in the same directory. For example, the following `documentation:http` package is spread across four files:
 
-```
+```wit
 // types.wit
 interface types {
     record request { /* ... */ }
@@ -381,22 +381,22 @@ interface types {
 
 // incoming.wit
 interface incoming-handler {
-    use types.{request, response}
+    use types.{request, response};
     // ...
 }
 
 // outgoing.wit
 interface outgoing-handler {
-    use types.{request, response}
+    use types.{request, response};
     // ...
 }
 
 // http.wit
-package documentation:http@1.0.0
+package documentation:http@1.0.0;
 
 world proxy {
-    export incoming-handler
-    import outgoing-handler
+    export incoming-handler;
+    import outgoing-handler;
 }
 ```
 

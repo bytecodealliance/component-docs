@@ -56,10 +56,10 @@ You can use `wasm-tools component wit` to output the WIT package of the componen
 
 ```sh
 $ wasm-tools component wit add/target/wasm32-wasi/release/add.wasm
-package root:component
+package root:component;
 
 world root {
-  export add: func(x: s32, y: s32) -> s32
+  export add: func(x: s32, y: s32) -> s32;
 }
 ```
 
@@ -83,15 +83,15 @@ See [the language guide](../language-support.md#building-a-component-with-cargo-
 
 The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
-```
-package docs:adder@0.1.0
+```wit
+package docs:adder@0.1.0;
 
 interface add {
-    add: func(a: u32, b: u32) -> u32
+    add: func(a: u32, b: u32) -> u32;
 }
 
 world adder {
-    export add
+    export add;
 }
 ```
 
@@ -122,19 +122,19 @@ If your component consumes other components, you can edit the `world.wit` file t
 
 For example, suppose you have created and built an adder component as explained in the [exporting an interface section](#exporting-an-interface-with-cargo-component) and want to use that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 
-```
+```wit
 // in the 'calculator' project
 
 // wit/world.wit
-package docs:calculator
+package docs:calculator;
 
 interface calculate {
-    eval-expression: func(expr: string) -> u32
+    eval-expression: func(expr: string) -> u32;
 }
 
 world calculator {
-    export calculate
-    import docs:adder/add@0.1.0
+    export calculate;
+    import docs:adder/add@0.1.0;
 }
 ```
 
@@ -182,12 +182,12 @@ When you build this using `cargo component build`, the `add` interface remains i
 $ cargo component build --release
 
 $ wasm-tools component wit ./target/wasm32-wasi/release/calculator.wasm
-package root:component
+package root:component;
 
 world root {
-  import docs:adder/add@0.1.0
+  import docs:adder/add@0.1.0;
 
-  export docs:calculator/calculate@0.1.0
+  export docs:calculator/calculate@0.1.0;
 }
 ```
 
@@ -228,11 +228,11 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
 1. Add a `wit/world.wit` to your project, and write a WIT world that imports the interface(s) you want to use. For example:
 
-```
-package docs:app
+```wit
+package docs:app;
 
 world app {
-    import docs:calculator/calculate@0.1.0
+    import docs:calculator/calculate@0.1.0;
 }
 ```
 

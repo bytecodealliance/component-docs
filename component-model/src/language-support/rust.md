@@ -15,12 +15,12 @@ cargo install cargo-component
 
 ## Building a Component with `cargo component`
 
-Create a Rust program that implements the `add` function in the [`example`
+Create a Rust library that implements the `add` function in the [`example`
 world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit). Note that it imports the bindings that will be created by
 `cargo-component`. First scaffold a project:
 
 ```sh
-$ cargo component new add --reactor && cd add
+$ cargo component new add --lib && cd add
 ```
 
 Update `wit/world.wit` to match `add.wit` and modify the component package reference to change the
@@ -34,7 +34,8 @@ package = "component:example"
 `cargo-component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
 
 ```rs
-cargo_component_bindings::generate!();
+mod bindings;
+
 use bindings::Guest;
 
 struct Component;
@@ -98,10 +99,9 @@ world adder {
 you would write the following Rust code:
 
 ```rust
-cargo_component_bindings::generate!();
-
+mod bindings;
 // Separating out the interface puts it in a sub-module
-use bindings::exports::docs::adder::add::Guest;
+use crate::bindings::exports::docs::calculator::add::Guest;
 
 struct Component;
 
@@ -114,7 +114,7 @@ impl Guest for Component {
 
 ## Importing an interface with `cargo component`
 
-The world file (`wit/world.wit`) generated for you by `cargo component new --reactor` doesn't specify any imports.
+The world file (`wit/world.wit`) generated for you by `cargo component new --lib` doesn't specify any imports.
 
 > `cargo component build`, by default, uses the Rust `wasm32-wasi` target, and therefore automatically imports any required WASI interfaces - no action is needed from you to import these. This section is about importing custom WIT interfaces from library components.
 
@@ -155,12 +155,12 @@ Now the declaration of `add` in the adder's WIT file is visible to the `calculat
 
 ```rust
 // src/lib.rs
-cargo_component_bindings::generate!();
+mod bindings;
 
 use bindings::exports::docs::calculator::calculate::Guest;
 
 // Bring the imported add function into scope
-use bindings::docs::adder::add::add;
+use bindings::docs::calculator::add::add;
 
 struct Component;
 
@@ -203,7 +203,7 @@ To create a command with cargo component, run:
 cargo component new <name>
 ```
 
-Unlike library components, this does _not_ have the `--reactor` flag. You will see that the created project is different too:
+Unlike library components, this does _not_ have the `--lib` flag. You will see that the created project is different too:
 
 - It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasm:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
 - Because there's no `.wit` file, `Cargo.toml` doesn't contain a `package.metadata.component.target` section.
@@ -265,7 +265,6 @@ use bindings::docs::calculator::calculate::eval_expression;
 fn main() {
     let result = eval_expression("1 + 1");
     println!("1 + 1 = {result}");
-    std::thread::sleep(Duration::from_millis(10));
 }
 ```
 

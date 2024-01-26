@@ -118,8 +118,8 @@ its `calculate` imports. The result is a command component that has all its impo
 exports the `wasi:cli/run` function, which can be executed by `wasmtime`.
 
 ```sh
-wasm-tools compose calculator.wasm -d adder.wasm -o calculator.wasm
-wasm-tools compose command.wasm -d composed.wasm -o command.wasm
+wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
+wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ```
 
 > If you'd prefer to take a more visual approach to composing components, see the [documentation on
@@ -128,12 +128,12 @@ wasm-tools compose command.wasm -d composed.wasm -o command.wasm
 
 ## Running the calculator
 
-Now it all adds up! Run the command component with the `wasmtime` CLI, ensuring you are using a
+Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring you are using a
 [`v14.0.0 or greater release](https://github.com/bytecodealliance/wasmtime/releases), as earlier releases of
 the `wasmtime` command line do not include component model support.
 
 ```sh
-wasmtime run --wasm component-model command.wasm 1 2 add
+wasmtime run --wasm component-model final.wasm 1 2 add
 1 + 2 = 3
 ```
 

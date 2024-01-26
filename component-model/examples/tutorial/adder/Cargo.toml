@@ -3,10 +3,8 @@ name = "adder"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
+wit-bindgen = { version = "0.16.0", default-features = false, features = ["realloc"] }
 
 [lib]
 crate-type = ["cdylib"]

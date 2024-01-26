@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
+wit-bindgen = { version = "0.16.0", default-features = false, features = ["realloc"] }
 
 [lib]
 crate-type = ["cdylib"]
@@ -15,3 +15,5 @@ package = "docs:calculator"
 [package.metadata.component.target]
 path = "../wit/calculator.wit"
 world = "calculator"
+
+[package.metadata.component.dependencies]

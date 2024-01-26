@@ -1,4 +1,4 @@
-cargo_component_bindings::generate!();
+mod bindings;
 
 use bindings::exports::docs::calculator::calculate::{Guest, Op};
 

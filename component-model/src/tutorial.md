@@ -78,7 +78,7 @@ documentation](creating-and-consuming/authoring.md) to create a component that i
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/calculator/). The component should import the `add` function from the
 `adder` world and call it if the `op` enum matches `add`.
 
-## Crate a `command` component
+## Create a `command` component
 
 A _command_ is a component with a specific export that allows it to be executed directly by
 `wasmtime` (or other `wasm:cli` hosts). The host expects it to export the [`wasi:cli/run`

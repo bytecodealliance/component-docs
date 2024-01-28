@@ -6,7 +6,9 @@
 
 `wit-bindgen` can be used to generate C applications that can be compiled directly to Wasm modules using `clang` with a `wasm32-wasi` target.
 
-First, install the CLI for [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen#cli-installation), [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools), and the [`WASI SDK`](https://github.com/webassembly/wasi-sdk). Note that you can also use your installed system or emscripten `clang` by building with `--target=wasm32-wasi` but you will need some artifacts from WASI SDK to enable and link that build target (more information is available in WASI SDK's docs).
+First, install the CLI for [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen#cli-installation), [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools), and the [`WASI SDK`](https://github.com/webassembly/wasi-sdk). 
+
+The WASI SDK will install a local version of `clang` configured with a wasi-sysroot. Follow [these instructions](https://github.com/WebAssembly/wasi-sdk#use) to configure it for use. Note that you can also use your installed system or emscripten `clang` by building with `--target=wasm32-wasi` but you will need some artifacts from WASI SDK to enable and link that build target (more information is available in WASI SDK's docs).
 
 Start by generating a C skeleton from `wit-bindgen` using the [sample `add.wit` file](../../examples/example-host/add.wit): 
 ```sh
@@ -98,3 +100,5 @@ world root {
 It is not yet possible to run a Component using the `wasmtime` `c-api` - [see this issue](https://github.com/bytecodealliance/wasmtime/issues/6987). The c-api is preferred to trying to directly use the Rust crate in C++. 
 
 However, C/C++ language guest components can be composed with components written in any other language and run by their toolchains, or even composed with a C language command component and run via the `wasmtime` CLI or any other host.
+
+See the [Rust Tooling guide](rust.md#running-a-component-from-rust-appliacations) for instructions on how to run this component from the Rust `example-host`.

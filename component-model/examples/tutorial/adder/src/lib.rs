@@ -1,5 +1,6 @@
-cargo_component_bindings::generate!();
-use bindings::exports::docs::calculator::add::Guest;
+mod bindings;
+
+use crate::bindings::exports::docs::calculator::add::Guest;
 
 struct Component;
 

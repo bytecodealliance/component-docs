@@ -3,13 +3,14 @@ name = "command"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-anyhow = "1"
-cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
-clap = { version = "4.3.19", features = ["derive"] }
+[package.metadata.component]
+package = "docs:calculator"
 
 [package.metadata.component.target]
 path = "../wit/calculator.wit"
 world = "app"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4.3.19", features = ["derive"] }
+wit-bindgen = { version = "0.16.0", default-features = false, features = ["realloc"] }

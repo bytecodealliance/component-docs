@@ -1,4 +1,5 @@
-cargo_component_bindings::generate!();
+mod bindings;
+
 use clap::Parser;
 use std::{fmt};
 

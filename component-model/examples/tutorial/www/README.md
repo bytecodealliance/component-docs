@@ -18,5 +18,7 @@ wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.w
 jco transpile composed.wasm -o www
 # Serve required files (index.html & jco genereated files minimally)
 npx live-server www/
-``
+
+# Run CLI example
+node www/cli-calc.js
 ```

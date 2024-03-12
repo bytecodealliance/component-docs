@@ -2,3 +2,7 @@
 **/.vscode
 *.swp
 *.swo
+
+# Build artifacts from examples
+**/jco/bindings
+**/examples/**/*.wasm

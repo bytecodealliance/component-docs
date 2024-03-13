@@ -18,7 +18,6 @@ The WIT (Wasm Interface Type) language is used to define Component Model interfa
     - [Variants](#variants)
     - [Enums](#enums)
     - [Resources](#resources)
-      - [Handles](#handles)
     - [Flags](#flags)
     - [Type aliases](#type-aliases)
   - [Functions](#functions)
@@ -206,68 +205,54 @@ This can provide a simpler representation in languages without discriminated uni
 
 ### Resources
 
-A resource type defines a new abstract type an entity with a lifetime. Unlike
-records, they describe things that can't or shouldn't be copied by value.
-Instead their ownership can be passed between two components via a
-[handle](#handles). Resources are similar to a a `class` in many programming
-languages and can have constructors and methods.
+Resources are handles to some entity that lives outside of the component. They
+describe things that can't or shouldn't be copied by value; instead, their
+ownership or reference can be passed between two components via a handle. Unlike
+other WIT types which are simply plain data, resources only expose behavior
+through methods. Resources are _objects that implement_ an interface.
 
-For example, the following Wit defines a resource type and a function that takes
-and returns a handle to a `blob`:
-```wit
-resource blob;
-transform: func(blob) -> blob;
-```
-
-As syntactic sugar, resource statements can also declare any number of
-*methods*, which are functions that implicitly take a `self` parameter that is a
-handle. A resource statement can also contain any number of *static functions*,
-which do not have an implicit `self` parameter but are meant to be lexically
-nested in the scope of the resource type. Lastly, a resource statement can
-contain at most one *constructor* function, which is syntactic sugar for a
-function returning a handle of the containing resource type.
-
-For example, the following is a resource with one constructor, two methods, and
-a static function:
+For example, we could model a blob (binary large object) as a resource. The
+following WIT defines the a `blob` resource type, which contains a constructor,
+two methods, and a static function:
 
 ```wit
 resource blob {
     constructor(init: list<u8>);
     write: func(bytes: list<u8>);
     read: func(n: u32) -> list<u8>;
-    merge: static func(lhs: borrow<blob>, rhs: borrow<blob>) -> blob;
+    merge: static func(lhs: blob, rhs: blob) -> blob;
 }
 ```
 
-Methods always desugar to a borrowed self parameter whereas constructors always
-desugar to an owned return value. For example, the `blob` constructor
-[above](#resources) desugars to:
+As shown in the `blob` example, a resource can contain:
+
+- _methods_: functions that implicitly take a `self` (often called `this` in many languages)
+parameter that is a handle
+- _static functions_: functions which do not have an implicit `self` parameter
+but are meant to be nested in the scope of the resource type
+- at most one _constructor_: a function that is syntactic sugar for a function
+returning a handle of the containing resource type
+
+Methods always desugar to a borrowed `self` parameter whereas constructors
+always desugar to an owned return value. For example, the `blob` resource
+[above](#resources) could be approximated as:
 
 ```wit
-resource blob;
-%[constructor]blob: func(self: borrow<blob>, bytes: list<u8>) -> blob;
-%[method]blob.write: func(self: borrow<blob>, bytes: list<u8>);
-%[method]blob.read: func(self: borrow<blob>, n: u32) -> list<u8>;
-%[static]blob.merge: func(lhs: borrow<blob>, rhs: borrow<blob>) -> blob;
+resource blob;  
+blob-constructor: func(bytes: list<u8>) -> blob;  
+blob-write: func(self: borrow<blob>, bytes: list<u8>);  
+blob-read: func(self: borrow<blob>, n: u32) -> list<u8>;  
+blob-merge: static func(lhs: blob, rhs: blob) -> blob;
 ```
 
-#### Handles
-
-There are two types of handles in Wit: "owned" handles and "borrowed" handles.
-Owned handles represent the passing of unique ownership of a resource between
-two components. When the owner of an owned handle drops that handle, the
-resource is destroyed. In contrast, a borrowed handle represents a temporary
-loan of a handle from the caller to the callee for the duration of the call.
-
-When a resource type name is used directly (e.g. when `blob` is used as the
-return value of the `blob` constructor [above](#resources)), it stands for an
-"owning" handle that will call the resource's destructor when dropped. When a
-resource type name is wrapped with `borrow<...>`, it stands for a "borrowed"
-handle that will *not* call the destructor when dropped.
+> A note on resource lifetimes: When the owner of an owned resource drops that
+resource, the resource is destroyed. In contrast, a borrowed resource represents
+a temporary loan of a resource from the caller to the callee for the duration of
+the call.
 
 ### Flags
 
-A flag type is a set of named booleans.  In an instance of the type, each flag will be either true or false.
+A flags type is a set of named booleans.  In an instance of the type, each flag will be either true or false.
 
 ```wit
 flags allowed-methods {

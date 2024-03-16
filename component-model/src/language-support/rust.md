@@ -16,14 +16,15 @@ cargo install cargo-component
 ## Building a Component with `cargo component`
 
 Create a Rust library that implements the `add` function in the [`example`
-world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit). Note that it imports the bindings that will be created by
-`cargo-component`. First scaffold a project:
+world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit). First scaffold a project:
 
 ```sh
 $ cargo component new add --lib && cd add
 ```
 
-Update `wit/world.wit` to match `add.wit` and modify the component package reference to change the
+Note that `cargo component` generates the necessary bindings as a module called `bindings`. 
+
+Next, update `wit/world.wit` to match `add.wit` and modify the component package reference to change the
 package name to `example`. The `component` section of `Cargo.toml` should look like the following:
 
 ```toml
@@ -31,7 +32,7 @@ package name to `example`. The `component` section of `Cargo.toml` should look l
 package = "component:example"
 ```
 
-`cargo-component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
+`cargo component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
 
 ```rs
 mod bindings;
@@ -47,7 +48,7 @@ impl Guest for Component {
 }
 ```
 
-Now, build the component, being sure to optimize with a release build.
+Now, use `cargo component` to build the component, being sure to optimize with a release build.
 
 ```sh
 $ cargo component build --release
@@ -56,7 +57,7 @@ $ cargo component build --release
 You can use `wasm-tools component wit` to output the WIT package of the component:
 
 ```sh
-$ wasm-tools component wit add/target/wasm32-wasi/release/add.wasm
+$ wasm-tools component wit target/wasm32-wasi/release/add.wasm
 package root:component;
 
 world root {
@@ -66,8 +67,8 @@ world root {
 
 ### Running a Component from Rust Applications
 
-To verify that our component works, lets run it from a Rust application that knows how to import a
-component of the [`example` world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit).
+To verify that our component works, lets run it from a Rust application that knows how to run a
+component targeting the [`example` world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit).
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
@@ -77,8 +78,6 @@ $ cd examples/add-host
 $ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
 1 + 2 = 3
 ```
-
-See [the language guide](../language-support.md#building-a-component-with-cargo-component).
 
 ## Exporting an interface with `cargo component`
 
@@ -101,7 +100,7 @@ you would write the following Rust code:
 ```rust
 mod bindings;
 // Separating out the interface puts it in a sub-module
-use crate::bindings::exports::docs::calculator::add::Guest;
+use bindings::exports::docs::calculator::add::Guest;
 
 struct Component;
 
@@ -191,7 +190,7 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfil the `add` import, so that the calculator can run, you would need to [compose the `calculator.wasm` and `adder.wasm` files into a single, self-contained component](../creating-and-consuming/composing.md).
+As the world that the [`example-host` targets](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) does not include the `docs:adder/add@0.1.0` import, the example host cannot run the `calculator.wasm` component in its current form - `calculator.wasm` expects to be able to call `add` but the example host does not provide that functionality. To fulfil the `add` import, so that the calculator can run, you can [compose the `calculator.wasm` and `adder.wasm` files into a single, self-contained component](../creating-and-consuming/composing.md).
 
 ## Creating a command component with `cargo component`
 

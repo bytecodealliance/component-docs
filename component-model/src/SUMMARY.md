@@ -8,8 +8,8 @@
 - [Why the Component Model?](./design/why-component-model.md)
 - [Components](./design/components.md)
 - [Interfaces](./design/interfaces.md)
-- [WIT](./design/wit.md)
 - [Worlds](./design/worlds.md)
+- [WIT](./design/wit.md)
 - [Packages](./design/packages.md)
 - [Canonical ABI](./design/canonical-abi.md)
 

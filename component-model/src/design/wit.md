@@ -209,7 +209,8 @@ Resources are handles to some entity that lives outside of the component. They
 describe things that can't or shouldn't be copied by value; instead, their
 ownership or reference can be passed between two components via a handle. Unlike
 other WIT types which are simply plain data, resources only expose behavior
-through methods. Resources are _objects that implement_ an interface.
+through methods. Resources can be thought of as _objects that implement_ an
+interface.
 
 For example, we could model a blob (binary large object) as a resource. The
 following WIT defines the a `blob` resource type, which contains a constructor,
@@ -245,10 +246,14 @@ blob-read: func(self: borrow<blob>, n: u32) -> list<u8>;
 blob-merge: static func(lhs: blob, rhs: blob) -> blob;
 ```
 
-> A note on resource lifetimes: When the owner of an owned resource drops that
-resource, the resource is destroyed. In contrast, a borrowed resource represents
-a temporary loan of a resource from the caller to the callee for the duration of
-the call.
+When a resource type name is wrapped with `borrow<...>`, it stands for a
+"borrowed" resource. A borrowed resource represents a temporary loan of a resource from the
+caller to the callee for the duration of the call. In contrast, when the owner
+of an owned resource drops that resource, the resource is destroyed.
+
+> Note: more precisely, these are borrowed or owned `handles` of the resource.
+> Learn more about `handles` in the [upstream component model
+> specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
 
 ### Flags
 

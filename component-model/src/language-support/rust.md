@@ -190,7 +190,7 @@ world root {
 }
 ```
 
-As the world that the [`example-host` targets](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) does not include the `docs:adder/add@0.1.0` import, the example host cannot run the `calculator.wasm` component in its current form - `calculator.wasm` expects to be able to call `add` but the example host does not provide that functionality. To fulfil the `add` import, so that the calculator can run, you can [compose the `calculator.wasm` and `adder.wasm` files into a single, self-contained component](../creating-and-consuming/composing.md).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
 
 ## Creating a command component with `cargo component`
 

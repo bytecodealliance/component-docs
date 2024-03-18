@@ -74,7 +74,7 @@ The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) 
 Rust bindings, bring in WASI worlds, and execute the component.
 
 ```sh
-$ cd examples/add-host
+$ cd examples/example-host
 $ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
 1 + 2 = 3
 ```
@@ -214,9 +214,9 @@ You can write Rust in this project, just as you normally would, including import
 
 To run your command component:
 
-```
+```sh
 cargo component build
-wasmtime run --wasm component-model ./target/wasm32-wasi/debug/<name>.wasm
+wasmtime run ./target/wasm32-wasi/debug/<name>.wasm
 ```
 
 > **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
@@ -272,6 +272,6 @@ fn main() {
 6. Run the composed component:
 
 ```sh
-$ wasmtime run --wasm component-model ./my-composed-command.wasm
+$ wasmtime run ./my-composed-command.wasm
 1 + 1 = 579  # might need to go back and do some work on the calculator implementation
 ```

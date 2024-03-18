@@ -55,7 +55,7 @@ The [`wasm-tools` suite](https://github.com/bytecodealliance/wasm-tools) include
 
 To compose a component with the components it directly depends on, run:
 
-```
+```sh
 wasm-tools compose path/to/component.wasm -d path/to/dep1.wasm -d path/to/dep2.wasm -o composed.wasm
 ```
 

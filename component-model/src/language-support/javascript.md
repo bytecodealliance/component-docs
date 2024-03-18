@@ -3,17 +3,26 @@
 [`jco`](https://github.com/bytecodealliance/jco) is a fully native JS tool for working with the
 emerging WebAssembly Components specification in JavaScript.
 
-### Building a Component with `jco`
+## Building a Component with `jco`
 
-A component can be created from a JS module using `jco componentize`. First, install `jco` and
-`componentize-js`:
+A component can be created from a JS module using `jco componentize`. First, install `jco` and `componentize-js`:
 
 ```sh
 $ npm install @bytecodealliance/jco
 $ npm install @bytecodealliance/componentize-js
 ```
 
-Create a JavaScript module that implements the `add` function in [`add.wit`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit):
+Next, create or download the WIT world you would like to target. For this example we will use an [`example`
+world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) with an `add` function:
+
+```wit
+package example:component;
+world example {
+    export add: func(x: s32, y: s32) -> s32;
+}
+```
+
+Create a JavaScript module that implements the `add` function in the `example` world.
 
 ```js
 export function add(x, y) {
@@ -24,7 +33,7 @@ export function add(x, y) {
 Now, use `jco` to create a component from the JS module:
 
 ```sh
-$ jco componentize add.js --wit add.wit -n example -o add.wasm
+$ jco componentize add.js --wit add.wit --world-name example --out add.wasm
 OK Successfully written add.wasm with imports ().
 ```
 
@@ -36,7 +45,7 @@ $ cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
 ```
 
-### Running a Component from JavaScript Applications
+## Running a Component from JavaScript Applications
 
 As the JavaScript runtime cannot yet execute Wasm components, a component must be transpiled into
 JavaScript and a core module and then executed. `jco` automates this transpilation:

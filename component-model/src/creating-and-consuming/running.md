@@ -6,12 +6,10 @@ You can "run" a component by calling one of its exports. In some cases, this req
 
 You must use a recent version of `wasmtime` ([`v14.0.0` or greater](https://github.com/bytecodealliance/wasmtime/releases)), as earlier releases of the `wasmtime` command line do not include component model support.
 
-> If you build the `wasmtime` CLI from source, you must pass `--features component-model` to the build command.
-
 To run your component, run:
 
 ```sh
-wasmtime run --wasm component-model <path-to-wasm-file>
+wasmtime run <path-to-wasm-file>
 ```
 
 ## Running components with custom exports
@@ -28,6 +26,6 @@ If you're writing a library-style component - that is, one that exports a custom
 
 5. Compose your command component with your library component by running `wasm-tools compose <path/to/command.wasm> -d <path/to/library.wasm> -o main.wasm`.
 
-6. Run the composed component using `wasmtime run --wasm component-model main.wasm`
+6. Run the composed component using `wasmtime run main.wasm`
 
 See [Composing Components](./composing.md) for more details.

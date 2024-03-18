@@ -237,10 +237,10 @@ do-nothing: func();
 The function type is the word `func`, followed by a parenthesised, comma-separated list of parameters (names and types). If the function returns a value, this is expressed as an arrow symbol (`->`) followed by the return type:
 
 ```wit
-// This function does not return a value
+/// This function does not return a value
 print: func(message: string);
 
-// These functions return values
+/// These functions return values
 add: func(a: u64, b: u64) -> u64;
 lookup: func(store: kv-store, key: string) -> option<string>;
 ```
@@ -310,11 +310,11 @@ interface error-reporter {
 }
 
 world multi-function-device {
-    // The component implements the `printer` interface
+    /// The component implements the `printer` interface
     export printer;
-    // The component implements the `scan` function
+    /// The component implements the `scan` function
     export scan: func() -> list<u8>;
-    // The component needs to be supplied with an `error-reporter`
+    /// The component needs to be supplied with an `error-reporter`
     import error-reporter;
 }
 ```

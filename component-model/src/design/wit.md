@@ -1,6 +1,6 @@
 # An Overview of WIT
 
-The WIT (Wasm Interface Type) language is used to define Component Model interfaces and worlds. WIT isn't a general-purpose coding language and doesn't define behaviour; it defines only _contracts_ between components. This topic provides an overview of key elements of the WIT language. The official WIT specification and history can be found in the [`WebAssembly/component-model` repository](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
+The WIT (Wasm Interface Type) language is used to define Component Model interfaces and [worlds](#worlds). WIT isn't a general-purpose coding language and doesn't define behaviour; it defines only _contracts_ between components. This topic provides an overview of key elements of the WIT language. The official WIT specification and history can be found in the [`WebAssembly/component-model` repository](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
 
 - [An Overview of WIT](#an-overview-of-wit)
   - [Structure of a WIT file](#structure-of-a-wit-file)

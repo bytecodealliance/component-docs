@@ -97,7 +97,7 @@ WIT defines the following primitive types:
 | `char`                     | Unicode character. (Specifically, a [Unicode scalar value](https://unicode.org/glossary/#unicode_scalar_value).) |
 | `string`                   | A Unicode string - that is, a finite sequence of characters. |
 
-The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single NaN value. NaN payloads are not guaranteed to be preserved when values pass through WIT interfaces.
+The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single NaN value. The exact bit-level representation of a NaN is not guaranteed to be preserved when values pass through WIT interfaces.
 
 ### Lists
 

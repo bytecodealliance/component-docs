@@ -93,9 +93,11 @@ WIT defines the following primitive types:
 | `bool`                     | Boolean value - true or false. |
 | `s8`, `s16`, `s32`, `s64`  | Signed integers of the appropriate width. For example, `s32` is a 32-bit integer. |
 | `u8`, `u16`, `u32`, `u64`  | Unsigned integers of the appropriate width. For example, `u32` is a 32-bit integer. |
-| `float32`, `float64`       | Floating-point numbers of the appropriate width. For example, `float64` is a 64-bit (double precision) floating-point number. |
+| `f32`, `f64`               | Floating-point numbers of the appropriate width. For example, `f64` is a 64-bit (double precision) floating-point number. See the note on NaNs below. |
 | `char`                     | Unicode character. (Specifically, a [Unicode scalar value](https://unicode.org/glossary/#unicode_scalar_value).) |
 | `string`                   | A Unicode string - that is, a finite sequence of characters. |
+
+The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single NaN value. The exact bit-level representation of a NaN is not guaranteed to be preserved when values pass through WIT interfaces.
 
 ### Lists
 

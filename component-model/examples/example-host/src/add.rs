@@ -2,7 +2,7 @@ use anyhow::Context;
 use std::path::PathBuf;
 use wasmtime::component::*;
 use wasmtime::{Config, Engine, Store};
-use wasmtime_wasi::preview2::{command, Table, WasiCtx, WasiCtxBuilder, WasiView};
+use wasmtime_wasi::preview2::{command, ResourceTable, WasiCtx, WasiCtxBuilder, WasiView};
 
 wasmtime::component::bindgen!({
     path: "add.wit",
@@ -34,13 +34,13 @@ pub async fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
 }
 
 struct ServerWasiView {
-    table: Table,
+    table: ResourceTable,
     ctx: WasiCtx,
 }
 
 impl ServerWasiView {
     fn new() -> Self {
-        let table = Table::new();
+        let table = ResourceTable::new();
         let ctx = WasiCtxBuilder::new().inherit_stdio().build();
 
         Self { table, ctx }
@@ -48,19 +48,11 @@ impl ServerWasiView {
 }
 
 impl WasiView for ServerWasiView {
-    fn table(&self) -> &Table {
-        &self.table
-    }
-
-    fn table_mut(&mut self) -> &mut Table {
+    fn table(&mut self) -> &mut ResourceTable {
         &mut self.table
     }
 
-    fn ctx(&self) -> &WasiCtx {
-        &self.ctx
-    }
-
-    fn ctx_mut(&mut self) -> &mut WasiCtx {
+    fn ctx(&mut self) -> &mut WasiCtx {
         &mut self.ctx
     }
 }

@@ -1,7 +1,7 @@
 mod bindings;
 
 use clap::Parser;
-use std::{fmt};
+use std::fmt;
 
 use bindings::docs::calculator::{calculate, calculate::Op};
 

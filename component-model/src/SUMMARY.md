@@ -11,7 +11,6 @@
 - [Worlds](./design/worlds.md)
 - [WIT](./design/wit.md)
 - [Packages](./design/packages.md)
-- [Canonical ABI](./design/canonical-abi.md)
 
 # Using Component Model
 
@@ -30,3 +29,7 @@
 
 - [Wasmtime](./runtimes/wasmtime.md)
 - [jco](./runtimes/jco.md)
+
+# Advanced Topics
+
+- [Canonical ABI](./advanced/canonical-abi.md)

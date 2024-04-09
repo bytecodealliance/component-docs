@@ -18,6 +18,7 @@
   - [Rust](./language-support/rust.md)
   - [Javascript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
+  - [Go](./language-support/go.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)

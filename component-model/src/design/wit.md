@@ -215,7 +215,7 @@ through methods. Resources can be thought of as _objects that implement_ an
 interface.
 
 For example, we could model a blob (binary large object) as a resource. The
-following WIT defines the a `blob` resource type, which contains a constructor,
+following WIT defines the `blob` resource type, which contains a constructor,
 two methods, and a static function:
 
 ```wit

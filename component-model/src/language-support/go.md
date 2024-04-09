@@ -13,13 +13,29 @@ There are several steps to building a component in TinyGo:
 1. Determine which world the component will implement
 2. Build a Wasm core module using the native TinyGo toolchain
 3. Convert the Wasm core module to a component using
-   []`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
+   [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
 
-The next section will walk through steps 1-2, producing a core Wasm module that targets WASI preview 1.
-Then, the following section will walk through converting this core module to a component that
-supports WASI preview 2.
+The following sections will walk through these steps, producing a core Wasm module that targets WASI
+preview 1 and converting this core module to a component that supports WASI preview 2.
 
-## Creating a TinyGo Core Wasm Module
+### 1: The `example` World
+
+The next two sections walk through creating a component that implements the the following [`example`
+world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit):
+
+```wit
+package example:component;
+
+world example {
+    export add: func(x: s32, y: s32) -> s32;
+}
+```
+
+This is a simple world that exports one `add` function. If you want to go beyond a quick start to a
+more realistic example, jump to the [section on implementing worlds with
+interfaces](#implementing-worlds-with-interfaces-with-tinygo-and-wit-bindgen).
+
+### 2: Creating a TinyGo Core Wasm Module
 
 The TinyGo toolchain natively supports compiling Go programs to core Wasm modules. Let's create one that implements the `add` function in the [`example`
 world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit).
@@ -51,7 +67,7 @@ tinygo build -o add.wasm -target=wasi add.go
 
 You should now have an `add.wasm` module. But at the moment, this is a core module. In the next section, we will convert it into a component.
 
-## Converting a Wasm Core Module to a Component
+### 3: Converting a Wasm Core Module to a Component
 
 In the previous step, we produced a core module that implements our `example` world. We now want to
 convert to a component to gain the benefits of the component model, such as the ability to compose
@@ -107,7 +123,7 @@ world root {
 }
 ```
 
-## Testing an `add` Component
+### Testing an `add` Component
 
 To run our add component, we need to use a host program with a WASI runtime that understands the
 `example` world. We've provided an [`example-host`](../../examples/example-host/README.md) to do
@@ -120,7 +136,7 @@ cd component-docs/component-model/examples/example-host
 cargo run --release -- 1 2 /path/to/add.component.wasm
 ```
 
-## Targetting Worlds with Interfaces with TinyGo and Wit-Bindgen
+## Implementing Worlds with Interfaces with TinyGo and Wit-Bindgen
 
 The [`example`
 world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) we were using in the previous sections simply exports a function. However, to use your component from another component, it must export an interface. This means we will need to use a tool to generate bindings to use as glue code, and adds a couple more steps (2-3) to building Wasm components with TinyGo:
@@ -131,7 +147,7 @@ world](https://github.com/bytecodealliance/component-docs/tree/main/component-mo
 3. Implement the interface defined in the bindings
 4. Build a Wasm core module using the native TinyGo toolchain
 5. Convert the Wasm core module to a component using
-   []`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
+   [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
 
 For this example, we will use the following world, which moves the add function behind an `add` interface:
 

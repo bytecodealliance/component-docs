@@ -6,7 +6,7 @@ add an `op` enum that delineates each operator. The following example interface 
 has an `add` operation:
 
 ```wit
-package docs:calculator@0.1.0;
+package bytecode-alliance:calculator@0.1.0;
 
 interface calculate {
     enum op {

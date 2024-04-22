@@ -3,7 +3,7 @@ mod bindings;
 use clap::Parser;
 use std::fmt;
 
-use bindings::docs::calculator::{calculate, calculate::Op};
+use bindings::bytecode_alliance::calculator::{calculate, calculate::Op};
 
 fn parse_operator(op: &str) -> anyhow::Result<Op> {
     match op {

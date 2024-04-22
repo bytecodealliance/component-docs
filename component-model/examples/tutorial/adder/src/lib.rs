@@ -1,6 +1,6 @@
 mod bindings;
 
-use crate::bindings::exports::docs::calculator::add::Guest;
+use crate::bindings::exports::bytecode_alliance::calculator::add::Guest;
 
 struct Component;
 

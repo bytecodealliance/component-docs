@@ -14,7 +14,7 @@ pub mod docs {
             pub fn add(a: u32, b: u32) -> u32 {
                 unsafe {
                     #[cfg(target_arch = "wasm32")]
-                    #[link(wasm_import_module = "docs:calculator/add@0.1.0")]
+                    #[link(wasm_import_module = "bytecode_alliance:calculator/add@0.1.0")]
                     extern "C" {
                         #[link_name = "add"]
                         fn wit_import(_: i32, _: i32) -> i32;
@@ -88,7 +88,7 @@ pub mod exports {
                 macro_rules! __export_docs_calculator_calculate_0_1_0_cabi{
         ($ty:ident with_types_in $($path_to_types:tt)*) => (const _: () = {
 
-          #[export_name = "docs:calculator/calculate@0.1.0#eval-expression"]
+          #[export_name = "bytecode_alliance:calculator/calculate@0.1.0#eval-expression"]
           unsafe extern "C" fn export_eval_expression(arg0: i32,arg1: i32,arg2: i32,) -> i32 {
             $($path_to_types)*::_export_eval_expression_cabi::<$ty>(arg0, arg1, arg2)
           }
@@ -195,7 +195,7 @@ mod _rt {
 macro_rules! __export_calculator_impl {
   ($ty:ident) => (self::export!($ty with_types_in self););
   ($ty:ident with_types_in $($path_to_types_root:tt)*) => (
-  $($path_to_types_root)*::exports::docs::calculator::calculate::__export_docs_calculator_calculate_0_1_0_cabi!($ty with_types_in $($path_to_types_root)*::exports::docs::calculator::calculate);
+  $($path_to_types_root)*::exports::bytecode_alliance::calculator::calculate::__export_docs_calculator_calculate_0_1_0_cabi!($ty with_types_in $($path_to_types_root)*::exports::bytecode_alliance::calculator::calculate);
   )
 }
 #[doc(inline)]
@@ -206,10 +206,10 @@ pub(crate) use __export_calculator_impl as export;
 #[doc(hidden)]
 pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 313] = *b"\
 \0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xb8\x01\x01A\x02\x01\
-A\x04\x01B\x02\x01@\x02\x01ay\x01by\0y\x04\0\x03add\x01\0\x03\x01\x19docs:calcul\
+A\x04\x01B\x02\x01@\x02\x01ay\x01by\0y\x04\0\x03add\x01\0\x03\x01\x19bytecode_alliance:calcul\
 ator/add@0.1.0\x05\0\x01B\x04\x01m\x01\x03add\x04\0\x02op\x03\0\0\x01@\x03\x02op\
-\x01\x01xy\x01yy\0y\x04\0\x0feval-expression\x01\x02\x04\x01\x1fdocs:calculator/\
-calculate@0.1.0\x05\x01\x04\x01\x20docs:calculator/calculator@0.1.0\x04\0\x0b\x10\
+\x01\x01xy\x01yy\0y\x04\0\x0feval-expression\x01\x02\x04\x01\x1fbytecode_alliance:calculator/\
+calculate@0.1.0\x05\x01\x04\x01\x20bytecode_alliance:calculator/calculator@0.1.0\x04\0\x0b\x10\
 \x01\0\x0acalculator\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-comp\
 onent\x070.201.0\x10wit-bindgen-rust\x060.21.0";
 

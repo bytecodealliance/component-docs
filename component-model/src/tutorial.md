@@ -35,7 +35,7 @@ For tutorial purposes, we are going to define all our interfaces in one WIT pack
 
 ```wit
 // calculator.wit
-package docs:calculator@0.1.0;
+package bytecode-alliance:calculator@0.1.0;
 
 interface calculate {
     enum op {
@@ -63,12 +63,14 @@ world app {
 
 ```
 
+If you're using rust and you want to learn how to use a registry instead, you can use the WIT packages that have been published for this tutorial ([calculator](https://preview.wa.dev/bytecode-alliance:calculator) and [adder](https://preview.wa.dev/bytecode-alliance:adder)) or publish the same packages on your own namespace using the [wit CLI](./creating-and-consuming/distributing.md#using-warg-registries-for-wit-packages-with-the-wit-cli)
+
 ## Create an `add` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
 `adder` world of `calculator.wit`. For reference, see the completed
-[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).
+[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).  If using the registry, this will use the [adder](https://preview.wa.dev/bytecode-alliance:adder) WIT package.
 
 ## Create a `calculator` component
 
@@ -88,7 +90,7 @@ with a `main` function to a component with `wasi:cli/run` exported. Scaffold a n
 with a `command` component:
 
 ```sh
-cargo component new command --command
+cargo component new 
 ```
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
@@ -100,6 +102,14 @@ specify that it should pull in bindings for the `app` world:
 path = "../path/to/calculator.wit"
 world = "app"
 ```
+
+If you're using the registry, you can specify the import.
+```
+[package.metadata.component.target.dependencies]
+"bytecode-alliance:calculator" = "x.x.x"
+```
+
+Check [calculator](https://preview.wa.dev/bytecode-alliance:calculator) for the latest version to use.
 
 Now, implement a command line application that:
 
@@ -121,6 +131,9 @@ exports the `wasi:cli/run` function, which can be executed by `wasmtime`.
 wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
 wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ```
+
+You can also use the [wac](https://github.com/bytecodealliance/wac) CLI to compose these components together.
+Check out the [docs](./creating-and-consuming/composing.md#composing-components-with-the-wac-cli) for information on how.
 
 > If you'd prefer to take a more visual approach to composing components, see the [documentation on
 > composing components with

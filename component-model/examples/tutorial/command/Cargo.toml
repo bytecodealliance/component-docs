@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [package.metadata.component]
-package = "docs:calculator"
+package = "bytecode-alliance:calculator"
 
 [package.metadata.component.target]
 path = "../wit/calculator.wit"

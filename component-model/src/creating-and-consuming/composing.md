@@ -14,34 +14,38 @@ When you compose components, you wire up the imports of one "primary" component 
 * The new component _imports_ any imports of the primary component imports that the dependencies didn't satisfy
 * If several components import the same interface, the new component imports that interface - it doesn't "remember" that the import was declared in several different places
 
-For example, consider two components with the following worlds:
+For example, consider the following WIT packages and components
 
 ```wit
-// component `validator`
-package docs:validator@0.1.0;
+// component `bytecode-alliance:validator-impl`
+package bytecode-alliance:validator@0.1.0;
 
-interface validator {
+interface validation {
     validate-text: func(text: string) -> string;
 }
 
-world {
+world validator-world {
     export validator;
-    import docs:regex/match@0.1.0;
+    import bytecode-alliance:regex/match@0.1.0;
 }
 
-// component 'regex'
-package docs:regex@0.1.0;
+// component 'bytecode-alliance:regex-impl'
+package bytecode-alliance:regex@0.1.0;
 
 interface match {
     first-match: func(regex: string, text: string) -> string;
 }
 
-world {
+world regex-world {
     export match;
 }
 ```
 
-If we compose `validator` with `regex`, `validator`'s import of `docs:regex/match@0.1.0` is wired up to `regex`'s export of `match`. The net result is that the composed component exports `docs:validator/validator@0.1.0` and has no imports. The composed component does _not_ export `docs:regex/match@0.1.0` - that has become an internal implementation detail of the composed component.
+Here we have two WIT packages, `bytecode-alliance:validator` and `bytecode-alliance:regex`.  The component `bytecode-alliance:validator-impl` implements the world `bytecode-alliance:validator/validator-world` and the component `bytecode-alliance:regex-impl` implements the world `bytecode-alliance:regex/regex-world`, each of which could have been written in any guest language that targets the component model.
+
+When we compose components together, we are specifying which *instance* of an imported interface we want our components to use.
+
+If we compose `bytecode-alliance:validator-impl` with `bytecode-alliance:regex-impl`, `bytecode-alliance:validator-impl`'s import of the `bytecode-alliance:regex/match@0.1.0` interface is wired up to `bytecode-alliance:regex-impl`'s export of `match`. The net result is that the composed component exports an instance of the `bytecode-alliance:validator/validation@0.1.0` interface, and has no imports. The composed component does _not_ export `bytecode-alliance:regex/match@0.1.0` - that has become an internal implementation detail of the composed component.
 
 Component composition tools are in their early stages right now.  Here are some tips to avoid or diagnose errors:
 
@@ -78,3 +82,32 @@ You can compose components visually using the builder app at https://wasmbuilder
 4. To fulfil one of the primary component's imports with a dependency's export, drag from the "I" icon next to the export to the "I" item next to the import. (Again, the clickable area is quite small - wait for the cursor to change from a hand to a cross.)
 
 5. When you have connected all the imports and exports that you want, click the Download Component button to download the composed component as a `.wasm` file.
+
+## Composing components with the wac CLI
+
+You can use the [wac](https://github.com/bytecodealliance/wac) CLI as well to create your composition.
+
+The example composition described above could be created with the `wac` file below
+
+```
+//composition.wac
+package bytecode-alliance:composition;
+
+let regex = new bytecode-alliance:regex-impl { ... };
+let validator = new bytecode-alliance:validator-impl { "bytecode-alliance:regex/match": regex.match, ... };
+
+export validator...;
+```
+
+The `new` keyword here is used to create an instance of a component, namely `bytecode-alliance:regex-impl` and `bytecode-alliance:validator-impl` are instantiated (with instance names`regex` and `validator`) that target the `bytecode-alliance:validator/validator-world` and `bytecode-alliance:regex/regex-world` worlds respectively. 
+
+When we instantiate the component `bytecode-alliance:validator-impl`, since its world targets `bytecode-alliance:validotor/validator-world` which imports the `bytecode-alliance:regex/match` interface, we need to specify which instance of that interface we want.  We can use the syntax `regex.match` here to say we want the one from the `regex` instance we got from instantiating `bytecodealliance:regex-impl`.
+
+One of the nice features of composing this way, is that if you had two components that share a dependency on another component, but you don't want them to depend on the same instance, then you could create two separate instances for each of them to depend on.
+
+You may also be wondering what's up with the `...` syntax.  It's common for components to import functionality from their host/runtime, like `wasi:filesystem` or `wasi:http` for example.  The `...` syntax is how we pass that functionality along to all of the components that comprise the composition we're authoring.
+
+The components that you use in your composition can either be referenced from a registry or from a local file system.  There are a few ways to configure where you want your dependencies to live in a local setup, which are described in the [wac repo](https://github.com/bytecodealliance/wac#dependencies).
+
+With all that, we can just run `wac encode composition.wac -o composition.wasm` and it will spit out a component that is runnable.
+

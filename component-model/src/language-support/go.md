@@ -152,7 +152,7 @@ world](https://github.com/bytecodealliance/component-docs/tree/main/component-mo
 For this example, we will use the following world, which moves the add function behind an `add` interface:
 
 ```wit
-package docs:adder@0.1.0;
+package bytecode-alliance:adder@0.1.0;
 
 interface add {
     add: func(a: u32, b: u32) -> u32;
@@ -201,7 +201,7 @@ gen
 ```
 
 The `adder.go` file defines an `ExportsDocsAdder0_1_0_Add` interface that matches the structure of our `add`
-interface. The name of the interface is taken from the WIT package name (`docs:adder@0.1.0`) combined with the interface name (`add`). In our Go module, first implement the `ExportsDocsAdder0_1_0_Add` interface by defining the `Add` function.
+interface. The name of the interface is taken from the WIT package name (`bytecode-alliance:adder@0.1.0`) combined with the interface name (`add`). In our Go module, first implement the `ExportsDocsAdder0_1_0_Add` interface by defining the `Add` function.
 
 ```go
 package main
@@ -283,6 +283,6 @@ world root {
   import wasi:filesystem/types@0.2.0;
   import wasi:filesystem/preopens@0.2.0;
 
-  export docs:adder/add@0.1.0;
+  export bytecode-alliance:adder/add@0.1.0;
 }
 ```

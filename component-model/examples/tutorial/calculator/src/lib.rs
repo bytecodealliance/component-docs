@@ -1,9 +1,9 @@
 mod bindings;
 
-use bindings::exports::docs::calculator::calculate::{Guest, Op};
+use bindings::exports::bytecode_alliance::calculator::calculate::{Guest, Op};
 
 // Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
+use bindings::bytecode_alliance::calculator::add::add;
 
 struct Component;
 

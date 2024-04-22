@@ -84,7 +84,7 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
 The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```wit
-package docs:adder@0.1.0;
+package bytecode-alliance:adder@0.1.0;
 
 interface add {
     add: func(a: u32, b: u32) -> u32;
@@ -100,7 +100,7 @@ you would write the following Rust code:
 ```rust
 mod bindings;
 // Separating out the interface puts it in a sub-module
-use bindings::exports::docs::calculator::add::Guest;
+use bindings::exports::bytecode-alliance::calculator::add::Guest;
 
 struct Component;
 
@@ -125,7 +125,7 @@ For example, suppose you have created and built an adder component as explained 
 // in the 'calculator' project
 
 // wit/world.wit
-package docs:calculator;
+package bytecode-alliance:calculator;
 
 interface calculate {
     eval-expression: func(expr: string) -> u32;
@@ -133,20 +133,40 @@ interface calculate {
 
 world calculator {
     export calculate;
-    import docs:adder/add@0.1.0;
+    import bytecode-alliance:adder/add@0.1.0;
 }
 ```
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
+Because the `bytecode-alliance:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
+"bytecode-alliance:adder" = { path = "../adder/wit" }  # directory containing the WIT package
 ```
 
 Note that the path is to the adder project's WIT _directory_, not to the `world.wit` file. A WIT package may be spread across multiple files in the same directory; `cargo component` will look at all the files.
+
+### Using published WIT packages in a registry
+
+Since `cargo component` is integrated with the Warg protocol, you can also interact with WIT packages that have been published to a [Warg registry](/../creating-and-consuming/distributing.md).
+
+To create a component that targets a world in a WIT package, simply run
+
+```
+cargo component new --lib --target <pkg_namespace>:<pkg_name>/<world_name> path/to/library
+```
+
+Both the [calculator](https://preview.wa.dev/bytecode-alliance:calculator) and [adder](https://preview.wa.dev/bytecode-alliance:adder) packages have been published to wa.dev, so the following commands will create rust projects with the needed implementations for the WIT packages scaffolded out for you.
+
+
+```
+cargo component new --lib --target bytecode-alliance:calculator/calculator calculator
+cargo component new --lib --target bytecode-alliance:adder/adder adder
+```
+
+Since this flow uses WIT packages from a registry, this approach doesn't need the prior step for pointing to a local WIT package.
 
 ### Calling the import from Rust
 
@@ -156,10 +176,10 @@ Now the declaration of `add` in the adder's WIT file is visible to the `calculat
 // src/lib.rs
 mod bindings;
 
-use bindings::exports::docs::calculator::calculate::Guest;
+use bindings::exports::bytecode_alliance::calculator::calculate::Guest;
 
 // Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
+use bindings::bytecode_alliance::calculator::add::add;
 
 struct Component;
 
@@ -184,13 +204,29 @@ $ wasm-tools component wit ./target/wasm32-wasi/release/calculator.wasm
 package root:component;
 
 world root {
-  import docs:adder/add@0.1.0;
+  import bytecode-alliance:adder/add@0.1.0;
 
-  export docs:calculator/calculate@0.1.0;
+  export bytecode-alliance:calculator/calculate@0.1.0;
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md), or use the [wac CLI](../creating-and-consuming/composing.md#composing-components-with-the-wac-cli).
+
+If you use the wac CLI, the following wac file would grab the bytecode alliance components ([adder-component](https://preview.wa.dev/bytecode-alliance:adder-component) and [calculator-component](https://preview.wa.dev/bytecode-alliance:calculator-component)) that implement each of the WIT interfaces ([adder](https://preview.wa.dev/bytecode-alliance:adder) and [calculator](https://preview.wa.dev/bytecode-alliance:calculator)).  
+
+```
+// composition.wac
+package bytecode-alliance:composition;
+
+let adder = new bytecode-alliance:adder-component{ ... };
+let calc = new bytecode-alliance:calculator-component { "bytecode-alliance:adder/add@0.1.0": adder.add, ... };
+
+export calc...;
+```
+
+Just run `wac encode composition.wac -o composition.wasm` and you'll have a runnable component that you can use.
+
+You can also run `cargo component publish` in your own implementations and replace the components in the wac file with the ones that you authored instead, or the supported [local dependencies](https://github.com/bytecodealliance/wac#dependencies) to point to the binaries on your machine.
 
 ## Creating a command component with `cargo component`
 
@@ -228,14 +264,14 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 1. Add a `wit/world.wit` to your project, and write a WIT world that imports the interface(s) you want to use. For example:
 
 ```wit
-package docs:app;
+package bytecode-alliance:app;
 
 world app {
-    import docs:calculator/calculate@0.1.0;
+    import bytecode-alliance:calculator/calculate@0.1.0;
 }
 ```
 
-> `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
+> `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package bytecode-alliance:calculator` rather than `bytecode-alliance:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
 
 2. Edit `Cargo.toml` to tell `cargo component` about the new WIT file:
 
@@ -250,16 +286,23 @@ path = "wit"
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:calculator" = { path = "../calculator/wit" }
-"docs:adder" = { path = "../adder/wit" }
+"bytecode-alliance:calculator" = { path = "../calculator/wit" }
+"bytecode-alliance:adder" = { path = "../adder/wit" }
 ```
 
+Alternatively, if you're using the registry packages, you can use the latest versions published instead of a path.  You can find the versions on the registry pages, ([calculator](https://preview.wa.dev/bytecode-alliance:calculator) and [adder](https://preview.wa.dev/bytecode-alliance:adder))
+
+```toml
+[package.metadata.component.target.dependencies]
+"bytecode-alliance:calculator" = "x.x.x"
+"bytecode-alliance:adder" = "x.x.x"
+```
 > If the external package refers to other packages, you need to provide the paths to them as well.
 
 4. Use the imported interface in your Rust code:
 
 ```rust
-use bindings::docs::calculator::calculate::eval_expression;
+use bindings::bytecode-alliance::calculator::calculate::eval_expression;
 
 fn main() {
     let result = eval_expression("1 + 1");

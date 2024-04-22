@@ -11,7 +11,7 @@ wit-bindgen-rt = "0.20.0"
 crate-type = ["cdylib"]
 
 [package.metadata.component]
-package = "docs:calculator"
+package = "bytecode-alliance:calculator"
 
 [package.metadata.component.target]
 path = "../wit/calculator.wit"

@@ -14,4 +14,4 @@ world = "app"
 anyhow = "1"
 clap = { version = "4.3.19", features = ["derive"] }
 bitflags = "2.4.2"
-wit-bindgen-rt = "0.20.0"
+wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }

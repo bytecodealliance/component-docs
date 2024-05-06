@@ -1,0 +1,5 @@
+package docs:app;
+
+world app {
+    import component:calculator/calculate;
+}

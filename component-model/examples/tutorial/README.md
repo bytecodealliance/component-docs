@@ -5,29 +5,40 @@ The WIT package for the calculator consists of a world for each mathematical ope
 add an `op` enum that delineates each operator. The following example interface only
 has an `add` operation:
 
+```wit adder
+package docs:adder;
+
+
+interface add {
+    add: func(a: u32, b: u32) -> u32;
+}
+
+world adder {
+    export add;
+}
+```
+
+
 ```wit
-package docs:calculator@0.1.0
+package docs:calculator;
 
 interface calculate {
     enum op {
         add,
     }
-    eval-expression: func(op: op, x: u32, y: u32) -> u32
-}
-
-interface add {
-    add: func(a: u32, b: u32) -> u32
-}
-
-world adder {
-    export add
+    eval-expression: func(op: op, x: u32, y: u32) -> u32;
 }
 
 world calculator {
-    export calculate
-    import add
+    export calculate;
+    import docs:adder/add;
+}
+
+world app {
+    import calculate;
 }
 ```
+
 
 To expand the exercise to add more components, add another operator world, expand the enum, and modify the `command` component to call it.
 
@@ -46,6 +57,6 @@ wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.w
 Now, run the component with wasmtime:
 
 ```sh
-wasmtime run --wasm component-model command.wasm 1 2 add
+wasmtime run command.wasm 1 2 add
 1 + 2 = 3
 ```

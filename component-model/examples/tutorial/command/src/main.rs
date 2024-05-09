@@ -1,4 +1,6 @@
-cargo_component_bindings::generate!();
+#[allow(warnings)]
+mod bindings;
+
 use clap::Parser;
 use std::{fmt, thread::sleep};
 

@@ -6,16 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cargo-component-bindings = { git = "https://github.com/bytecodealliance/cargo-component" }
+wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
 
 [lib]
 crate-type = ["cdylib"]
 
 [package.metadata.component]
-package = "docs:calculator"
-
-[package.metadata.component.target]
-path = "../wit/calculator.wit"
-world = "adder"
+package = "docs:adder"
 
 [package.metadata.component.dependencies]

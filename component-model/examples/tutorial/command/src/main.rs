@@ -2,7 +2,7 @@
 mod bindings;
 
 use clap::Parser;
-use std::{fmt, thread::sleep};
+use std::fmt;
 
 use bindings::docs::calculator::{calculate, calculate::Op};
 
@@ -39,8 +39,6 @@ impl Command {
     fn run(self) {
         let res = calculate::eval_expression(self.op, self.x, self.y);
         println!("{} {} {} = {res}", self.x, self.op, self.y);
-        // Sleep because bug
-        sleep(std::time::Duration::from_millis(10))
     }
 }
 

@@ -26,7 +26,7 @@ components within and among toolchains.
     - [Running a Component from Rust Applications](./language-support/rust.md#running-a-component-from-rust-appliacations)
   - [JavaScript Tooling](./language-support/javascript.md)
     - [Building a Component with `jco`](./language-support/javascript.md#building-a-component-with-jco)
-    - [Running a Component from JavaScript Applications](#./language-support/javascript#running-a-component-from-javascript-applications)
+    - [Running a Component from JavaScript Applications](./language-support/javascript.md#running-a-component-from-javascript-applications)
   - [Python Tooling](./language-support/python.md)
     - [Building a Component with `componentize-py`](./language-support/python.md#building-a-component-with-componentize-py)
     - [Running components from Python Applications](./language-support/python.md#running-components-from-python-applications)
@@ -45,10 +45,10 @@ working with WebAssembly modules and components.
 2. The `add` function is defined inside the following `example` world:
 
    ```wit
-   package example:component
+   package example:component;
 
    world example {
-       export add: func(x: s32, y: s32) -> s32
+       export add: func(x: s32, y: s32) -> s32;
    }
    ```
 

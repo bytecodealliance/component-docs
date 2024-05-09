@@ -5,15 +5,15 @@ This is a native Rust CLI application that can run components of the following
 parameters.
 
 ```wit
-package example:component
+package example:component;
 
 world example {
-    export add: func(x: s32, y: s32) -> s32
+    export add: func(x: s32, y: s32) -> s32;
 }
 ```
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime)
-crates to generate Rust bindings, bring in WASI worlds, and executes the `run`
+crates to generate Rust bindings, bring in WASI worlds, and executes the `add`
 function of the component.
 
 It takes in two operands and a path to a component. It passes the operands to

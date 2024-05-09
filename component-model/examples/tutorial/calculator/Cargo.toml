@@ -18,3 +18,5 @@ package = "docs:calculator"
 [package.metadata.component.target]
 path = "../wit/calculator.wit"
 world = "calculator"
+
+[package.metadata.component.dependencies]

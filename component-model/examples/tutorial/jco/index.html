@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Wasm Component Demo</h1>
+    <input type="number" id="lhs" />
+    +
+    <!-- TODO: make a dropdown based on enum items in impl operators -->
+    <input type="number" id="rhs" />
+    <button onclick="run()">=</button>
+    <p id="answer"></p>
+
+    <script type="module">
+      import { calculate } from "./bindings/composed.js";
+      function run() {
+        var x = document.getElementById("lhs");
+        var y = document.getElementById("rhs");
+        // TODO: make a case switch based on enum items in impl operators
+        document.getElementById("answer").innerHTML = calculate.evalExpression(
+          "add",
+          x.value,
+          y.value
+        );
+      }
+      window.run = run;
+    </script>
+  </body>
+</html>

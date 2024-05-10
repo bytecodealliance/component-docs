@@ -15,7 +15,7 @@ Wasm components, we will compose them into a single runnable component, and test
 
 ## The calculator interface
 
-For tutorial purposes, we are going to define all our interfaces in 2 separate wit files because in a real world use case a component is granular and will have its own wit file.  
+For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
 These files are `adder/wit/world.wit` and `wit/calculator.wit`.These files define:
 
 

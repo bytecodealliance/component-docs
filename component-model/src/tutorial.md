@@ -15,8 +15,10 @@ Wasm components, we will compose them into a single runnable component, and test
 
 ## The calculator interface
 
-For tutorial purposes, we are going to define all our interfaces in one WIT package (in fact, one
-`.wit` file).  This file defines:
+<!-- For tutorial purposes, we are going to define all our interfaces in one WIT package (in fact, one
+`.wit` file).  This file defines: -->
+For tutorial purposes, we are going to define all our interfaces in 2 separate wit files because in a real world use case a component is granular and will have its own wit file.  
+These files are `adder.wit` and `calculator.wit`. These files define:
 
 * An interface for the calculator itself.  We'll use this later to carry out calculations. It
   contains an evaluate function, and an enum that delineates the operations that can be involved in
@@ -33,16 +35,15 @@ For tutorial purposes, we are going to define all our interfaces in one WIT pack
   the component will take in command line arguments and pass them to the "eval-expression" function
   of the calculator component.
 
-```wit
-// calculator.wit
-package bytecode-alliance:calculator@0.1.0;
+The first file is for the `component-book:adder` package and contains:
 
-interface calculate {
-    enum op {
-        add,
-    }
-    eval-expression: func(op: op, x: u32, y: u32) -> u32;
-}
+* An "add" interface that other wit packages and components can import or export
+
+* An "adder" world that can be targeted by components that implement it
+
+```wit
+//adder.wit
+package component-book:adder@0.1.0;
 
 interface add {
     add: func(a: u32, b: u32) -> u32;
@@ -51,10 +52,30 @@ interface add {
 world adder {
     export add;
 }
+```
+
+The second file is for the `component-book:calculator` package and contains:
+
+* The "calculate" interface that other wit packages and components can import or export
+
+* The "calculator" world that can be targeted by components that implement it.  Note that this imports the "add" interface defined in the previous WIT package.
+
+* The "app" world that can be targeted by components that implement it.
+
+```wit
+// calculator.wit
+package component-book:calculator@0.1.0;
+
+interface calculate {
+    enum op {
+        add,
+    }
+    eval-expression: func(op: op, x: u32, y: u32) -> u32;
+}
 
 world calculator {
     export calculate;
-    import add;
+    import component-book:adder/add@0.1.0;
 }
 
 world app {
@@ -63,14 +84,20 @@ world app {
 
 ```
 
-If you're using rust and you want to learn how to use a registry instead, you can use the WIT packages that have been published for this tutorial ([calculator](https://preview.wa.dev/bytecode-alliance:calculator) and [adder](https://preview.wa.dev/bytecode-alliance:adder)) or publish the same packages on your own namespace using the [wit CLI](./creating-and-consuming/distributing.md#using-warg-registries-for-wit-packages-with-the-wit-cli)
+It is not uncommon for many WIT packages to be published on a registry, indicating that there are a variety of implementors of the worlds they define.  If you haven't encountered sharing types across WIT packages before, they're briefly covered in the [composition section](./creating-and-consuming/composing.md)
+
+You'll notice in the [wit examples](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) that we have definitions in the `local` folder that resolve packages locally, as well as packages that were authored using the [wit](https://github.com/bytecodealliance/cargo-component/tree/main/crates/wit) CLI, which resolves packages using the registry.
+
+If you're using rust and you want to learn how to use a registry instead of the local files, you can use the WIT packages that have been published for this tutorial ([calculator](https://preview.wa.dev/component-book:calculator) and [adder](https://preview.wa.dev/component-book:adder)) or publish the same packages on your own namespace using the [wit CLI](./creating-and-consuming/distributing.md#using-warg-registries-for-wit-packages-with-the-wit-cli)
+
+
 
 ## Create an `add` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
 `adder` world of `calculator.wit`. For reference, see the completed
-[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).  If using the registry, this will use the [adder](https://preview.wa.dev/bytecode-alliance:adder) WIT package.
+[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).  If using the registry, this will use the [adder](https://preview.wa.dev/component-book:adder) WIT package.
 
 ## Create a `calculator` component
 
@@ -90,7 +117,7 @@ with a `main` function to a component with `wasi:cli/run` exported. Scaffold a n
 with a `command` component:
 
 ```sh
-cargo component new 
+cargo component new <name>
 ```
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
@@ -103,13 +130,14 @@ path = "../path/to/calculator.wit"
 world = "app"
 ```
 
-If you're using the registry, you can specify the import.
+If you're using the registry, you can specify the target world.
 ```
-[package.metadata.component.target.dependencies]
-"bytecode-alliance:calculator" = "x.x.x"
+[package.metadata.component]
+package = "component-book:command-impl"
+target = "component-book:calculator/app@0.1.0"
 ```
 
-Check [calculator](https://preview.wa.dev/bytecode-alliance:calculator) for the latest version to use.
+Check [calculator](https://preview.wa.dev/component-book:calculator) for the latest version to use.
 
 Now, implement a command line application that:
 
@@ -132,8 +160,14 @@ wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
 wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ```
 
-You can also use the [wac](https://github.com/bytecodealliance/wac) CLI to compose these components together.
-Check out the [docs](./creating-and-consuming/composing.md#composing-components-with-the-wac-cli) for information on how.
+You can also use the [wac](https://github.com/bytecodealliance/wac) CLI to compose these components together, and use components that are fetched from the registry.
+
+```sh
+wac plug component-book:calculator-impl --plug component-book:adder-impl -o composed.wasm
+wac plug component-book:command-impl --plug ./composed.wasm -o final.wasm
+```
+
+The above command pulls implemented components from the registry, but you can also publish your own components to the registry and use wac to compose those instead!
 
 > If you'd prefer to take a more visual approach to composing components, see the [documentation on
 > composing components with

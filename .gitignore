@@ -6,3 +6,4 @@
 # Build artifacts from examples
 **/jco/bindings
 **/examples/**/*.wasm
+.DS_Store

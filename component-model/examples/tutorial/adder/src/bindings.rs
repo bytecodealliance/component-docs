@@ -3,9 +3,9 @@
 #[allow(dead_code)]
 pub mod exports {
     #[allow(dead_code)]
-    pub mod docs {
+    pub mod component_book {
         #[allow(dead_code)]
-        pub mod calculator {
+        pub mod adder {
             #[allow(dead_code, clippy::all)]
             pub mod add {
                 #[used]
@@ -27,17 +27,17 @@ pub mod exports {
                 }
                 #[doc(hidden)]
 
-                macro_rules! __export_docs_calculator_add_0_1_0_cabi{
+                macro_rules! __export_component_book_adder_add_0_1_0_cabi{
         ($ty:ident with_types_in $($path_to_types:tt)*) => (const _: () = {
 
-          #[export_name = "bytecode_alliance:calculator/add@0.1.0#add"]
+          #[export_name = "component-book:adder/add@0.1.0#add"]
           unsafe extern "C" fn export_add(arg0: i32,arg1: i32,) -> i32 {
             $($path_to_types)*::_export_add_cabi::<$ty>(arg0, arg1)
           }
         };);
       }
                 #[doc(hidden)]
-                pub(crate) use __export_docs_calculator_add_0_1_0_cabi;
+                pub(crate) use __export_component_book_adder_add_0_1_0_cabi;
             }
         }
     }
@@ -142,7 +142,7 @@ mod _rt {
 macro_rules! __export_adder_impl {
   ($ty:ident) => (self::export!($ty with_types_in self););
   ($ty:ident with_types_in $($path_to_types_root:tt)*) => (
-  $($path_to_types_root)*::exports::bytecode_alliance::calculator::add::__export_docs_calculator_add_0_1_0_cabi!($ty with_types_in $($path_to_types_root)*::exports::bytecode_alliance::calculator::add);
+  $($path_to_types_root)*::exports::component_book::adder::add::__export_component_book_adder_add_0_1_0_cabi!($ty with_types_in $($path_to_types_root)*::exports::component_book::adder::add);
   )
 }
 #[doc(inline)]
@@ -151,12 +151,12 @@ pub(crate) use __export_adder_impl as export;
 #[cfg(target_arch = "wasm32")]
 #[link_section = "component-type:wit-bindgen:0.24.0:adder:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 213] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07Z\x01A\x02\x01A\x02\x01\
-B\x02\x01@\x02\x01ay\x01by\0y\x04\0\x03add\x01\0\x04\x01\x19bytecode_alliance:calculator/add@\
-0.1.0\x05\0\x04\x01\x1bbytecode_alliance:calculator/adder@0.1.0\x04\0\x0b\x0b\x01\0\x05adder\x03\
-\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x070.202.0\x10wit-\
-bindgen-rust\x060.24.0";
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 223] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07d\x01A\x02\x01A\x02\x01\
+B\x02\x01@\x02\x01ay\x01by\0y\x04\0\x03add\x01\0\x04\x01\x1ecomponent-book:adder\
+/add@0.1.0\x05\0\x04\x01\x20component-book:adder/adder@0.1.0\x04\0\x0b\x0b\x01\0\
+\x05adder\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x070.\
+202.0\x10wit-bindgen-rust\x060.24.0";
 
 #[inline(never)]
 #[doc(hidden)]

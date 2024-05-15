@@ -4,11 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [package.metadata.component]
-package = "bytecode-alliance:calculator"
+package = "component-book:calculator"
 
 [package.metadata.component.target]
-path = "../wit/calculator.wit"
+path = "../wit/local/calculator.wit"
 world = "app"
+
+[package.metadata.component.target.dependencies]
+"docs:adder" = { path = "../wit/local/adder.wit" }
 
 [dependencies]
 anyhow = "1"

@@ -1,4 +1,4 @@
-package docs:calculator;
+package docs:calculator@0.1.0;
 
 interface calculate {
     enum op {
@@ -9,7 +9,7 @@ interface calculate {
 
 world calculator {
     export calculate;
-    import docs:adder/add;
+    import docs:adder/add@0.1.0;
 }
 
 world app {

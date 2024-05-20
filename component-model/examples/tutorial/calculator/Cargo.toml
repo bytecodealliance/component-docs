@@ -13,10 +13,10 @@ crate-type = ["cdylib"]
 package = "docs:calculator"
 
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
+"docs:adder" = { path = "../wit/adder" }  # directory containing the WIT package
 
 [package.metadata.component.target]
-path = "../wit/calculator.wit"
+path = "../wit/calculator"
 world = "calculator"
 
 [package.metadata.component.dependencies]

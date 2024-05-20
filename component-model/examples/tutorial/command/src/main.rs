@@ -1,4 +1,3 @@
-#[allow(warnings)]
 mod bindings;
 
 use clap::Parser;

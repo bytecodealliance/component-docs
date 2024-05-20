@@ -13,3 +13,7 @@ crate-type = ["cdylib"]
 package = "docs:adder"
 
 [package.metadata.component.dependencies]
+
+[package.metadata.component.target]
+path = "../wit/adder"
+world = "adder"

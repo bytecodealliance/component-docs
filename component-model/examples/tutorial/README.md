@@ -6,7 +6,7 @@ add an `op` enum that delineates each operator. The following example interface 
 has an `add` operation:
 
 ```wit adder
-package docs:adder;
+package docs:adder@0.1.0;
 
 
 interface add {
@@ -19,8 +19,8 @@ world adder {
 ```
 
 
-```wit
-package docs:calculator;
+```wit calculator
+package docs:calculator@0.1.0;
 
 interface calculate {
     enum op {
@@ -50,13 +50,14 @@ To compose a calculator component with an add operator, run the following:
 (cd calculator && cargo component build --release)
 (cd adder && cargo component build --release)
 (cd command && cargo component build --release)
+cd ..
 wasm-tools compose calculator/target/wasm32-wasi/release/calculator.wasm -d adder/target/wasm32-wasi/release/adder.wasm -o composed.wasm
-wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.wasm -o command.wasm
+wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.wasm -o final.wasm
 ```
 
 Now, run the component with wasmtime:
 
 ```sh
-wasmtime run command.wasm 1 2 add
+wasmtime run final.wasm 1 2 add
 1 + 2 = 3
 ```

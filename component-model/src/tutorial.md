@@ -18,25 +18,12 @@ Wasm components, we will compose them into a single runnable component, and test
 For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
 These files are `adder/wit/world.wit` and `wit/calculator.wit`.These files define:
 
-
-* An interface for the calculator itself.  We'll use this later to carry out calculations. It
-  contains an evaluate function, and an enum that delineates the operations that can be involved in
-  a calculation. In this tutorial, the only operation is `add`.
-* Interfaces for the various operations the calculator might need to carry out as part of a
-  calculation. For the tutorial, again, the only interface we define is for the "add" operation.
-* A world describing the calculator component. This world exports the calculator interface, meaning
-  that other components can call it to perform calculations. It imports the operation interfaces
-  (such as "add"), meaning it relies on other components to perform those operations.
-* A world describing each operator component. Again, there's just the "adder" world right now, and
-  this exports the "add" interface, meaning that components such as the calculator can call it when
+* A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
   they need to add numbers.
-* A world describing the "primary" app component, which imports the "calculate" interface. This is
-  the component will take in command line arguments and pass them to the "eval-expression" function
-  of the calculator component.
 
 ```wit
-//adder/wit/world.wit
-package docs:adder;
+// wit/adder/world.wit
+package docs:adder@0.1.0;
 
 interface add {
     add: func(a: u32, b: u32) -> u32;
@@ -47,10 +34,23 @@ world adder {
 }
 ```
 
+* An interface for the calculator itself.  We'll use this later to carry out calculations. It
+  contains an evaluate function, and an enum that delineates the operations that can be involved in
+  a calculation. In this tutorial, the only operation is `add`.
+* Interfaces for the various operations the calculator might need to carry out as part of a
+  calculation. For the tutorial, again, the only import we define is for the "add" operation from
+  the "docs:adder" world defined previously.
+* A world describing the calculator component. This world exports the calculator interface, meaning
+  that other components can call it to perform calculations. It imports the operation interfaces
+  (such as "add"), meaning it relies on other components to perform those operations.
+* A world describing the "primary" app component, which imports the "calculate" interface. This is
+  the component will take in command line arguments and pass them to the "eval-expression" function
+  of the calculator component.
+
 
 ```wit
-// calculator.wit
-package docs:calculator;
+// wit/calculator/world.wit
+package docs:calculator@0.1.0;
 
 interface calculate {
     enum op {
@@ -61,7 +61,7 @@ interface calculate {
 
 world calculator {
     export calculate;
-    import docs:adder/add;
+    import docs:adder/add@0.1.0;
 }
 
 world app {
@@ -100,7 +100,7 @@ cargo component new command --command
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
 imports the `calculate` interface. In `Cargo.toml`, point `cargo-component` to the WIT file and
-specify that it should pull in bindings for the `app` world from the path to calculator.wit:
+specify that it should pull in bindings for the `app` world from the path to `calculator.wit`:
 
 ```toml
 [package.metadata.component.target]
@@ -145,7 +145,7 @@ Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring yo
 the `wasmtime` command line do not include component model support.
 
 ```sh
-wasmtime run command.wasm 1 2 add
+wasmtime run final.wasm 1 2 add
 1 + 2 = 3
 ```
 

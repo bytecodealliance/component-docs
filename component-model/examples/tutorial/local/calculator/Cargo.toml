@@ -9,12 +9,13 @@ wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
 
 [lib]
 crate-type = ["cdylib"]
+
 [package.metadata.component]
-package = "docs:calculator"
+package = "component-book:calculator-impl"
 
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/local/adder.wit" }
+"component-book:adder" = { path = "../../wit/local/adder.wit" }
 
 [package.metadata.component.target]
-path = "../wit/local/calculator.wit"
+path = "../../wit/local/calculator.wit"
 world = "calculator"

@@ -43,9 +43,7 @@ world regex-world {
 
 Here we have two WIT packages, `component-book:validator` and `component-book:regex`.  The component `component-book:validator-impl` implements the world `component-book:validator/validator-world` and the component `component-book:regex-impl` implements the world `component-book:regex/regex-world`, each of which could have been written in any guest language that targets the component model.
 
-You can think of the components that people author as having their shape described by a world defined in a WIT package.  Since worlds import and export interfaces, and components implement worlds, when we author a component, we don't specify which implementations we're importing, but just the interfaces from the world we're targeting. When performing composition, we are specifying which concrete implementation of each imported interface we want to use for a specific implementation.
-
-When we compose components together, we are specifying which *instance* of an imported interface we want our components to use.
+You can think of the components that people author as having their shape described by a world defined in a WIT package.  Since worlds import and export interfaces, and components implement worlds, when we author a component, we don't specify which implementations we're importing, but just the interfaces from the world we're targeting. When performing a composition, we are specifying which concrete implementation will serve as an *instance* of the imported interface we want to use in our composed output.
 
 If we compose `component-book:validator-impl` with `component-book:regex-impl`, `component-book:validator-impl`'s import of the `component-book:regex/match@0.1.0` interface is wired up to `component-book:regex-impl`'s export of `match`. The net result is that the composed component exports an instance of the `component-book:validator/validation@0.1.0` interface, and has no imports. The composed component does _not_ export `component-book:regex/match@0.1.0` - that has become an internal implementation detail of the composed component.
 
@@ -54,21 +52,23 @@ Component composition tools are in their early stages right now.  Here are some 
 * Compositions will fail unless the imported/exported types correspond!  A component must export an interface that another component imports in order for the composition to succeed.  The name of the interface is not enough... the types defined in it must also match the expected types
 * Composition cares about interface versions, and current tools are inconsistent about when they infer or inject versions. For example, if a Rust component exports `test:mypackage`, `cargo component build` will decorate this with the crate version, e.g. `test:mypackage@0.1.0`. If another Rust component _imports_ an interface from `test:mypackage`, that won't match `test:mypackage@0.1.0`. You can use [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the imports and exports embedded in the `.wasm` files and check whether they match up.
 
-## Composing components with `wasm-tools`
+## Composing components with the wac CLI
 
-The [`wasm-tools` suite](https://github.com/bytecodealliance/wasm-tools) includes a `compose` command which can be used to compose components at the command line.
+You can use the [wac](https://github.com/bytecodealliance/wac) CLI to create your composition.
 
-To compose a component with the components it directly depends on, run:
+The example composition described above could be created with the `wac` file below
 
-```sh
-wasm-tools compose path/to/component.wasm -d path/to/dep1.wasm -d path/to/dep2.wasm -o composed.wasm
+```
+//composition.wac
+package component-book:composition;
+
+let regex = new component-book:regex-impl { ... };
+let validator = new component-book:validator-impl { "component-book:regex/match": regex.match, ... };
+
+export validator...;
 ```
 
-Here `component.wasm` is the component that imports interfaces from `dep1.wasm` and `dep2.wasm`, which export them. The composed component, with those dependencies satisfied and tucked away inside it, is saved to `composed.wasm`.
-
-> This syntax doesn't cover transitive dependencies. If, for example, `dep1.wasm` has unsatisfied imports that you want to satisfy from `dep3.wasm`, you'll need to use a [configuration file](https://github.com/bytecodealliance/wasm-tools/blob/main/crates/wasm-compose/CONFIG.md). (Or you can compose `dep1.wasm` with `dep3.wasm` first, then refer to that composed component instead of `dep1.wasm`. This doesn't scale to lots of transitive dependencies though!)
-
-For full information about `wasm-tools compose` including how to configure more advanced scenarios, see [the `wasm-tools compose` documentation](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-compose).
+For an in depth description about how to use the wac tool, you can check out the [wac usage guide](https://github.com/bytecodealliance/wac/blob/main/LANGUAGE.md)
 
 ## Composing components with a visual interface
 
@@ -83,21 +83,3 @@ You can compose components visually using the builder app at https://wasmbuilder
 4. To fulfil one of the primary component's imports with a dependency's export, drag from the "I" icon next to the export to the "I" item next to the import. (Again, the clickable area is quite small - wait for the cursor to change from a hand to a cross.)
 
 5. When you have connected all the imports and exports that you want, click the Download Component button to download the composed component as a `.wasm` file.
-
-## Composing components with the wac CLI
-
-You can use the [wac](https://github.com/bytecodealliance/wac) CLI as well to create your composition.
-
-The example composition described above could be created with the `wac` file below
-
-```
-//composition.wac
-package component-book:composition;
-
-let regex = new component-book:regex-impl { ... };
-let validator = new component-book:validator-impl { "component-book:regex/match": regex.match, ... };
-
-export validator...;
-```
-
-For an in depth description about how to use the wac tool, you can check out the [language guide](https://github.com/bytecodealliance/wac/blob/main/LANGUAGE.md)

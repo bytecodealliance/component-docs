@@ -112,7 +112,8 @@ impl Guest for Component {
 ```
 
 ## Exporting an interface from a registry with `cargo component`
-If you know of a WIT package that has been published to the registry that defines a world, you can also create a library that targets that world specifically.  We've gone ahead and published [adder](https://preview.wa.dev/component-book:adder) for reference. You can generate a scaffolding for a rust implementation of a world by running `cargo component new --lib --target <namespace>:<name>/<world> <path>`.  In our case, this translates to `cargo component new --lib --target component-book:adder/adder adder`.
+
+If you know of a WIT package that has been published to the registry that defines a world, you can also create a library that targets that world specifically.  We've gone ahead and published [adder](https://wa.dev/component-book:adder) for reference. You can generate a scaffolding for a rust implementation of a world by running `cargo component new --lib --target <namespace>:<name>/<world> <path>`.  In our case, this translates to `cargo component new --lib --target component-book:adder/adder adder`.
 
 Note that when creating a component this way, you'll have no wit file that you can edit, as you're using the types defined in the published version of the WIT package. So if you're still working through what you want your types and function signatures to be, you're probably better off starting with a local WIT package rather than one from the registry.
 
@@ -200,9 +201,9 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md), or use the [wac CLI](../creating-and-consuming/composing.md#composing-components-with-the-wac-cli).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
 
-If you use the wac CLI, the following wac file would grab the bytecode alliance components ([adder-component](https://preview.wa.dev/component-book:adder-component) and [calculator-component](https://preview.wa.dev/component-book:calculator-component)) that implement each of the WIT interfaces ([adder](https://preview.wa.dev/component-book:adder) and [calculator](https://preview.wa.dev/component-book:calculator)).  
+If you use the wac CLI, the following wac file would grab the bytecode alliance components ([adder-component](https://wa.dev/component-book:adder-component) and [calculator-component](https://wa.dev/component-book:calculator-component)) that implement each of the WIT interfaces ([adder](https://wa.dev/component-book:adder) and [calculator](https://wa.dev/component-book:calculator)).  
 
 ```
 // composition.wac
@@ -280,7 +281,7 @@ path = "wit"
 "component-book:adder" = { path = "../adder/wit" }
 ```
 
-Alternatively, if you're using the registry packages, you can use the latest versions published instead of a path.  You can find the versions on the registry pages, ([calculator](https://preview.wa.dev/component-book:calculator) and [adder](https://preview.wa.dev/component-book:adder))
+Alternatively, if you're using the registry packages, you can use the latest versions published instead of a path.  You can find the versions on the registry pages, ([calculator](https://wa.dev/component-book:calculator) and [adder](https://wa.dev/component-book:adder))
 
 ```toml
 [package.metadata.component.target.dependencies]

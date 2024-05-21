@@ -15,8 +15,6 @@ Wasm components, we will compose them into a single runnable component, and test
 
 ## The calculator interface
 
-<!-- For tutorial purposes, we are going to define all our interfaces in one WIT package (in fact, one
-`.wit` file).  This file defines: -->
 For tutorial purposes, we are going to define all our interfaces in 2 separate wit files because in a real world use case a component is granular and will have its own wit file.  
 These files are `adder.wit` and `calculator.wit`. These files define:
 
@@ -88,16 +86,14 @@ It is not uncommon for many WIT packages to be published on a registry, indicati
 
 You'll notice in the [wit examples](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) that we have definitions in the `local` folder that resolve packages locally, as well as packages that were authored using the [wit](https://github.com/bytecodealliance/cargo-component/tree/main/crates/wit) CLI, which resolves packages using the registry.
 
-If you're using rust and you want to learn how to use a registry instead of the local files, you can use the WIT packages that have been published for this tutorial ([calculator](https://preview.wa.dev/component-book:calculator) and [adder](https://preview.wa.dev/component-book:adder)) or publish the same packages on your own namespace using the [wit CLI](./creating-and-consuming/distributing.md#using-warg-registries-for-wit-packages-with-the-wit-cli)
-
-
+If you're using Rust, and you want to learn how to use a registry instead of the local files, you can use the WIT packages that have been published for this tutorial ([calculator](https://wa.dev/component-book:calculator) and [adder](https://wa.dev/component-book:adder)) or publish the same packages on your own namespace using the [wit CLI](./creating-and-consuming/distributing.md#using-warg-registries-for-wit-packages-with-the-wit-cli)
 
 ## Create an `add` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
 `adder` world of `calculator.wit`. For reference, see the completed
-[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).  If using the registry, this will use the [adder](https://preview.wa.dev/component-book:adder) WIT package.
+[example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).  If using the registry, this will use the [adder](https://wa.dev/component-book:adder) WIT package.
 
 ## Create a `calculator` component
 
@@ -137,7 +133,7 @@ package = "component-book:command-impl"
 target = "component-book:calculator/app@0.1.0"
 ```
 
-Check [calculator](https://preview.wa.dev/component-book:calculator) for the latest version to use.
+Check [calculator](https://wa.dev/component-book:calculator) for the latest version to use.
 
 Now, implement a command line application that:
 
@@ -155,12 +151,14 @@ imports. We then compose that resolved calculator component with the command com
 its `calculate` imports. The result is a command component that has all its imports satisfied and
 exports the `wasi:cli/run` function, which can be executed by `wasmtime`.
 
+The [wac CLI](https://github.com/bytecodealliance/wac) is a great tool for composing components together.
+
 ```sh
-wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
-wasm-tools compose command.wasm -d composed.wasm -o final.wasm
+wac plug ./path/to/calculator.wasm --plug ./path/to/adder.wasm -o composed.wasm
+wac plug ./path/to/command.wasm --plug ./composed.wasm -o final.wasm
 ```
 
-You can also use the [wac](https://github.com/bytecodealliance/wac) CLI to compose these components together, and use components that are fetched from the registry.
+The wac CLI also supports fetching the components it composes from the registry.  We published some example components that you can use by running the following:
 
 ```sh
 wac plug component-book:calculator-impl --plug component-book:adder-impl -o composed.wasm

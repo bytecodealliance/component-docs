@@ -11,10 +11,10 @@ wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
 crate-type = ["cdylib"]
 
 [package.metadata.component]
-package = "component-book:calculator"
+package = "component-book:adder-impl"
 
 [package.metadata.component.target]
-path = "../wit/adder/adder.wit"
+path = "../../wit/local/adder.wit"
 world = "adder"
 
 [package.metadata.component.dependencies]

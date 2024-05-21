@@ -1,7 +1,7 @@
 # Building a Calculator of Wasm Components
 
 This tutorial walks through how to compose a component to build a Wasm calculator.
-It is a rich example of using multiple components, targeting distinct worlds described across multiple WIT packages
+This example uses multiple components that target distinct worlds defined across multiple WIT packages.
 
 The first package consists of addition operations
 
@@ -18,8 +18,8 @@ world adder {
 }
 ```
 
-The WIT package for the calculator consists of a world for each mathematical operator
-add an `op` enum that delineates each operator. The following example interface only
+The second WIT package defines the calculator which consists of a world for each mathematical operator
+and an `op` enum that delineates each operator. The following example interface only
 has an `add` operation:
 
 ```wit
@@ -42,20 +42,21 @@ To expand the exercise to add more components, add another operator world, expan
 
 ## Building and running the example
 
-To compose a calculator component with an add operator, run the following:
+To compose a calculator component with an add operator, you'll first need to install [wac](https://github.com/bytecodealliance/wac), and then you can run the following:
 
 ```sh
 (cd calculator && cargo component build --release)
 (cd adder && cargo component build --release)
 (cd command && cargo component build --release)
-wasm-tools compose calculator/target/wasm32-wasi/release/calculator.wasm -d adder/target/wasm32-wasi/release/adder.wasm -o composed.wasm
-wasm-tools compose command/target/wasm32-wasi/release/command.wasm -d composed.wasm -o command.wasm
+wac plug local/calculator/target/wasm32-wasi/release/calculator.wasm --plug local/adder/target/wasm32-wasi/release/adder.wasm -o composed.wasm
+wac plug command/target/wasm32-wasi/release/command.wasm --plug composed.wasm -o command.wasm
 ```
 
-You can also use `wac` instead of `wasm-tools compose` if you would like to fetch these components from a registry instead:
+For the `wac` commands, if you'd like to fetch example components from the registry for your composition, you can use the following instead:
 
 ```
-wac plug component-book:calculator-impl --plug component-book:adder-impl -o composed.wasm && wac plug component-book:command-impl --plug ./composed.wasm -o command.wasm
+wac plug component-book:calculator-impl --plug component-book:adder-impl -o composed.wasm
+wac plug component-book:command-impl --plug ./composed.wasm -o command.wasm
 ```
 
 Now, run the component with wasmtime:

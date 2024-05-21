@@ -1,0 +1,17 @@
+[package]
+name = "command"
+version = "0.1.2"
+edition = "2021"
+
+[package.metadata.component]
+package = "component-book:command-impl"
+target = "component-book:calculator/app@0.1.0"
+
+[package.metadata.component.dependencies]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.83"
+clap = { version = "4.3.19", features = ["derive"] }
+wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }

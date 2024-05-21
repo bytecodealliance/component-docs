@@ -14,56 +14,61 @@ When you compose components, you wire up the imports of one "primary" component 
 * The new component _imports_ any imports of the primary component imports that the dependencies didn't satisfy
 * If several components import the same interface, the new component imports that interface - it doesn't "remember" that the import was declared in several different places
 
-For example, consider two components with the following worlds:
+For example, consider the following WIT packages and components
 
 ```wit
-// component `validator`
-package docs:validator@0.1.0;
+// component `component-book:validator-impl`
+package component-book:validator@0.1.0;
 
-interface validator {
+interface validation {
     validate-text: func(text: string) -> string;
 }
 
-world {
+world validator-world {
     export validator;
-    import docs:regex/match@0.1.0;
+    import component-book:regex/match@0.1.0;
 }
 
-// component 'regex'
-package docs:regex@0.1.0;
+// component 'component-book:regex-impl'
+package component-book:regex@0.1.0;
 
 interface match {
     first-match: func(regex: string, text: string) -> string;
 }
 
-world {
+world regex-world {
     export match;
 }
 ```
 
-If we compose `validator` with `regex`, `validator`'s import of `docs:regex/match@0.1.0` is wired up to `regex`'s export of `match`. The net result is that the composed component exports `docs:validator/validator@0.1.0` and has no imports. The composed component does _not_ export `docs:regex/match@0.1.0` - that has become an internal implementation detail of the composed component.
+Here we have two WIT packages, `component-book:validator` and `component-book:regex`.  The component `component-book:validator-impl` implements the world `component-book:validator/validator-world` and the component `component-book:regex-impl` implements the world `component-book:regex/regex-world`, each of which could have been written in any guest language that targets the component model.
+
+You can think of the components that people author as having their shape described by a world defined in a WIT package.  Since worlds import and export interfaces, and components implement worlds, when we author a component, we don't specify which implementations we're importing, but just the interfaces from the world we're targeting. When performing a composition, we are specifying which concrete implementation will serve as an *instance* of the imported interface we want to use in our composed output.
+
+If we compose `component-book:validator-impl` with `component-book:regex-impl`, `component-book:validator-impl`'s import of the `component-book:regex/match@0.1.0` interface is wired up to `component-book:regex-impl`'s export of `match`. The net result is that the composed component exports an instance of the `component-book:validator/validation@0.1.0` interface, and has no imports. The composed component does _not_ export `component-book:regex/match@0.1.0` - that has become an internal implementation detail of the composed component.
 
 Component composition tools are in their early stages right now.  Here are some tips to avoid or diagnose errors:
 
-* Composition happens at the level of interfaces. If the initial component directly imports functions, then composition will fail. If composition reports an error such as "component `path/to/component` has a non-instance import named `<name>`" then check that all imports and exports are defined by interfaces.
-* Composition is asymmetrical. It is not just "gluing components together" - it takes a primary component which has imports, and satisfies its imports using dependency components. For example, composing an implementation of `validator` with an implementation of `regex` makes sense because `validator` has a dependency that `regex` can satisfy; doing it the other way round doesn't work, because `regex` doesn't have any dependencies, let alone ones that `validator` can satisfy.
+* Compositions will fail unless the imported/exported types correspond!  A component must export an interface that another component imports in order for the composition to succeed.  The name of the interface is not enough... the types defined in it must also match the expected types
 * Composition cares about interface versions, and current tools are inconsistent about when they infer or inject versions. For example, if a Rust component exports `test:mypackage`, `cargo component build` will decorate this with the crate version, e.g. `test:mypackage@0.1.0`. If another Rust component _imports_ an interface from `test:mypackage`, that won't match `test:mypackage@0.1.0`. You can use [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the imports and exports embedded in the `.wasm` files and check whether they match up.
 
-## Composing components with `wasm-tools`
+## Composing components with the wac CLI
 
-The [`wasm-tools` suite](https://github.com/bytecodealliance/wasm-tools) includes a `compose` command which can be used to compose components at the command line.
+You can use the [wac](https://github.com/bytecodealliance/wac) CLI to create your composition.
 
-To compose a component with the components it directly depends on, run:
+The example composition described above could be created with the `wac` file below
 
-```sh
-wasm-tools compose path/to/component.wasm -d path/to/dep1.wasm -d path/to/dep2.wasm -o composed.wasm
+```
+//composition.wac
+package component-book:composition;
+
+let regex = new component-book:regex-impl { ... };
+let validator = new component-book:validator-impl { "component-book:regex/match": regex.match, ... };
+
+export validator...;
 ```
 
-Here `component.wasm` is the component that imports interfaces from `dep1.wasm` and `dep2.wasm`, which export them. The composed component, with those dependencies satisfied and tucked away inside it, is saved to `composed.wasm`.
-
-> This syntax doesn't cover transitive dependencies. If, for example, `dep1.wasm` has unsatisfied imports that you want to satisfy from `dep3.wasm`, you'll need to use a [configuration file](https://github.com/bytecodealliance/wasm-tools/blob/main/crates/wasm-compose/CONFIG.md). (Or you can compose `dep1.wasm` with `dep3.wasm` first, then refer to that composed component instead of `dep1.wasm`. This doesn't scale to lots of transitive dependencies though!)
-
-For full information about `wasm-tools compose` including how to configure more advanced scenarios, see [the `wasm-tools compose` documentation](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-compose).
+For an in depth description about how to use the wac tool, you can check out the [wac usage guide](https://github.com/bytecodealliance/wac/blob/main/LANGUAGE.md)
 
 ## Composing components with a visual interface
 

@@ -84,7 +84,7 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
 The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
 
 ```wit
-package docs:adder@0.1.0;
+package component-book:adder@0.1.0;
 
 interface add {
     add: func(a: u32, b: u32) -> u32;
@@ -100,7 +100,7 @@ you would write the following Rust code:
 ```rust
 mod bindings;
 // Separating out the interface puts it in a sub-module
-use bindings::exports::docs::calculator::add::Guest;
+use bindings::exports::bytecode_alliance::calculator::add::Guest;
 
 struct Component;
 
@@ -110,6 +110,12 @@ impl Guest for Component {
     }
 }
 ```
+
+## Exporting an interface from a registry with `cargo component`
+
+If you know of a WIT package that has been published to the registry that defines a world, you can also create a library that targets that world specifically.  We've gone ahead and published [adder](https://wa.dev/component-book:adder) for reference. You can generate a scaffolding for a rust implementation of a world by running `cargo component new --lib --target <namespace>:<name>/<world> <path>`.  In our case, this translates to `cargo component new --lib --target component-book:adder/adder adder`.
+
+Note that when creating a component this way, you'll have no wit file that you can edit, as you're using the types defined in the published version of the WIT package. So if you're still working through what you want your types and function signatures to be, you're probably better off starting with a local WIT package rather than one from the registry.
 
 ## Importing an interface with `cargo component`
 
@@ -125,25 +131,30 @@ For example, suppose you have created and built an adder component as explained 
 // in the 'calculator' project
 
 // wit/world.wit
-package docs:calculator;
+package component-book:calculator@0.1.0;
 
 interface calculate {
-    eval-expression: func(expr: string) -> u32;
+    enum op {
+        add,
+    }
+    eval-expression: func(op: op, x: u32, y: u32) -> u32;
 }
 
 world calculator {
     export calculate;
-    import docs:adder/add@0.1.0;
+    import component-book:adder/add0.1.0;
 }
 ```
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
+If you used the registry to target a specific world, then `cargo component` will have already resolved your types for you, and you can skip this step.
+
+Because the `component-book:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
+"component-book:adder" = { path = "../adder/wit" }  # directory containing the WIT package
 ```
 
 Note that the path is to the adder project's WIT _directory_, not to the `world.wit` file. A WIT package may be spread across multiple files in the same directory; `cargo component` will look at all the files.
@@ -156,18 +167,18 @@ Now the declaration of `add` in the adder's WIT file is visible to the `calculat
 // src/lib.rs
 mod bindings;
 
-use bindings::exports::docs::calculator::calculate::Guest;
+use bindings::exports::component_book::calculator::calculate::{Guest, Op};
 
 // Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
+use bindings::component_book::calculator::add::add;
 
 struct Component;
 
 impl Guest for Component {
-    fn eval_expression(expr: String) -> u32 {
-        // Cleverly parse `expr` into values and operations, and evaluate
-        // them meticulously.
-        add(123, 456)
+    fn eval_expression(op: Op, x: u32, y: u32) -> u32 {
+        match op {
+            Op::Add => add(x, y),
+        }
     }
 }
 ```
@@ -184,13 +195,29 @@ $ wasm-tools component wit ./target/wasm32-wasi/release/calculator.wasm
 package root:component;
 
 world root {
-  import docs:adder/add@0.1.0;
+  import component-book:adder/add@0.1.0;
 
-  export docs:calculator/calculate@0.1.0;
+  export component-book:calculator/calculate@0.1.0;
 }
 ```
 
 As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
+
+If you use the wac CLI, the following wac file would grab the bytecode alliance components ([adder-component](https://wa.dev/component-book:adder-component) and [calculator-component](https://wa.dev/component-book:calculator-component)) that implement each of the WIT interfaces ([adder](https://wa.dev/component-book:adder) and [calculator](https://wa.dev/component-book:calculator)).  
+
+```
+// composition.wac
+package component-book:composition;
+
+let adder = new component-book:adder-component{ ... };
+let calc = new component-book:calculator-component { "component-book:adder/add@0.1.0": adder.add, ... };
+
+export calc...;
+```
+
+Just run `wac encode composition.wac -o composition.wasm` and you'll have a runnable component that you can use.
+
+You can also run `cargo component publish` in your own implementations and replace the components in the wac file with the ones that you authored instead, or the supported [local dependencies](https://github.com/bytecodealliance/wac#dependencies) to point to the binaries on your machine.
 
 ## Creating a command component with `cargo component`
 
@@ -228,14 +255,14 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 1. Add a `wit/world.wit` to your project, and write a WIT world that imports the interface(s) you want to use. For example:
 
 ```wit
-package docs:app;
+package component-book:app;
 
 world app {
-    import docs:calculator/calculate@0.1.0;
+    import component-book:calculator/calculate@0.1.0;
 }
 ```
 
-> `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
+> `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package component-book:calculator` rather than `component-book:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
 
 2. Edit `Cargo.toml` to tell `cargo component` about the new WIT file:
 
@@ -250,16 +277,23 @@ path = "wit"
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:calculator" = { path = "../calculator/wit" }
-"docs:adder" = { path = "../adder/wit" }
+"component-book:calculator" = { path = "../calculator/wit" }
+"component-book:adder" = { path = "../adder/wit" }
 ```
 
+Alternatively, if you're using the registry packages, you can use the latest versions published instead of a path.  You can find the versions on the registry pages, ([calculator](https://wa.dev/component-book:calculator) and [adder](https://wa.dev/component-book:adder))
+
+```toml
+[package.metadata.component.target.dependencies]
+"component-book:calculator" = "x.x.x"
+"component-book:adder" = "x.x.x"
+```
 > If the external package refers to other packages, you need to provide the paths to them as well.
 
 4. Use the imported interface in your Rust code:
 
 ```rust
-use bindings::docs::calculator::calculate::eval_expression;
+use bindings::component-book::calculator::calculate::eval_expression;
 
 fn main() {
     let result = eval_expression("1 + 1");

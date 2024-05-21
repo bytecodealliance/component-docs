@@ -1,9 +1,9 @@
 mod bindings;
 
-use bindings::exports::docs::calculator::calculate::{Guest, Op};
+use bindings::exports::component_book::calculator::calculate::{Guest, Op};
 
 // Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
+use bindings::component_book::adder::add::add;
 
 struct Component;
 

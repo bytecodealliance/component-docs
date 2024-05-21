@@ -1,0 +1,25 @@
+[package]
+name = "adder-impl"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wit-bindgen-rt = { version = "0.25.0", features = ["bitflags"] }
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true
+lto = true
+
+[package.metadata.component]
+package = "component-book:adder-impl"
+target = "component-book:adder/adder@0.1.0"
+
+[package.metadata.component.dependencies]

@@ -111,7 +111,7 @@ Since the calculator world imports the wit for adder, the command component need
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../adder/wit" }
+"docs:adder" = { path = "../wit/adder" }
 ```
 Now, implement a command line application that:
 

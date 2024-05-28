@@ -107,7 +107,7 @@ specify that it should pull in bindings for the `app` world from the path to `ca
 path = "../wit/calculator/world.wit"
 world = "app"
 ```
-Since the calculator world imports the wit for adder, the command component needs to pull in the dependencies from the adder components wit as well.
+Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
 ```toml
 [package.metadata.component.target.dependencies]

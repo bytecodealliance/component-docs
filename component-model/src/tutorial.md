@@ -81,7 +81,7 @@ documentation](creating-and-consuming/authoring.md) to create a component that i
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
-`calculator` world of `wit/calculator.wit`. For reference, see the completed
+`calculator` world of `wit/calculator/world.wit`. For reference, see the completed
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/calculator/). The component should import the `add` function from the
 `adder` world and call it if the `op` enum matches `add`.
 

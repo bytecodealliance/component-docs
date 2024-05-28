@@ -16,7 +16,7 @@ Wasm components, we will compose them into a single runnable component, and test
 ## The calculator interface
 
 For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
-These files are `adder/wit/world.wit` and `wit/calculator.wit`.These files define:
+These files can be found in the component book repository in the [`wit` directory](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) under `wit/adder/world.wit` and `wit/calculator/world.wit`. These files define:
 
 * A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
   they need to add numbers.

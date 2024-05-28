@@ -15,26 +15,41 @@ Wasm components, we will compose them into a single runnable component, and test
 
 ## The calculator interface
 
-For tutorial purposes, we are going to define all our interfaces in one WIT package (in fact, one
-`.wit` file).  This file defines:
+For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
+These files can be found in the component book repository in the [`wit` directory](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) under `wit/adder/world.wit` and `wit/calculator/world.wit`. These files define:
+
+* A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
+  they need to add numbers.
+
+```wit
+// wit/adder/world.wit
+package docs:adder@0.1.0;
+
+interface add {
+    add: func(a: u32, b: u32) -> u32;
+}
+
+world adder {
+    export add;
+}
+```
 
 * An interface for the calculator itself.  We'll use this later to carry out calculations. It
   contains an evaluate function, and an enum that delineates the operations that can be involved in
   a calculation. In this tutorial, the only operation is `add`.
 * Interfaces for the various operations the calculator might need to carry out as part of a
-  calculation. For the tutorial, again, the only interface we define is for the "add" operation.
+  calculation. For the tutorial, again, the only import we define is for the "add" operation from
+  the "docs:adder" world defined previously.
 * A world describing the calculator component. This world exports the calculator interface, meaning
   that other components can call it to perform calculations. It imports the operation interfaces
   (such as "add"), meaning it relies on other components to perform those operations.
-* A world describing each operator component. Again, there's just the "adder" world right now, and
-  this exports the "add" interface, meaning that components such as the calculator can call it when
-  they need to add numbers.
 * A world describing the "primary" app component, which imports the "calculate" interface. This is
   the component will take in command line arguments and pass them to the "eval-expression" function
   of the calculator component.
 
+
 ```wit
-// calculator.wit
+// wit/calculator/world.wit
 package docs:calculator@0.1.0;
 
 interface calculate {
@@ -44,17 +59,9 @@ interface calculate {
     eval-expression: func(op: op, x: u32, y: u32) -> u32;
 }
 
-interface add {
-    add: func(a: u32, b: u32) -> u32;
-}
-
-world adder {
-    export add;
-}
-
 world calculator {
     export calculate;
-    import add;
+    import docs:adder/add@0.1.0;
 }
 
 world app {
@@ -67,14 +74,14 @@ world app {
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
-`adder` world of `calculator.wit`. For reference, see the completed
+`adder` world of `adder/wit/world.wit`. For reference, see the completed
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).
 
 ## Create a `calculator` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
-`calculator` world of `calculator.wit`. For reference, see the completed
+`calculator` world of `wit/calculator/world.wit`. For reference, see the completed
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/calculator/). The component should import the `add` function from the
 `adder` world and call it if the `op` enum matches `add`.
 
@@ -93,14 +100,19 @@ cargo component new command --command
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
 imports the `calculate` interface. In `Cargo.toml`, point `cargo-component` to the WIT file and
-specify that it should pull in bindings for the `app` world:
+specify that it should pull in bindings for the `app` world from the path to `calculator.wit`:
 
 ```toml
 [package.metadata.component.target]
-path = "../path/to/calculator.wit"
+path = "../wit/calculator/world.wit"
 world = "app"
 ```
+Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
+```toml
+[package.metadata.component.target.dependencies]
+"docs:adder" = { path = "../wit/adder" }
+```
 Now, implement a command line application that:
 
 1. takes in three arguments: two operands and the name of an operator ("1 2 add")

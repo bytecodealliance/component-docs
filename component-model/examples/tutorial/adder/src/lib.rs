@@ -1,6 +1,7 @@
+#[allow(warnings)]
 mod bindings;
 
-use crate::bindings::exports::docs::calculator::add::Guest;
+use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 

@@ -6,15 +6,14 @@ version = 3
 name = "adder"
 version = "0.1.0"
 dependencies = [
- "bitflags",
  "wit-bindgen-rt",
 ]
 
 [[package]]
 name = "bitflags"
-version = "2.4.2"
+version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed570934406eb16438a4e976b1b4500774099c13b8cb96eec99f620f05090ddf"
+checksum = "b4682ae6287fcf752ecaabbfcc7b6f9b72aa33933dc23a554d853aea8eea8635"
 
 [[package]]
 name = "wit-bindgen-rt"

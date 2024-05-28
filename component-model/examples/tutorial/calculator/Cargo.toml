@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bitflags = "2.4.2"
 wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
 
 [lib]
@@ -13,8 +12,11 @@ crate-type = ["cdylib"]
 [package.metadata.component]
 package = "docs:calculator"
 
+[package.metadata.component.target.dependencies]
+"docs:adder" = { path = "../wit/adder" }  # directory containing the WIT package
+
 [package.metadata.component.target]
-path = "../wit/calculator.wit"
+path = "../wit/calculator"
 world = "calculator"
 
 [package.metadata.component.dependencies]

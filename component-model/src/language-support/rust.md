@@ -276,9 +276,60 @@ $ wasmtime run ./my-composed-command.wasm
 1 + 1 = 579  # might need to go back and do some work on the calculator implementation
 ```
 
+## Using user-defined types
+
+[User-defined types](../design/wit.md#user-defined-types) map to Rust types as follows.
+
+| WIT type   | Rust binding |
+|------------|--------------|
+| `record`   | `struct` with public fields corresponding to the record fields |
+| `variant`  | `enum` with cases corresponding to the variant cases |
+| `enum`     | `enum` with cases corresponding to the enum cases, with no data attached |
+| `resource` | [See below](#using-resources) |
+| `flags`    | Opaque type supporting bit flag operations, with constants for flag values |
+
+For example, consider the following WIT:
+
+```wit
+interface types {
+    enum operation {
+        add,
+        sub,
+        mul,
+        div
+    }
+
+    record expression {
+        left: u32,
+        operation: operation,
+        right: u32
+    }
+
+    eval: func(expr: expression) -> u32;
+}
+```
+
+When exported from a component, this could be implemented as:
+
+```rust
+impl Guest for Implementation {
+    fn eval(expr: Expression) -> u32 {
+        // Record fields become public fields on a struct
+        let (l, r) = (expr.left, expr.right);
+        match expr.operation {
+            // Enum becomes an enum with only unit cases
+            Operation::Add => l + r,
+            Operation::Sub => l - r,
+            Operation::Mul => l * r,
+            Operation::Div => l / r,
+        }
+    }
+}
+```
+
 ## Using resources
 
-[Resources](../design/wit.md#resources) are handles to entities that live outside the component, for example in a host, or in a different component. You can import or export resources via `cargo component`.
+[Resources](../design/wit.md#resources) are handles to entities that live outside the component, for example in a host, or in a different component.
 
 ### Example
 
@@ -288,23 +339,23 @@ In this section, our example resource will be a [Reverse Polish Notation (RPN)](
 package docs:rpn@0.1.0;
 
 interface types {
-	enum operation {
-		add,
-		sub,
-		mul,
-		div
-	}
+    enum operation {
+        add,
+        sub,
+        mul,
+        div
+    }
 
-	resource engine {
-		constructor();
-		push-operand: func(operand: u32);
-		push-operation: func(operation: operation);
-		execute: func() -> u32;
-	}
+    resource engine {
+        constructor();
+        push-operand: func(operand: u32);
+        push-operation: func(operation: operation);
+        execute: func() -> u32;
+    }
 }
 
 world calculator {
-	export types;
+    export types;
 }
 ```
 
@@ -326,9 +377,11 @@ struct CalcEngine {
 
 > Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
 
-3. The generated bindings for an exported resource include a trait named `GuestX`, where `X` is the resource name. For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
+3. The generated bindings (`bindings.rs`) for an exported resource include a trait named `GuestX`, where `X` is the resource name. (You may need to run `cargo component build` to regenerate the bindings after updating the WIT.) For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
 
 ```rust
+use bindings::exports::docs::rpn::types::{GuestEngine, Operation};
+
 impl GuestEngine for CalcEngine {
     fn new() -> Self {
         CalcEngine {
@@ -354,7 +407,7 @@ impl GuestEngine for CalcEngine {
     }
 
     fn execute(&self) -> u32 {
-        return self.stack.borrow_mut().pop().unwrap(); // TODO: error handling!
+        self.stack.borrow_mut().pop().unwrap() // TODO: error handling!
     }
 }
 ```
@@ -367,7 +420,7 @@ impl Guest for Implementation {
     type Engine = CalcEngine;
 }
 
-export!(Implementation);
+bindings::export!(Implementation with_types_in bindings);
 ```
 
 This completes the implementation of the calculator `engine` resource. Run `cargo component build` to create a component `.wasm` file.
@@ -378,7 +431,7 @@ To use the calculator engine in another component, that component must import th
 
 1. Create a command component as shown in previous sections.
 
-1. Add a `wit/world.wit` to your project, and write a WIT world that imports the RPN calculator types:
+2. Add a `wit/world.wit` to your project, and write a WIT world that imports the RPN calculator types:
 
 ```wit
 package docs:rpn-cmd;
@@ -406,12 +459,13 @@ path = "wit"
 ```rust
 #[allow(warnings)]
 mod bindings;
+use bindings::docs::rpn::types::{Engine, Operation};
 
 fn main() {
-    let calc = bindings::docs::rpn::types::Engine::new();
+    let calc = Engine::new();
     calc.push_operand(1);
     calc.push_operand(2);
-    calc.push_operation(bindings::docs::rpn::types::Operation::Add);
+    calc.push_operation(Operation::Add);
     let sum = calc.execute();
     println!("{sum}");
 }
@@ -454,8 +508,8 @@ struct CalcEngine { /* ... */ }
 
 ```rust
 impl docs::rpn::types::HostEngine for MyHost {
-    fn new(&mut self) -> wasmtime::component::Resource<docs::calculator::types::Engine> { /* ... */ }
-    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::calculator::types::Engine>) { /* ... */ }
+    fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> { /* ... */ }
+    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) { /* ... */ }
     // etc.
 }
 ```
@@ -474,10 +528,10 @@ struct MyHost {
 
 ```rust
 impl docs::rpn::types::HostEngine for MyHost {
-    fn new(&mut self) -> wasmtime::component::Resource<docs::calculator::types::Engine> {
+    fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> {
         self.calcs.push(CalcEngine::new()).unwrap() // TODO: error handling
     }
-    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::calculator::types::Engine>) {
+    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) {
         let calc_engine = self.calcs.get(&self_).unwrap();
         // calc_engine is a CalcEngine - call its functions
     }

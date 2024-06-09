@@ -103,7 +103,7 @@ We now have an add component that satisfies our `example` world, exporting the `
 we can confirm using another `wasm-tools` command:
 
 ```sh
-$ wasm-tools component wit add.component.wit
+$ wasm-tools component wit add.component.wasm
 package root:component
 
 world root {
@@ -168,7 +168,7 @@ Our new steps use a low-level tool, [`wit-bindgen`](https://github.com/bytecodea
 First, install [a release of `wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen/releases), updating the environment variables for your desired version, architecture and OS:
 
 ```sh
-export VERSION=0.24.0 ARCH=aarch64 OS=macos
+export VERSION=0.26.0 ARCH=aarch64 OS=macos
 wget https://github.com/bytecodealliance/wit-bindgen/releases/download/v$VERSION/wit-bindgen-$VERSION-$ARCH-$OS.tar.gz
 tar -xzf wit-bindgen-$VERSION-$ARCH-$OS.tar.gz
 mv wit-bindgen-$VERSION-$ARCH-$OS/wit-bindgen ./
@@ -184,10 +184,10 @@ go mod init example.com
 
 Next, run `wit-bindgen`, specifying TinyGo as the target language, the path to the
 [`add.wit`](../../examples/example-host/add.wit) package, the name of the world in that package to
-generate bindings for (`example`), and a directory to output the generated code (`gen`):
+generate bindings for (`adder`), and a directory to output the generated code (`gen`):
 
 ```sh
-wit-bindgen tiny-go ./add.wit --world example --out-dir=gen
+wit-bindgen tiny-go ./add.wit --world adder --out-dir=gen
 ```
 
 The `gen` directory now contains several files:
@@ -262,7 +262,7 @@ Once again, we can build our core module using TinyGo, componentize it, and adap
 ```sh
 export COMPONENT_ADAPTER_REACTOR=/path/to/wasi_snapshot_preview1.reactor.wasm
 tinygo build -o add.wasm -target=wasi add.go
-wasm-tools component embed --world example ./add.wit add.wasm -o add.embed.wasm
+wasm-tools component embed --world adder ./add.wit add.wasm -o add.embed.wasm
 wasm-tools component new -o add.component.wasm --adapt wasi_snapshot_preview1="$COMPONENT_ADAPTER_REACTOR" add.embed.wasm
 ```
 

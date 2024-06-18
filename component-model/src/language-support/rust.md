@@ -100,7 +100,7 @@ you would write the following Rust code:
 ```rust
 mod bindings;
 // Separating out the interface puts it in a sub-module
-use bindings::exports::docs::calculator::add::Guest;
+use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 

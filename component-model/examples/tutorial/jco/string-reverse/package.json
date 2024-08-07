@@ -1,0 +1,14 @@
+{
+  "name": "reverser-wasm",
+  "description": "Simple codebase for reversing a string via WebAssembly with jco",
+  "type": "module",
+  "scripts": {
+    "build": "jco componentize reverser.mjs --wit wit/component.wit --world-name reverser --out reverser.wasm --disable all",
+    "transpile": "jco transpile reverser.wasm -o dist/transpiled && mv dist/transpiled/reverser.js dist/transpiled/reverser.mjs",
+    "transpiled-js": "node run-transpiled.js"
+  },
+  "devDependencies": {
+    "@bytecodealliance/jco": "1.7.0",
+    "@bytecodealliance/componentize-js": "0.13.0"
+  }
+}

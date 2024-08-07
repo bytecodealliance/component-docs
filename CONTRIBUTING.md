@@ -10,6 +10,16 @@ You can run the website locally using the [mdBook](https://rust-lang.github.io/m
 
 To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html) installed on your workstation.
 
+This repository also makes use of mdBook plugins. To install mdBook and the plugins for this project, you can use [`cargo`][cargo]:
+
+```console
+cargo install --version 0.4.21 mdbook
+cargo install --version 0.2.0 mdbook-sitemap-generator
+cargo install --version 0.6.7 mdbook-alerts
+```
+
+[cargo]: https://doc.rust-lang.org/cargo
+
 ### Running the website locally
 
 After installing mdBook, you'll need to clone the code via git and navigate to the directory.

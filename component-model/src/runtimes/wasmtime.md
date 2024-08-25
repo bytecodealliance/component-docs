@@ -1,13 +1,15 @@
 # Wasmtime
 
-[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. It supports running components that implement the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit) and serving components the implement the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit).
+[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. It supports running components that implement the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit) and serving components that implement the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit).
 
 ## Running command components with Wasmtime
-To run a command component with wasmtime, execute:
+To run a command component with Wasmtime, execute:
 
 ```sh
-wasmtime run --wasm component-model <path-to-wasm-file>
+wasmtime run <path-to-wasm-file>
 ```
+
+> If you are using an older version of `wasmtime`, you may need to add the `--wasm component-model` flag to specify that you are running a component rather than a core module.
 
 By default, Wasmtime denies the component access to all system resources. For example, the component cannot access the file system or environment variables. See the [Wasmtime guide](https://docs.wasmtime.dev/) for information on granting access, and for other Wasmtime features.
 

@@ -8,10 +8,9 @@
 - [Why the Component Model?](./design/why-component-model.md)
 - [Components](./design/components.md)
 - [Interfaces](./design/interfaces.md)
-- [WIT](./design/wit.md)
 - [Worlds](./design/worlds.md)
+- [WIT](./design/wit.md)
 - [Packages](./design/packages.md)
-- [Canonical ABI](./design/canonical-abi.md)
 
 # Using Component Model
 
@@ -20,6 +19,7 @@
   - [C](./language-support/c.md)
   - [Javascript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
+  - [Go](./language-support/go.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)
@@ -31,3 +31,7 @@
 
 - [Wasmtime](./runtimes/wasmtime.md)
 - [jco](./runtimes/jco.md)
+
+# Advanced Topics
+
+- [Canonical ABI](./advanced/canonical-abi.md)

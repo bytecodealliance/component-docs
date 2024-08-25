@@ -15,50 +15,57 @@ Wasm components, we will compose them into a single runnable component, and test
 
 ## The calculator interface
 
-For tutorial purposes, we are going to define all our interfaces in one WIT package (in fact, one
-`.wit` file).  This file defines:
+For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
+These files can be found in the component book repository in the [`wit` directory](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) under `wit/adder/world.wit` and `wit/calculator/world.wit`. These files define:
+
+* A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
+  they need to add numbers.
+
+```wit
+// wit/adder/world.wit
+package docs:adder@0.1.0;
+
+interface add {
+    add: func(a: u32, b: u32) -> u32;
+}
+
+world adder {
+    export add;
+}
+```
 
 * An interface for the calculator itself.  We'll use this later to carry out calculations. It
   contains an evaluate function, and an enum that delineates the operations that can be involved in
   a calculation. In this tutorial, the only operation is `add`.
 * Interfaces for the various operations the calculator might need to carry out as part of a
-  calculation. For the tutorial, again, the only interface we define is for the "add" operation.
+  calculation. For the tutorial, again, the only import we define is for the "add" operation from
+  the "docs:adder" world defined previously.
 * A world describing the calculator component. This world exports the calculator interface, meaning
   that other components can call it to perform calculations. It imports the operation interfaces
   (such as "add"), meaning it relies on other components to perform those operations.
-* A world describing each operator component. Again, there's just the "adder" world right now, and
-  this exports the "add" interface, meaning that components such as the calculator can call it when
-  they need to add numbers.
 * A world describing the "primary" app component, which imports the "calculate" interface. This is
   the component will take in command line arguments and pass them to the "eval-expression" function
   of the calculator component.
 
+
 ```wit
-// calculator.wit
-package docs:calculator@0.1.0
+// wit/calculator/world.wit
+package docs:calculator@0.1.0;
 
 interface calculate {
     enum op {
         add,
     }
-    eval-expression: func(op: op, x: u32, y: u32) -> u32
-}
-
-interface add {
-    add: func(a: u32, b: u32) -> u32
-}
-
-world adder {
-    export add
+    eval-expression: func(op: op, x: u32, y: u32) -> u32;
 }
 
 world calculator {
-    export calculate
-    import add
+    export calculate;
+    import docs:adder/add@0.1.0;
 }
 
 world app {
-    import calculate
+    import calculate;
 }
 
 ```
@@ -67,18 +74,18 @@ world app {
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
-`adder` world of `calculator.wit`. For reference, see the completed
+`adder` world of `adder/wit/world.wit`. For reference, see the completed
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/adder/).
 
 ## Create a `calculator` component
 
 Reference the [language guide](language-support.md) and [authoring components
 documentation](creating-and-consuming/authoring.md) to create a component that implements the
-`calculator` world of `calculator.wit`. For reference, see the completed
+`calculator` world of `wit/calculator/world.wit`. For reference, see the completed
 [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/calculator/). The component should import the `add` function from the
 `adder` world and call it if the `op` enum matches `add`.
 
-## Crate a `command` component
+## Create a `command` component
 
 A _command_ is a component with a specific export that allows it to be executed directly by
 `wasmtime` (or other `wasm:cli` hosts). The host expects it to export the [`wasi:cli/run`
@@ -93,14 +100,19 @@ cargo component new command --command
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
 imports the `calculate` interface. In `Cargo.toml`, point `cargo-component` to the WIT file and
-specify that it should pull in bindings for the `app` world:
+specify that it should pull in bindings for the `app` world from the path to `calculator.wit`:
 
 ```toml
 [package.metadata.component.target]
-path = "../path/to/calculator.wit"
+path = "../wit/calculator/world.wit"
 world = "app"
 ```
+Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
+```toml
+[package.metadata.component.target.dependencies]
+"docs:adder" = { path = "../wit/adder" }
+```
 Now, implement a command line application that:
 
 1. takes in three arguments: two operands and the name of an operator ("1 2 add")
@@ -118,8 +130,8 @@ its `calculate` imports. The result is a command component that has all its impo
 exports the `wasi:cli/run` function, which can be executed by `wasmtime`.
 
 ```sh
-wasm-tools compose calculator.wasm -d adder.wasm -o calculator.wasm
-wasm-tools compose command.wasm -d composed.wasm -o command.wasm
+wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
+wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ```
 
 > If you'd prefer to take a more visual approach to composing components, see the [documentation on
@@ -128,12 +140,12 @@ wasm-tools compose command.wasm -d composed.wasm -o command.wasm
 
 ## Running the calculator
 
-Now it all adds up! Run the command component with the `wasmtime` CLI, ensuring you are using a
+Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring you are using a
 [`v14.0.0 or greater release](https://github.com/bytecodealliance/wasmtime/releases), as earlier releases of
 the `wasmtime` command line do not include component model support.
 
 ```sh
-wasmtime run --wasm component-model command.wasm 1 2 add
+wasmtime run final.wasm 1 2 add
 1 + 2 = 3
 ```
 

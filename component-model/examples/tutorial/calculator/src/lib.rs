@@ -1,9 +1,10 @@
-cargo_component_bindings::generate!();
+#[allow(warnings)]
+mod bindings;
 
 use bindings::exports::docs::calculator::calculate::{Guest, Op};
 
 // Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
+use bindings::docs::adder::add::add;
 
 struct Component;
 
@@ -14,3 +15,5 @@ impl Guest for Component {
         }
     }
 }
+
+bindings::export!(Component with_types_in bindings);

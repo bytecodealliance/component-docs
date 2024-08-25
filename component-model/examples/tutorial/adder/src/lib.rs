@@ -1,5 +1,7 @@
-cargo_component_bindings::generate!();
-use bindings::exports::docs::calculator::add::Guest;
+#[allow(warnings)]
+mod bindings;
+
+use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 
@@ -8,3 +10,5 @@ impl Guest for Component {
         a + b
     }
 }
+
+bindings::export!(Component with_types_in bindings);

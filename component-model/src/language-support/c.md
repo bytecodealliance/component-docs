@@ -61,7 +61,9 @@ However, the module would fail to transform to a component:
 error: failed to encode a component from module
 
 Caused by:
-    0: module requires an import interface named `wasi_snapshot_preview1`
+    0: failed to decode world from module
+    1: module was not valid
+    2: module requires an import interface named `wasi_snapshot_preview1`  
 ```
 
 Install the appropriate reactor adapter module [as documented here](https://github.com/bytecodealliance/wit-bindgen#creating-components-wasi) - you can either get the linked release of `wasi_snapshot_preview1.reactor.wasm` and rename it to `wasi_snapshot_preview1.wasm`, or build it directly from source in `wasmtime` following the [instructions here](https://github.com/bytecodealliance/wasmtime/tree/main/crates/wasi-preview1-component-adapter) (make sure you `git submodule update --init` first).
@@ -74,26 +76,26 @@ wasm-tools component new add-core.wasm --adapt wasi_snapshot_preview1.wasm -o ad
 Finally, you can inspect the embedded wit to see your component (including any WASI imports if necessary):
 ```sh
 >wasm-tools component wit add-component.wasm
-package root:component
+package root:component;
 
 world root {
-  import wasi:clocks/wall-clock
-  import wasi:io/streams
-  import wasi:filesystem/types
-  import wasi:filesystem/preopens
-  import wasi:cli/stdin
-  import wasi:cli/stdout
-  import wasi:cli/stderr
-  import wasi:cli/terminal-input
-  import wasi:cli/terminal-output
-  import wasi:cli/terminal-stdin
-  import wasi:cli/terminal-stdout
-  import wasi:cli/terminal-stderr
+  import wasi:io/error@0.2.0;
+  import wasi:io/streams@0.2.0;
+  import wasi:cli/stdin@0.2.0;
+  import wasi:cli/stdout@0.2.0;
+  import wasi:cli/stderr@0.2.0;
+  import wasi:cli/terminal-input@0.2.0;
+  import wasi:cli/terminal-output@0.2.0;
+  import wasi:cli/terminal-stdin@0.2.0;
+  import wasi:cli/terminal-stdout@0.2.0;
+  import wasi:cli/terminal-stderr@0.2.0;
+  import wasi:clocks/wall-clock@0.2.0;
+  import wasi:filesystem/types@0.2.0;
+  import wasi:filesystem/preopens@0.2.0;
 
-  export add: func(x: s32, y: s32) -> s32
+  export add: func(x: s32, y: s32) -> s32;
 }
 ```
-
 
 ### Running a Component from C/C++ Applications
 
@@ -101,4 +103,4 @@ It is not yet possible to run a Component using the `wasmtime` `c-api` - [see th
 
 However, C/C++ language guest components can be composed with components written in any other language and run by their toolchains, or even composed with a C language command component and run via the `wasmtime` CLI or any other host.
 
-See the [Rust Tooling guide](rust.md#running-a-component-from-rust-appliacations) for instructions on how to run this component from the Rust `example-host`.
+See the [Rust Tooling guide](../language-support/rust.md#running-a-component-from-rust-applications) for instructions on how to run this component from the Rust `example-host`.

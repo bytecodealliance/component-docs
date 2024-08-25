@@ -30,6 +30,9 @@ components within and among toolchains.
   - [Python Tooling](./language-support/python.md)
     - [Building a Component with `componentize-py`](./language-support/python.md#building-a-component-with-componentize-py)
     - [Running components from Python Applications](./language-support/python.md#running-components-from-python-applications)
+  - [C/C++ Tooling](./language-support/c.md)
+    - [Building a Component with `wit-bindgen` and `wasm-tools`](./language-support/c.md#building-a-component-with-wit-bindgen-and-wasm-tools)
+    - [Running a Component from C/C++ Applications](./language-support/c.md#running-a-component-from-cc-applications)
 
 ## Language Agnostic Tooling
 

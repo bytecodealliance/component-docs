@@ -16,6 +16,7 @@
 
 - [Language Support for Components](./language-support.md)
   - [Rust](./language-support/rust.md)
+  - [C/C++](./language-support/c.md)
   - [Javascript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
   - [Go](./language-support/go.md)

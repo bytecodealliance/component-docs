@@ -138,8 +138,8 @@ This is similar to Rust `Result`, or Haskell `Either`.
 Sometimes there is no data associated with one or both of the cases. For example, a `print` function could return an error code if it fails, but has nothing to return if it succeeds. In this case, you can omit the corresponding type as follows:
 
 ```wit
-result<u32>    // no data associated with the error case
-result<_, u32> // no data associated with the success case
+result<u32>     // no data associated with the error case
+result<_, u32>  // no data associated with the success case
 result          // no data associated with either case
 ```
 
@@ -148,7 +148,7 @@ result          // no data associated with either case
 A `tuple` type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
 
 ```wit
-tuple<u64, string> // An integer and a string
+tuple<u64, string>      // An integer and a string
 tuple<u64, string, u64> // An integer, then a string, then an integer
 ```
 
@@ -257,7 +257,7 @@ of an owned resource drops that resource, the resource is destroyed.
 
 ### Flags
 
-A `flags` type is a set of named `boolean`.  In an instance of the type, each flag will be either `true` or `false`.
+A `flags` type is a set of named booleans.  In an instance of the type, each flag will be either `true` or `false`.
 
 ```wit
 flags allowed-methods {
@@ -290,10 +290,10 @@ do-nothing: func();
 The function type is the word `func`, followed by a parenthesised, comma-separated list of parameters (names and types). If the function returns a value, this is expressed as an arrow symbol (`->`) followed by the return type:
 
 ```wit
-/// This function does not return a value
+// This function does not return a value
 print: func(message: string);
 
-/// These functions return values
+// These functions return values
 add: func(a: u64, b: u64) -> u64;
 lookup: func(store: kv-store, key: string) -> option<string>;
 ```
@@ -363,11 +363,13 @@ interface error-reporter {
 }
 
 world multi-function-device {
-    /// The component implements the `printer` interface
+    // The component implements the `printer` interface
     export printer;
-    /// The component implements the `scan` function
+
+    // The component implements the `scan` function
     export scan: func() -> list<u8>;
-    /// The component needs to be supplied with an `error-reporter`
+
+    // The component needs to be supplied with an `error-reporter`
     import error-reporter;
 }
 ```
@@ -405,8 +407,10 @@ You can `include` another world. This causes your world to export all that world
 
 ```wit
 world glow-in-the-dark-multi-function-device {
-    // The component provides all the same exports, and depends on all the same imports, as a `multi-function-device`...
+    // The component provides all the same exports, and depends on
+    // all the same imports, as a `multi-function-device`...
     include multi-function-device;
+
     // ...but also exports a function to make it glow in the dark
     export glow: func(brightness: u8);
 }

@@ -33,7 +33,7 @@ The WIT (Wasm Interface Type) language is used to define Component Model [interf
 
 A WIT file contains one or more **interfaces** or **worlds**. An interface or world can define **types** and/or **functions**.
 
-> ⓘ Types and functions can't be defined outside of interfaces or worlds.
+>  Types and functions can't be defined outside of interfaces or worlds.
 
 A file may optionally start with a **package** declaration.
 
@@ -98,7 +98,7 @@ WIT defines the following primitive types:
 | `char`                     | Unicode character. (Specifically, a [Unicode scalar value](https://unicode.org/glossary/#unicode_scalar_value).) |
 | `string`                   | A Unicode string - that is, a finite sequence of characters. |
 
-> ⓘ The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single `nan` value. The exact bit-level representation of an IEEE 754 `NaN` is not guaranteed to be preserved when values pass through WIT interfaces as the singular WIT `nan` value.
+>  The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single `nan` value. The exact bit-level representation of an IEEE 754 `NaN` is not guaranteed to be preserved when values pass through WIT interfaces as the singular WIT `nan` value.
 
 ### Lists
 
@@ -121,7 +121,7 @@ option<customer>
 
 This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
-> ⓘ This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every value type, and to enable it to be mapped idiomatically into languages with option types.
+>  This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every value type, and to enable it to be mapped idiomatically into languages with option types.
 
 ### Results
 
@@ -133,7 +133,7 @@ result<http-response, http-error>
 
 This is similar to Rust `Result`, or Haskell `Either`.
 
-> ⓘ This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
+>  This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
 
 Sometimes there is no data associated with one or both of the cases. For example, a `print` function could return an error code if it fails, but has nothing to return if it succeeds. In this case, you can omit the corresponding type as follows:
 
@@ -173,7 +173,7 @@ record customer {
 
 Records are similar to C or Rust `struct`s.
 
-> ⓘ User-defined records can't be generic (that is, parameterised by type). Only built-in types can be generic.
+>  User-defined records can't be generic (that is, parameterised by type). Only built-in types can be generic.
 
 ### Variants
 
@@ -189,7 +189,7 @@ variant allowed-destinations {
 
 Variants are similar to Rust `enum`s or OCaml discriminated unions. The closest C equivalent is a tagged union, but WIT both takes care of the "tag" (the case) and enforces the correct data shape for each tag.
 
-> ⓘ User-defined variants can't be generic (that is, parameterised by type). Only built-in types can be generic.
+>  User-defined variants can't be generic (that is, parameterised by type). Only built-in types can be generic.
 
 ### Enums
 
@@ -253,7 +253,7 @@ When a `resource` type name is wrapped with `borrow<...>`, it stands for a
 caller to the callee for the duration of the call. In contrast, when the owner
 of an owned resource drops that resource, the resource is destroyed.
 
-> ⓘ More precisely, these are borrowed or owned `handles` of the resource. Learn more about `handles` in the [upstream component model specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
+>  More precisely, these are borrowed or owned `handles` of the resource. Learn more about `handles` in the [upstream component model specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
 
 ### Flags
 
@@ -268,7 +268,7 @@ flags allowed-methods {
 }
 ```
 
-> ⓘ A `flags` type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
+>  A `flags` type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
 
 ### Type aliases
 
@@ -345,7 +345,7 @@ interface canvas {
 }
 ```
 
-> ⓘ Even if you are only using one type, it must still be enclosed in braces. For example, `use types.{dimension}` is legal but `use types.dimension` is not.
+>  Even if you are only using one type, it must still be enclosed in braces. For example, `use types.{dimension}` is legal but `use types.dimension` is not.
 
 This works across files as long as the files are in the same package (effectively, in the same directory). For information about using definitions from other packages, see [the specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#interfaces-worlds-and-use).
 
@@ -383,7 +383,7 @@ world http-proxy {
 }
 ```
 
-> ⓘ As this example shows, import and export apply at the interface level, not the package level. You can import one interface defined in a package, while exporting another interface defined in the same package. Packages group definitions; they don't represent behaviour.
+>  As this example shows, import and export apply at the interface level, not the package level. You can import one interface defined in a package, while exporting another interface defined in the same package. Packages group definitions; they don't represent behaviour.
 
 WIT does not define how packages are resolved - different tools may resolve them in different ways.
 
@@ -453,4 +453,4 @@ world proxy {
 }
 ```
 
-> ⓘ For a more formal definition of the WIT language, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
+>  For a more formal definition of the WIT language, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

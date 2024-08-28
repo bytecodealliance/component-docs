@@ -11,7 +11,7 @@ To install `cargo component`, run:
 cargo install cargo-component
 ```
 
-> ⓘ You can find more details about `cargo component` in its [crates.io page](https://crates.io/crates/cargo-component).
+>  You can find more details about `cargo component` in its [crates.io page](https://crates.io/crates/cargo-component).
 
 ## Building a Component with `cargo component`
 
@@ -115,7 +115,7 @@ impl Guest for Component {
 
 The world file (`wit/world.wit`) generated for you by `cargo component new --lib` doesn't specify any imports.
 
-> ⓘ `cargo component build`, by default, uses the Rust `wasm32-wasi` target, and therefore automatically imports any required WASI interfaces - no action is needed from you to import these. This section is about importing custom WIT interfaces from library components.
+>  `cargo component build`, by default, uses the Rust `wasm32-wasi` target, and therefore automatically imports any required WASI interfaces - no action is needed from you to import these. This section is about importing custom WIT interfaces from library components.
 
 If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
@@ -210,7 +210,7 @@ Unlike library components, this does _not_ have the `--lib` flag. You will see t
 
 You can write Rust in this project, just as you normally would, including importing your own or third-party crates.
 
-> ⓘ All the crates that make up your project are linked together at build time, and compiled to a _single_ Wasm component. In this case, all the linking is happening at the Rust level: no WITs or component composition is involved. Only if you import Wasm interfaces do WIT and composition come into play.
+>  All the crates that make up your project are linked together at build time, and compiled to a _single_ Wasm component. In this case, all the linking is happening at the Rust level: no WITs or component composition is involved. Only if you import Wasm interfaces do WIT and composition come into play.
 
 To run your command component:
 
@@ -219,7 +219,7 @@ cargo component build
 wasmtime run ./target/wasm32-wasi/debug/<name>.wasm
 ```
 
-> ⓘ **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
+>  **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
 
 ### Importing an interface into a command component
 
@@ -235,7 +235,7 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
     }
     ```
 
-    > ⓘ `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
+    >  `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
 
 2. Edit `Cargo.toml` to tell `cargo component` about the new WIT file:
 
@@ -254,7 +254,7 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
     "docs:adder" = { path = "../adder/wit" }
     ```
 
-    > ⓘ If the external package refers to other packages, you need to provide the paths to them as well.
+    >  If the external package refers to other packages, you need to provide the paths to them as well.
 
 4. Use the imported interface in your Rust code:
 
@@ -375,7 +375,7 @@ To implement the calculator using `cargo component`:
     }
     ```
 
-    > ⓘ Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
+    >  Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
 
 3. The generated bindings (`bindings.rs`) for an exported resource include a trait named `GuestX`, where `X` is the resource name. (You may need to run `cargo component build` to regenerate the bindings after updating the WIT.) For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
 
@@ -496,7 +496,7 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
     });
     ```
 
-    > ⓘ If you don't specify the host representation for a resource, it defaults to an empty enum. This is rarely useful as resources are usually stateful.
+    >  If you don't specify the host representation for a resource, it defaults to an empty enum. This is rarely useful as resources are usually stateful.
 
 3. If the representation type isn't a built-in type, define it:
 
@@ -514,7 +514,7 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
     }
     ```
 
-    > ⓘ **Important:** You implement this on the 'overall' host type, *not* on the resource representation! Therefore, the `self` reference in these functions is to the 'overall' host type. For instance methods of the resource, the instance is identified by a second parameter (`self_`), of type `wasmtime::component::Resource`.
+    >  **Important:** You implement this on the 'overall' host type, *not* on the resource representation! Therefore, the `self` reference in these functions is to the 'overall' host type. For instance methods of the resource, the instance is identified by a second parameter (`self_`), of type `wasmtime::component::Resource`.
 
 5. Add a `wasmtime::component::ResourceTable` to the host:
 

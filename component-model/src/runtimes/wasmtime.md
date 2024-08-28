@@ -9,7 +9,7 @@ To run a command component with Wasmtime, execute:
 wasmtime run <path-to-wasm-file>
 ```
 
-> ⓘ If you are using an older version of `wasmtime`, you may need to add the `--wasm component-model` flag to specify that you are running a component rather than a core module.
+>  If you are using an older version of `wasmtime`, you may need to add the `--wasm component-model` flag to specify that you are running a component rather than a core module.
 
 By default, Wasmtime denies the component access to all system resources. For example, the component cannot access the file system or environment variables. See the [Wasmtime guide](https://docs.wasmtime.dev/) for information on granting access, and for other Wasmtime features.
 

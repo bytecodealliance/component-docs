@@ -25,7 +25,7 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 [Running]: ./creating-and-consuming/running.md
 [Distributing]: ./creating-and-consuming/distributing.md
 
-> ⓘ This documentation is aimed at _users_ of the component model: developers of libraries and applications. _Compiler and Wasm runtime developers_ can take a look at the [Component Model specification](https://github.com/WebAssembly/component-model) to see how to add support for the component model to their project.
+>  This documentation is aimed at _users_ of the component model: developers of libraries and applications. _Compiler and Wasm runtime developers_ can take a look at the [Component Model specification](https://github.com/WebAssembly/component-model) to see how to add support for the component model to their project.
 
 ## Status
 

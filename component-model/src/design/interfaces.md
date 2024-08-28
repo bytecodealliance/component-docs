@@ -7,4 +7,4 @@ An **interface** describes a single-focus, composable contract, through which co
 
 Interfaces are defined using [the WIT language](./wit.md).
 
-> ⓘ For a more formal definition of what an interface is, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
+> For a more formal definition of what an interface is, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

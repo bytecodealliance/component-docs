@@ -227,54 +227,54 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
 1. Add a `wit/world.wit` to your project, and write a WIT world that imports the interface(s) you want to use. For example:
 
-```wit
-package docs:app;
+    ```wit
+    package docs:app;
 
-world app {
-    import docs:calculator/calculate@0.1.0;
-}
-```
+    world app {
+        import docs:calculator/calculate@0.1.0;
+    }
+    ```
 
-> `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
+    > `cargo component` sometimes fails to find packages if versions are not set explicitly. For example, if the calculator WIT declares `package docs:calculator` rather than `docs:calculator@0.1.0`, then you may get an error even though `cargo component build` automatically versions the binary export.
 
 2. Edit `Cargo.toml` to tell `cargo component` about the new WIT file:
 
-```toml
-[package.metadata.component.target]
-path = "wit"
-```
+    ```toml
+    [package.metadata.component.target]
+    path = "wit"
+    ```
 
-(This entry is created automatically for library components but not for command components.)
+    (This entry is created automatically for library components but not for command components.)
 
 3. Edit `Cargo.toml` to tell `cargo component` where to find external package WITs:
 
-```toml
-[package.metadata.component.target.dependencies]
-"docs:calculator" = { path = "../calculator/wit" }
-"docs:adder" = { path = "../adder/wit" }
-```
+    ```toml
+    [package.metadata.component.target.dependencies]
+    "docs:calculator" = { path = "../calculator/wit" }
+    "docs:adder" = { path = "../adder/wit" }
+    ```
 
-> If the external package refers to other packages, you need to provide the paths to them as well.
+    > If the external package refers to other packages, you need to provide the paths to them as well.
 
 4. Use the imported interface in your Rust code:
 
-```rust
-use bindings::docs::calculator::calculate::eval_expression;
+    ```rust
+    use bindings::docs::calculator::calculate::eval_expression;
 
-fn main() {
-    let result = eval_expression("1 + 1");
-    println!("1 + 1 = {result}");
-}
-```
+    fn main() {
+        let result = eval_expression("1 + 1");
+        println!("1 + 1 = {result}");
+    }
+    ```
 
 5. [Compose the command component with the `.wasm` components that implement the imports.](../creating-and-consuming/composing.md)
 
 6. Run the composed component:
 
-```sh
-$ wasmtime run ./my-composed-command.wasm
-1 + 1 = 579  # might need to go back and do some work on the calculator implementation
-```
+    ```sh
+    $ wasmtime run ./my-composed-command.wasm
+    1 + 1 = 579  # might need to go back and do some work on the calculator implementation
+    ```
 
 ## Using user-defined types
 
@@ -367,61 +367,61 @@ To implement the calculator using `cargo component`:
 
 2. Define a Rust `struct` to represent the calculator state:
 
-```rust
-use std::cell::RefCell;
+    ```rust
+    use std::cell::RefCell;
 
-struct CalcEngine {
-    stack: RefCell<Vec<u32>>,
-}
-```
+    struct CalcEngine {
+        stack: RefCell<Vec<u32>>,
+    }
+    ```
 
-> Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
+    > Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
 
 3. The generated bindings (`bindings.rs`) for an exported resource include a trait named `GuestX`, where `X` is the resource name. (You may need to run `cargo component build` to regenerate the bindings after updating the WIT.) For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
 
-```rust
-use bindings::exports::docs::rpn::types::{GuestEngine, Operation};
+    ```rust
+    use bindings::exports::docs::rpn::types::{GuestEngine, Operation};
 
-impl GuestEngine for CalcEngine {
-    fn new() -> Self {
-        CalcEngine {
-            stack: RefCell::new(vec![])
+    impl GuestEngine for CalcEngine {
+        fn new() -> Self {
+            CalcEngine {
+                stack: RefCell::new(vec![])
+            }
+        }
+
+        fn push_operand(&self, operand: u32) {
+            self.stack.borrow_mut().push(operand);
+        }
+
+        fn push_operation(&self, operation: Operation) {
+            let mut stack = self.stack.borrow_mut();
+            let right = stack.pop().unwrap(); // TODO: error handling!
+            let left = stack.pop().unwrap();
+            let result = match operation {
+                Operation::Add => left + right,
+                Operation::Sub => left - right,
+                Operation::Mul => left * right,
+                Operation::Div => left / right,
+            };
+            stack.push(result);
+        }
+
+        fn execute(&self) -> u32 {
+            self.stack.borrow_mut().pop().unwrap() // TODO: error handling!
         }
     }
-
-    fn push_operand(&self, operand: u32) {
-        self.stack.borrow_mut().push(operand);
-    }
-
-    fn push_operation(&self, operation: Operation) {
-        let mut stack = self.stack.borrow_mut();
-        let right = stack.pop().unwrap(); // TODO: error handling!
-        let left = stack.pop().unwrap();
-        let result = match operation {
-            Operation::Add => left + right,
-            Operation::Sub => left - right,
-            Operation::Mul => left * right,
-            Operation::Div => left / right,
-        };
-        stack.push(result);
-    }
-
-    fn execute(&self) -> u32 {
-        self.stack.borrow_mut().pop().unwrap() // TODO: error handling!
-    }
-}
-```
+    ```
 
 4. We now have a working calculator type which implements the `engine` contract, but we must still connect that type to the `engine` resource type. This is done by implementing the generated `Guest` trait. For this WIT, the `Guest` trait contains nothing except an associated type. You can use an empty `struct` to implement the `Guest` trait on. Set the associated type for the resource - in our case, `Engine` - to the type which implements the resource trait - in our case, the `CalcEngine` `struct` which implements `GuestEngine`. Then use the `export!` macro to export the mapping:
 
-```rust
-struct Implementation;
-impl Guest for Implementation {
-    type Engine = CalcEngine;
-}
+    ```rust
+    struct Implementation;
+    impl Guest for Implementation {
+        type Engine = CalcEngine;
+    }
 
-bindings::export!(Implementation with_types_in bindings);
-```
+    bindings::export!(Implementation with_types_in bindings);
+    ```
 
 This completes the implementation of the calculator `engine` resource. Run `cargo component build` to create a component `.wasm` file.
 
@@ -433,43 +433,43 @@ To use the calculator engine in another component, that component must import th
 
 2. Add a `wit/world.wit` to your project, and write a WIT world that imports the RPN calculator types:
 
-```wit
-package docs:rpn-cmd;
+    ```wit
+    package docs:rpn-cmd;
 
-world app {
-    import docs:rpn/types@0.1.0;
-}
-```
+    world app {
+        import docs:rpn/types@0.1.0;
+    }
+    ```
 
 3. Edit `Cargo.toml` to tell `cargo component` about the new WIT file and the external RPN package file:
 
-```toml
-[package.metadata.component]
-package = "docs:rpn-cmd"
+    ```toml
+    [package.metadata.component]
+    package = "docs:rpn-cmd"
 
-[package.metadata.component.target]
-path = "wit"
+    [package.metadata.component.target]
+    path = "wit"
 
-[package.metadata.component.target.dependencies]
-"docs:rpn" = { path = "../wit" } # or wherever your resource WIT is
-```
+    [package.metadata.component.target.dependencies]
+    "docs:rpn" = { path = "../wit" } # or wherever your resource WIT is
+    ```
 
 4. The resource now appears in the generated bindings as a `struct`, with appropriate associated functions. Use these to construct a test app:
 
-```rust
-#[allow(warnings)]
-mod bindings;
-use bindings::docs::rpn::types::{Engine, Operation};
+    ```rust
+    #[allow(warnings)]
+    mod bindings;
+    use bindings::docs::rpn::types::{Engine, Operation};
 
-fn main() {
-    let calc = Engine::new();
-    calc.push_operand(1);
-    calc.push_operand(2);
-    calc.push_operation(Operation::Add);
-    let sum = calc.execute();
-    println!("{sum}");
-}
-```
+    fn main() {
+        let calc = Engine::new();
+        calc.push_operand(1);
+        calc.push_operand(2);
+        calc.push_operation(Operation::Add);
+        let sum = calc.execute();
+        println!("{sum}");
+    }
+    ```
 
 You can now build the command component and [compose it with the `.wasm` component that implements the resource.](../creating-and-consuming/composing.md). You can then run the composed command with `wasmtime run`.
 
@@ -479,62 +479,62 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
 
 1. Use `wasmtime::component::bindgen!` to specify the WIT you are a host for:
 
-```rust
-wasmtime::component::bindgen!({
-    path: "../wit"
-});
-```
+    ```rust
+    wasmtime::component::bindgen!({
+        path: "../wit"
+    });
+    ```
 
 2. Tell `bindgen!` how you will represent the resource in the host via the `with` field. This can be any Rust type. For example, the RPN engine could be represented by a `CalcEngine` struct:
 
-```rust
-wasmtime::component::bindgen!({
-    path: "../wit",
-    with: {
-        "docs:rpn/types/engine": CalcEngine,
-    }
-});
-```
+    ```rust
+    wasmtime::component::bindgen!({
+        path: "../wit",
+        with: {
+            "docs:rpn/types/engine": CalcEngine,
+        }
+    });
+    ```
 
-> If you don't specify the host representation for a resource, it defaults to an empty enum. This is rarely useful as resources are usually stateful.
+    > If you don't specify the host representation for a resource, it defaults to an empty enum. This is rarely useful as resources are usually stateful.
 
 3. If the representation type isn't a built-in type, define it:
 
-```rust
-struct CalcEngine { /* ... */ }
-```
+    ```rust
+    struct CalcEngine { /* ... */ }
+    ```
 
 4. As a host, you will already be implementing a `Host` trait. You will now need to implement a `HostX` trait (where `X` is the resource name) _on the same type_ as the `Host` trait:
 
-```rust
-impl docs::rpn::types::HostEngine for MyHost {
-    fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> { /* ... */ }
-    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) { /* ... */ }
-    // etc.
-}
-```
+    ```rust
+    impl docs::rpn::types::HostEngine for MyHost {
+        fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> { /* ... */ }
+        fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) { /* ... */ }
+        // etc.
+    }
+    ```
 
-**Important:** You implement this on the 'overall' host type, *not* on the resource representation! Therefore, the `self` reference in these functions is to the 'overall' host type. For instance methods of the resource, the instance is identified by a second parameter (`self_`), of type `wasmtime::component::Resource`.
+    > **Important:** You implement this on the 'overall' host type, *not* on the resource representation! Therefore, the `self` reference in these functions is to the 'overall' host type. For instance methods of the resource, the instance is identified by a second parameter (`self_`), of type `wasmtime::component::Resource`.
 
 5. Add a `wasmtime::component::ResourceTable` to the host:
 
-```rust
-struct MyHost {
-    calcs: wasmtime::component::ResourceTable,
-}
-```
+    ```rust
+    struct MyHost {
+        calcs: wasmtime::component::ResourceTable,
+    }
+    ```
 
 6. In your resource method implementations, use this table to store and access instances of the resource representation:
 
-```rust
-impl docs::rpn::types::HostEngine for MyHost {
-    fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> {
-        self.calcs.push(CalcEngine::new()).unwrap() // TODO: error handling
+    ```rust
+    impl docs::rpn::types::HostEngine for MyHost {
+        fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> {
+            self.calcs.push(CalcEngine::new()).unwrap() // TODO: error handling
+        }
+        fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) {
+            let calc_engine = self.calcs.get(&self_).unwrap();
+            // calc_engine is a CalcEngine - call its functions
+        }
+        // etc.
     }
-    fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) {
-        let calc_engine = self.calcs.get(&self_).unwrap();
-        // calc_engine is a CalcEngine - call its functions
-    }
-    // etc.
-}
-```
+    ```

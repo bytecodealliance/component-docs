@@ -4,4 +4,4 @@ An ABI is an **application binary interface** - an agreement on how to pass data
 
 The component model defines a **canonical ABI** - an ABI to which all [components](../design/components.md) adhere. This guarantees that components can talk to each other without confusion, even if they are built in different languages. Internally, a C component might represent strings in a quite different way from a Rust component, but the canonical ABI provides a format for them to pass strings across the boundary between them.
 
-> ⓘ For a more formal definition of what the Canonical ABI is, take a look at the [Canonical ABI explainer](https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md).
+> For a more formal definition of what the Canonical ABI is, take a look at the [Canonical ABI explainer](https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md).

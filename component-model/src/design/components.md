@@ -6,4 +6,4 @@
 
 The external interface of a component - its imports and exports - corresponds to a [world](./worlds.md). The component, however, internally defines how that world is implemented.
 
-> ⓘ For a more formal definition of what a component is, take a look at the [Component Model specification](https://github.com/WebAssembly/component-model).
+> For a more formal definition of what a component is, take a look at the [Component Model specification](https://github.com/WebAssembly/component-model).

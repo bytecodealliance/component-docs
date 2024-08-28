@@ -91,29 +91,29 @@ WIT defines the following primitive types:
 
 | Identifier                 | Description |
 |----------------------------|-------------|
-| `bool`                     | Boolean value - true or false. |
-| `s8`, `s16`, `s32`, `s64`  | Signed integers of the appropriate width. For example, `s32` is a 32-bit integer. |
-| `u8`, `u16`, `u32`, `u64`  | Unsigned integers of the appropriate width. For example, `u32` is a 32-bit integer. |
-| `f32`, `f64`               | Floating-point numbers of the appropriate width. For example, `f64` is a 64-bit (double precision) floating-point number. See the note on NaNs below. |
+| `bool`                     | Boolean value `true` or `false`. |
+| `s8`, `s16`, `s32`, `s64`  | Signed integers of the appropriate width. For example, `s32` is a signed 32-bit integer. |
+| `u8`, `u16`, `u32`, `u64`  | Unsigned integers of the appropriate width. For example, `u32` is an unsigned 32-bit integer. |
+| `f32`, `f64`               | Floating-point numbers of the appropriate width. For example, `f64` is a 64-bit (double precision) floating-point number. See the note on `NaN`s below. |
 | `char`                     | Unicode character. (Specifically, a [Unicode scalar value](https://unicode.org/glossary/#unicode_scalar_value).) |
 | `string`                   | A Unicode string - that is, a finite sequence of characters. |
 
-The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single NaN value. The exact bit-level representation of a NaN is not guaranteed to be preserved when values pass through WIT interfaces.
+> The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single `nan` value. The exact bit-level representation of an IEEE 754 `NaN` is not guaranteed to be preserved when values pass through WIT interfaces as the singular WIT `nan` value.
 
 ### Lists
 
-`list<T>` for any type T denotes an ordered sequence of values of type T.  T can be any type, built-in or user-defined:
+`list<T>` for any type `T` denotes an ordered sequence of values of type `T`.  `T` can be any type, built-in or user-defined:
 
 ```wit
-list<u8>        // byte buffer
-list<customer>  // a list of customers
+list<u8>       // byte buffer
+list<customer> // a list of customers
 ```
 
 This is similar to Rust `Vec`, or Java `List`.
 
 ### Options
 
-`option<T>` for any type T may contain a value of type T, or may contain no value.  T can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
+`option<T>` for any type `T` may contain a value of type `T`, or may contain no value.  `T` can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
 
 ```wit
 option<customer>
@@ -125,7 +125,7 @@ This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
 ### Results
 
-`result<T, E>` for any types T and E may contain a value of type T _or_ a value of type E (but not both). This is typically used for "value or error" situations; for example, a HTTP request function might return a result, with the success case (the T type) representing a HTTP response, and the error case (the E type) representing the various kinds of error that might occur:
+`result<T, E>` for any types `T` and `E `may contain a value of type `T` _or_ a value of type `E` (but not both). This is typically used for "value or error" situations; for example, a HTTP request function might return a result, with the success case (the `T` type) representing a HTTP response, and the error case (the `E` type) representing the various kinds of error that might occur:
 
 ```wit
 result<http-response, http-error>
@@ -145,11 +145,11 @@ result          // no data associated with either case
 
 ### Tuples
 
-A tuple type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
+A `tuple` type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
 
 ```wit
-tuple<u64, string>  // An integer and a string
-tuple<u64, string, u64>  // An integer, then a string, then an integer
+tuple<u64, string>      // An integer and a string
+tuple<u64, string, u64> // An integer, then a string, then an integer
 ```
 
 This is similar to tuples in Rust or OCaml.
@@ -160,7 +160,7 @@ You can define your own types within an `interface` or `world`. WIT offers sever
 
 ### Records
 
-A record type declares a set of named fields, each of the form `name: type`, separated by commas. A record instance contains a value for every field. Field types can be built-in or user-defined. The syntax is as follows:
+A `record` type declares a set of named fields, each of the form `name: type`, separated by commas. A record instance contains a value for every field. Field types can be built-in or user-defined. The syntax is as follows:
 
 ```wit
 record customer {
@@ -177,7 +177,7 @@ Records are similar to C or Rust `struct`s.
 
 ### Variants
 
-A variant type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
+A `variant` type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
 
 ```wit
 variant allowed-destinations {
@@ -193,7 +193,7 @@ Variants are similar to Rust `enum`s or OCaml discriminated unions. The closest 
 
 ### Enums
 
-An enum type is a variant type where none of the cases have associated data:
+An `enum` type is a variant type where none of the cases have associated data:
 
 ```wit
 enum color {
@@ -203,7 +203,7 @@ enum color {
 }
 ```
 
-This can provide a simpler representation in languages without discriminated unions. For example, a WIT enum can translate directly to a C++ `enum`.
+This can provide a simpler representation in languages without discriminated unions. For example, a WIT `enum` can translate directly to a C++ `enum`.
 
 ### Resources
 
@@ -248,18 +248,16 @@ blob-read: func(self: borrow<blob>, n: u32) -> list<u8>;
 blob-merge: static func(lhs: blob, rhs: blob) -> blob;
 ```
 
-When a resource type name is wrapped with `borrow<...>`, it stands for a
+When a `resource` type name is wrapped with `borrow<...>`, it stands for a
 "borrowed" resource. A borrowed resource represents a temporary loan of a resource from the
 caller to the callee for the duration of the call. In contrast, when the owner
 of an owned resource drops that resource, the resource is destroyed.
 
-> Note: more precisely, these are borrowed or owned `handles` of the resource.
-> Learn more about `handles` in the [upstream component model
-> specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
+> More precisely, these are borrowed or owned `handles` of the resource. Learn more about `handles` in the [upstream component model specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
 
 ### Flags
 
-A flags type is a set of named booleans.  In an instance of the type, each flag will be either true or false.
+A `flags` type is a set of named booleans.  In an instance of the type, each flag will be either `true` or `false`.
 
 ```wit
 flags allowed-methods {
@@ -270,7 +268,7 @@ flags allowed-methods {
 }
 ```
 
-> A flags type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
+> A `flags` type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
 
 ### Type aliases
 
@@ -292,10 +290,10 @@ do-nothing: func();
 The function type is the word `func`, followed by a parenthesised, comma-separated list of parameters (names and types). If the function returns a value, this is expressed as an arrow symbol (`->`) followed by the return type:
 
 ```wit
-/// This function does not return a value
+// This function does not return a value
 print: func(message: string);
 
-/// These functions return values
+// These functions return values
 add: func(a: u64, b: u64) -> u64;
 lookup: func(store: kv-store, key: string) -> option<string>;
 ```
@@ -365,11 +363,13 @@ interface error-reporter {
 }
 
 world multi-function-device {
-    /// The component implements the `printer` interface
+    // The component implements the `printer` interface
     export printer;
-    /// The component implements the `scan` function
+
+    // The component implements the `scan` function
     export scan: func() -> list<u8>;
-    /// The component needs to be supplied with an `error-reporter`
+
+    // The component needs to be supplied with an `error-reporter`
     import error-reporter;
 }
 ```
@@ -407,8 +407,10 @@ You can `include` another world. This causes your world to export all that world
 
 ```wit
 world glow-in-the-dark-multi-function-device {
-    // The component provides all the same exports, and depends on all the same imports, as a `multi-function-device`...
+    // The component provides all the same exports, and depends on
+    // all the same imports, as a `multi-function-device`...
     include multi-function-device;
+
     // ...but also exports a function to make it glow in the dark
     export glow: func(brightness: u8);
 }
@@ -455,4 +457,4 @@ world proxy {
 }
 ```
 
-> ⓘ For a more formal definition of the WIT language, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
+> For a more formal definition of the WIT language, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

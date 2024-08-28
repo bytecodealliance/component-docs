@@ -3,9 +3,10 @@
 WebAssembly can be targeted by the majority of top programming
 languages; however, the level of
 support varies. This document details the subset of languages that target WASI and support
-components. This is a living document, so if you are aware of advancements in a toolchain, please do
-not hesitate to [contribute documentation](https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md). You can find more information about the development of support for specific languages [here](https://github.com/bytecodealliance/governance/blob/main/SIGs/SIG-guest-languages/proposal.md). Each section covers how to build and
-run components for a given toolchain.
+components.
+
+> This is a living document, so if you are aware of advancements in a toolchain, please do
+not hesitate to [contribute documentation](https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md). You can find more information about the development of support for specific languages in the [Guest Languages Special Interest Group Proposal](https://github.com/bytecodealliance/governance/blob/main/SIGs/SIG-guest-languages/proposal.md) document.
 
 One of the benefits of components is their portability across host runtimes. The runtime only needs
 to know what world the component is targeting in order to import or execute the component. This
@@ -15,6 +16,9 @@ world has been provided in [`examples/example-host`](https://github.com/bytecode
 toolchain section walks through creating a component of this world, which can be run either in the
 example host or from an application of that toolchain. This aims to provide a full story for using
 components within and among toolchains.
+
+Each section covers how to build and
+run components for a given toolchain:
 
 - [Wasm Language Support](#wasm-language-support)
   - [Language Agnostic Tooling](#language-agnostic-tooling)

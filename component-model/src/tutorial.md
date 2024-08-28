@@ -21,18 +21,18 @@ These files can be found in the component book repository in the [`wit` director
 * A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
   they need to add numbers.
 
-```wit
-// wit/adder/world.wit
-package docs:adder@0.1.0;
+  ```wit
+  // wit/adder/world.wit
+  package docs:adder@0.1.0;
 
-interface add {
-    add: func(a: u32, b: u32) -> u32;
-}
+  interface add {
+      add: func(a: u32, b: u32) -> u32;
+  }
 
-world adder {
-    export add;
-}
-```
+  world adder {
+      export add;
+  }
+  ```
 
 * An interface for the calculator itself.  We'll use this later to carry out calculations. It
   contains an evaluate function, and an enum that delineates the operations that can be involved in
@@ -48,27 +48,27 @@ world adder {
   of the calculator component.
 
 
-```wit
-// wit/calculator/world.wit
-package docs:calculator@0.1.0;
+  ```wit
+  // wit/calculator/world.wit
+  package docs:calculator@0.1.0;
 
-interface calculate {
-    enum op {
-        add,
-    }
-    eval-expression: func(op: op, x: u32, y: u32) -> u32;
-}
+  interface calculate {
+      enum op {
+          add,
+      }
+      eval-expression: func(op: op, x: u32, y: u32) -> u32;
+  }
 
-world calculator {
-    export calculate;
-    import docs:adder/add@0.1.0;
-}
+  world calculator {
+      export calculate;
+      import docs:adder/add@0.1.0;
+  }
 
-world app {
-    import calculate;
-}
+  world app {
+      import calculate;
+  }
 
-```
+  ```
 
 ## Create an `add` component
 
@@ -134,9 +134,7 @@ wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
 wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ```
 
-> If you'd prefer to take a more visual approach to composing components, see the [documentation on
-> composing components with
-> wasmbuilder.app](creating-and-consuming/composing.md#composing-components-with-a-visual-interface).
+> ⓘ If you'd prefer to take a more visual approach to composing components, see the [documentation on composing components with wasmbuilder.app](creating-and-consuming/composing.md#composing-components-with-a-visual-interface).
 
 ## Running the calculator
 

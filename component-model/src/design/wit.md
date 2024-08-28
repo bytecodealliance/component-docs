@@ -33,7 +33,7 @@ The WIT (Wasm Interface Type) language is used to define Component Model [interf
 
 A WIT file contains one or more **interfaces** or **worlds**. An interface or world can define **types** and/or **functions**.
 
-> Types and functions can't be defined outside of interfaces or worlds.
+> ⓘ Types and functions can't be defined outside of interfaces or worlds.
 
 A file may optionally start with a **package** declaration.
 
@@ -91,18 +91,18 @@ WIT defines the following primitive types:
 
 | Identifier                 | Description |
 |----------------------------|-------------|
-| `bool`                     | Boolean value - true or false. |
-| `s8`, `s16`, `s32`, `s64`  | Signed integers of the appropriate width. For example, `s32` is a 32-bit integer. |
-| `u8`, `u16`, `u32`, `u64`  | Unsigned integers of the appropriate width. For example, `u32` is a 32-bit integer. |
-| `f32`, `f64`               | Floating-point numbers of the appropriate width. For example, `f64` is a 64-bit (double precision) floating-point number. See the note on NaNs below. |
+| `bool`                     | Boolean value `true` or `false`. |
+| `s8`, `s16`, `s32`, `s64`  | Signed integers of the appropriate width. For example, `s32` is a signed 32-bit integer. |
+| `u8`, `u16`, `u32`, `u64`  | Unsigned integers of the appropriate width. For example, `u32` is an unsigned 32-bit integer. |
+| `f32`, `f64`               | Floating-point numbers of the appropriate width. For example, `f64` is a 64-bit (double precision) floating-point number. See the note on `NaN`s below. |
 | `char`                     | Unicode character. (Specifically, a [Unicode scalar value](https://unicode.org/glossary/#unicode_scalar_value).) |
 | `string`                   | A Unicode string - that is, a finite sequence of characters. |
 
-The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single NaN value. The exact bit-level representation of a NaN is not guaranteed to be preserved when values pass through WIT interfaces.
+> ⓘ The `f32` and `f64` types support the usual set of IEEE 754 single and double-precision values, except that they logically only have a single `nan` value. The exact bit-level representation of an IEEE 754 `NaN` is not guaranteed to be preserved when values pass through WIT interfaces as the singular WIT `nan` value.
 
 ### Lists
 
-`list<T>` for any type T denotes an ordered sequence of values of type T.  T can be any type, built-in or user-defined:
+`list<T>` for any type `T` denotes an ordered sequence of values of type `T`.  `T` can be any type, built-in or user-defined:
 
 ```wit
 list<u8>        // byte buffer
@@ -113,7 +113,7 @@ This is similar to Rust `Vec`, or Java `List`.
 
 ### Options
 
-`option<T>` for any type T may contain a value of type T, or may contain no value.  T can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
+`option<T>` for any type `T` may contain a value of type `T`, or may contain no value.  `T` can be any type, built-in or user-defined.  For example, a lookup function might return an option, allowing for the possibility that the lookup key wasn't found:
 
 ```wit
 option<customer>
@@ -121,11 +121,11 @@ option<customer>
 
 This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
-> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every value type, and to enable it to be mapped idiomatically into languages with option types.
+> ⓘ This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every value type, and to enable it to be mapped idiomatically into languages with option types.
 
 ### Results
 
-`result<T, E>` for any types T and E may contain a value of type T _or_ a value of type E (but not both). This is typically used for "value or error" situations; for example, a HTTP request function might return a result, with the success case (the T type) representing a HTTP response, and the error case (the E type) representing the various kinds of error that might occur:
+`result<T, E>` for any types `T` and `E `may contain a value of type `T` _or_ a value of type `E` (but not both). This is typically used for "value or error" situations; for example, a HTTP request function might return a result, with the success case (the `T` type) representing a HTTP response, and the error case (the `E` type) representing the various kinds of error that might occur:
 
 ```wit
 result<http-response, http-error>
@@ -133,7 +133,7 @@ result<http-response, http-error>
 
 This is similar to Rust `Result`, or Haskell `Either`.
 
-> This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
+> ⓘ This is a special case of a [variant](#variants) type.  WIT defines it so that there is a common way of expressing it, so that you don't need to create a variant type for every combination of value and error types, and to enable it to be mapped idiomatically into languages with result or "either" types.
 
 Sometimes there is no data associated with one or both of the cases. For example, a `print` function could return an error code if it fails, but has nothing to return if it succeeds. In this case, you can omit the corresponding type as follows:
 
@@ -145,7 +145,7 @@ result          // no data associated with either case
 
 ### Tuples
 
-A tuple type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
+A `tuple` type is an ordered _fixed length_ sequence of values of specified types. It is similar to a [_record_](#records), except that the fields are identified by their order instead of by names.
 
 ```wit
 tuple<u64, string>  // An integer and a string
@@ -160,7 +160,7 @@ You can define your own types within an `interface` or `world`. WIT offers sever
 
 ### Records
 
-A record type declares a set of named fields, each of the form `name: type`, separated by commas. A record instance contains a value for every field. Field types can be built-in or user-defined. The syntax is as follows:
+A `record` type declares a set of named fields, each of the form `name: type`, separated by commas. A record instance contains a value for every field. Field types can be built-in or user-defined. The syntax is as follows:
 
 ```wit
 record customer {
@@ -173,11 +173,11 @@ record customer {
 
 Records are similar to C or Rust `struct`s.
 
-> User-defined records can't be generic (that is, parameterised by type). Only built-in types can be generic.
+> ⓘ User-defined records can't be generic (that is, parameterised by type). Only built-in types can be generic.
 
 ### Variants
 
-A variant type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
+A `variant` type declares one or more cases. Each case has a name and, optionally, a type of data associated with that case. A variant instance contains exactly one case. Cases are separated by commas. The syntax is as follows:
 
 ```wit
 variant allowed-destinations {
@@ -189,11 +189,11 @@ variant allowed-destinations {
 
 Variants are similar to Rust `enum`s or OCaml discriminated unions. The closest C equivalent is a tagged union, but WIT both takes care of the "tag" (the case) and enforces the correct data shape for each tag.
 
-> User-defined variants can't be generic (that is, parameterised by type). Only built-in types can be generic.
+> ⓘ User-defined variants can't be generic (that is, parameterised by type). Only built-in types can be generic.
 
 ### Enums
 
-An enum type is a variant type where none of the cases have associated data:
+An `enum` type is a variant type where none of the cases have associated data:
 
 ```wit
 enum color {
@@ -203,7 +203,7 @@ enum color {
 }
 ```
 
-This can provide a simpler representation in languages without discriminated unions. For example, a WIT enum can translate directly to a C++ `enum`.
+This can provide a simpler representation in languages without discriminated unions. For example, a WIT `enum` can translate directly to a C++ `enum`.
 
 ### Resources
 
@@ -248,18 +248,16 @@ blob-read: func(self: borrow<blob>, n: u32) -> list<u8>;
 blob-merge: static func(lhs: blob, rhs: blob) -> blob;
 ```
 
-When a resource type name is wrapped with `borrow<...>`, it stands for a
+When a `resource` type name is wrapped with `borrow<...>`, it stands for a
 "borrowed" resource. A borrowed resource represents a temporary loan of a resource from the
 caller to the callee for the duration of the call. In contrast, when the owner
 of an owned resource drops that resource, the resource is destroyed.
 
-> Note: more precisely, these are borrowed or owned `handles` of the resource.
-> Learn more about `handles` in the [upstream component model
-> specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
+> ⓘ More precisely, these are borrowed or owned `handles` of the resource. Learn more about `handles` in the [upstream component model specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#handles).
 
 ### Flags
 
-A flags type is a set of named booleans.  In an instance of the type, each flag will be either true or false.
+A `flags` type is a set of named `boolean`.  In an instance of the type, each flag will be either `true` or `false`.
 
 ```wit
 flags allowed-methods {
@@ -270,7 +268,7 @@ flags allowed-methods {
 }
 ```
 
-> A flags type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
+> ⓘ A `flags` type is logically equivalent to a record type where each field is of type `bool`, but it is represented more efficiently (as a bitfield) at the binary level.
 
 ### Type aliases
 
@@ -347,7 +345,7 @@ interface canvas {
 }
 ```
 
-> Even if you are only using one type, it must still be enclosed in braces. For example, `use types.{dimension}` is legal but `use types.dimension` is not.
+> ⓘ Even if you are only using one type, it must still be enclosed in braces. For example, `use types.{dimension}` is legal but `use types.dimension` is not.
 
 This works across files as long as the files are in the same package (effectively, in the same directory). For information about using definitions from other packages, see [the specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#interfaces-worlds-and-use).
 
@@ -385,7 +383,7 @@ world http-proxy {
 }
 ```
 
-> As this example shows, import and export apply at the interface level, not the package level. You can import one interface defined in a package, while exporting another interface defined in the same package. Packages group definitions; they don't represent behaviour.
+> ⓘ As this example shows, import and export apply at the interface level, not the package level. You can import one interface defined in a package, while exporting another interface defined in the same package. Packages group definitions; they don't represent behaviour.
 
 WIT does not define how packages are resolved - different tools may resolve them in different ways.
 

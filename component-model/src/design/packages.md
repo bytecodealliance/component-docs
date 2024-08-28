@@ -6,4 +6,4 @@ A WIT package is not a [world](./worlds.md). It's a way of grouping related inte
 
 * The WebAssembly System Interface (WASI) defines a number of packages, including one named `wasi:clocks`. Our HTTP proxy world could import the `wall-clock` interface from the `wasi:clocks` package, rather than having to define a custom clock interface.
 
->  For a more formal definition of what a WIT package is, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).
+> For a more formal definition of what a WIT package is, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

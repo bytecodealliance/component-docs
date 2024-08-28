@@ -28,7 +28,7 @@ If you want to generate bindings produced for the WIT world (for an IDE or typec
 $ componentize-py --wit-path /path/to/examples/example-host/add.wit --world example bindings .
 ```
 
->  You do not need to generate the bindings in order to `componentize` in the next step. `componentize` will generate bindings on-the-fly and bundle them into the produced component.
+> You do not need to generate the bindings in order to `componentize` in the next step. `componentize` will generate bindings on-the-fly and bundle them into the produced component.
 
 You can see that bindings were created in an `example` package which contains an `Example` protocol with an `add` method that we can implement:
 
@@ -100,7 +100,7 @@ Component built successfully
 Wasm components can also be invoked from Python applications. This walks through using tooling
 to call the [`app.wasm` component from the examples](../../examples/example-host/add.wasm).
 
->  `wasmtime-py` does not currently support running components build with `componentize-py`. This is because `wasmtime-py` does not yet support [resources](../design/wit.md#resources), which components built with `componentize-py` always use, since `componentize-py` unconditionally imports most of the `wasi:cli` world.
+> `wasmtime-py` does not currently support running components build with `componentize-py`. This is because `wasmtime-py` does not yet support [resources](../design/wit.md#resources), which components built with `componentize-py` always use, since `componentize-py` unconditionally imports most of the `wasi:cli` world.
 
 First, install [Python 3.11 or later](https://www.python.org/) and [pip](https://pypi.org/project/pip/) if you don't already have them. Then, install [`wasmtime-py`](https://github.com/bytecodealliance/wasmtime-py):
 

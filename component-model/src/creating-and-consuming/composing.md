@@ -2,7 +2,7 @@
 
 Because the WebAssembly component model packages code in a portable binary format, and provides machine-readable interfaces in [WIT](../design/wit.md) with a standardised ABI (Application Binary Interface), it enables applications and components to work together, no matter what languages they were originally written in. In the same way that, for example, a Rust package (crate) can be compiled together with other Rust code to create a higher-level library or an application, a Wasm component can be linked with other components.
 
->  Component model interoperation is more convenient and expressive than language-specific foreign function interfaces. A typical C FFI involves language-specific types, so it is not possible to link between arbitrary languages without at least some C-language wrapping or conversion. The component model, by contrast, provides a common way of expressing interfaces, and a standard binary representation of those interfaces. So if an import and an export have the same shape, they fit together directly.
+> Component model interoperation is more convenient and expressive than language-specific foreign function interfaces. A typical C FFI involves language-specific types, so it is not possible to link between arbitrary languages without at least some C-language wrapping or conversion. The component model, by contrast, provides a common way of expressing interfaces, and a standard binary representation of those interfaces. So if an import and an export have the same shape, they fit together directly.
 
 ## What is composition?
 
@@ -61,7 +61,7 @@ wasm-tools compose path/to/component.wasm -d path/to/dep1.wasm -d path/to/dep2.w
 
 Here `component.wasm` is the component that imports interfaces from `dep1.wasm` and `dep2.wasm`, which export them. The composed component, with those dependencies satisfied and tucked away inside it, is saved to `composed.wasm`.
 
->  This syntax doesn't cover transitive dependencies. If, for example, `dep1.wasm` has unsatisfied imports that you want to satisfy from `dep3.wasm`, you'll need to use a [configuration file](https://github.com/bytecodealliance/wasm-tools/blob/main/crates/wasm-compose/CONFIG.md). (Or you can compose `dep1.wasm` with `dep3.wasm` first, then refer to that composed component instead of `dep1.wasm`. This doesn't scale to lots of transitive dependencies though!)
+> This syntax doesn't cover transitive dependencies. If, for example, `dep1.wasm` has unsatisfied imports that you want to satisfy from `dep3.wasm`, you'll need to use a [configuration file](https://github.com/bytecodealliance/wasm-tools/blob/main/crates/wasm-compose/CONFIG.md). (Or you can compose `dep1.wasm` with `dep3.wasm` first, then refer to that composed component instead of `dep1.wasm`. This doesn't scale to lots of transitive dependencies though!)
 
 For full information about `wasm-tools compose` including how to configure more advanced scenarios, see [the `wasm-tools compose` documentation](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-compose).
 

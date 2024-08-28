@@ -35,7 +35,7 @@ Now, you can compile the function into a Wasm module via clang:
 clang add.c example.c example_component_type.o -o add-core.wasm -mexec-model=reactor
 ```
 
->  Use the `clang` included in the WASI SDK installation, for example at `<WASI_SDK_PATH>/bin/clang`.
+> Use the `clang` included in the WASI SDK installation, for example at `<WASI_SDK_PATH>/bin/clang`.
 
 Next, you need to transform the module into a component.  For this example, you can use `wasm-tools component new`:
 ```sh

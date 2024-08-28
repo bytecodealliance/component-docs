@@ -16,4 +16,4 @@ Moreover, a component interacts with a runtime or other components _only_ by cal
 
 Now that you have a better idea about how the component model can help you, take a look at [how to build components](../language-support.md) in your favorite language!
 
->  For more background on why the component model was created, take a look at the specification's [goals](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Goals.md), [use cases](https://github.com/WebAssembly/component-model/blob/main/design/high-level/UseCases.md) and [design choices](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md).
+> For more background on why the component model was created, take a look at the specification's [goals](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Goals.md), [use cases](https://github.com/WebAssembly/component-model/blob/main/design/high-level/UseCases.md) and [design choices](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md).

@@ -15,11 +15,11 @@
 # Using Component Model
 
 - [Language Support for Components](./language-support.md)
-  - [Rust](./language-support/rust.md)
   - [C/C++](./language-support/c.md)
-  - [Javascript](./language-support/javascript.md)
-  - [Python](./language-support/python.md)
   - [Go](./language-support/go.md)
+  - [JavaScript](./language-support/javascript.md)
+  - [Python](./language-support/python.md)
+  - [Rust](./language-support/rust.md)
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)

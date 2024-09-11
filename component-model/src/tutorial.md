@@ -139,7 +139,7 @@ wasm-tools compose command.wasm -d composed.wasm -o final.wasm
 ## Running the calculator
 
 Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring you are using a
-[`v14.0.0 or greater release](https://github.com/bytecodealliance/wasmtime/releases), as earlier releases of
+[`v14.0.0` or greater release](https://github.com/bytecodealliance/wasmtime/releases), as earlier releases of
 the `wasmtime` command line do not include component model support.
 
 ```sh

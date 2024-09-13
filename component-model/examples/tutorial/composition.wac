@@ -1,0 +1,20 @@
+// Provide a package name for the resulting composition
+package example:composition;
+
+// Instantiate the adder-impl component that implements the adder world.
+// Bind this instance's exports to the local name `adder-instance`.
+let adder-instance = new docs:adder-impl { };
+
+// Instantiate the calculator-impl component that implements the calculator world.
+// In the `new` expression, connect it's `add` import to the `adder-instance`'s `add` export.  
+let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
+
+// Instantiate a command-impl component that implements the app world.
+// The command component might import other interfaces, such as WASI interfaces, but we want to leave  
+// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.  
+// The command's exports (in this case, `wasi:cli/run`) remain unaffected in the resulting instance.
+let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
+
+// Export the `wasi:cli/run` interface from the command instance
+// This could also have been expressed using the postfix access expression `command-instance.run`
+export command-instance["wasi:cli/run@0.2.0"];

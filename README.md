@@ -4,6 +4,6 @@ This repository contains user-facing documentation for the WebAssembly component
 
 The documentation is published at <https://component-model.bytecodealliance.org/>.
 
-It is envisaged to contain two books, one on the component model itself, and one on WASI (WebAssembly System Interface). At the time of writing, the first book is in development, but the second is not yet started.
+It is envisaged to contain two books, one on the component model itself, and one on WASI (WebAssembly System Interface). At the time of writing, both books are in development, but the first is more complete than the [second book](https://wasi.dev/).
 
 Contributions are welcome - see [Contributing](./CONTRIBUTING.md) for more info. Planned work is listed in the Issues section, but if there's content missing that you think would be helpful to gain understanding of the component model, please feel free to add a new issue, or send a PR directly!

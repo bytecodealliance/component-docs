@@ -269,10 +269,10 @@ At this point, you'll have two Webassembly components:
 1. A component that implements the `example` world
 2. A component that calls `add` from within the `hostapp` world.
 
-Since the `hello-wasm` component is no longer a self-contained application, it needs to be composed the first component that implements the `add` function. You can compose your `hello-wasm` component with your `adder` component by running `wasm-tools compose`:
+Since the `hello-wasm` component is no longer a self-contained application, it needs to be composed the first component that implements the `add` function. You can compose your `hello-wasm` component with your `adder` component by running [`wac plug`](https://github.com/bytecodealliance/wac):
 
 ```sh
-wasm-tools compose bin/Debug/net9.0/wasi-wasm/native/hello-wasm.wasm -d ../adder/bin/Debug/net9.0/wasi-wasm/native/adder.wasm -o main.wasm
+wac plug bin/Debug/net9.0/wasi-wasm/native/hello-wasm.wasm --plug ../adder/bin/Debug/net9.0/wasi-wasm/native/adder.wasm -o main.wasm
 ```
 
 Then you can run the composed component:

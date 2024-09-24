@@ -1,4 +1,4 @@
-## C# Tooling
+# C# Tooling
 
 ## Building a Component with `componentize-dotnet`
 
@@ -115,10 +115,12 @@ The previous example uses a WIT file that exports a function. However, to use yo
 another component, it must export an interface. That being said, you rarely find WIT that does not
 contain an interface. (Most WITs you'll see in the wild do use interfaces; we've been simplifying by
 exporting a function.) Let's expand our `example` world to export an interface rather than directly
-export the function.
+export the function. We are also adding the `hostapp` world to our WIT file which we will implement
+in [the next section](#building-a-component-that-imports-an-interface) to demonstrate how to build a
+component that *imports* an interface.
 
 ```wit
-// add-interface.wit
+// add.wit
 package example:component;
 
 interface add {
@@ -165,12 +167,17 @@ The component will be available at `bin/Debug/net9.0/wasi-wasm/native/adder.wasm
 
 ## Building a component that imports an interface
 
-So far, we've been dealing with class libraries. Now we will be taking the adder component and executing it from an executable WebAssembly component.
+So far, we've been dealing with library components. Now we will be creating a command component that
+implements the `hostapp` world. This component will import the `add` interface that is exported from
+our `adder` component and call the `add` function. We will later compose this command component with
+the `adder` library component we just built.
+
+Now we will be taking the `adder` component and executing it from another WebAssembly component.
 `dotnet new console` creates a new project that creates an executable.
 
 ```sh
-dotnet new console -o hello-wasm
-cd hello-wasm
+dotnet new console -o host-app
+cd host-app
 ```
 
 The `componentize-dotnet` package depends on the `NativeAOT-LLVM` package, which resides at the
@@ -214,7 +221,7 @@ In the .csproj project file, add the following to the `<PropertyGroup>`:
 Copy the same WIT file as before into your project:
 
 ```wit
-// add-interface.wit
+// add.wit
 package example:component;
 
 interface add {
@@ -242,9 +249,11 @@ Notice how the `World` changed from `example` to `hostapp`. The previous example
 implementing the class library for this WIT file - the `export` functions. Now we'll be focusing on
 the executable side of the application - the `hostapp` world.
 
-Modify Program.cs to look like this:
+Modify `Program.cs` to look like this:
 
 ```csharp
+// Pull in all imports of the `hostapp` world, namely the `add` interface.
+// example.component refers to the package name defined in the WIT file.
 using HostappWorld.wit.imports.example.component;
 
 var left = 1;
@@ -253,26 +262,29 @@ var result = AddInterop.Add(left, right);
 Console.WriteLine($"{left} + {right} = {result}");
 ```
 
-Once again, compile your executable with `dotnet build`:
+Once again, compile your component with `dotnet build`:
 
 ```sh
 $ dotnet build
 Restore complete (0.4s)
 You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  hello-wasm succeeded (1.1s) → bin/Debug/net9.0/wasi-wasm/hello-wasm.dll
+  host-app succeeded (1.1s) → bin/Debug/net9.0/wasi-wasm/host-app.dll
 
 Build succeeded in 2.5s
 ```
 
 At this point, you'll have two Webassembly components:
 
-1. A component that implements the `example` world
-2. A component that calls `add` from within the `hostapp` world.
+1. A component that implements the `example` world.
+2. A component that implements the `hostapp` world.
 
-Since the `hello-wasm` component is no longer a self-contained application, it needs to be composed the first component that implements the `add` function. You can compose your `hello-wasm` component with your `adder` component by running [`wac plug`](https://github.com/bytecodealliance/wac):
+Since the `host-app` component depends on the `add` function which is defined in the `example`
+world, it needs to be composed the first component. You can
+compose your `host-app` component with your `adder` component by running [`wac
+plug`](https://github.com/bytecodealliance/wac):
 
 ```sh
-wac plug bin/Debug/net9.0/wasi-wasm/native/hello-wasm.wasm --plug ../adder/bin/Debug/net9.0/wasi-wasm/native/adder.wasm -o main.wasm
+wac plug bin/Debug/net9.0/wasi-wasm/native/host-app.wasm --plug ../adder/bin/Debug/net9.0/wasi-wasm/native/adder.wasm -o main.wasm
 ```
 
 Then you can run the composed component:

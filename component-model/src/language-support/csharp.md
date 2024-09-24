@@ -279,9 +279,8 @@ At this point, you'll have two Webassembly components:
 2. A component that implements the `hostapp` world.
 
 Since the `host-app` component depends on the `add` function which is defined in the `example`
-world, it needs to be composed the first component. You can
-compose your `host-app` component with your `adder` component by running [`wac
-plug`](https://github.com/bytecodealliance/wac):
+world, it needs to be composed the first component. You can compose your `host-app` component with
+your `adder` component by running [`wac plug`](https://github.com/bytecodealliance/wac):
 
 ```sh
 wac plug bin/Debug/net9.0/wasi-wasm/native/host-app.wasm --plug ../adder/bin/Debug/net9.0/wasi-wasm/native/adder.wasm -o main.wasm

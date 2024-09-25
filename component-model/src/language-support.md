@@ -27,6 +27,7 @@ run components for a given toolchain:
   - [C/C++ Tooling](./language-support/c.md)
     - [Building a Component with `wit-bindgen` and `wasm-tools`](./language-support/c.md#building-a-component-with-wit-bindgen-and-wasm-tools)
     - [Running a Component from C/C++ Applications](./language-support/c.md#running-a-component-from-cc-applications)
+  - [C# Tooling](./language-support/csharp.md)
   - [Go Tooling](./language-support/go.md)
   - [JavaScript Tooling](./language-support/javascript.md)
     - [Building a Component with `jco`](./language-support/javascript.md#building-a-component-with-jco)

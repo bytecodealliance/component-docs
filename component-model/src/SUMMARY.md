@@ -16,6 +16,7 @@
 
 - [Language Support for Components](./language-support.md)
   - [C/C++](./language-support/c.md)
+  - [C#](./language-support/csharp.md)
   - [Go](./language-support/go.md)
   - [JavaScript](./language-support/javascript.md)
   - [Python](./language-support/python.md)

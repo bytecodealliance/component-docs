@@ -57,7 +57,7 @@ $ cargo component build --release
 You can use `wasm-tools component wit` to output the WIT package of the component:
 
 ```sh
-$ wasm-tools component wit target/wasm32-wasi/release/add.wasm
+$ wasm-tools component wit target/wasm32-wasip1/release/add.wasm
 package root:component;
 
 world root {
@@ -75,7 +75,7 @@ Rust bindings, bring in WASI worlds, and execute the component.
 
 ```sh
 $ cd examples/example-host
-$ cargo run --release -- 1 2 ../add/target/wasm32-wasi/release/add.wasm
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 1 + 2 = 3
 ```
 
@@ -180,7 +180,7 @@ When you build this using `cargo component build`, the `add` interface remains i
 # Do a release build to prune unused imports (e.g. WASI)
 $ cargo component build --release
 
-$ wasm-tools component wit ./target/wasm32-wasi/release/calculator.wasm
+$ wasm-tools component wit ./target/wasm32-wasip1/release/calculator.wasm
 package root:component;
 
 world root {
@@ -216,7 +216,7 @@ To run your command component:
 
 ```sh
 cargo component build
-wasmtime run ./target/wasm32-wasi/debug/<name>.wasm
+wasmtime run ./target/wasm32-wasip1/debug/<name>.wasm
 ```
 
 > **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.

@@ -10,16 +10,16 @@ emerging WebAssembly Components specification in JavaScript.
 
 ## Installing `jco`
 
-Installing [`jco`][jco] (and it's required peer dependency [`componentize-js`][componentize-js]) can be done via NodeJS project tooling:
+Installing [`jco`][jco] (and its required peer dependency [`componentize-js`][componentize-js]) can be done via NodeJS project tooling:
 
 ```console
 npm install -g @bytecodealliance/componentize-js @bytecodealliance/jco
 ```
 
 > [!NOTE]
-> `jco` and `componentize-js` in a project-local manner with `npm install -D`
+> `jco` and `componentize-js` can be installed in a project-local manner with `npm install -D`
 
-[ComponentizeJS][componentize-js] only provides compilation tools (JS -> WASM transpilation) used by `jco`, so installing both packages is required.
+[ComponentizeJS][componentize-js] provides tooling used by `jco` to transpile JS to Wasm, so installing both packages is required.
 
 [jco]: https://github.com/bytecodealliance/jco
 [componentize-js]: https://github.com/bytecodealliance/ComponentizeJS
@@ -108,7 +108,7 @@ instance
     .context("Failed to call add function")
 ```
 
-A quick reminder on the power and new capabilities afforded by WebAssembly -- we've written, loaded, instantiated and executed Javascript with a strict interface, without the need for FFI, subprocesses or a network call.
+A quick reminder on the power and new capabilities afforded by WebAssembly -- we've written, loaded, instantiated and executed Javascript from Rust with a strict interface, without the need for FFI, subprocesses or a network call.
 
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 [wit-spec]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md
@@ -172,8 +172,7 @@ You should see the following output:
 > [!NOTE]
 > You can also run `npm run transpiled-js` (after running `npm run transpile`)
 
-Though similar to the Rust code mentioned in the previous section, the Javascript code *also* accomplishes the same
-results, running the WebAssembly binary (which could have been written in any language) from the host language
+This is directly comparable to the Rust host code mentioned in the previous section. The Javascript code *also* runs the WebAssembly binary (which could have been written in any language) from the host language
 (Javascript) natively.
 
 > [!NOTE]
@@ -185,7 +184,7 @@ results, running the WebAssembly binary (which could have been written in any la
 
 ## Building Reactor components with `jco`
 
-Reactor components are WebAssembly components that are long running and meant to be called repeatedly over a long period of time. They're analogous to libraries of functionality rather than an executable (a "command" component).
+Reactor components are WebAssembly components that are long running and meant to be called repeatedly over time. They're analogous to libraries of functionality rather than an executable (a "command" component).
 
 Reactor components (and components in general) expose their interfaces via [WebAssembly Interface Types][docs-wit], hand-in-hand with the [Component Model][component-model] which enables components to use higher level types interchangably.
 
@@ -303,7 +302,7 @@ You should see the following output:
 > [!TIP]
 > Yes, transpilation *does* produce [Typescript declaration file][ts-decl-file], so you can also use a Typescript-focused workflows.
 
-After transpiling, we re-name the `reverser.js` file to `reverser.mjs`
+After transpiling, we rename the `reverser.js` file to `reverser.mjs`
 
 > [!NOTE]
 > You can also run this with `npm run transpile`, and the transpilation will happen, along with the rename.

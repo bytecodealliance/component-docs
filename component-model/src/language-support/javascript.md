@@ -71,7 +71,7 @@ OK Successfully written add.wasm.
 ```
 
 > [!NOTE]
-> As the `add` example is [NodeJS][nodejs] compatible, you can also run `npm install && npm run build`,
+> As the `add` example is a regular [NodeJS][nodejs] project, you can run `npm install && npm run build`
 > without having `jco` and `componentize-js` installed globally.
 
 To run the component, we can use the [`example-host` project][example-host] (also used  in the [Rust `add` host](./rust.md#creating-a-command-component-with-cargo-component) instructions):
@@ -179,7 +179,7 @@ results, running the WebAssembly binary (which could have been written in any la
 > [!NOTE]
 > Given WebAssembly's nature as a cross-language binary format, you can run
 > a WebAssembly core module (or component) produced by Javascript from *any*
-> language with any language that supports using a WebAssembly runtime (ex. `wasmtime`)
+> language that supports using a WebAssembly runtime (ex. `wasmtime`)
 
 [wasm-core-module]: https://webassembly.github.io/spec/core/binary/modules.html
 

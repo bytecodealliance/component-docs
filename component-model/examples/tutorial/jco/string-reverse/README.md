@@ -1,6 +1,6 @@
 # Simple WebAssembly `reverser` in JavaScript
 
-This folder contains a simple Javascript project can build into a WebAssembly binary.
+This folder contains a simple Javascript project that can be built into a WebAssembly binary.
 
 This is a `node` CLI and browser based example implementation of running a component that exports the `reverse` interface from a JavaScript application. 
 

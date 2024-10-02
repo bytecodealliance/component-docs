@@ -1,6 +1,6 @@
 # `reverse()` + `toUpper()` in JavaScript, with WebAssembly composition
 
-This folder contains a Javascript project can build into a WebAssembly component binary.
+This folder contains a Javascript project that can be built into a WebAssembly component binary.
 
 This component *uses* functionality provided by another binary to export *new* functionality, with the following interface:
 
@@ -65,7 +65,7 @@ You should see output like the following:
 ```
 ```
 
-After running component composition, there will be a component with all it's imports satisfied, called `string-reverse-upper.composed.wasm`. 
+After running component composition, there will be a component with all its imports satisfied, called `string-reverse-upper.composed.wasm`. 
 
 We can transpile that *composed* component to a JS module:
 

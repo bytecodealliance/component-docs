@@ -78,7 +78,7 @@ To run the component, we can use the [`example-host` project][example-host] (als
 
 ```console
 cd component-model/examples/example-host
-cargo run --release -- 1 2 ../tutorial/jco/add/add.wasm
+cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
 ```
 

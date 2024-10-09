@@ -24,7 +24,7 @@ If you're writing a library-style component - that is, one that exports a custom
 
 4. Build your command component to a `.wasm` file. You will not be able to run this in `wasmtime` yet, as its imports are not yet satisfied.
 
-5. Compose your command component with your library component by running `wasm-tools compose <path/to/command.wasm> -d <path/to/library.wasm> -o main.wasm`.
+5. Compose your command component with your library component by running `wac plug <path/to/command.wasm> --plug <path/to/library.wasm> -o main.wasm`.
 
 6. Run the composed component using `wasmtime run main.wasm`
 

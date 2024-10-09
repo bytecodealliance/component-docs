@@ -124,14 +124,14 @@ For reference, see a completed [example](https://github.com/bytecodealliance/com
 ## Composing the calculator
 
 Now, we are ready to bring our components together into one runnable calculator component, using
-`wasm-tools`. We will first compose the calculator component with the add component to satisfy it's
+`wac`. We will first compose the calculator component with the add component to satisfy it's
 imports. We then compose that resolved calculator component with the command component to satisfy
 its `calculate` imports. The result is a command component that has all its imports satisfied and
 exports the `wasi:cli/run` function, which can be executed by `wasmtime`.
 
 ```sh
-wasm-tools compose calculator.wasm -d adder.wasm -o composed.wasm
-wasm-tools compose command.wasm -d composed.wasm -o final.wasm
+wac plug calculator.wasm --plug adder.wasm -o composed.wasm
+wac plug command.wasm --plug composed.wasm -o final.wasm
 ```
 
 > If you'd prefer to take a more visual approach to composing components, see the [documentation on composing components with wasmbuilder.app](creating-and-consuming/composing.md#composing-components-with-a-visual-interface).

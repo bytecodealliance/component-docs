@@ -49,8 +49,8 @@ Use [`cargo-component`](https://github.com/bytecodealliance/cargo-component) and
 (cd calculator && cargo component build --release)
 (cd adder && cargo component build --release)
 (cd command && cargo component build --release)
-wac plug calculator/target/wasm32-wasi/release/calculator.wasm --plug adder/target/wasm32-wasi/release/adder.wasm -o composed.wasm
-wac plug command/target/wasm32-wasi/release/command.wasm --plug composed.wasm -o final.wasm
+wac plug calculator/target/wasm32-wasip1/release/calculator.wasm --plug adder/target/wasm32-wasip1/release/adder.wasm -o composed.wasm
+wac plug command/target/wasm32-wasip1/release/command.wasm --plug composed.wasm -o final.wasm
 ```
 
 Now, run the component with Wasmtime:
@@ -68,9 +68,9 @@ wasmtime run final.wasm 1 2 add
 
 ```sh
 mkdir -p deps/docs
-cp adder/target/wasm32-wasi/release/adder.wasm deps/docs/adder-impl.wasm
-cp calculator/target/wasm32-wasi/release/calculator.wasm deps/docs/calculator-impl.wasm
-cp command/target/wasm32-wasi/release/command.wasm deps/docs/command-impl.wasm
+cp adder/target/wasm32-wasip1/release/adder.wasm deps/docs/adder-impl.wasm
+cp calculator/target/wasm32-wasip1/release/calculator.wasm deps/docs/calculator-impl.wasm
+cp command/target/wasm32-wasip1/release/command.wasm deps/docs/command-impl.wasm
 ```
 
 Now we are ready to construct a WAC file to define our composition. Ours instantiates our three components, declaring
@@ -107,7 +107,7 @@ wac compose composition.wac -o final.wasm
 
 > Note, instead of moving all the components to a `deps/docs` directory, you can pass the paths to the components inline
 > ```sh
-> wac compose --dep docs:adder-impl=./adder/target/wasm32-wasi/release/adder.wasm  --dep docs:calculator-impl=./calculator/target/wasm32-wasi/release/calculator.wasm --dep docs:command-impl=./command/target/wasm32-wasi/release/command.wasm  -o final.wasm composition.wac
+> wac compose --dep docs:adder-impl=./adder/target/wasm32-wasip1/release/adder.wasm  --dep docs:calculator-impl=./calculator/target/wasm32-wasip1/release/calculator.wasm --dep docs:command-impl=./command/target/wasm32-wasip1/release/command.wasm  -o final.wasm composition.wac
 > ```
 
 Run the component with Wasmtime:

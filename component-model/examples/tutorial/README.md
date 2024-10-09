@@ -38,7 +38,6 @@ world app {
 }
 ```
 
-
 To expand the exercise to add more components, add another operator world, expand the enum, and modify the `command` component to call it.
 
 ## Building and running the example

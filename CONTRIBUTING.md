@@ -14,7 +14,6 @@ This repository also makes use of mdBook plugins. To install mdBook and the plug
 
 ```console
 cargo install --version 0.4.21 mdbook
-cargo install --version 0.2.0 mdbook-sitemap-generator
 cargo install --version 0.6.7 mdbook-alerts
 ```
 

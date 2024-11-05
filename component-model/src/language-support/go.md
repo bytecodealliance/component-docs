@@ -1,9 +1,9 @@
-# Go tooling
+# Go Tooling
 
 The [TinyGo compiler](https://tinygo.org/) v0.33.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0. This guide walks through building a component that implements `example` world defined in the [`add.wit`
 package](../../examples/example-host/add.wit). The component will implement a simple add function.
 
-## 1. Install the TinyGo compiler and `wasm-tools`
+## 1. Install the TinyGo Compiler and `wasm-tools`
 
 Follow the [TinyGo installation instructions](https://tinygo.org/getting-started/) to install the TinyGo compiler. Additionally, install the `wasm-tools` CLI tool from the [wasm-tools repository](https://github.com/bytecodealliance/wasm-tools/releases).
 
@@ -14,7 +14,7 @@ $ tinygo version
 $ wasm-tools -V
 ```
 
-## 2. Determine which world the component will implement
+## 2. Determine which World the Component will Implement
 
 The `wasip2` target of TinyGo requires the imports of `wasi:cli/imports@0.2.0` and thus we need to include them in the `add.wit`. Below is the minimal `add.wit` file that includes the required imports:
 
@@ -114,7 +114,7 @@ internal
 
 The `adder.exports.go` file contains the exported functions that need to be implemented in the Go code called `Exports`.
 
-## 3. Implement the `add` function
+## 3. Implement the `add` Function
 
 ```Go
 package main
@@ -137,7 +137,7 @@ Go's `init` functions are used to do initialization tasks that
 should be done before any other tasks. In this case, we are using it to export the `Add` function and
 make it callable using the generated C bindings (`adder.c`). After populating the `init` function,
 
-## 4. Build the component
+## 4. Build the Component
 
 We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`. 
 

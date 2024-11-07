@@ -162,13 +162,14 @@ should be done before any other tasks. In this case, we are using it to export t
 
 We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`.
 
-TinyGo will invoke `wasm-tools` to embed the WIT file to the module and componentize it.
+Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module and componentize it.
 
 ```console
 $ tinygo build -target=wasip2 -o add.wasm --wit-package add.wit --wit-world adder main.go
 ```
 
-We can confirm using the `wasm-tools component wit` command:
+We now have an add component that satisfies our `adder` world, exporting the `add` function, which 
+we can confirm using the `wasm-tools component wit` command:
 
 ```console
 $ wasm-tools component wit add.wasm

@@ -95,7 +95,8 @@ $ go mod init example.com
 Next, we can generate the bindings for the `add.wit` file:
 
 ```console
-$ go run github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go generate -o internal/ ./add.wit
+$ go get go.bytecodealliance.org/cmd/wit-bindgen-go
+$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./add.wit
 ```
 
 The `internal` directory will contain the generated Go code for the `add.wit` file.

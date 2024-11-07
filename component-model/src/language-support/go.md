@@ -1,22 +1,43 @@
 # Go Tooling
 
-The [TinyGo compiler](https://tinygo.org/) v0.33.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0. This guide walks through building a component that implements `example` world defined in the [`add.wit`
+The [TinyGo compiler](https://tinygo.org/) v0.34.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0. This guide walks through building a component that implements `example` world defined in the [`add.wit`
 package](../../examples/example-host/add.wit). The component will implement a simple add function.
 
-## 1. Install the TinyGo Compiler and `wasm-tools`
+## 1. Install the tools
 
 Follow the [TinyGo installation instructions](https://tinygo.org/getting-started/) to install the TinyGo compiler. Additionally, install the `wasm-tools` CLI tool from the [wasm-tools repository](https://github.com/bytecodealliance/wasm-tools/releases).
 
 To verify the installation, run the following commands:
 
-```sh
+```console
 $ tinygo version
+tinygo version 0.34.0 ...
 $ wasm-tools -V
+wasm-tools 1.219.1 ...
 ```
+
+Optional: Install the `wkg` CLI tool to resolve the imports in the WIT file. The `wkg` CLI is a part of the [Wasm Component package manager](https://github.com/bytecodealliance/wasm-pkg-tools/releases)
 
 ## 2. Determine which World the Component will Implement
 
-The `wasip2` target of TinyGo requires the imports of `wasi:cli/imports@0.2.0` and thus we need to include them in the `add.wit`. Below is the minimal `add.wit` file that includes the required imports:
+The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`. Tools like `wkg` can be handy to build a complete WIT package by resolving the imports.
+
+```wit
+# wit/add.wit
+package docs:adder@0.1.0;
+world adder {
+  include wasi:cli/imports@0.2.0;
+  export add: func(x: s32, y: s32) -> s32;
+}
+```
+
+Running the `wkg wit build` command will resolve the imports and generate the complete WIT file encoded as a Wasm component.
+
+```console
+wkg wit build 
+```
+
+Or you can manually include the required imports in the `add.wit` file. Below is the minimal `add.wit` file that includes the required imports:
 
 ```wit
 package docs:adder@0.1.0;
@@ -66,20 +87,20 @@ package wasi:random@0.2.0 {
 
 Now, create your Go project:
 
-```sh
+```console
 $ mkdir add && cd add
 $ go mod init example.com
 ```
 
 Next, we can generate the bindings for the `add.wit` file:
 
-```sh
+```console
 $ go run github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go generate -o internal/ ./add.wit
 ```
 
 The `internal` directory will contain the generated Go code for the `add.wit` file.
 
-```sh
+```console
 $ tree internal
 internal
 ├── docs
@@ -134,22 +155,21 @@ func main() {}
 ```
 
 Go's `init` functions are used to do initialization tasks that
-should be done before any other tasks. In this case, we are using it to export the `Add` function and
-make it callable using the generated C bindings (`adder.c`). After populating the `init` function,
+should be done before any other tasks. In this case, we are using it to export the `Add` function.
 
 ## 4. Build the Component
 
-We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`. 
+We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`.
 
 TinyGo will invoke `wasm-tools` to embed the WIT file to the module and componentize it.
 
-```sh
+```console
 $ tinygo build -target=wasip2 -o add.wasm --wit-package add.wit --wit-world adder main.go
 ```
 
 We can confirm using the `wasm-tools component wit` command:
 
-```sh
+```console
 $ wasm-tools component wit add.wasm
 package root:component;
 
@@ -171,7 +191,7 @@ To run our add component, we need to use a host program with a WASI runtime that
 just that. It calls the `add` function of a passed in component providing two operands. To use it,
 clone this repository and run the Rust program:
 
-```sh
+```console
 git clone git@github.com:bytecodealliance/component-docs.git
 cd component-docs/component-model/examples/example-host
 cargo run --release -- 1 2 /path/to/add.wasm

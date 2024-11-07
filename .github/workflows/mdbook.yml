@@ -33,7 +33,7 @@ jobs:
       ALERTS_VERSION: 0.6.7
       PUBLISH_DOMAIN: component-model.bytecodealliance.org
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install mdBook
         run: |
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
@@ -46,9 +46,9 @@ jobs:
       - name: Build with mdBook
         run: mdbook build component-model
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.10
+          python-version: '3.13'
       - name: Generate sitemap
         run: |
           cd component-model

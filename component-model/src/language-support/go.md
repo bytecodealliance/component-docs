@@ -20,7 +20,9 @@ Optional: Install the `wkg` CLI tool to resolve the imports in the WIT file. The
 
 ## 2. Determine which World the Component will Implement
 
-The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`. Tools like `wkg` can be handy to build a complete WIT package by resolving the imports.
+The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`. 
+
+Tools like `wkg` can be convenient to build a complete WIT package by resolving the imports.
 
 ```wit
 # wit/add.wit
@@ -34,55 +36,15 @@ world adder {
 Running the `wkg wit build` command will resolve the imports and generate the complete WIT file encoded as a Wasm component.
 
 ```console
-wkg wit build 
+$ wkg wit build       
+WIT package written to docs:adder@0.1.0.wasm
 ```
 
-Or you can manually include the required imports in the `add.wit` file. Below is the minimal `add.wit` file that includes the required imports:
+The `docs:adder@0.1.0.wasm` file is a Wasm encoding of the WIT package. Next, we can generate the bindings for it:
 
-```wit
-package docs:adder@0.1.0;
-
-world adder {
-  import wasi:io/error@0.2.0;
-  import wasi:io/streams@0.2.0;
-  import wasi:cli/stdout@0.2.0;
-  import wasi:random/random@0.2.0;
-
-  export add: func(x: s32, y: s32) -> s32;
-}
-
-package wasi:io@0.2.0 {
-  interface error {
-    resource error;
-  }
-  interface streams {
-    use error.{error};
-
-    resource output-stream {
-      blocking-write-and-flush: func(contents: list<u8>) -> result<_, stream-error>;
-    }
-
-    variant stream-error {
-      last-operation-failed(error),
-      closed,
-    }
-  }
-}
-
-package wasi:cli@0.2.0 {
-  interface stdout {
-    use wasi:io/streams@0.2.0.{output-stream};
-
-    get-stdout: func() -> output-stream;
-  }
-}
-
-
-package wasi:random@0.2.0 {
-  interface random {
-    get-random-u64: func() -> u64;
-  }
-}
+```console
+$ go get go.bytecodealliance.org/cmd/wit-bindgen-go
+$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./docs:adder@0.1.0.wasm
 ```
 
 Now, create your Go project:
@@ -96,10 +58,10 @@ Next, we can generate the bindings for the `add.wit` file:
 
 ```console
 $ go get go.bytecodealliance.org/cmd/wit-bindgen-go
-$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./add.wit
+$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./docs:adder@0.1.0.wasm
 ```
 
-The `internal` directory will contain the generated Go code for the `add.wit` file.
+The `internal` directory will contain the generated Go code that WIT package.
 
 ```console
 $ tree internal

@@ -111,10 +111,9 @@ The component will be available at `bin/Debug/net9.0/wasi-wasm/native/adder.wasm
 
 ## Building a component that exports an interface
 
-The previous example uses a WIT file that exports a function. However, to use your component from
-another component, it must export an interface. That being said, you rarely find WIT that does not
-contain an interface. (Most WITs you'll see in the wild do use interfaces; we've been simplifying by
-exporting a function.) Let's expand our `example` world to export an interface rather than directly
+The previous example uses a WIT file that exports a function. However, you'll often prefer to export an interface, 
+either to comply with an existing specification or to capture a set of functions and types that tend to go
+together. Let's expand our `example` world to export an interface rather than directly
 export the function. We are also adding the `hostapp` world to our WIT file which we will implement
 in [the next section](#building-a-component-that-imports-an-interface) to demonstrate how to build a
 component that *imports* an interface.

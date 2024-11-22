@@ -81,7 +81,7 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 
 ## Exporting an interface with `cargo component`
 
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. This results in slightly fiddlier bindings. For example, to implement the following world:
+The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. For example, to implement the following world:
 
 ```wit
 package docs:adder@0.1.0;

@@ -62,7 +62,7 @@ See [`componentize-py`'s examples](https://github.com/bytecodealliance/component
 
 ### Building a Component that Exports an Interface
 
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, to use your component from another component, it must export an interface. That being said, you rarely find WIT that does not contain an interface. (Most WITs you'll see in the wild do use interfaces; we've been simplifying by exporting a function.) Let's expand our example world to export an interface rather than directly export the function.
+The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. Let's expand our example world to export an interface rather than directly export the function.
 
 ```wit
 // add-interface.wit

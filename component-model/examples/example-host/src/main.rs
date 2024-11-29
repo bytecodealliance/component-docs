@@ -1,4 +1,7 @@
-mod add;
+mod async_add;
+mod sync_add;
+mod state;
+
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -18,8 +21,10 @@ struct AddApp {
 
 impl AddApp {
     async fn run(self) -> anyhow::Result<()> {
-        let sum = add::add(self.component, self.x, self.y).await?;
-        println!("{} + {} = {sum}", self.x, self.y);
+        let sum1 = async_add::add(self.component.clone(), self.x, self.y).await?;
+        let sum2 = sync_add::add(self.component, self.x, self.y)?;
+        assert_eq!(sum1, sum2);
+        println!("{} + {} = {sum1}", self.x, self.y);
         Ok(())
     }
 }

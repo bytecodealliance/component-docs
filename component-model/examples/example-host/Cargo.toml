@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-async-std = { version = "1.12.0", features = ["attributes"] }
-clap = { version = "4.3.19", features = ["derive"] }
-wasmtime = "18.0.1"
-wasmtime-wasi = { version = "18.0.1" }
+async-std = { version = "1.13", features = ["attributes"] }
+clap = { version = "4", features = ["derive"] }
+wasmtime = "27.0"
+wasmtime-wasi = "27.0"
 anyhow = "1.0.72"

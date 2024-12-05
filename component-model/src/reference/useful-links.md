@@ -2,12 +2,12 @@
 
 The following references are helpful in understanding the Component Model and related ecosystem/projects.
 
-- [`WebAssembly/component-model` GitHub Repository][wasm-cm-repo]
-  - [Component Model AST Explainer][ast-explainer]
-  - [Canonical ABI Explainer][canonical-abi]
-- [WASI Preview 2][wasi-p2]
 - [WebAssembly Composition tool (`wac`)][wac]
 - [WebAssembly package tools (notably `wkg`)][wkg]
+- [WASI Preview 2][wasi-p2]
+- [Component Model internals][wasm-cm-repo]
+  - [Component Model AST][ast-explainer]
+  - [Canonical ABI][canonical-abi]
 
 [wasm-cm-repo]: https://github.com/WebAssembly/component-model
 [wasi-p2]: https://github.com/WebAssembly/WASI/tree/main/wasip2

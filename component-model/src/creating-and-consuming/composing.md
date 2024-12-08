@@ -102,7 +102,7 @@ For an in depth description about how to use the wac tool, you can check out the
 
 ## Composing components with a visual interface
 
-You can compose components visually using the builder app at https://wasmbuilder.app/.
+You can compose components visually using the builder app at [wasmbuilder.app](https://wasmbuilder.app/).
 
 1. Use the Add Component Button to upload the `.wasm` component files you want to compose. The components appear in the sidebar.
 

@@ -88,7 +88,7 @@ documentation](creating-and-consuming/authoring.md) to create a component that i
 ## Create a `command` component
 
 A _command_ is a component with a specific export that allows it to be executed directly by
-`wasmtime` (or other `wasm:cli` hosts). The host expects it to export the [`wasi:cli/run`
+`wasmtime` (or other `wasi:cli` hosts). The host expects it to export the [`wasi:cli/run`
 interface](https://github.com/WebAssembly/wasi-cli/blob/main/wit/run.wit), which is the equivalent
 of the `main` function to WASI. `cargo-component` will automatically resolve a Rust `bin` package
 with a `main` function to a component with `wasi:cli/run` exported. Scaffold a new Wasm application

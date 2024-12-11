@@ -194,7 +194,7 @@ As the import is unfulfilled, the `calculator.wasm` component could not run by i
 
 ## Creating a command component with `cargo component`
 
-A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime` (or other `wasm:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with a `main` function, instead of a library crate (`lib`) package.
+A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime` (or other `wasi:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with a `main` function, instead of a library crate (`lib`) package.
 
 To create a command with cargo component, run:
 
@@ -204,7 +204,7 @@ cargo component new <name>
 
 Unlike library components, this does _not_ have the `--lib` flag. You will see that the created project is different too:
 
-- It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasm:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
+- It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasi:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
 - Because there's no `.wit` file, `Cargo.toml` doesn't contain a `package.metadata.component.target` section.
 - The Rust file is called `main.rs` instead of `lib.rs`, and contains a `main` function instead of an interface implementation.
 

@@ -1,8 +1,8 @@
 # JavaScript Tooling
 
-[WebAssembly][mdn-wasm] was originally developed as a technology for running non-Javascript workloads in the browser at near-native speed.
+[WebAssembly][mdn-wasm] was originally developed as a technology for running non-JavaScript workloads in the browser at near-native speed.
 
-Javascript WebAssembly component model support is provided primarily by [`jco`](https://github.com/bytecodealliance/jco), a command line tool
+JavaScript WebAssembly component model support is provided primarily by [`jco`](https://github.com/bytecodealliance/jco), a command line tool
 which provides tooling for building WebAssembly components.
 
 [Typescript][ts] can *also* be used, given that it is transpiled to JS first by relevant tooling (`tsc`).
@@ -35,13 +35,13 @@ npm install -g @bytecodealliance/componentize-js @bytecodealliance/jco
 [jco]: https://github.com/bytecodealliance/jco
 [componentize-js]: https://github.com/bytecodealliance/ComponentizeJS
 
-## Overview of Building a Component with Javascript
+## Overview of Building a Component with JavaScript
 
-Building a WebAssembly component with Javascript often consists of:
+Building a WebAssembly component with JavaScript often consists of:
 
 1. Determining which interface our functionality will target (i.e. a [WebAssembly Interface Types ("WIT")][wit] world)
-2. Writing Javscript that satisfies the interface
-3. Packaging our project Javscript as WebAssembly (whether for use in WebAssembly runtimes, other JS projects, or the browser)
+2. Writing JavaScript that satisfies the interface
+3. Packaging our project JavaScript as WebAssembly (whether for use in WebAssembly runtimes, other JS projects, or the browser)
 
 [WebAssembly Interface Types ("WIT")][wit] is a featureful Interface Definition Language ("IDL") for defining functionality, but most
 of the time, you shouldn't need to write WIT from scratch. Often, it's sufficient to download a pre-existing interface that defines what
@@ -78,13 +78,13 @@ export const add = (x, y) => {
 ```
 
 > [!WARNING]
-> When building your Javascript project, ensure to set the `"type":"module"` option in `package.json`,
-> as `jco` works exclusively with Javascript modules.
+> When building your JavaScript project, ensure to set the `"type":"module"` option in `package.json`,
+> as `jco` works exclusively with JavaScript modules.
 
-In the code above, the `example` world is analogous to the Javascript module itself, with the exported `add` function
+In the code above, the `example` world is analogous to the JavaScript module itself, with the exported `add` function
 mirroring `add` function `export`ed in the WIT.
 
-With the WIT and Javascript in place, we can use [`jco`][jco] to create a WebAssembly component from the JS module, using `jco componentize`.
+With the WIT and JavaScript in place, we can use [`jco`][jco] to create a WebAssembly component from the JS module, using `jco componentize`.
 
 Our component is *so simple* (reminiscent of [Core WebAssembly][wasm-core], which deals primarily in numeric values) that we're actually *not using* any of the [WebAssembly System Interface][wasi] -- this means that we can `--disable` it when we invoke `jco componentize`
 
@@ -143,7 +143,7 @@ instance
     .context("Failed to call add function")
 ```
 
-A quick reminder on the power and new capabilities afforded by WebAssembly -- we've written, loaded, instantiated and executed Javascript from Rust with a strict interface, without the need for FFI, subprocesses or a network call.
+A quick reminder on the power and new capabilities afforded by WebAssembly -- we've written, loaded, instantiated and executed JavaScript from Rust with a strict interface, without the need for FFI, subprocesses or a network call.
 
 [rust-toolchain]: https://www.rust-lang.org/tools/install
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
@@ -156,10 +156,10 @@ A quick reminder on the power and new capabilities afforded by WebAssembly -- we
 ## Running a Component from JavaScript Applications (including the Browser)
 
 JavaScript runtimes available in browsers cannot yet execute WebAssembly components, so WebAssembly components
-(Javascript or otherwise) must be "transpiled" into a JavaScript wrapper and one or more [WebAssembly core modules][wasm-core-module]
+(JavaScript or otherwise) must be "transpiled" into a JavaScript wrapper and one or more [WebAssembly core modules][wasm-core-module]
 which *can* be run by in-browser WebAssembly runtimes.
 
-Given an existing WebAssembly component (e.g. `add.wasm` which implements the [`example` world][wit-example-world]), we can "transpile" the component into runnable Javscript by using `jco tranpsile`:
+Given an existing WebAssembly component (e.g. `add.wasm` which implements the [`example` world][wit-example-world]), we can "transpile" the component into runnable JavaScript by using `jco tranpsile`:
 
 ```console
 jco transpile add.wasm -o dist
@@ -182,7 +182,7 @@ You should see output similar to the following:
 
 
 Thanks to `jco` transpilation, you can import the resulting `dist/add.js` file and run it from any JavaScript application
-using a runtime that supports the [core WebAssembly specification][core-wasm] as implemented for Javascript.
+using a runtime that supports the [core WebAssembly specification][core-wasm] as implemented for JavaScript.
 
 To use this component from [NodeJS][nodejs], you can write code like the following:
 
@@ -192,7 +192,7 @@ import { add } from "./dist/add.js";
 console.log("1 + 2 = " + add(1, 2));
 ```
 
-You can execute the Javascript module with `node` directly:
+You can execute the JavaScript module with `node` directly:
 
 ```console
 node run.js
@@ -207,7 +207,7 @@ You should see output like the following:
 This is directly comparable to the Rust host code mentioned in the previous section. Here, we are able to
 use NodeJS as a host for running WebAssembly, thanks to `jco`'s ability to transpile components.
 
-With `jco transpile` any WebAssembly binary (compiled from any language) can be run in Javascript natively.
+With `jco transpile` any WebAssembly binary (compiled from any language) can be run in JavaScript natively.
 
 [wasm-core-module]: https://webassembly.github.io/spec/core/binary/modules.html
 [core-wasm]: https://webassembly.github.io/spec/core/
@@ -270,7 +270,7 @@ OK now let's see what the JS code looks like to *implement* the `component` worl
  */
 
 /**
- * This Javascript will be interpreted by `jco` and turned into a
+ * This JavaScript will be interpreted by `jco` and turned into a
  * WebAssembly binary with a single export (this `reverse` function).
  */
 function reverseString(s) {
@@ -278,7 +278,7 @@ function reverseString(s) {
 }
 
 /**
- * The Javascript export below represents the export of the `reverse` interface,
+ * The JavaScript export below represents the export of the `reverse` interface,
  * which which contains `reverse-string` as it's primary exported function.
  */
 export const reverse = {
@@ -312,7 +312,7 @@ You should see output like the following:
 OK Successfully written string-reverse.wasm.
 ```
 
-Now that we have a WebAssembly binary, we can *also* use `jco` to run it in a native Javascript context by *transpiling* the WebAsssembly binary (which could have come from anywhere!) to a Javascript module.
+Now that we have a WebAssembly binary, we can *also* use `jco` to run it in a native JavaScript context by *transpiling* the WebAsssembly binary (which could have come from anywhere!) to a JavaScript module.
 
 ```console
 npx jco transpile string-reverse.wasm -o dist/transpiled
@@ -332,7 +332,7 @@ You should see the following output:
 > [!TIP]
 > A gentle reminder that, transpilation *does* produce [Typescript declaration file][ts-decl-file], for use in Typescript projects.
 
-Now that we have a transpiled module, we can run it from any Javascript context that supports core WebAssembly (whether NodeJS or the browser).
+Now that we have a transpiled module, we can run it from any JavaScript context that supports core WebAssembly (whether NodeJS or the browser).
 
 For NodeJS, we can use code like the following:
 
@@ -356,9 +356,9 @@ reverseString('!dlrow olleh') = hello world!
 
 While it's somewhat redundant in this context, what we've done from NodeJS demonstrates the usefulness of WebAssembly and the `jco` toolchain. With the help of `jco`, we have:
 
-- Compiled Javascript to a WebAssembly module (`jco compile`), adhering to an interface defined via WIT
+- Compiled JavaScript to a WebAssembly module (`jco compile`), adhering to an interface defined via WIT
 - Converted the compiled WebAssembly module (which could be from *any* language) to a module that can be used from any compliant JS runtime (`jco transpile`)
-- Run the transpiled WebAssembly component from a Javascript native runtime (NodeJS)
+- Run the transpiled WebAssembly component from a JavaScript native runtime (NodeJS)
 
 [repo]: https://github.com/bytecodealliance/component-docs
 [jco-examples-string-reverse]: https://github.com/bytecodealliance/jco/tree/main/examples/components/string-reverse
@@ -407,7 +407,7 @@ The `revup` world `import`s (and makes use) of `reverse` in order to `export` (p
 > [!NOTE]
 > Functionality is imported from the `interface`, *not* the `world`. `world`s can be included/used, but the syntax is slightly different for that.
 
-The Javascript to make this work ([`string-reverse-upper.mjs` in `jco/examples`](https://github.com/bytecodealliance/jco/blob/main/examples/components/string-reverse-upper/string-reverse-upper.mjs)) looks like this:
+The JavaScript to make this work ([`string-reverse-upper.mjs` in `jco/examples`](https://github.com/bytecodealliance/jco/blob/main/examples/components/string-reverse-upper/string-reverse-upper.mjs)) looks like this:
 
 ```js
 /**
@@ -423,7 +423,7 @@ The Javascript to make this work ([`string-reverse-upper.mjs` in `jco/examples`]
 import { reverseString } from 'example:string-reverse/reverse@0.1.0';
 
 /**
- * The Javascript export below represents the export of the `reversed-upper` interface,
+ * The JavaScript export below represents the export of the `reversed-upper` interface,
  * which which contains `revup` as it's primary exported function.
  */
 export const reversedUpper = {
@@ -495,7 +495,7 @@ world root {
 
 It's as-if we never imported any functionality at all -- the functionality present in `string-reverse.wasm` has been *merged into* `string-reverse-upper.wasm`, and it now simply `export`s the advanced functionality.
 
-We can run this completed component with in any WebAssembly-capable native Javascript environment by using a the transpiled result:
+We can run this completed component with in any WebAssembly-capable native JavaScript environment by using a the transpiled result:
 
 ```console
 npx jco transpile string-reverse-upper.wasm -o dist/transpiled

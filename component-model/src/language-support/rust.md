@@ -25,20 +25,16 @@ $ cargo component new add --lib && cd add
 Note that `cargo component` generates the necessary bindings as a module called `bindings`. 
 
 Next, update `wit/world.wit` to match `add.wit` and modify the component package reference to change the
-package name to `example`. The `component` section of `Cargo.toml` should look like the following:
+package name to `example:component`. The `component` section of `Cargo.toml` should look like the following:
 
 ```toml
 [package.metadata.component]
-package = "component:example"
+package = "example:component"
 ```
 
-`cargo component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfied the `example` world, adding an `add` function. It should look similar to the following:
+`cargo component` will generate bindings for the world specified in a package's `Cargo.toml`. In particular, it will create a `Guest` trait that a component should implement. Since our `example` world has no interfaces, the trait lives directly under the bindings module. Implement the `Guest` trait in `add/src/lib.rs` such that it satisfies the `example` world, adding an `add` function:
 
 ```rs
-mod bindings;
-
-use bindings::Guest;
-
 struct Component;
 
 impl Guest for Component {

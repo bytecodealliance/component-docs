@@ -1,5 +1,9 @@
-package example:component;
+package docs:adder@0.1.0;
 
-world example {
-    export add: func(x: s32, y: s32) -> s32;
+interface add {
+    add: func(a: u32, b: u32) -> u32;
+}
+
+world adder {
+    export add;
 }

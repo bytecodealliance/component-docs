@@ -1,5 +1,0 @@
-package example:component;
-
-world example {
-    export add: func(x: s32, y: s32) -> s32;
-}

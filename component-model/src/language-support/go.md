@@ -97,11 +97,11 @@ The `adder.exports.go` file contains the exported functions that need to be impl
 package main
 
 import (
-	"example.com/internal/example/component/example"
+	"example.com/internal/docs/adder/adder"
 )
 
 func init() {
-	example.Exports.Add = func(x int32, y int32) int32 {
+	adder.Exports.Add = func(x int32, y int32) int32 {
 		return x + y
 	}
 }
@@ -120,7 +120,7 @@ We can build our component using TinyGo by specifying the wit-package to be `add
 Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module and componentize it.
 
 ```console
-$ tinygo build -target=wasip2 -o add.wasm --wit-package add.wit --wit-world adder main.go
+$ tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
 ```
 
 We now have an add component that satisfies our `adder` world, exporting the `add` function, which 

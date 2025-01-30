@@ -40,13 +40,6 @@ $ wkg wit build
 WIT package written to docs:adder@0.1.0.wasm
 ```
 
-The `docs:adder@0.1.0.wasm` file is a Wasm encoding of the WIT package. Next, we can generate the bindings for it:
-
-```console
-$ go get go.bytecodealliance.org/cmd/wit-bindgen-go
-$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./docs:adder@0.1.0.wasm
-```
-
 Now, create your Go project:
 
 ```console
@@ -54,7 +47,7 @@ $ mkdir add && cd add
 $ go mod init example.com
 ```
 
-Next, we can generate the bindings for the `add.wit` file:
+Next, we can generate the bindings for the Wasm component:
 
 ```console
 $ go get go.bytecodealliance.org/cmd/wit-bindgen-go

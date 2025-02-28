@@ -16,11 +16,7 @@ Wasm components, we will compose them into a single runnable component, and test
 ## The calculator interface
 
 For tutorial purposes, we are going to put our "calculator engine" and "addition operation" interfaces into two separate WIT packages, each containing one WIT file.  This may seem excessive, but the reason is to illustrate real-world use cases where components come from different authors and packages. 
-These files can be found in the component book repository in the [`wit` directory](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) under `wit/adder/world.wit` and `wit/calculator/world.wit`. These files define:
-
-* A world describing an world that exports the "add" interface. Again, components such as the calculator can call it when
-  they need to add numbers.
-
+These files can be found in the component book repository in the [`wit` directory](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit) under `wit/adder/world.wit` and `wit/calculator/world.wit`:
   ```wit
   // wit/adder/world.wit
   package docs:adder@0.1.0;
@@ -32,23 +28,7 @@ These files can be found in the component book repository in the [`wit` director
   world adder {
       export add;
   }
-  ```
 
-* An interface for the calculator itself.  We'll use this later to carry out calculations. It
-  contains an evaluate function, and an enum that delineates the operations that can be involved in
-  a calculation. In this tutorial, the only operation is `add`.
-* Interfaces for the various operations the calculator might need to carry out as part of a
-  calculation. For the tutorial, again, the only import we define is for the "add" operation from
-  the "docs:adder" world defined previously.
-* A world describing the calculator component. This world exports the calculator interface, meaning
-  that other components can call it to perform calculations. It imports the operation interfaces
-  (such as "add"), meaning it relies on other components to perform those operations.
-* A world describing the "primary" app component, which imports the "calculate" interface. This is
-  the component will take in command line arguments and pass them to the "eval-expression" function
-  of the calculator component.
-
-
-  ```wit
   // wit/calculator/world.wit
   package docs:calculator@0.1.0;
 
@@ -69,6 +49,19 @@ These files can be found in the component book repository in the [`wit` director
   }
 
   ```
+
+These files define:
+* A world `adder` that exports the `add` interface. Again, components such as the calculator can call it when
+  they need to add numbers.
+* A world `calculator` describing the calculator component. This world exports the calculator interface, meaning
+  that other components can call it to perform calculations. It imports the operation interfaces
+  (such as `add`), meaning it relies on other components to perform those operations.
+* An interface `calculate` that contains an evaluate function and an enum that delineates
+  the operations that can be involved in a calculation. In this tutorial, the only operation is `add`.
+* A world `app` describing the "primary" app component, which imports the `calculate` interface. 
+  This component will take in command line arguments and pass them to the `eval-expression` function
+  of the calculator component.
+
 
 ## Create an `add` component
 

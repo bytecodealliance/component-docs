@@ -53,10 +53,10 @@ These files can be found in the component book repository in the [`wit` director
 These files define:
 * A world `adder` that exports the `add` interface. Again, components such as the calculator can call it when
   they need to add numbers.
-* A world describing the calculator component. This world exports the calculator interface, meaning
+* A world `calculator` describing the calculator component. This world exports the calculator interface, meaning
   that other components can call it to perform calculations. It imports the operation interfaces
-  (such as "add"), meaning it relies on other components to perform those operations.
-* An interface `calculate` that contains an evaluate function, and an enum that delineates
+  (such as `add`), meaning it relies on other components to perform those operations.
+* An interface `calculate` that contains an evaluate function and an enum that delineates
   the operations that can be involved in a calculation. In this tutorial, the only operation is `add`.
 * A world `app` describing the "primary" app component, which imports the `calculate` interface. 
   This component will take in command line arguments and pass them to the `eval-expression` function

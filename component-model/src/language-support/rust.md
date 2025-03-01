@@ -19,7 +19,7 @@ Create a Rust library that implements the `add` function in the [`example`
 world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit). First scaffold a project:
 
 ```sh
-$ cargo component new add --lib && cd add
+$ cargo component new adder --lib && cd adder
 ```
 
 Note that `cargo component` generates the necessary bindings as a module called `bindings`. 

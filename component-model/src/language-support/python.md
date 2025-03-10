@@ -2,7 +2,7 @@
 
 ## Building a Component with `componentize-py`
 
-[`componentize-py`](https://github.com/dicej/componentize-py) is a tool that converts a Python
+[`componentize-py`](https://github.com/bytecodealliance/componentize-py) is a tool that converts a Python
 application to a WebAssembly component.
 
 First, install [Python 3.10 or later](https://www.python.org/) and [pip](https://pypi.org/project/pip/) if you don't already have them. Then, install `componentize-py`:

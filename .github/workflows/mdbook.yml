@@ -55,7 +55,7 @@ jobs:
           python3 ../scripts/generate_sitemap.py --domain "component-model.bytecodealliance.org" --higher-priority "design" --output-path book/sitemap.xml
           cd ..
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./component-model/book
 

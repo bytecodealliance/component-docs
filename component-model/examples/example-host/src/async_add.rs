@@ -1,16 +1,21 @@
-use anyhow::Context;
 use std::path::PathBuf;
-use wasmtime::component::*;
+
+use anyhow::Context;
+use wasmtime::component::{Component, Linker};
 use wasmtime::{Config, Engine, Store};
+
 use crate::state::States;
 
-bindgen!({
-    path: "add.wit",
-    world: "example",
-    async: true
-});
+mod bindings {
+    //! Generated code for the
+    wasmtime::component::bindgen!({
+        path: "../tutorial/wit/adder/world.wit",
+        world: "adder",
+        async: true
+    });
+}
 
-pub async fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
+pub async fn add(path: PathBuf, x: u32, y: u32) -> wasmtime::Result<u32> {
     // Construct engine
     let mut config = Config::default();
     config.async_support(true);
@@ -23,10 +28,11 @@ pub async fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
     // Construct linker for linking interfaces.
     // For this simple adder component, no need to link additional interfaces.
     let linker = Linker::new(&engine);
-    let instance = Example::instantiate_async(&mut store, &component, &linker)
+    let instance = bindings::Adder::instantiate_async(&mut store, &component, &linker)
         .await
         .context("Failed to instantiate the example world")?;
     instance
+        .docs_adder_add()
         .call_add(&mut store, x, y)
         .await
         .context("Failed to call add function")

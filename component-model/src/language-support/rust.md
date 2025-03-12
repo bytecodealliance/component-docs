@@ -38,7 +38,7 @@ package = "example:component"
 struct Component;
 
 impl Guest for Component {
-    fn add(x: i32, y: i32) -> i32 {
+    fn add(x: u32, y: u32) -> u32 {
         x + y
     }
 }

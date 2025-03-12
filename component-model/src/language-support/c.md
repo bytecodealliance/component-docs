@@ -10,7 +10,7 @@ First, install the CLI for [`wit-bindgen`](https://github.com/bytecodealliance/w
 
 The WASI SDK will install a local version of `clang` configured with a wasi-sysroot. Follow [these instructions](https://github.com/WebAssembly/wasi-sdk#use) to configure it for use. Note that you can also use your installed system or emscripten `clang` by building with `--target=wasm32-wasi` but you will need some artifacts from WASI SDK to enable and link that build target (more information is available in WASI SDK's docs).
 
-Start by generating a C skeleton from `wit-bindgen` using the [sample `add.wit` file](../../examples/example-host/add.wit): 
+Start by generating a C skeleton from `wit-bindgen` using the [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit): 
 ```sh
 >wit-bindgen c add.wit
 Generating "example.c"
@@ -18,13 +18,13 @@ Generating "example.h"
 Generating "example_component_type.o"
 ```
 
-This has generated several files - an `example.h` (based on the name of your `world`) with the prototype of the `add` function - `int32_t example_add(int32_t x, int32_t y);`, as well as some generated code in `example.c` that interfaces with the component model ABI to call your function. Additionally, `example_component_type.o` contains object code referenced in `example.c` from an `extern` that must be linked via clang.
+This has generated several files - an `example.h` (based on the name of your `world`) with the prototype of the `add` function (prefixed by `exports_`) - `int32_t exports_example_add(int32_t x, int32_t y);`, as well as some generated code in `example.c` that interfaces with the component model ABI to call your function. Additionally, `example_component_type.o` contains object code referenced in `example.c` from an `extern` that must be linked via clang.
 
 Next, create an `add.c` that implements your function defined in `example.h`:
 ```c
 #include "example.h"
 
-int32_t example_add(int32_t x, int32_t y)
+int32_t exports_example_add(int32_t x, int32_t y)
 {
 	return x + y;
 }
@@ -49,7 +49,7 @@ For example, modifying the above to reference `printf()` would compile:
 #include "example.h"
 #include <stdio.h>
 
-int32_t example_add(int32_t x, int32_t y)
+int32_t exports_example_add(int32_t x, int32_t y)
 {
 	int32_t result = x + y;
 	printf("%d", result);
@@ -81,22 +81,37 @@ Finally, you can inspect the embedded wit to see your component (including any W
 package root:component;
 
 world root {
-  import wasi:io/error@0.2.0;
-  import wasi:io/streams@0.2.0;
-  import wasi:cli/stdin@0.2.0;
-  import wasi:cli/stdout@0.2.0;
-  import wasi:cli/stderr@0.2.0;
-  import wasi:cli/terminal-input@0.2.0;
-  import wasi:cli/terminal-output@0.2.0;
-  import wasi:cli/terminal-stdin@0.2.0;
-  import wasi:cli/terminal-stdout@0.2.0;
-  import wasi:cli/terminal-stderr@0.2.0;
-  import wasi:clocks/wall-clock@0.2.0;
-  import wasi:filesystem/types@0.2.0;
-  import wasi:filesystem/preopens@0.2.0;
+  import wasi:io/error@0.2.2;
+  import wasi:io/streams@0.2.2;
+  import wasi:cli/stdin@0.2.2;
+  import wasi:cli/stdout@0.2.2;
+  import wasi:cli/stderr@0.2.2;
+  import wasi:cli/terminal-input@0.2.2;
+  import wasi:cli/terminal-output@0.2.2;
+  import wasi:cli/terminal-stdin@0.2.2;
+  import wasi:cli/terminal-stdout@0.2.2;
+  import wasi:cli/terminal-stderr@0.2.2;
+  import wasi:clocks/wall-clock@0.2.2;
+  import wasi:filesystem/types@0.2.2;
+  import wasi:filesystem/preopens@0.2.2;
 
   export add: func(x: s32, y: s32) -> s32;
 }
+...
+```
+
+You must use the `wasi_snapshot_preview1.wasm` from the same version of wasmtime that the host is using to ensure the WASI interface versions match. Additionally, the host must explicitly [add WASI to the linker](https://docs.wasmtime.dev/api/wasmtime_wasi/fn.add_to_linker_sync.html) to run the app. If these are not configured correctly, you may see errors like the following:
+```sh
+cargo run --release -- 1 2 add-component.wasm
+   Compiling example-host v0.1.0 (/Users/sean/code/component-docs/component-model/examples/example-host)
+    Finished `release` profile [optimized] target(s) in 7.85s
+     Running `target/release/example-host 1 2 add-component.wasm`
+Error: Failed to instantiate the example world
+
+Caused by:
+    0: component imports instance `wasi:io/error@0.2.2`, but a matching implementation was not found in the linker
+    1: instance export `error` has the wrong type
+    2: resource implementation is missing
 ```
 
 ### Running a Component from C/C++ Applications
@@ -105,4 +120,4 @@ It is not yet possible to run a Component using the `wasmtime` `c-api` - [see th
 
 However, C/C++ language guest components can be composed with components written in any other language and run by their toolchains, or even composed with a C language command component and run via the `wasmtime` CLI or any other host.
 
-See the [Rust Tooling guide](../language-support/rust.md#running-a-component-from-rust-applications) for instructions on how to run this component from the Rust `example-host`.
+See the [Rust Tooling guide](../language-support/rust.md#running-a-component-from-rust-applications) for instructions on how to run this component from the Rust `example-host` (replacing the path to `add.wasm` with your `add-component` above).

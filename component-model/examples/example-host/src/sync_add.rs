@@ -23,7 +23,7 @@ pub fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
     // For this simple adder component, no need to manually link additional interfaces.
     let mut linker = Linker::new(&engine);
     // Add wasi exports to linker to support io interfaces
-    wasmtime_wasi::add_to_linker_sync(&mut linker).expect("Coould not add wasi to linker");
+    wasmtime_wasi::add_to_linker_sync(&mut linker).expect("Could not add wasi to linker");
     let instance = Example::instantiate(&mut store, &component, &linker)
         .context("Failed to instantiate the example world")?;
     instance

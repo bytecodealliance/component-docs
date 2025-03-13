@@ -3,6 +3,7 @@ use anyhow::Context;
 use std::path::PathBuf;
 use wasmtime::component::{bindgen, Component, Linker};
 use wasmtime::{Engine, Store};
+use wasmtime_wasi;
 
 bindgen!({
     path: "add.wit",
@@ -19,8 +20,10 @@ pub fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
     let wasi_view = States::new();
     let mut store = Store::new(&engine, wasi_view);
     // Construct linker for linking interfaces.
-    // For this simple adder component, no need to link additional interfaces.
-    let linker = Linker::new(&engine);
+    // For this simple adder component, no need to manually link additional interfaces.
+    let mut linker = Linker::new(&engine);
+    // Add wasi exports to linker to support io interfaces
+    wasmtime_wasi::add_to_linker_sync(&mut linker).expect("Could not add wasi to linker");
     let instance = Example::instantiate(&mut store, &component, &linker)
         .context("Failed to instantiate the example world")?;
     instance

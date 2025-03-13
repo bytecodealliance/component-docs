@@ -21,8 +21,10 @@ pub async fn add(path: PathBuf, x: i32, y: i32) -> wasmtime::Result<i32> {
     let wasi_view = States::new();
     let mut store = Store::new(&engine, wasi_view);
     // Construct linker for linking interfaces.
-    // For this simple adder component, no need to link additional interfaces.
-    let linker = Linker::new(&engine);
+    // For this simple adder component, no need to manually link additional interfaces.
+    let mut linker = Linker::new(&engine);
+    // Add wasi exports to linker to support io interfaces
+    wasmtime_wasi::add_to_linker_async(&mut linker)?;
     let instance = Example::instantiate_async(&mut store, &component, &linker)
         .await
         .context("Failed to instantiate the example world")?;

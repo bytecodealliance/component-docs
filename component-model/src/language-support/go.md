@@ -1,7 +1,11 @@
 # Go Tooling
 
-The [TinyGo compiler](https://tinygo.org/) v0.34.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0. This guide walks through building a component that implements `example` world defined in the [`add.wit`
-package](../../examples/example-host/add.wit). The component will implement a simple add function.
+The [TinyGo compiler](https://tinygo.org/) v0.34.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0.
+
+This guide walks through building a component that implements `adder` world defined in the [`adder/world.wit` package][adder-wit].
+The component will implement the `adder` world, which contains `add` interface with a `add` function.
+
+[adder-wit]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
 
 ## 1. Install the tools
 
@@ -20,7 +24,7 @@ Optional: Install the `wkg` CLI tool to resolve the imports in the WIT file. The
 
 ## 2. Determine which World the Component will Implement
 
-The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`. 
+The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`.
 
 Tools like `wkg` can be convenient to build a complete WIT package by resolving the imports.
 
@@ -36,7 +40,7 @@ world adder {
 Running the `wkg wit build` command will resolve the imports and generate the complete WIT file encoded as a Wasm component.
 
 ```console
-$ wkg wit build       
+$ wkg wit build
 WIT package written to docs:adder@0.1.0.wasm
 ```
 
@@ -123,7 +127,7 @@ Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module 
 $ tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
 ```
 
-We now have an add component that satisfies our `adder` world, exporting the `add` function, which 
+We now have an add component that satisfies our `adder` world, exporting the `add` function, which
 we can confirm using the `wasm-tools component wit` command:
 
 ```console
@@ -144,12 +148,16 @@ world root {
 ## 5. Testing the `add` Component
 
 To run our add component, we need to use a host program with a WASI runtime that understands the
-`example` world. We've provided an [`example-host`](../../examples/example-host/README.md) to do
-just that. It calls the `add` function of a passed in component providing two operands. To use it,
-clone this repository and run the Rust program:
+`example` world -- we've provided an [`example-host`][example-host] that does just that.
+
+The example host calls the `add` function of a passed in component providing two operands.
+
+To use the example host, clone this repository and run the Rust program:
 
 ```console
 git clone git@github.com:bytecodealliance/component-docs.git
 cd component-docs/component-model/examples/example-host
 cargo run --release -- 1 2 /path/to/add.wasm
 ```
+
+[example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host

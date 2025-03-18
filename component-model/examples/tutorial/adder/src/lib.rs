@@ -1,6 +1,7 @@
 #[allow(warnings)]
 mod bindings;
 
+// Separating out the interface puts it in a sub-module
 use bindings::exports::docs::adder::add::Guest;
 
 struct Component;

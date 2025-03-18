@@ -97,8 +97,8 @@ Component built successfully
 
 ## Running components from Python Applications
 
-Wasm components can also be invoked from Python applications. This walks through using tooling
-to call the [`app.wasm` component from the examples](../../examples/example-host/add.wasm).
+Wasm components can also be invoked from Python applications. This section walks through using tooling
+to call the [pre-built `app.wasm` component][add-wasm] in the examples.
 
 > `wasmtime-py` is only able to run components built with `componentize-py` when the `--stub-wasi` option is used at build time. This is because `wasmtime-py` does not yet support [resources](../design/wit.md#resources), and `componentize-py` by default generates components which use resources from the `wasi:cli` world.  See [this example](https://github.com/bytecodealliance/componentize-py/tree/main/examples/sandbox) of using the `--stub-wasi` option to generate a `wasmtime-py`-compatible component.
 
@@ -141,3 +141,5 @@ Run the Python host program:
 $ python3 host.py
 1 + 2 = 3
 ```
+
+[add-wasm]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wasm

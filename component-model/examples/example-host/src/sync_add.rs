@@ -18,7 +18,7 @@ mod bindings {
 /// Perform a add operation for a given WebAssembly component
 ///
 /// This operation happens synchronously (as opposed to asynchronously
-/// powered by an async runtime like `tokio`).
+/// powered by an async runtime like `tokio` or `async-std`).
 ///
 /// # Arguments
 ///

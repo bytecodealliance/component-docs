@@ -27,15 +27,19 @@ cd adder
 ```
 
 Next, create or download the WIT world you would like to target. For this example we will use an
-[`example`
-world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit)
+[`adder`
+world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit)
 with an `add` function:
 
 ```wit
-package example:component;
+package docs:adder@0.1.0;
 
-world example {
-    export add: func(x: u32, y: u32) -> u32;
+interface add {
+    add: func(a: u32, b: u32) -> u32;
+}
+
+world adder {
+    export add;
 }
 ```
 
@@ -43,7 +47,7 @@ In the `adder.csproj` project file, add a new `<ItemGroup>`:
 
 ```xml
 <ItemGroup>
-    <Wit Update="add.wit" World="example" />
+    <Wit Update="adder/world.wit" World="example" />
 </ItemGroup>
 ```
 
@@ -95,7 +99,7 @@ in [the next section](#building-a-component-that-imports-an-interface) to demons
 component that *imports* an interface.
 
 ```wit
-// add.wit
+// adder/world.wit
 package example:component;
 
 interface add {
@@ -160,7 +164,7 @@ cd host-app
 Copy the same WIT file as before into your project:
 
 ```wit
-// add.wit
+// adder/world.wit
 package example:component;
 
 interface add {
@@ -180,7 +184,7 @@ Add it to your `host-app.csproj` project file as a new `ItemGroup`:
 
 ```xml
 <ItemGroup>
-    <Wit Update="add.wit" World="hostapp" />
+    <Wit Update="adder/add.wit" World="hostapp" />
 </ItemGroup>
 ```
 

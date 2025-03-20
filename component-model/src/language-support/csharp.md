@@ -72,7 +72,7 @@ with an `add` function:
 package example:component;
 
 world example {
-    export add: func(x: s32, y: s32) -> s32;
+    export add: func(x: u32, y: u32) -> u32;
 }
 ```
 
@@ -94,7 +94,7 @@ namespace ExampleWorld;
 
 public class ExampleWorldImpl : IOperations
 {
-    public static int Add(int x, int y)
+    public static uint Add(uint x, uint y)
     {
         return x + y;
     }
@@ -144,7 +144,7 @@ namespace ExampleWorld.wit.exports.example.component;
 
 public class AddImpl : IAdd
 {
-    public static int Add(int x, int y)
+    public static uint Add(uint x, uint y)
     {
         return x + y;
     }

@@ -39,7 +39,7 @@ world example {
 }
 ```
 
-In the .csproj project file, add a new `<ItemGroup>`:
+In the `adder.csproj` project file, add a new `<ItemGroup>`:
 
 ```xml
 <ItemGroup>
@@ -47,15 +47,28 @@ In the .csproj project file, add a new `<ItemGroup>`:
 </ItemGroup>
 ```
 
-If you try to build the project with `dotnet build`, you'll get an error like "The name
+Since this component will only export a function dotnet considers this a library project. Let's update
+the  `<OutputType>` to be a library in the `adder.csproj`:
+
+```xml
+<OutputType>Library</OutputType>
+```
+
+And remove the `Program.cs` file:
+
+```bash
+rm Program.cs
+```
+
+At this point, if you try to build the project with `dotnet build`, you'll get an error like "The name
 'ExampleWorldImpl' does not exist in the current context". This is because you've said you'll
 provide an implementation, but haven't yet done so. To fix this, add the following code to your
-project:
+project in a file called `adder.cs`:
 
 ```csharp
 namespace ExampleWorld;
 
-public class ExampleWorldImpl : IOperations
+public class ExampleWorldImpl : IExampleWorld
 {
     public static uint Add(uint x, uint y)
     {
@@ -100,7 +113,7 @@ world hostapp {
 
 If you peek at the bindings, you'll notice that we now implement a class for the `add` interface
 rather than for the `example` world. This is a consistent pattern. As you export more interfaces
-from your world, you implement more classes. Our add example gets the slight update of:
+from your world, you implement more classes. Our `adder.cs` example gets the slight update of:
 
 ```csharp
 namespace ExampleWorld.wit.exports.example.component;
@@ -135,9 +148,11 @@ our `adder` component and call the `add` function. We will later compose this co
 the `adder` library component we just built.
 
 Now we will be taking the `adder` component and executing it from another WebAssembly component.
-`dotnet new componentize.wasi.cli` creates a new project that creates an executable.
+`dotnet new componentize.wasi.cli` creates a new project that creates an executable.  
+Back out of the current project and create a new one:
 
 ```sh
+cd ..
 dotnet new componentize.wasi.cli -o host-app
 cd host-app
 ```
@@ -180,8 +195,8 @@ Modify `Program.cs` to look like this:
 // example.component refers to the package name defined in the WIT file.
 using HostappWorld.wit.imports.example.component;
 
-var left = 1;
-var right = 2;
+uint left = 1;
+uint right = 2;
 var result = AddInterop.Add(left, right);
 Console.WriteLine($"{left} + {right} = {result}");
 ```
@@ -216,11 +231,11 @@ You can also automate the process by adding the following to your `host-app.cspr
 <Target Name="ComposeWasmComponent" AfterTargets="Publish">
     <PropertyGroup>
         <EntrypointComponent>bin/$(Configuration)/$(TargetFramework)/wasi-wasm/native/host-app.wasm</EntrypointComponent>
-        <DependencyComponent>../example/bin/$(Configuration)/$(TargetFramework)/wasi-wasm/native/adder.wasm</DependencyComponent>
+        <DependencyComponent>../adder/bin/$(Configuration)/$(TargetFramework)/wasi-wasm/native/adder.wasm</DependencyComponent>
     </PropertyGroup>
     
     <MakeDir Directories="dist" />
-    <Exec Command="$(WacExe) plug $(EntrypointComponent) --plug $(DependencyComponent)" -o dist/main.wasm />
+    <Exec Command="$(WacExe) plug $(EntrypointComponent) --plug $(DependencyComponent) -o dist/main.wasm" />
 </Target>
 ```
 
@@ -229,6 +244,8 @@ Run `dotnet build` again you will have a composed component in `./dist/main.wasm
 Then you can run the composed component:
 
 ```sh
-wasmtime run main.wasm
+wasmtime run ./dist/main.wasm
 1 + 2 = 3
 ```
+
+Checkout the [componentize-dotnet docs](https://github.com/bytecodealliance/componentize-dotnet) for more configurations options.

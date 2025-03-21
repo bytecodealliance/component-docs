@@ -78,7 +78,7 @@ The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/t
 package example:component;
 
 interface add {
-    add: func(a: u32, b: u32) -> u32;
+    add: func(x: u32, y: u32) -> u32;
 }
 
 world example {

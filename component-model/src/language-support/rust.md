@@ -128,7 +128,7 @@ The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/t
 package docs:adder@0.1.0;
 
 interface add {
-    add: func(a: u32, b: u32) -> u32;
+    add: func(x: u32, y: u32) -> u32;
 }
 
 world adder {
@@ -140,13 +140,14 @@ you would write the following Rust code:
 
 ```rust
 mod bindings;
+
 // Separating out the interface puts it in a sub-module
 use bindings::exports::docs::adder::add::Guest;
 
 struct Component;
 
 impl Guest for Component {
-    fn add(a: u32, b: u32) -> u32 {
+    fn add(x: u32, y: u32) -> u32 {
         a + b
     }
 }

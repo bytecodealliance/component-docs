@@ -20,7 +20,7 @@ pub mod exports {
                     _rt::as_i32(result0)
                 }
                 pub trait Guest {
-                    fn add(a: u32, b: u32) -> u32;
+                    fn add(x: u32, y: u32) -> u32;
                 }
                 #[doc(hidden)]
                 macro_rules! __export_docs_adder_add_0_1_0_cabi {

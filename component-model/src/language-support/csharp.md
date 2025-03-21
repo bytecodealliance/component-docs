@@ -1,13 +1,14 @@
 # C# Tooling
 
+WebAssembly components in C# can be built with [componentize-dotnet][componentize-dotnet],
+a a NuGet package that can be used to create a fully AOT-compiled
+component, giving .NET developers a component experience comparable to those in Rust and TinyGo.
+
+[componentize-dotnet]: https://github.com/bytecodealliance/componentize-dotnet
+
 ## Building a Component with `componentize-dotnet`
 
-[componentize-dotnet](https://github.com/bytecodealliance/componentize-dotnet) makes it easy to
-compile your code to WebAssembly components using a single tool. This Bytecode Alliance project is a
-NuGet package that can be used to create a fully AOT-compiled component, giving .NET developers a
-component experience comparable to those in Rust and TinyGo.
-
-componentize-dotnet serves as a one-stop shop for .NET developers, wrapping several tools into one:
+[`componentize-dotnet`][componentize-dotnet] serves as a one-stop shop, wrapping several tools into one:
 
 - [NativeAOT-LLVM](https://github.com/dotnet/runtimelab/tree/feature/NativeAOT-LLVM) (compilation)
 - [wit-bindgen](https://github.com/bytecodealliance/wit-bindgen) (WIT imports and exports)
@@ -15,8 +16,13 @@ componentize-dotnet serves as a one-stop shop for .NET developers, wrapping seve
 - [WASI SDK](https://github.com/WebAssembly/wasi-sdk) (SDK used by NativeAOT-LLVM)
 - [Wac](https://github.com/bytecodealliance/wac) (used to compose components)
 
-First, install the .NET SDK. For this walkthrough, we’ll use the [.NET 10 SDK preview](https://dotnet.microsoft.com/en-us/download/dotnet/10.0). 
+First, install the .NET SDK. For this walkthrough, we’ll use the [.NET 10 SDK preview][dotnet-sdk].
 You should also have [wasmtime](https://wasmtime.dev/) installed so you can run the binary that you produce.
+
+[dotnet-sdk]: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
+[wasmtime]: https://wasmtime.dev/
+
+## 1. Create a new project
 
 Once you have the .NET SDK installed, create a new project:
 
@@ -26,10 +32,11 @@ dotnet new componentize.wasi.cli -o adder
 cd adder
 ```
 
-Next, create or download the WIT world you would like to target. For this example we will use an
-[`adder`
-world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit)
-with an `add` function:
+## 2. Create or download your WIT world
+
+Next, create or download the WIT world you would like to target.
+
+For this example we will use the [`adder` world][adder-world], with an `add` function (e.g. to `wit/component.wit`):
 
 ```wit
 package docs:adder@0.1.0;
@@ -47,32 +54,48 @@ In the `adder.csproj` project file, add a new `<ItemGroup>`:
 
 ```xml
 <ItemGroup>
-    <Wit Update="adder/world.wit" World="example" />
+    <Wit Update="wit/component.wit" World="adder" />
 </ItemGroup>
 ```
 
-Since this component will only export a function dotnet considers this a library project. Let's update
-the  `<OutputType>` to be a library in the `adder.csproj`:
+Since this component will only export a function dotnet considers this a library project.
+Let's update the `<OutputType>` to be a library in the `adder.csproj`:
 
-```xml
-<OutputType>Library</OutputType>
+```diff
+- <OutputType>Exe</OutputType>
++ <OutputType>Library</OutputType>
 ```
 
-And remove the `Program.cs` file:
+And remove the automatically generated `Program.cs` file:
 
 ```bash
 rm Program.cs
 ```
 
-At this point, if you try to build the project with `dotnet build`, you'll get an error like "The name
-'ExampleWorldImpl' does not exist in the current context". This is because you've said you'll
-provide an implementation, but haven't yet done so. To fix this, add the following code to your
-project in a file called `adder.cs`:
+[adder-world]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
+
+## 3. Write the implementation for the `adder` world
+
+If you try to build the project with `dotnet build`, you'll get an error like the following:
+
+```
+➜ dotnet build
+Restore complete (8.6s)
+You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
+  adder failed with 1 error(s) (25.6s)
+    /path/to/adder/obj/Debug/net10.0/wasi-wasm/wit_bindgen/AdderWorld.wit.exports.docs.adder.v0_1_0.AddInterop.cs(15,19): error CS0103: The name 'AddImpl' does not exist in the current context
+
+Build failed with 1 error(s) in 34.6s
+```
+
+This is because we've promised an implementation, but haven't yet written one for the `adder` world.
+
+To fix this, add the following code to your in a file called `Component.cs`:
 
 ```csharp
-namespace ExampleWorld;
+namespace AdderWorld;
 
-public class ExampleWorldImpl : IExampleWorld
+public class AdderWorldImpl : IAdderWorld
 {
     public static uint Add(uint x, uint y)
     {
@@ -81,7 +104,7 @@ public class ExampleWorldImpl : IExampleWorld
 }
 ```
 
-If we build it:
+Then, we can build our component:
 
 ```sh
 dotnet build
@@ -89,9 +112,50 @@ dotnet build
 
 The component will be available at `bin/Debug/net10.0/wasi-wasm/native/adder.wasm`.
 
+### 5. (optional) the component from the example host
+
+> [!WARNING]
+> You must be careful to use a version of the adapter (`wasi_snapshot_preview1.wasm`) that is compatible with the version of
+> `wasmtime` that will be used, to ensure that WASI interface versions (and relevant implementation) match.
+
+This repository contains an [example WebAssembly host][example-host] written in Rust that can run components that implement the `adder` world.
+
+> [!NOTE]
+> When hosts run components that use WASI interfaces, they must *explicitly* [add WASI to the linker][add-to-linker] to run the built component.
+
+A successful run should show the following output:
+
+```
+cargo run --release -- 1 2 adder.component.wasm
+   Compiling example-host v0.1.0 (/path/to/component-docs/component-model/examples/example-host)
+    Finished `release` profile [optimized] target(s) in 7.85s
+     Running `target/debug/example-host 1 2 /tmp/docs/c/adder.component.wasm`
+1 + 2 = 3
+```
+
+If *not* configured correctly, you may see errors like the following:
+
+```
+cargo run --release -- 1 2 adder.component.wasm
+   Compiling example-host v0.1.0 (/path/to/component-docs/component-model/examples/example-host)
+    Finished `release` profile [optimized] target(s) in 7.85s
+     Running `target/release/example-host 1 2 adder.component.wasm`
+Error: Failed to instantiate the example world
+
+Caused by:
+    0: component imports instance `wasi:io/error@0.2.2`, but a matching implementation was not found in the linker
+    1: instance export `error` has the wrong type
+    2: resource implementation is missing
+```
+
+This kind of error normally indicates that the host in question does not contain satisfy WASI imports.
+
+[host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
+[add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/fn.add_to_linker_sync.html
+
 ## Building a component that exports an interface
 
-The previous example uses a WIT file that exports a function. However, you'll often prefer to export an interface, 
+The previous example uses a WIT file that exports a function. However, you'll often prefer to export an interface,
 either to comply with an existing specification or to capture a set of functions and types that tend to go
 together. Let's expand our `example` world to export an interface rather than directly
 export the function. We are also adding the `hostapp` world to our WIT file which we will implement
@@ -116,8 +180,10 @@ world hostapp {
 ```
 
 If you peek at the bindings, you'll notice that we now implement a class for the `add` interface
-rather than for the `example` world. This is a consistent pattern. As you export more interfaces
-from your world, you implement more classes. Our `adder.cs` example gets the slight update of:
+rather than for the `example` world -- this is a consistent pattern. As you export more interfaces
+from your world, you implement more classes.
+
+Our `Component.cs` example gets the slight update of:
 
 ```csharp
 namespace ExampleWorld.wit.exports.example.component;
@@ -152,7 +218,9 @@ our `adder` component and call the `add` function. We will later compose this co
 the `adder` library component we just built.
 
 Now we will be taking the `adder` component and executing it from another WebAssembly component.
-`dotnet new componentize.wasi.cli` creates a new project that creates an executable.  
+
+`dotnet new componentize.wasi.cli` creates a new project that creates an executable.
+
 Back out of the current project and create a new one:
 
 ```sh
@@ -211,7 +279,7 @@ Once again, compile your component with `dotnet build`:
 $ dotnet build
 Restore complete (0.4s)
 You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  host-app succeeded (1.1s) → bin/Debug/net9.0/wasi-wasm/host-app.dll
+  host-app succeeded (1.1s) → bin/Debug/net10.0/wasi-wasm/host-app.dll
 
 Build succeeded in 2.5s
 ```
@@ -226,7 +294,10 @@ world, it needs to be composed the first component. You can compose your `host-a
 your `adder` component by running [`wac plug`](https://github.com/bytecodealliance/wac):
 
 ```sh
-wac plug bin/Debug/net10.0/wasi-wasm/native/host-app.wasm --plug ../adder/bin/Debug/net10.0/wasi-wasm/native/adder.wasm -o main.wasm
+wac plug \
+    bin/Debug/net10.0/wasi-wasm/native/host-app.wasm \
+    --plug ../adder/bin/Debug/net10.0/wasi-wasm/native/adder.wasm \
+    -o main.wasm
 ```
 
 You can also automate the process by adding the following to your `host-app.csproj`:
@@ -237,7 +308,6 @@ You can also automate the process by adding the following to your `host-app.cspr
         <EntrypointComponent>bin/$(Configuration)/$(TargetFramework)/wasi-wasm/native/host-app.wasm</EntrypointComponent>
         <DependencyComponent>../adder/bin/$(Configuration)/$(TargetFramework)/wasi-wasm/native/adder.wasm</DependencyComponent>
     </PropertyGroup>
-    
     <MakeDir Directories="dist" />
     <Exec Command="$(WacExe) plug $(EntrypointComponent) --plug $(DependencyComponent) -o dist/main.wasm" />
 </Target>
@@ -252,4 +322,6 @@ wasmtime run ./dist/main.wasm
 1 + 2 = 3
 ```
 
-Checkout the [componentize-dotnet docs](https://github.com/bytecodealliance/componentize-dotnet) for more configurations options.
+Check out the [componentize-dotnet docs][componentize-dotnet-docs] for more configurations options.
+
+[componentize-dotnet-docs]: https://github.com/bytecodealliance/componentize-dotnet

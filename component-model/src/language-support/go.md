@@ -9,54 +9,108 @@ The component will implement the `adder` world, which contains `add` interface w
 
 ## 1. Install the tools
 
-Follow the [TinyGo installation instructions](https://tinygo.org/getting-started/) to install the TinyGo compiler. Additionally, install the `wasm-tools` CLI tool from the [wasm-tools repository](https://github.com/bytecodealliance/wasm-tools/releases).
+Follow the [TinyGo installation instructions](https://tinygo.org/getting-started/) to install the TinyGo compiler.
+
+Additionally, install the `wasm-tools` CLI tool from the [wasm-tools repository](https://github.com/bytecodealliance/wasm-tools/releases).
+
+> [!WARNING]
+> Due to some upstream issues, only `wasm-tools` versions 1.225.0 or earlier can be used with `wit-bindgen-go`
+>
+> If using the Rust toolchain to install `wasm-tools`, it can be installed like so:
+> `cargo install --locked wasm-tools@1.225.0 --force`
 
 To verify the installation, run the following commands:
 
-```console
+```
 $ tinygo version
 tinygo version 0.34.0 ...
 $ wasm-tools -V
-wasm-tools 1.219.1 ...
+wasm-tools 1.255.0 ...
 ```
 
-Optional: Install the `wkg` CLI tool to resolve the imports in the WIT file. The `wkg` CLI is a part of the [Wasm Component package manager](https://github.com/bytecodealliance/wasm-pkg-tools/releases)
+Optional: Install the [`wkg`][wkg] CLI tool to resolve the imports in the WIT file. The `wkg` CLI is a part of the [Wasm Component package manager](https://github.com/bytecodealliance/wasm-pkg-tools/releases)
 
-## 2. Determine which World the Component will Implement
+[wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 
-The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world so it requires the imports of `wasi:cli/imports@0.2.0`. We need to include them in the `add.wit`.
-
-Tools like `wkg` can be convenient to build a complete WIT package by resolving the imports.
-
-```wit
-# wit/add.wit
-package docs:adder@0.1.0;
-world adder {
-  include wasi:cli/imports@0.2.0;
-  export add: func(x: s32, y: s32) -> s32;
-}
-```
-
-Running the `wkg wit build` command will resolve the imports and generate the complete WIT file encoded as a Wasm component.
-
-```console
-$ wkg wit build
-WIT package written to docs:adder@0.1.0.wasm
-```
+## 2. Create your Go project
 
 Now, create your Go project:
 
 ```console
-$ mkdir add && cd add
-$ go mod init example.com
+mkdir add && cd add
+go mod init example.com
 ```
 
-Next, we can generate the bindings for the Wasm component:
+Ensure that the following `tool`s are installed:
+
+```
+tool (
+	go.bytecodealliance.org/cmd/wit-bindgen-go
+)
+```
+
+> [!NOTE]
+> `go tool` was introduced in [Golang 1.24][go-1-24-release] and can be used to manage tooling in Go projects.
+
+Consider also running `go mod tidy` after adding the above tool.
+
+[go-1-24-release]: https://go.dev/blog/go1.24
+
+## 2. Determine which World the Component will Implement
+
+Since we will be implementing the [`adder` world][adder-wit], we can copy the WIT to our project,
+under the `wit` folder (e.g. `wit/component.wit`):
+
+```wit
+package docs:adder@0.1.0;
+
+interface add {
+    add: func(x: u32, y: u32) -> u32;
+}
+
+world adder {
+    export add;
+}
+```
+
+The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world
+(part of [`wasi:cli`][wasi-cli]) so it requires the imports of `wasi:cli/imports@0.2.0`.
+
+We need to include those interfaces as well in `component.wit`, by editing the `adder` world:
+
+```wit
+world adder {
+  include wasi:cli/imports@0.2.0;
+  export add;
+}
+```
+
+### Using `wkg` to automatically resolve and download imports
+
+Tools like [`wkg`][wkg] can be convenient to build a complete WIT package by resolving the imports.
+
+Running the `wkg wit fetch` command will resolve the imports and populate your `wit` folder with all relevant
+imported namespaces and packages.
+
+```
+$ wkg wit build
+WIT package written to docs:adder@0.1.0.wasm
+```
+
+[wasi-cli]: https://github.com/WebAssembly/wasi-cli
+
+## 3. Generate bindings for the Wasm component
+
+Now that we have our WIT definitions bundled together into a WASM file,
+we can generate the bindings for our Wasm component, by adding a build directive:
 
 ```console
-$ go get go.bytecodealliance.org/cmd/wit-bindgen-go
-$ go run go.bytecodealliance.org/cmd/wit-bindgen-go generate -o internal/ ./docs:adder@0.1.0.wasm
+go tool wit-bindgen-go generate --world adder --out internal ./docs:adder@0.1.0.wasm
 ```
+
+> [!NOTE]
+> The `go tool` directive (added in [Golang 1.24][go-1-24-release]) installs and enables use of `wit-bindgen-go`,
+> part of the Bytecode Alliance suite of Golang tooling.
 
 The `internal` directory will contain the generated Go code that WIT package.
 
@@ -64,48 +118,153 @@ The `internal` directory will contain the generated Go code that WIT package.
 $ tree internal
 internal
 ├── docs
-│   └── adder
-│       └── adder
-│           ├── adder.exports.go
-│           ├── adder.wasm.go
-│           ├── adder.wit
-│           ├── adder.wit.go
-│           └── empty.s
+│   └── adder
+│       ├── add
+│       │   ├── add.exports.go
+│       │   ├── add.wasm.go
+│       │   ├── add.wit.go
+│       │   └── empty.s
+│       └── adder
+│           └── adder.wit.go
 └── wasi
     ├── cli
-    │   └── stdout
-    │       ├── empty.s
-    │       ├── stdout.wasm.go
-    │       └── stdout.wit.go
+    │   ├── environment
+    │   │   ├── empty.s
+    │   │   ├── environment.wasm.go
+    │   │   └── environment.wit.go
+    │   ├── exit
+    │   │   ├── empty.s
+    │   │   ├── exit.wasm.go
+    │   │   └── exit.wit.go
+    │   ├── stderr
+    │   │   ├── empty.s
+    │   │   ├── stderr.wasm.go
+    │   │   └── stderr.wit.go
+    │   ├── stdin
+    │   │   ├── empty.s
+    │   │   ├── stdin.wasm.go
+    │   │   └── stdin.wit.go
+    │   ├── stdout
+    │   │   ├── empty.s
+    │   │   ├── stdout.wasm.go
+    │   │   └── stdout.wit.go
+    │   ├── terminal-input
+    │   │   ├── empty.s
+    │   │   ├── terminal-input.wasm.go
+    │   │   └── terminal-input.wit.go
+    │   ├── terminal-output
+    │   │   ├── empty.s
+    │   │   ├── terminal-output.wasm.go
+    │   │   └── terminal-output.wit.go
+    │   ├── terminal-stderr
+    │   │   ├── empty.s
+    │   │   ├── terminal-stderr.wasm.go
+    │   │   └── terminal-stderr.wit.go
+    │   ├── terminal-stdin
+    │   │   ├── empty.s
+    │   │   ├── terminal-stdin.wasm.go
+    │   │   └── terminal-stdin.wit.go
+    │   └── terminal-stdout
+    │       ├── empty.s
+    │       ├── terminal-stdout.wasm.go
+    │       └── terminal-stdout.wit.go
+    ├── clocks
+    │   ├── monotonic-clock
+    │   │   ├── empty.s
+    │   │   ├── monotonic-clock.wasm.go
+    │   │   └── monotonic-clock.wit.go
+    │   └── wall-clock
+    │       ├── empty.s
+    │       ├── wall-clock.wasm.go
+    │       └── wall-clock.wit.go
+    ├── filesystem
+    │   ├── preopens
+    │   │   ├── empty.s
+    │   │   ├── preopens.wasm.go
+    │   │   └── preopens.wit.go
+    │   └── types
+    │       ├── abi.go
+    │       ├── empty.s
+    │       ├── types.wasm.go
+    │       └── types.wit.go
     ├── io
-    │   ├── error
-    │   │   ├── empty.s
-    │   │   ├── error.wit.go
-    │   │   └── ioerror.wasm.go
-    │   └── streams
-    │       ├── empty.s
-    │       ├── streams.wasm.go
-    │       └── streams.wit.go
-    └── random
-        └── random
+    │   ├── error
+    │   │   ├── empty.s
+    │   │   ├── error.wasm.go
+    │   │   └── error.wit.go
+    │   ├── poll
+    │   │   ├── empty.s
+    │   │   ├── poll.wasm.go
+    │   │   └── poll.wit.go
+    │   └── streams
+    │       ├── empty.s
+    │       ├── streams.wasm.go
+    │       └── streams.wit.go
+    ├── random
+    │   ├── insecure
+    │   │   ├── empty.s
+    │   │   ├── insecure.wasm.go
+    │   │   └── insecure.wit.go
+    │   ├── insecure-seed
+    │   │   ├── empty.s
+    │   │   ├── insecure-seed.wasm.go
+    │   │   └── insecure-seed.wit.go
+    │   └── random
+    │       ├── empty.s
+    │       ├── random.wasm.go
+    │       └── random.wit.go
+    └── sockets
+        ├── instance-network
+        │   ├── empty.s
+        │   ├── instance-network.wasm.go
+        │   └── instance-network.wit.go
+        ├── ip-name-lookup
+        │   ├── abi.go
+        │   ├── empty.s
+        │   ├── ip-name-lookup.wasm.go
+        │   └── ip-name-lookup.wit.go
+        ├── network
+        │   ├── abi.go
+        │   ├── empty.s
+        │   ├── network.wasm.go
+        │   └── network.wit.go
+        ├── tcp
+        │   ├── abi.go
+        │   ├── empty.s
+        │   ├── tcp.wasm.go
+        │   └── tcp.wit.go
+        ├── tcp-create-socket
+        │   ├── empty.s
+        │   ├── tcp-create-socket.wasm.go
+        │   └── tcp-create-socket.wit.go
+        ├── udp
+        │   ├── abi.go
+        │   ├── empty.s
+        │   ├── udp.wasm.go
+        │   └── udp.wit.go
+        └── udp-create-socket
             ├── empty.s
-            ├── random.wasm.go
-            └── random.wit.go
+            ├── udp-create-socket.wasm.go
+            └── udp-create-socket.wit.go
+
+39 directories, 91 files
 ```
 
 The `adder.exports.go` file contains the exported functions that need to be implemented in the Go code called `Exports`.
 
-## 3. Implement the `add` Function
+## 4. Implement the `add` Function
 
 ```Go
+//go:generate go tool wit-bindgen-go generate --world adder --out internal ./docs:adder@0.1.0.wasm
+
 package main
 
 import (
-	"example.com/internal/docs/adder/adder"
+	"example.com/internal/docs/adder/add"
 )
 
 func init() {
-	adder.Exports.Add = func(x int32, y int32) int32 {
+	add.Exports.Add = func(x uint32, y uint32) uint32 {
 		return x + y
 	}
 }
@@ -117,18 +276,19 @@ func main() {}
 Go's `init` functions are used to do initialization tasks that
 should be done before any other tasks. In this case, we are using it to export the `Add` function.
 
-## 4. Build the Component
+## 5. Build the Component
 
 We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`.
 
 Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module and componentize it.
 
 ```console
-$ tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
+tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
 ```
 
 We now have an add component that satisfies our `adder` world, exporting the `add` function, which
-we can confirm using the `wasm-tools component wit` command:
+
+We can confirm using the `wasm-tools component wit` command:
 
 ```console
 $ wasm-tools component wit add.wasm

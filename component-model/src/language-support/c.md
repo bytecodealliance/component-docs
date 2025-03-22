@@ -5,7 +5,7 @@ WebAssembly components can be built from C and C++ using [`clang`][clang], the C
 [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen) is a tool to generate guest language bindings from a
 given `.wit` file.
 
-Although `wit-bindgen` is a standalone tool (whereas some languages have more integrated toolchains [`cargo-component`][cargo-component]),
+Although `wit-bindgen` is a standalone tool (whereas some languages have more integrated toolchains like Rust's [`cargo-component`][cargo-component]),
 `wit-bindgen` can generate source-level bindings for `Rust`, `C`, `Java (TeaVM)`, and `TinyGo`, with the ability for more
 language generators to be added in the future.
 
@@ -14,6 +14,8 @@ language generators to be added in the future.
 [clang]: https://clang.llvm.org/
 [clang-tgt-wasm32-wasi]: https://clang.llvm.org/docs/ClangCommandLineReference.html#webassembly
 [llvm]: https://llvm.org/
+[wasi]: https://wasi.dev/
+[cargo-component]: https://crates.io/crates/cargo-component
 
 ## 1. Download dependencies
 
@@ -131,6 +133,8 @@ Now, you can adapt preview1 to preview2 to build a component:
 wasm-tools component new adder.wasm --adapt wasi_snapshot_preview1.wasm -o adder.component.wasm
 ```
 
+[wasmtime-releases]: https://github.com/bytecodealliance/wasmtime/releases
+
 ## 7. Inspect the built component
 
 Finally, you can inspect the embedded wit to see your component (including any WASI imports if necessary):
@@ -199,6 +203,7 @@ This kind of error normally indicates that the host in question does not contain
 
 [host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 [add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/fn.add_to_linker_sync.html
+[example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 
 ## 9. Running a Component from C/C++ Applications
 

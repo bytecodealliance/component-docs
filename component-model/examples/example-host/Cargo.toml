@@ -2,10 +2,13 @@
 name = "example-host"
 version = "0.1.0"
 edition = "2021"
+description = """
+Example Rust-based WebAssembly host that executes WebAssembly components
+"""
 
 [dependencies]
+anyhow = "1.0.72"
 async-std = { version = "1.13", features = ["attributes"] }
 clap = { version = "4", features = ["derive"] }
 wasmtime = "27.0"
 wasmtime-wasi = "27.0"
-anyhow = "1.0.72"

@@ -11,3 +11,5 @@ edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/mai
 additional-css = ["theme/head.hbs"]
 
 [preprocessor.alerts]
+
+[output.linkcheck]

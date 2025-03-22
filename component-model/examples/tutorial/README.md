@@ -10,7 +10,7 @@ package docs:adder@0.1.0;
 
 
 interface add {
-    add: func(a: u32, b: u32) -> u32;
+    add: func(x: u32, y: u32) -> u32;
 }
 
 world adder {

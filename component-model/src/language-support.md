@@ -10,8 +10,8 @@ not hesitate to [contribute documentation](https://github.com/bytecodealliance/c
 
 One of the benefits of components is their portability across host runtimes. The runtime only needs
 to know what world the component is targeting in order to import or execute the component. This
-language guide hopes to demonstrate that with a prevailing `example` world defined in
-[`examples/example-host/add.wit`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit). Furthermore, an example host that understands the `example`
+language guide hopes to demonstrate that with a prevailing `adder` world defined in
+[`examples/tutorial/wit/adder/world.wit`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit). Furthermore, an example host that understands the `example`
 world has been provided in [`examples/example-host`](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/README.md) for running components. Each
 toolchain section walks through creating a component of this world, which can be run either in the
 example host or from an application of that toolchain. This aims to provide a full story for using
@@ -46,17 +46,21 @@ run components for a given toolchain:
 [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) provides a suite of subcommands for
 working with WebAssembly modules and components.
 
-`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`example` world](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wit) and simply adds two numbers.
+`wasm-tools` can be used to create a component from WebAssembly Text (WAT). This walks through creating a component from WAT that implements the [`adder` world](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit) and simply adds two numbers.
 
 1. Install [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools/tree/main#installation), a
    tool for low-level manipulation of Wasm modules and components.
-2. The `add` function is defined inside the following `example` world:
+2. The `add` function is defined inside the following `world` world:
 
    ```wit
-   package example:component;
+   package docs:adder@0.1.0;
 
-   world example {
-       export add: func(x: s32, y: s32) -> s32;
+   interface add {
+       add: func(x: u32, y: u32) -> u32;
+   }
+
+   world adder {
+       export add;
    }
    ```
 
@@ -68,7 +72,7 @@ working with WebAssembly modules and components.
          local.get $lhs
          local.get $rhs
          i32.add)
-     (export "add" (func $add))
+     (export "docs:adder/add@0.1.0" (func $add))
    )
    ```
 
@@ -76,7 +80,7 @@ working with WebAssembly modules and components.
    inside the core module and then encoding the WAT to a Wasm binary.
 
    ```sh
-   $ wasm-tools component embed add.wit add.wat -o add.wasm
+   $ wasm-tools component embed adder/world.wit add.wat -o add.wasm
    $ wasm-tools component new add.wasm -o add.component.wasm
    ```
 

@@ -1,16 +1,16 @@
 # Components in Rust
 
 Rust has first-class support for the component model via the [`cargo-component`
-tool](https://github.com/bytecodealliance/cargo-component). We will be using
+tool][cargo-component]. We will be using
 the `cargo component` subcommand to create WebAssembly components using Rust as
 the component's implementation language.
 
 > [!NOTE]
 > You can find more details about `cargo-component` on [crates.io](https://crates.io/crates/cargo-component).
 
-## Prerequisites
+## 1. Setup
 
-Install [`cargo-component`](https://github.com/bytecodealliance/cargo-component#installation):
+Install [`cargo-component`][cargo-component-install]:
 ```sh
 cargo install --locked cargo-component
 ```
@@ -27,11 +27,11 @@ Clone the [component-docs](https://github.com/bytecodealliance/component-docs) r
 git clone https://github.com/bytecodealliance/component-docs
 ```
 
-## Building a Component with `cargo component`
+## 2. Scaffolding a Component
 
 We will create a component in Rust that implements the `add` function exported
-by the [`example:component/example`][example-component] world in the
-`example:component`
+by the [`docs:adder/adder`][docs-adder] world in the
+`docs:adder`
 [package](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#package-names).
 
 First `cd` into the `tutorial` directory found in the repo we just cloned:
@@ -41,52 +41,49 @@ cd component-docs/component-model/examples/tutorial
 
 Now create a new WebAssembly component package called `add`:
 ```sh
-$ cargo component new add --lib && cd add
+cargo component new add --lib && cd add
 ```
 
-> [!NOTE]
-> `cargo-component` generates the necessary bindings for us in a module called `bindings` found in `src/bindings.rs`.
+## Adding the WIT world
 
-Next change our generated `wit/world.wit` to match `example:component`:
+We now need to change our generated `wit/world.wit` to match `docs:adder`:
 ```wit
-{{#include ../../examples/example-host/add.wit}}
+{{#include ../../examples/tutorial/wit/adder/world.wit}}
 ```
 
-Since our WIT file changed names (from `component:add` to
-`example:component`) this needs to be reflected in our `Cargo.toml`,
-let's change the `package.metadata.component.package` string to `"example:component"`:
+The `package.metadata.component` section of our `Cargo.toml` should be changed
+to the following:
 
 ```toml
 [package.metadata.component]
-package = "example:component"
+package = "docs:adder"
 ```
 
-`cargo component` will generate bindings for the
-`example:component/example` world we specified `Cargo.toml`, it will also
-create a `Guest` trait that a component can implement.
-Since our `example:component/example` world has no interfaces, our
-generated `Guest` trait lives at the top of the `bindings` module.
+## Generating bindings
 
-Implementing the `Guest` trait for our `Component` struct requires us
-to match the structure specified by `example:component/example`, we do this by
-implementing the `add` method with the equivalent function signature. Our
-`src/lib.rs` should look similar to the following:
+Now that we've updated our `world.wit` and `Cargo.toml`, we can re-generate
+bindings with the command below:
+
+```sh
+cargo component bindings
+```
+
+`cargo-component` will generate bindings for our
+world and create a `Guest` trait that a component should
+implement
+
+## Implementing the `Guest` trait
+
+Implement the `Guest` trait in `src/lib.rs`, using the scaffolded code. Your
+code should look something like the following:
 
 ```rs
-mod bindings;
-
-struct Component;
-
-impl Guest for Component {
-    fn add(x: i32, y: i32) -> i32 {
-        x + y
-    }
-}
-
-bindings::export!(Component with_types_in bindings);
+{{#include ../../examples/tutorial/adder/src/lib.rs}}
 ```
 
-Now, let's build our component with release optimizations:
+## Building a Component
+
+Now, let's build our component, being sure to optimize with a release build:
 
 ```sh
 cargo component build --release
@@ -104,14 +101,19 @@ The command above should produce the output below:
 package root:component;
 
 world root {
-  export add: func(x: s32, y: s32) -> s32;
+  export docs:adder/add@0.1.0;
+}
+package docs:adder@0.1.0 {
+  interface add {
+    add: func(x: u32, y: u32) -> u32;
+  }
 }
 ```
 
-### Running a Component from Rust Applications
+### Running a Component
 
 To verify that our component works, lets run it from a Rust application that knows how to run a
-component targeting the [`example:component/example` world](#example-component).
+component targeting the [`docs:adder/adder`](#adding-the-wit-world) world.
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
@@ -122,34 +124,31 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 1 + 2 = 3
 ```
 
-## Exporting an interface with `cargo component`
+## Exporting an interface
 
 Notice how our `example` world currently exports `add` as a function. It's
 often preferable to export an interface rather than a function, either to
 comply with an existing specification or to capture several functions and types
 at once.
-For example, to implement the [`docs:adder/adder`][docs-adder] world:
 
-```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
-```
-
-you would write the following Rust code:
+For example, to implement the [`docs:adder/adder`](#adding-the-wit-world)
+world, you would write the following Rust code:
 
 ```rust
 {{#include ../../examples/tutorial/adder/src/lib.rs}}
 ```
 
-## Importing an interface with `cargo component`
+## Importing an interface
 
-The world file (`wit/world.wit`) generated for you by `cargo component new --lib` doesn't specify any imports.
+The world file (`wit/world.wit`) we generated doesn't specify any imports. If
+your component consumes other components, you can edit the `world.wit` file to
+import their interfaces.
 
 > [!NOTE]
 > This section is about importing custom WIT interfaces from library components.
 > By default, `cargo component build` imports any required [WASI interfaces](https://wasi.dev/interfaces)
 > for us without needing to explicitly declare them.
 
-If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
 For example, suppose you have created and built an adder component as explained in the [exporting an interface section](#exporting-an-interface-with-cargo-component) and want to use that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 
@@ -171,7 +170,9 @@ world calculator {
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
+Because the `docs:adder` package is in a different project, we must first tell
+`cargo component` how to find it. To do this, add the following to the
+`Cargo.toml` file:
 
 ```toml
 [package.metadata.component.target.dependencies]
@@ -574,5 +575,7 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
     }
     ```
 
+[cargo-component]: https://github.com/bytecodealliance/cargo-component
+[cargo-component-install]: https://github.com/bytecodealliance/cargo-component#install
 [example-component]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit

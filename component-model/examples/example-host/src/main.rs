@@ -1,9 +1,9 @@
-mod async_add;
-mod sync_add;
-mod state;
-
 use clap::Parser;
 use std::path::PathBuf;
+
+mod async_add;
+mod state;
+mod sync_add;
 
 /// A CLI for executing WebAssembly components that
 /// implement the `example` world.
@@ -11,9 +11,9 @@ use std::path::PathBuf;
 #[clap(name = "add-host", version = env!("CARGO_PKG_VERSION"))]
 struct AddApp {
     /// The first operand
-    x: i32,
+    x: u32,
     /// The second operand
-    y: i32,
+    y: u32,
     /// The path to the component.
     #[clap(value_name = "COMPONENT_PATH")]
     component: PathBuf,

@@ -17,19 +17,19 @@ cargo install cargo-component
 
 ## 2. Scaffold a Component with `cargo component`
 
-Create a Rust library that implements the `add` function in the [`adder`world][adder-wit].
+Create a Rust library that implements the `add` function in the [`adder` world][adder-wit].
 
 First scaffold a project:
 
 ```sh
-$ cargo component new add --lib && cd add
+$ cargo component new adder --lib && cd adder
 ```
 
 Note that `cargo component` generates the necessary bindings as a module called `bindings`.
 
 ## 3. Add the WIT world the Component will implement
 
-Next, update `wit/world.wit` to match `add.wit`:
+Next, update `wit/world.wit` to match the [`adder` world][adder-wit]:
 
 ```
 package docs:adder@0.1.0;
@@ -124,13 +124,24 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 
 ## Exporting an interface with `cargo component`
 
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. For example, to implement the following world:
+While it is possible to export a raw function, prefer exporting an interface, similar to the [sample `adder` world][add-wit]. 
+This often makes it easier to comply with an existing specification or to capture a set of functions and types 
+that tend to go together. 
+
+For example, consider the following changes to the `add` interface in the `adder` world:
 
 ```wit
 package docs:adder@0.1.0;
 
+
 interface add {
-    add: func(x: u32, y: u32) -> u32;
+    variant operand { 
+        unsigned32(u32)
+        signed32(s32)
+        zero,
+    }
+
+    add: func(x: operand, y: operand) -> result<operand, string>;
 }
 
 world adder {
@@ -138,22 +149,45 @@ world adder {
 }
 ```
 
-you would write the following Rust code:
+This would be implemented with the following Rust code:
 
 ```rust
+#[allow(warnings)]
 mod bindings;
 
-// Separating out the interface puts it in a sub-module
-use bindings::exports::docs::adder::add::Guest;
+use bindings::exports::docs::adder::add::{Guest, Operand};
 
 struct Component;
 
 impl Guest for Component {
-    fn add(x: u32, y: u32) -> u32 {
-        x + y
+    fn add(x: Operand, y: Operand) -> Result<Operand, String> {
+        let x = convert_operand(x);
+        let y = convert_operand(y);
+        match x + y {
+            v if v == 0 => Ok(Operand::Zero),
+            v if v < 0 => i32::try_from(v)
+                .map_err(|e| format!("unexpectedly invalid u32: {e}"))
+                .map(Operand::Signed32),
+            v => u32::try_from(v)
+                .map_err(|e| format!("unexpectedly invalid u32: {e}"))
+                .map(Operand::Unsigned32),
+        }
     }
 }
+
+fn convert_operand(operand: Operand) -> i64 {
+    match operand {
+        Operand::Unsigned32(v) => v as i64,
+        Operand::Signed32(v) => v as i64,
+        Operand::Zero => 0,
+    }
+}
+
+bindings::export!(Component with_types_in bindings);
 ```
+
+While the code above is unlikely to appear in real interfaces, but it shows the more common case of an interface 
+including types that are meant to be used *with* the interface in question. 
 
 ## Importing an interface with `cargo component`
 

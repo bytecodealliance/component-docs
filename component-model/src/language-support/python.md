@@ -11,41 +11,51 @@ First, install [Python 3.10 or later](https://www.python.org/) and [pip](https:/
 pip install componentize-py
 ```
 
-Next, create or download the WIT world you would like to target. For this example we will use an [`example`
-world](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) with an `add` function:
+Next, create or download the WIT world you would like to target. For this example we will use an [`adder`
+world][adder-wit] with an `add` function (e.g. `wit/component.wit`):
 
 ```wit
-package example:component;
+package docs:adder@0.1.0;
 
-world example {
-    export add: func(x: s32, y: s32) -> s32;
+interface add {
+    add: func(x: u32, y: u32) -> u32;
+}
+
+world adder {
+    export add;
 }
 ```
 
 If you want to generate bindings produced for the WIT world (for an IDE or typechecker), you can generate them using the `bindings` subcommand. Specify the path to the WIT interface with the world you are targeting:
 
 ```sh
-$ componentize-py --wit-path /path/to/examples/example-host/add.wit --world example bindings .
+$ componentize-py --wit-path wit/component/wit --world adder bindings .
 ```
 
+> [!NOTE]
 > You do not need to generate the bindings in order to `componentize` in the next step. `componentize` will generate bindings on-the-fly and bundle them into the produced component.
 
-You can see that bindings were created in an `example` package which contains an `Example` protocol with an `add` method that we can implement:
+Bindings were created in an `adder` package which contains an `Add` protocol with an `add` method that we can implement.
 
-```sh
-$ cat<<EOT >> app.py
-import example
+To implement this interface, put the following code in a file called `app.py`:
 
-class Example(example.Example):
+```py
+import adder
+
+class Add(adder.Adder):
     def add(self, x: int, y: int) -> int:
         return x + y
-EOT
 ```
 
 We now can compile our application to a Wasm component using the `componentize` subcommand:
 
-```sh
-$ componentize-py --wit-path /path/to/examples/example-host/add.wit --world example componentize app -o add.wasm
+```console
+componentize-py \
+    --wit-path wit/component.wit \
+    --world adder \
+    componentize \
+    app \
+    -o add.wasm
 Component built successfully
 ```
 
@@ -59,7 +69,6 @@ $ cargo run --release -- 1 2 ../path/to/add.wasm
 
 See [`componentize-py`'s examples](https://github.com/bytecodealliance/componentize-py/tree/main/examples) to try out build HTTP, CLI, and TCP components from Python applications.
 
-
 ### Building a Component that Exports an Interface
 
 The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. Let's expand our example world to export an interface rather than directly export the function.
@@ -69,7 +78,7 @@ The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/t
 package example:component;
 
 interface add {
-    add: func(a: u32, b: u32) -> u32;
+    add: func(x: u32, y: u32) -> u32;
 }
 
 world example {
@@ -97,8 +106,8 @@ Component built successfully
 
 ## Running components from Python Applications
 
-Wasm components can also be invoked from Python applications. This walks through using tooling
-to call the [`app.wasm` component from the examples](../../examples/example-host/add.wasm).
+Wasm components can also be invoked from Python applications. This section walks through using tooling
+to call the [pre-built `app.wasm` component][add-wasm] in the examples.
 
 > `wasmtime-py` is only able to run components built with `componentize-py` when the `--stub-wasi` option is used at build time. This is because `wasmtime-py` does not yet support [resources](../design/wit.md#resources), and `componentize-py` by default generates components which use resources from the `wasi:cli` world.  See [this example](https://github.com/bytecodealliance/componentize-py/tree/main/examples/sandbox) of using the `--stub-wasi` option to generate a `wasmtime-py`-compatible component.
 
@@ -141,3 +150,7 @@ Run the Python host program:
 $ python3 host.py
 1 + 2 = 3
 ```
+
+[add-wasm]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wasm
+
+[adder-wit]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit

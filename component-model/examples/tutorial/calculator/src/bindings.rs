@@ -13,7 +13,7 @@ pub mod docs {
                 super::super::super::__link_custom_section_describing_imports;
             use super::super::super::_rt;
             #[allow(unused_unsafe, clippy::all)]
-            pub fn add(a: u32, b: u32) -> u32 {
+            pub fn add(x: u32, y: u32) -> u32 {
                 unsafe {
                     #[cfg(target_arch = "wasm32")]
                     #[link(wasm_import_module = "docs:adder/add@0.1.0")]

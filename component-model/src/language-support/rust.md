@@ -8,7 +8,7 @@ the component's implementation language.
 > [!NOTE]
 > You can find more details about `cargo-component` on [crates.io](https://crates.io/crates/cargo-component).
 
-## 1. Setup
+## Setup
 
 Install [`cargo-component`][cargo-component-install]:
 ```sh
@@ -27,7 +27,7 @@ Clone the [component-docs](https://github.com/bytecodealliance/component-docs) r
 git clone https://github.com/bytecodealliance/component-docs
 ```
 
-## 2. Scaffolding a Component
+## Scaffolding a Component
 
 We will create a component in Rust that implements the `add` function exported
 by the [`docs:adder/adder`][docs-adder] world in the

@@ -286,8 +286,8 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
     ```toml
     [package.metadata.component.target.dependencies]
-    "docs:calculator" = { path = "../calculator/wit" }
-    "docs:adder" = { path = "../adder/wit" }
+    "docs:calculator" = { path = "../wit/calculator" }
+    "docs:adder" = { path = "../wit/adder" }
     ```
 
     > If the external package refers to other packages, you need to provide the paths to them as well.

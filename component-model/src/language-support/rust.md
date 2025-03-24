@@ -146,7 +146,7 @@ import their interfaces.
 
 > [!NOTE]
 > This section is about importing custom WIT interfaces from library components.
-> By default, `cargo component build` imports any required [WASI interfaces](https://wasi.dev/interfaces)
+> By default, `cargo-component` imports any required [WASI interfaces](https://wasi.dev/interfaces)
 > for us without needing to explicitly declare them.
 
 
@@ -577,5 +577,4 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
 
 [cargo-component]: https://github.com/bytecodealliance/cargo-component
 [cargo-component-install]: https://github.com/bytecodealliance/cargo-component#install
-[example-component]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit

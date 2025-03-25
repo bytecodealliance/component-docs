@@ -186,7 +186,7 @@ fn convert_operand(operand: Operand) -> i64 {
 bindings::export!(Component with_types_in bindings);
 ```
 
-While the code above is unlikely to appear in real interfaces, but it shows the more common case of an interface 
+The code above is unlikely to appear in real interfaces; however, it shows the more common case of an interface 
 including types that are meant to be used *with* the interface in question. 
 
 ## Importing an interface with `cargo component`

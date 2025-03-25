@@ -216,3 +216,6 @@ or any other host.
 
 See the [Rust Tooling guide](../language-support/rust.md#running-a-component-from-rust-applications) for instructions on how to run this component from
 the Rust `example-host` (replacing the path to `add.wasm` with your `add-component` above).
+
+[!NOTE]: #
+[!WARNING]: #

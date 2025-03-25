@@ -321,3 +321,6 @@ cargo run --release -- 1 2 /path/to/add.wasm
 ```
 
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
+
+[!NOTE]: #
+[!WARNING]: #

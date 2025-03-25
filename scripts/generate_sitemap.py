@@ -5,7 +5,7 @@ import argparse
 
 def parse_summary():
     """Parse URLs from the SUMMARY.md file."""
-    with open("src/SUMMARY.md", "r") as file:
+    with open("../../src/SUMMARY.md", "r") as file:
         for line in file:
             if "](" in line:
                 url = line.split("](")[1].split(")")[0]

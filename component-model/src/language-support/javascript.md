@@ -548,3 +548,7 @@ reverseAndUppercase('!dlroW olleH') = HELLO WORLD!
 
 [wac]: https://github.com/bytecodealliance/wac
 [jco-examples-string-reverse-upper]: https://github.com/bytecodealliance/jco/tree/main/examples/components/string-reverse-upper
+
+[!TIP]: #
+[!NOTE]: #
+[!WARNING]: #

@@ -9,7 +9,7 @@ using Rust as the component's implementation language.
 
 To install `cargo component`, run:
 
-```sh
+```console
 cargo install cargo-component
 ```
 
@@ -21,7 +21,7 @@ Create a Rust library that implements the `add` function in the [`adder`world][a
 
 First scaffold a project:
 
-```sh
+```console
 $ cargo component new add --lib && cd add
 ```
 
@@ -114,7 +114,7 @@ component targeting the [`adder` world][adder-wit].
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
 
-```sh
+```console
 $ cd examples/example-host
 $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 1 + 2 = 3
@@ -240,7 +240,7 @@ A _command_ is a component with a specific export that allows it to be executed 
 
 To create a command with cargo component, run:
 
-```sh
+```console
 cargo component new <name>
 ```
 
@@ -256,7 +256,7 @@ You can write Rust in this project, just as you normally would, including import
 
 To run your command component:
 
-```sh
+```console
 cargo component build
 wasmtime run ./target/wasm32-wasip1/debug/<name>.wasm
 ```
@@ -313,7 +313,7 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
 6. Run the composed component:
 
-    ```sh
+    ```console
     $ wasmtime run ./my-composed-command.wasm
     1 + 1 = 579  # might need to go back and do some work on the calculator implementation
     ```

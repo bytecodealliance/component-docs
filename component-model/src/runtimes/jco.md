@@ -4,7 +4,7 @@
 
 To run a component with `jco`, run:
 
-```sh
+```console
 jco run <path-to-wasm-file> <command-args...>
 ```
 

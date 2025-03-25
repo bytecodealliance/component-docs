@@ -145,17 +145,17 @@ For reference, see a completed [example](https://github.com/bytecodealliance/com
 ## Composing the calculator
 
 Now, we are ready to bring our components together into one runnable calculator component, using
-`wac`. 
+`wac`.
 
 We will:
 
 1. Compose the calculator component with the add component to satisfy the calculator component's `adder` import
-2. Compose that resolved calculator component once more with the command component to satisfy the command component's `calculate` import. 
+2. Compose that resolved calculator component once more with the command component to satisfy the command component's `calculate` import.
 
 The result is a fully-formed command component that has all its imports satisfied and has a single
 export (the `wasi:cli/run` interface), which can be executed by [`wasmtime`][wasmtime].
 
-```sh
+```console
 wac plug calculator.wasm --plug adder.wasm -o composed.wasm
 wac plug command.wasm --plug composed.wasm -o final.wasm
 ```
@@ -168,7 +168,7 @@ Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring yo
 [recent release][wasmtime-releases] (`v14.0.0` or greater), as earlier releases of
 the `wasmtime` CLI do not include component model support.
 
-```
+```console
 wasmtime run final.wasm 1 2 add
 1 + 2 = 3
 ```

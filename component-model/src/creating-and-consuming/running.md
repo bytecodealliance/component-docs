@@ -8,7 +8,7 @@ You must use a recent version of `wasmtime` ([`v14.0.0` or greater](https://gith
 
 To run your component, run:
 
-```sh
+```console
 wasmtime run <path-to-wasm-file>
 ```
 

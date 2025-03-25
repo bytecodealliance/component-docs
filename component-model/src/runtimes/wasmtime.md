@@ -5,7 +5,7 @@
 ## Running command components with Wasmtime
 To run a command component with Wasmtime, execute:
 
-```sh
+```console
 wasmtime run <path-to-wasm-file>
 ```
 
@@ -15,10 +15,10 @@ By default, Wasmtime denies the component access to all system resources. For ex
 
 ## Running HTTP components with Wasmtime
 
-You can now execute components that implement the [HTTP proxy world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) with the `wasmtime serve` subcommand. [The Wasmtime CLI](https://github.com/bytecodealliance/wasmtime) supports serving these components as of `v14.0.3`. 
+You can now execute components that implement the [HTTP proxy world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) with the `wasmtime serve` subcommand. [The Wasmtime CLI](https://github.com/bytecodealliance/wasmtime) supports serving these components as of `v14.0.3`.
 
 To run a HTTP component with Wasmtime, execute:
-```sh
+```console
 wasmtime serve <path-to-wasm-file>
 ```
 

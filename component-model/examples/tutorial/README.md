@@ -54,7 +54,7 @@ wac plug command/target/wasm32-wasip1/release/command.wasm --plug composed.wasm 
 
 Now, run the component with Wasmtime:
 
-```sh
+```console
 wasmtime run final.wasm 1 2 add
 1 + 2 = 3
 ```
@@ -84,12 +84,12 @@ package example:composition;
 let adder-instance = new docs:adder-impl { };
 
 // Instantiate the calculator-impl component that implements the calculator world.
-// In the `new` expression, specify the source of the `add` import to be `adder-instance`'s `add` export.  
+// In the `new` expression, specify the source of the `add` import to be `adder-instance`'s `add` export.
 let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
 
 // Instantiate a command-impl component that implements the app world.
-// The command component might import other interfaces, such as WASI interfaces, but we want to leave  
-// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.  
+// The command component might import other interfaces, such as WASI interfaces, but we want to leave
+// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.
 // The command's exports (in this case, `wasi:cli/run`) remain unaffected in the resulting instance.
 let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
 
@@ -101,7 +101,7 @@ export command-instance["wasi:cli/run@0.2.0"];
 Now, perform your composition by passing the WAC file to `wac compose`.
 
 ```sh
-wac compose composition.wac -o final.wasm 
+wac compose composition.wac -o final.wasm
 ```
 
 > Note, instead of moving all the components to a `deps/docs` directory, you can pass the paths to the components inline

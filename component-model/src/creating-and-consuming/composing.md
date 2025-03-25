@@ -57,13 +57,13 @@ You can use the [WAC](https://github.com/bytecodealliance/wac) CLI to compose co
 
 To perform quick and simple compositions, use the `wac plug` command. `wac plug` satisfies the import of a "socket" component by plugging a "plug" component's export into the socket. For example, a component that implements the [`validator` world above](#what-is-composition) needs to satisfy it's `match` import. It is a socket. While a component that implements the `regex` world, exports the `match` interface, and can be used as a plug. `wac plug` can plug a regex component's export into the validator component's import, creating a resultant composition:
 
-```sh
+```console
 wac plug validator-component.wasm --plug regex-component.wasm -o composed.wasm
 ```
 
 A component can also be composed with two components it depends on.
 
-```sh
+```console
 wac plug path/to/component.wasm --plug path/to/dep1.wasm --plug path/to/dep2.wasm -o composed.wasm
 ```
 
@@ -94,7 +94,7 @@ export validator...;
 
 Then, `wac compose` can be used to compose the components, passing in the paths to the components. Alternatively, you can place the components in a `deps` directory with an expected structure, and in the near future, you will be able to pull in components from registries. See the [`wac` documentation](https://github.com/bytecodealliance/wac) for more details.
 
-```sh
+```console
 wac compose --dep docs:regex-impl=regex-component.wasm --dep docs:validator-impl=validator-component.wasm -o composed.wasm composition.wac
 ```
 

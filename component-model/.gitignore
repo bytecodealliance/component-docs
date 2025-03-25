@@ -1,2 +1,4 @@
 book
 .spin
+# package created from component tutorial
+examples/tutorial/add

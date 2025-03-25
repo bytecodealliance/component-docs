@@ -7,7 +7,7 @@ application to a WebAssembly component.
 
 First, install [Python 3.10 or later](https://www.python.org/) and [pip](https://pypi.org/project/pip/) if you don't already have them. Then, install `componentize-py`:
 
-```sh
+```console
 pip install componentize-py
 ```
 
@@ -28,7 +28,7 @@ world adder {
 
 If you want to generate bindings produced for the WIT world (for an IDE or typechecker), you can generate them using the `bindings` subcommand. Specify the path to the WIT interface with the world you are targeting:
 
-```sh
+```console
 $ componentize-py --wit-path wit/component/wit --world adder bindings .
 ```
 
@@ -61,7 +61,7 @@ Component built successfully
 
 To test the component, run it using the [Rust `add` host](./rust.md#creating-a-command-component-with-cargo-component):
 
-```sh
+```console
 $ cd component-model/examples/add-host
 $ cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
@@ -99,7 +99,7 @@ class Add(example.Example):
 
 Once again, compile an application to a Wasm component using the `componentize` subcommand:
 
-```sh
+```console
 $ componentize-py --wit-path add-interface.wit --world example componentize app -o add.wasm
 Component built successfully
 ```
@@ -113,13 +113,13 @@ to call the [pre-built `app.wasm` component][add-wasm] in the examples.
 
 First, install [Python 3.11 or later](https://www.python.org/) and [pip](https://pypi.org/project/pip/) if you don't already have them. Then, install [`wasmtime-py`](https://github.com/bytecodealliance/wasmtime-py):
 
-```sh
+```console
 $ pip install wasmtime
 ```
 
 First, generate the bindings to be able to call the component from a Python host application.
 
-```sh
+```console
 # Get an add component that does not import the WASI CLI world
 $ wget https://github.com/bytecodealliance/component-docs/raw/main/component-model/examples/example-host/add.wasm
 $ python3 -m wasmtime.bindgen add.wasm --out-dir add
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
 Run the Python host program:
 
-```sh
+```console
 $ python3 host.py
 1 + 2 = 3
 ```

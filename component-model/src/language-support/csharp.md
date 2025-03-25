@@ -26,7 +26,7 @@ You should also have [wasmtime](https://wasmtime.dev/) installed so you can run 
 
 Once you have the .NET SDK installed, create a new project:
 
-```sh
+```console
 dotnet new install BytecodeAlliance.Componentize.DotNet.Templates
 dotnet new componentize.wasi.cli -o adder
 cd adder
@@ -106,7 +106,7 @@ public class AdderWorldImpl : IAdderWorld
 
 Then, we can build our component:
 
-```sh
+```console
 dotnet build
 ```
 
@@ -199,7 +199,7 @@ public class AddImpl : IAdd
 
 Once again, compile an application to a Wasm component using `dotnet build`:
 
-```sh
+```console
 $ dotnet build
 Restore complete (0.4s)
 You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
@@ -223,7 +223,7 @@ Now we will be taking the `adder` component and executing it from another WebAss
 
 Back out of the current project and create a new one:
 
-```sh
+```console
 cd ..
 dotnet new componentize.wasi.cli -o host-app
 cd host-app
@@ -275,7 +275,7 @@ Console.WriteLine($"{left} + {right} = {result}");
 
 Once again, compile your component with `dotnet build`:
 
-```sh
+```console
 $ dotnet build
 Restore complete (0.4s)
 You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
@@ -293,7 +293,7 @@ Since the `host-app` component depends on the `add` function which is defined in
 world, it needs to be composed the first component. You can compose your `host-app` component with
 your `adder` component by running [`wac plug`](https://github.com/bytecodealliance/wac):
 
-```sh
+```console
 wac plug \
     bin/Debug/net10.0/wasi-wasm/native/host-app.wasm \
     --plug ../adder/bin/Debug/net10.0/wasi-wasm/native/adder.wasm \
@@ -317,7 +317,7 @@ Run `dotnet build` again you will have a composed component in `./dist/main.wasm
 
 Then you can run the composed component:
 
-```sh
+```console
 wasmtime run ./dist/main.wasm
 1 + 2 = 3
 ```

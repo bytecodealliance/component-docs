@@ -79,7 +79,7 @@ working with WebAssembly modules and components.
 4. Use `wasm-tools` to create a component from the core module, first embedding component metadata
    inside the core module and then encoding the WAT to a Wasm binary.
 
-   ```sh
+   ```console
    $ wasm-tools component embed adder/world.wit add.wat -o add.wasm
    $ wasm-tools component new add.wasm -o add.component.wasm
    ```

@@ -152,6 +152,7 @@ This kind of error normally indicates that the host in question does not contain
 
 [host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 [add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/fn.add_to_linker_sync.html
+[example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 
 ## Building a component that exports an interface
 
@@ -325,3 +326,6 @@ wasmtime run ./dist/main.wasm
 Check out the [componentize-dotnet docs][componentize-dotnet-docs] for more configurations options.
 
 [componentize-dotnet-docs]: https://github.com/bytecodealliance/componentize-dotnet
+
+[!NOTE]: #
+[!WARNING]: #

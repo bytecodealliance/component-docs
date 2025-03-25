@@ -154,3 +154,5 @@ $ python3 host.py
 [add-wasm]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wasm
 
 [adder-wit]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
+
+[!NOTE]: #

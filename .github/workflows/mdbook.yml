@@ -53,8 +53,10 @@ jobs:
           python-version: '3.13'
 
       # Ensure the build generated properly
-      - run: |
-          if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]
+      - name: Ensure build outputs are present
+        shell: bash
+        run: |
+          if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]; then
             echo "[error] index.html @ [${{ env.ARTIFACT_PATH }}] is missing. Build or path misconfigured";
             exit 1;
           fi

@@ -24,42 +24,55 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  MDBOOK_VERSION: 0.4.21
+  MDBOOK_ALERTS_VERSION: 0.6.7
+  MDBOOK_LINKCHECK_VERSION: 0.7.7
+  PUBLISH_DOMAIN: component-model.bytecodealliance.org
+  ARTIFACT_PATH: ./component-model/book/html
+
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      MDBOOK_VERSION: 0.4.21
-      MDBOOK_ALERTS_VERSION: 0.6.7
-      MDBOOK_LINKCHECK_VERSION: 0.7.7
-      PUBLISH_DOMAIN: component-model.bytecodealliance.org
     steps:
       - uses: actions/checkout@v3
       - name: Install mdBook
         run: |
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
           rustup update
-          cargo install --version ${MDBOOK_VERSION} mdbook
-          cargo install --version ${MDBOOK_ALERTS_VERSION} mdbook-alerts
-          cargo install --version ${MDBOOK_LINKCHECK_VERSION} mdbook-linkcheck
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v3
+          cargo install --version ${{ env.MDBOOK_VERSION }} mdbook
+          cargo install --version ${{ env.MDBOOK_ALERTS_VERSION }} mdbook-alerts
+          cargo install --version ${{ env.MDBOOK_LINKCHECK_VERSION }} mdbook-linkcheck
+
       - name: Build with mdBook
         run: mdbook build component-model
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+
+      # Ensure the build generated properly
+      - run: |
+          if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]
+            echo "[error] index.html @ [${{ env.ARTIFACT_PATH }}] is missing. Build or path misconfigured";
+            exit 1;
+          fi
+
       - name: Generate sitemap
         run: |
-          cd component-model
+          cd ${{ env.ARTIFACT_PATH }}
           python3 ../scripts/generate_sitemap.py --domain "component-model.bytecodealliance.org" --higher-priority "design" --output-path book/sitemap.xml
           cd ..
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./component-model/book/html
+          path: ${{ env.ARTIFACT_PATH }}
 
   # Deployment job
   deploy:

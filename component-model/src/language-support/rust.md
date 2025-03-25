@@ -126,8 +126,8 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 
 ## Exporting an interface
 
-Notice how our `example` world currently exports `add` as a function. It's
-often preferable to export an interface rather than a function, either to
+Notice how our `root` world in the `wasm-tools` output exports `add` as part of an _interface_.
+It's often preferable to export an interface rather than a function, either to
 comply with an existing specification or to capture several functions and types
 at once.
 

@@ -124,7 +124,7 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
 
 ## Exporting an interface with `cargo component`
 
-While it is possible to export a raw function, prefer exporting an interface, similar to the [sample `adder` world][add-wit]. 
+While it is possible to export a raw function, it is a best practice to export an interface, similar to the [sample `adder` world][add-wit]. 
 This often makes it easier to comply with an existing specification or to capture a set of functions and types 
 that tend to go together. 
 

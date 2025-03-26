@@ -37,7 +37,8 @@ jobs:
         with:
           ref: ${{ inputs.ref || 'main' }}
 
-      - uses: ./.github/actions/mdbook
+      - name: build mdbook
+        uses: ./.github/actions/mdbook
         with:
           publish-pages: true
 

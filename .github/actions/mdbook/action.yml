@@ -1,0 +1,113 @@
+name: mdbook
+
+description: |
+  Run the mdbook build, optionally outputting a pages artifact
+
+inputs:
+  publish-pages-artifact:
+    type: boolean
+    required: false
+    default: false
+    description: |
+      Whether to publish a pages artifact
+
+  publish-domain:
+    type: string
+    required: false
+    default: "component-model.bytecodealliance.org"
+    description: |
+      Path to which to store the artifac
+
+  mdbook-version:
+    type: string
+    required: false
+    default: "0.4.21"
+    description: |
+      Version of mdbook to use (ex. '0.4.21')
+
+  mdbook-alerts-version:
+    type: string
+    required: false
+    default: "0.6.7"
+    description: |
+      Version of mdbook-alerts to use (ex. '0.6.7')
+
+  mdbook-linkcheck-version:
+    type: string
+    required: false
+    default: "0.7.7"
+    description: |
+      Version of mdbook-linkcheck to use (ex. '0.7.7')
+
+env:
+  ARTIFACT_PATH: ./component-model/book/html
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+    - uses: extractions/setup-just@v2
+
+    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
+      with:
+        tool: "just"
+
+    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
+      with:
+        tool: "mdbook@${{ inputs.mdbook-version }}"
+
+    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
+      with:
+        tool: "mdbook-alerts@${{ inputs.mdbook-alerts-version }}"
+
+    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
+      with:
+        tool: "mdbook-linkcheck@${{ inputs.mdbook-linkcheck-version }}"
+
+    - name: Build with mdBook
+      shell: bash
+      run: mdbook build component-model
+
+    - name: Setup Python
+      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
+      with:
+        python-version: '3.13'
+
+    - name: Ensure build outputs are present
+      shell: bash
+      run: |
+        if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]; then
+          echo "[error] index.html @ [${{ env.ARTIFACT_PATH }}] is missing. Build or path misconfigured";
+          exit 1;
+        fi
+
+    - name: Generate sitemap
+      shell: bash
+      run: |
+        cd ${{ env.ARTIFACT_PATH }}
+        python3 ../../../scripts/generate_sitemap.py \
+          --domain "${{ inputs.publish-domain }}" \
+          --higher-priority "design" \
+          --output-path sitemap.xml
+        cd ../../../
+
+    - name: Ensure publish-domain was provided
+      if: ${{ inputs.publish-pages-artifact }}
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.publish-domain }}" ]; then
+          echo "[error] publish-domain input is required when publishing";
+          exit 1;
+        fi
+
+    - name: Setup Pages
+      if: ${{ inputs.publish-pages-artifact }}
+      id: pages
+      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
+
+    - name: Upload artifact
+      if: ${{ inputs.publish-pages-artifact }}
+      uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+      with:
+        path: ${{ env.ARTIFACT_PATH }}

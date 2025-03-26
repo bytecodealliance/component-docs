@@ -3,48 +3,13 @@ name: mdbook
 on:
   pull_request:
 
-env:
-  MDBOOK_VERSION: 0.4.21
-  MDBOOK_ALERTS_VERSION: 0.6.7
-  MDBOOK_LINKCHECK_VERSION: 0.7.7
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - uses: taiki-e/cache-cargo-install-action@v2
+      - uses: ./.github/actions/mdbook
         with:
-          tool: mdbook@${{ env.MDBOOK_VERSION }}
+          publish-pages: true
 
-      - uses: taiki-e/cache-cargo-install-action@v2
-        with:
-          tool: mdbook-alerts@${{ env.MDBOOK_ALERTS_VERSION }}
-
-      - uses: taiki-e/cache-cargo-install-action@v2
-        with:
-          tool: mdbook-linkcheck@${{ env.MDBOOK_LINKCHECK_VERSION }}
-
-      - name: Build with mdBook
-        run: mdbook build component-model
-
-      - name: Ensure build outputs are present
-        shell: bash
-        run: |
-          if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]; then
-            echo "[error] index.html @ [${{ env.ARTIFACT_PATH }}] is missing. Build or path misconfigured";
-            exit 1;
-          fi
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
-      - name: Generate sitemap
-        shell: bash
-        run: |
-          cd ${{ env.ARTIFACT_PATH }}
-          python3 ../../../scripts/generate_sitemap.py --domain "component-model.bytecodealliance.org" --higher-priority "design" --output-path sitemap.xml
-          cd ../../../

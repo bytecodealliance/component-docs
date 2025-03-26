@@ -2,7 +2,8 @@ name: Deploy mdBook site to Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
   workflow_dispatch:
     inputs:

@@ -50,10 +50,6 @@ runs:
 
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:
-        tool: "just"
-
-    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
-      with:
         tool: "mdbook@${{ inputs.mdbook-version }}"
 
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1

@@ -17,7 +17,7 @@ book_output_dir := env_var_or_default("BOOK_OUTPUT_DIR", "./component-model/book
 # Build the sitemap
 @build-sitemap:
     {{python}} {{scripts_dir}}/generate_sitemap.py --domain "{{publish_domain}}" --higher-priority "design" --output-path {{sitemap_output_path}}
-    if [[ ! -f "{{book_output_dir}}/index.html" ]]; then \
+    if [ ! -f "{{book_output_dir}}/index.html" ]; then \
       echo "[error] index.html @ [{{book_output_dir}}] is missing. Build or path misconfigured"; \
       exit 1; \
     fi

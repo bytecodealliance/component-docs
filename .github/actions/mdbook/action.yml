@@ -38,8 +38,6 @@ inputs:
     default: "0.7.7"
     description: |
       Version of mdbook-linkcheck to use (ex. '0.7.7')
-env:
-  ARTIFACT_PATH: ./component-model/book/html
 
 runs:
   using: composite
@@ -60,14 +58,17 @@ runs:
       with:
         tool: "mdbook-linkcheck@${{ inputs.mdbook-linkcheck-version }}"
 
-    - name: Build with mdBook
-      shell: bash
-      run: mdbook build component-model
-
     - name: Setup Python
       uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0
       with:
         python-version: '3.13'
+
+    - name: Build with mdBook
+      shell: bash
+      id: book-build
+      run: |
+        just build-book
+        echo "output-path=$(just print-book-dir)" >> $GITHUB_OUTPUT
 
     - name: Generate sitemap
       shell: bash
@@ -92,4 +93,4 @@ runs:
       if: ${{ inputs.publish-pages-artifact }}
       uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
       with:
-        path: ${{ env.ARTIFACT_PATH }}
+        path: ${{ steps.book-build.outputs.output-path }}

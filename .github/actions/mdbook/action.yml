@@ -66,6 +66,8 @@ runs:
     - name: Build with mdBook
       shell: bash
       id: book-build
+      env:
+        PUBLISH_DOMAIN: ${{ inputs.publish-domain }}
       run: |
         just build-book
         echo "output-path=$(just print-book-dir)" >> $GITHUB_OUTPUT

@@ -22,7 +22,7 @@ Create a Rust library that implements the `add` function in the [`adder`world][a
 First scaffold a project:
 
 ```sh
-$ cargo component new add --lib && cd add
+$ cargo component new adder --lib && cd adder
 ```
 
 Note that `cargo component` generates the necessary bindings as a module called `bindings`.

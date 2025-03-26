@@ -12,4 +12,4 @@ jobs:
       - name: build mdbook
         uses: ./.github/actions/mdbook
         with:
-          publish-pages: false
+          publish-pages-artifact: true

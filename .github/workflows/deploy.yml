@@ -40,7 +40,7 @@ jobs:
       - name: build mdbook
         uses: ./.github/actions/mdbook
         with:
-          publish-pages: true
+          publish-pages-artifact: true
 
   deploy:
     if: ${{ github.repository_owner == 'bytecodealliance' }}

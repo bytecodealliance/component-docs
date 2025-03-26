@@ -5,6 +5,13 @@ on:
     branches: ["main"]
 
   workflow_dispatch:
+    inputs:
+      ref:
+        required: false
+        type: string
+        default: main
+        description: |
+          The git ref to deploy (ex. 'main', 'branch', '<commit sha>')
 
 permissions:
   contents: read
@@ -27,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ inputs.ref || 'main' }}
 
       - uses: ./.github/actions/mdbook
         with:

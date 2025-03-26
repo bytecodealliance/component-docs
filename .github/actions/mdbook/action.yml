@@ -38,7 +38,6 @@ inputs:
     default: "0.7.7"
     description: |
       Version of mdbook-linkcheck to use (ex. '0.7.7')
-
 env:
   ARTIFACT_PATH: ./component-model/book/html
 
@@ -74,23 +73,10 @@ runs:
       with:
         python-version: '3.13'
 
-    - name: Ensure build outputs are present
-      shell: bash
-      run: |
-        if [[ ! -f "${{ env.ARTIFACT_PATH }}/index.html" ]]; then
-          echo "[error] index.html @ [${{ env.ARTIFACT_PATH }}] is missing. Build or path misconfigured";
-          exit 1;
-        fi
-
     - name: Generate sitemap
       shell: bash
       run: |
-        cd ${{ env.ARTIFACT_PATH }}
-        python3 ../../../scripts/generate_sitemap.py \
-          --domain "${{ inputs.publish-domain }}" \
-          --higher-priority "design" \
-          --output-path sitemap.xml
-        cd ../../../
+        just build-sitemap
 
     - name: Ensure publish-domain was provided
       if: ${{ inputs.publish-pages-artifact }}

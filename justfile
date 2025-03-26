@@ -15,7 +15,7 @@ book_output_dir := env_var_or_default("BOOK_OUTPUT_DIR", "./component-model/book
 @_default:
     {{just}} --list
 
-# Print the directory the book was output to
+# Print the directory the book is/would be output to
 [group('meta')]
 @print-book-dir:
     echo -n {{book_output_dir}}

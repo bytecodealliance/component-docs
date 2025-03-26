@@ -13,6 +13,13 @@ on:
         description: |
           The git ref to deploy (ex. 'main', 'branch', '<commit sha>')
 
+      publish-domain:
+        required: false
+        type: string
+        default: "component-model.bytecodealliance.org"
+        description: |
+          The domain to which to publish (ex. 'component-model.bytecodealliance.org')
+
 permissions:
   contents: read
   pages: write
@@ -26,7 +33,6 @@ env:
   MDBOOK_VERSION: 0.4.21
   MDBOOK_ALERTS_VERSION: 0.6.7
   MDBOOK_LINKCHECK_VERSION: 0.7.7
-  PUBLISH_DOMAIN: component-model.bytecodealliance.org
   ARTIFACT_PATH: ./component-model/book/html
 
 jobs:
@@ -41,6 +47,7 @@ jobs:
         uses: ./.github/actions/mdbook
         with:
           publish-pages-artifact: true
+          publish-domain: ${{ inputs.publish-domain || 'component-model.bytecodealliance.org' }}
 
   deploy:
     if: ${{ github.repository_owner == 'bytecodealliance' }}

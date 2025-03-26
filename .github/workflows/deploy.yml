@@ -51,6 +51,7 @@ jobs:
 
   deploy:
     if: ${{ github.repository_owner == 'bytecodealliance' }}
+    runs-on: ubuntu-latest
     needs:
       - build
     environment:

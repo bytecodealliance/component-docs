@@ -95,7 +95,7 @@ cargo component build --release
 You can use `wasm-tools component wit` to output the WIT package of the component:
 
 ```
-$ wasm-tools component wit target/wasm32-wasip1/release/add.wasm
+$ wasm-tools component wit target/wasm32-wasip1/release/adder.wasm
 package root:component;
 
 world root {
@@ -118,7 +118,7 @@ Rust bindings, bring in WASI worlds, and execute the component.
 
 ```sh
 $ cd examples/example-host
-$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 1 + 2 = 3
 ```
 
@@ -201,7 +201,8 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that
+only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
 
 ## Creating a command component with `cargo component`
 

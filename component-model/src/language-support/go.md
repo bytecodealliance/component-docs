@@ -286,6 +286,8 @@ Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module 
 tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
 ```
 
+> **WARNING:** By default, tinygo includes all debug-related information in your .wasm file. That is desirable when prototyping or testing locally to obtain useful backtraces in case of errors (for example, with `wasmtime::WasmBacktraceDetails::Enable`). To remove debug data and optimize your binary file, build with `-no-debug`. The resulting .wasm file will be considerably smaller (up to 75% reduction in size).
+
 We now have an add component that satisfies our `adder` world, exporting the `add` function, which
 
 We can confirm using the `wasm-tools component wit` command:

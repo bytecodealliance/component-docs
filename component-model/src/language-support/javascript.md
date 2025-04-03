@@ -106,7 +106,7 @@ You should see output like the following:
 OK Successfully written add.wasm.
 ```
 
-> **WARNING:** By using `--disable all`, your component won't get access to any WASI interfaces that might be useful for debugging or logging. For example, you can't `console.log(...)` or `console.error(...)` without `stdio`; you can't use `Math.random()` without `random`; and you can't use `Date.now()` or `new Date()` without `clocks`. Please note that calls to `Math.random()` or `Data.now()` will return seemingly valid outputs, but without actual randomness or timestamp correctness.
+> **WARNING:** By using `--disable all`, your component won't get access to any WASI interfaces that might be useful for debugging or logging. For example, you can't `console.log(...)` or `console.error(...)` without `stdio`; you can't use `Math.random()` without `random`; and you can't use `Date.now()` or `new Date()` without `clocks`. Please note that calls to `Math.random()` or `Date.now()` will return seemingly valid outputs, but without actual randomness or timestamp correctness.
 
 [mdn-js-module]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 

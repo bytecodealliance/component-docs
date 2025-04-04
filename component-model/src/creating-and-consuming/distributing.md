@@ -8,11 +8,13 @@ You can get involved with improving the packaging and hosting of Wasm components
 
 ## The `wkg` Registry Tool
 
-The [`wasm-pkg-tools` project](https://github.com/bytecodealliance/wasm-pkg-tools) enables fetching and publishing Wasm components to OCI registries. It contains a `wkg` CLI tool that eases distributing and fetching components and WIT packages. `wkg` contains several subcommand:
+The [`wasm-pkg-tools` project](https://github.com/bytecodealliance/wasm-pkg-tools) enables fetching and publishing Wasm components to OCI registries. It contains a `wkg` CLI tool that eases distributing and fetching components and WIT packages. The usual way of using `wkg` is to address packages by their package name, i.e. `example:adder@1.0.0`. When using `wkg` this way, you don't need to know about the physical location of the package, as the `wkg` configuration handles that for you. If you need to, though, you can also use `wkg` to work with OCI artifacts directly, addressing them by OCI references when using the `wkg oci` subcommand.
 
-- `wkg oci` - is a CLI wrapper around the [oci-wasm](https://github.com/bytecodealliance/rust-oci-wasm) crate which enables pushing/pulling Wasm artifacts to/from any OCI registry
-- `wkg publish` - pushes *library* components or WIT packages
-- `wkg get` - pulls *library* components or WIT packages
+`wkg` contains several subcommand:
+
+- `wkg oci` - pushes/pulls Wasm artifacts to/from any OCI registry
+- `wkg publish` - publish components or WIT packages by package name
+- `wkg get` - pulls components or WIT packages by package name
 - `wkg wit` - commands for interacting with WIT files and dependencies
 - `wkg config` - interact with the `wkg` configuration
 
@@ -20,24 +22,24 @@ The following sections detail a subset of actions that can be performed with `wk
 
 ## `wkg` Configuration Files
 
-The `wkg` tool uses a configuration file to understand where to publish and fetch specific packages to and from. It provides the ability to configure:
+When you use most `wkg` commands (`wkg oci` being the exception), you don't interact with physical locations, only with package names. The `wkg` configuration file is used to map package naming to physical location. It provides the ability to configure:
 
-- a default registry for all packages at the top level of the file
-- a default registry for all packages of a specific namespace under `[namespace_registries]`. This section can be used to configure the registry of all `wasi` namespaced packages, such as `wasi:clocks` and `wasi:http`.
-- an override for package of a specific namespace under `[package_registry_overrides]`. This section can be used to fetch/publish a specific package of a namespace from/to a different location than all other packages of that namespace. For example, maybe you want to fetch `wasi:http` from a different registry.
-- credentials for a registry under `[registry."<registry-name>".oci]`
-- and more! See the [`wkg` docs for more configuration options](https://github.com/bytecodealliance/wasm-pkg-tools?tab=readme-ov-file#configuration).
+- The default registry for packages in a given namespace. For example, the location for `wasi` packages such as `wasi:clocks` or `wasi:http`.  
+- Registry overrides for specific packages, or packages not stored in the same place as the rest of their namespace. For example, if `wasi:key-value` were stored in a different registry from other `wasi` packages.  
+- The default registry for all packages not listed in one of the previous sections  
 
-For example, to fetch WASI packages, such as `wasi:clocks` and `wasi:http`, a line can be added under the `namespace_registries` section for the `wasi` namespace. Specifically, the example below configures `wkg` to fetch WASI packages from the [WebAssembly OCI GitHub Container Registry](https://github.com/orgs/WebAssembly/packages), where the latest interfaces are published upon WASI releases. To edit your `wkg` config file, simply run `wkg config --edit`.
+The configuration file also includes credentials for private registries, or for pushing to registries where you have permission, and other configuration options.  See the [`wkg` docs for more configuration options](https://github.com/bytecodealliance/wasm-pkg-tools?tab=readme-ov-file#configuration).
 
-> Remember, all package names consist of the a namespace field followed by the package field. The package name `wasi:clocks` has a namespace of `wasi` and package field of `clocks`. In this way, the following configuration ensures that `wkg` will know to route fetches and publishes of any `wasi:x` to the configured location.
+For example, to fetch WASI packages, such as `wasi:clocks` and `wasi:http`, you can add a line under the `namespace_registries` section for the `wasi` namespace. Specifically, the example below configures `wkg` to fetch WASI packages from the [WebAssembly OCI GitHub Container Registry](https://github.com/orgs/WebAssembly/packages), where the latest interfaces are published upon WASI releases. To edit your `wkg` config file, run `wkg config --edit`. 
+
+> Remember, all package names consist of the a namespace field followed by the package field. The package name `wasi:clocks` has a namespace of `wasi` and package field of `clocks`. In this way, the following configuration ensures that `wkg` will know to route fetches and publishes of any `wasi:<package field>` to the configured location.
 
 ```toml
 # $XDG_CONFIG_HOME/wasm-pkg/config.toml
 default_registry = "ghcr.io"
 
 [namespace_registries]
-# Instruct wkg to use the OCI protocol to fetch packages with the `wasi` namespace from ghcr.io/webassembly
+# Tell wkg that packages with the `wasi` namespace are in an OCI registry under ghcr.io/webassembly 
 wasi = { registry = "wasi",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "webassembly/" } } }
 ```
 
@@ -54,10 +56,9 @@ docs = { registry = "docs-registry",  metadata = { preferredProtocol = "oci", "o
 
 > Note: the registry name can be referenced in the `package_registry_overrides` section of the `wkg` config to provide overrides for specific packages of a namespace.
 
+## Distributing WIT and Components by Package Name with `wkg publish`
 
-## Distributing WIT and Library Components using  `wkg publish`
-
-Once you've [configured `wkg`](#wkg-configuration-files) to know where to publish packages to, you can use the `wkg publish` command to publish library *components* or *interfaces* to be consumed by others.
+Once you've [configured `wkg`](#wkg-configuration-files) to know where to publish packages to, you can use the `wkg publish` command to publish *components* or *interfaces* to be consumed by others.
 
 Imagine you have defined the following `adder` world in WIT:
 
@@ -85,7 +86,7 @@ wkg publish docs:adder@0.1.0.wasm
 If you had configured `wkg` as described in the [`wkg` configuration section](#wkg-configuration-files), this would publish the component to `ttl.sh/wasm-components/docs/adder:0.1.0`. This WIT can then be fetched using `wkg get`, specifying the format `wit`:
 
 ```sh
-wkg get --format wit docs:adder@0.1.0
+wkg get --format wit docs:adder@0.1.0 --output adder.wit
 ```
 
 Instead of publishing the WIT interface, you could publish the built component by running:
@@ -94,17 +95,17 @@ Instead of publishing the WIT interface, you could publish the built component b
 wkg publish adder.wasm --package docs:adder@0.1.0
 ```
 
-This component can then be fetched by running:
+You can then fetch the component by running:
 
 ```sh
-wkg get docs:adder@0.1.0
+wkg get docs:adder@0.1.0 --output adder.wasm
 ```
 
 ## More Generic Operations with `wkg oci`
 
-The `wkg oci` subcommand is a CLI wrapper around the [oci-wasm](https://github.com/bytecodealliance/rust-oci-wasm) crate which enables pushing/pulling Wasm artifacts to/from any OCI registry. Unlike `wkg publish` and `wkg get` it is not limited to library components, as providing the WIT package is not required.
+The `wkg oci` subcommand enables pushing/pulling Wasm artifacts to/from any OCI registry. Unlike `wkg publish` and `wkg get`, providing the WIT package is not required.
 
-A component is pushed to an OCI registry using `wkg oci pull`. The example below pulls a component from a GitHub Container Registry.
+To push a component to an OCI registry, use `wkg oci pull`. The example below pushes a component to a GitHub Container Registry.  
 
 ```sh
 wkg oci push ghcr.io/user/component:0.1.0 component.wasm

@@ -17,19 +17,19 @@ cargo install cargo-component
 
 ## 2. Scaffold a Component with `cargo component`
 
-Create a Rust library that implements the `add` function in the [`adder`world][adder-wit].
+Create a Rust library that implements the `add` function in the [`adder` world][adder-wit].
 
 First scaffold a project:
 
 ```sh
-$ cargo component new add --lib && cd add
+$ cargo component new adder --lib && cd adder
 ```
 
 Note that `cargo component` generates the necessary bindings as a module called `bindings`.
 
 ## 3. Add the WIT world the Component will implement
 
-Next, update `wit/world.wit` to match `add.wit`:
+Next, update `wit/world.wit` to match the [`adder` world][adder-wit]:
 
 ```
 package docs:adder@0.1.0;
@@ -95,7 +95,7 @@ cargo component build --release
 You can use `wasm-tools component wit` to output the WIT package of the component:
 
 ```
-$ wasm-tools component wit target/wasm32-wasip1/release/add.wasm
+$ wasm-tools component wit target/wasm32-wasip1/release/adder.wasm
 package root:component;
 
 world root {
@@ -118,41 +118,8 @@ Rust bindings, bring in WASI worlds, and execute the component.
 
 ```sh
 $ cd examples/example-host
-$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/add.wasm
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 1 + 2 = 3
-```
-
-## Exporting an interface with `cargo component`
-
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. For example, to implement the following world:
-
-```wit
-package docs:adder@0.1.0;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world adder {
-    export add;
-}
-```
-
-you would write the following Rust code:
-
-```rust
-mod bindings;
-
-// Separating out the interface puts it in a sub-module
-use bindings::exports::docs::adder::add::Guest;
-
-struct Component;
-
-impl Guest for Component {
-    fn add(x: u32, y: u32) -> u32 {
-        x + y
-    }
-}
 ```
 
 ## Importing an interface with `cargo component`
@@ -234,7 +201,8 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `exports-add.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that
+only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
 
 ## Creating a command component with `cargo component`
 

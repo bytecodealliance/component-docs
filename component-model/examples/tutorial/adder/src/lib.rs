@@ -1,8 +1,13 @@
 #[allow(warnings)]
 mod bindings;
 
-// Separating out the interface puts it in a sub-module
+// The comments that follow the use declaration below correlate the rust module path with their
+// `world.wit` counterparts:
 use bindings::exports::docs::adder::add::Guest;
+//            <- items bundled with `export` keyword
+//                     <- package namespace
+//                           <- package field
+//                                  <- interface name
 
 struct Component;
 

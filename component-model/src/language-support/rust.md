@@ -11,19 +11,19 @@ the component's implementation language.
 ## 1. Setup
 
 Install [`cargo-component`][cargo-component-install]:
-```console
+```sh
 cargo install --locked cargo-component
 ```
 Install [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools#installation):
-```console
+```sh
 cargo install --locked wasm-tools
 ```
 Install [`wasmtime`](https://github.com/bytecodealliance/wasmtime#installation):
-```console
+```sh
 curl https://wasmtime.dev/install.sh -sSf | bash
 ```
 Clone the [component-docs](https://github.com/bytecodealliance/component-docs) repo:
-```console
+```sh
 git clone https://github.com/bytecodealliance/component-docs
 ```
 
@@ -35,12 +35,12 @@ by the [`adder` world][docs-adder] world in the
 [package](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#package-names).
 
 First `cd` into the `tutorial` directory found in the repo we just cloned:
-```console
+```sh
 cd component-docs/component-model/examples/tutorial
 ```
 
 Now create a new WebAssembly component package called `add`:
-```console
+```sh
 cargo component new add --lib && cd add
 ```
 
@@ -64,7 +64,7 @@ package = "docs:adder"
 Now that we've updated our `world.wit` and `Cargo.toml`, we can re-generate
 bindings with the command below:
 
-```console
+```sh
 cargo component bindings
 ```
 
@@ -85,13 +85,21 @@ code should look something like the following:
 
 Now, let's build our component, being sure to optimize with a release build:
 
-```console
+```sh
 cargo component build --release
 ```
 
+> [!WARNING]
+> Building with `--release` removes all debug-related information from the resulting .wasm file.
+>
+> When prototyping or testing locally, you might want to avoid `--release` to
+> obtain useful backtraces in case of errors (for example, with
+> `wasmtime::WasmBacktraceDetails::Enable`). Note: the resulting .wasm file
+> will be considerably larger (likely 4MB+).
+
 You can use `wasm-tools` to output the WIT package of the component:
 
-```console
+```sh
 wasm-tools component wit target/wasm32-wasip1/release/add.wasm
 ```
 
@@ -110,10 +118,6 @@ package docs:adder@0.1.0 {
 }
 ```
 
-> [!WARNING]
-> Building with `--release` removes all debug-related information from the resulting .wasm file. 
->
-> When prototyping or testing locally, you might want to avoid `--release` to obtain useful backtraces in case of errors (for example, with `wasmtime::WasmBacktraceDetails::Enable`). Note: the resulting .wasm file will be considerably larger (likely 4MB+).
 
 ### Running a Component
 
@@ -123,7 +127,7 @@ component targeting the [`adder` world](#adding-the-wit-world).
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.
 
-```sh
+```console
 $ cd examples/example-host
 $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 1 + 2 = 3
@@ -175,9 +179,7 @@ world calculator {
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell
-`cargo component` how to find it. To do this, add the following to the
-`Cargo.toml` file:
+Because the `docs:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
 
 ```toml
 [package.metadata.component.target.dependencies]
@@ -313,7 +315,7 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
 6. Run the composed component:
 
-    ```sh
+    ```console
     $ wasmtime run ./my-composed-command.wasm
     1 + 1 = 579  # might need to go back and do some work on the calculator implementation
     ```

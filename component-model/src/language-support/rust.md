@@ -110,7 +110,10 @@ package docs:adder@0.1.0 {
 }
 ```
 
-> **WARNING:** Building with `--release` removes all debug-related information from the resulting .wasm file. When prototyping or testing locally, you might want to avoid `--release` to obtain useful backtraces in case of errors (for example, with `wasmtime::WasmBacktraceDetails::Enable`). Note: the resulting .wasm file will be considerably larger (likely 4MB+).
+> [!WARNING]
+> Building with `--release` removes all debug-related information from the resulting .wasm file. 
+>
+> When prototyping or testing locally, you might want to avoid `--release` to obtain useful backtraces in case of errors (for example, with `wasmtime::WasmBacktraceDetails::Enable`). Note: the resulting .wasm file will be considerably larger (likely 4MB+).
 
 ### Running a Component
 

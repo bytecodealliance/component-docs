@@ -123,20 +123,6 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 1 + 2 = 3
 ```
 
-## Exporting an interface
-
-Notice how our `root` world in the `wasm-tools` output exports `add` as part of an _interface_.
-It's often preferable to export an interface rather than a function, either to
-comply with an existing specification or to capture several functions and types
-at once.
-
-For example, to implement the [`adder` world](#adding-the-wit-world), you would
-write the following Rust code:
-
-```rust
-{{#include ../../examples/tutorial/adder/src/lib.rs}}
-```
-
 ## Importing an interface
 
 The world file (`wit/world.wit`) we generated doesn't specify any imports. If

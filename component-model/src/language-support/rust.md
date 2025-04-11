@@ -22,24 +22,14 @@ Install [`wasmtime`](https://github.com/bytecodealliance/wasmtime#installation):
 ```sh
 curl https://wasmtime.dev/install.sh -sSf | bash
 ```
-Clone the [component-docs](https://github.com/bytecodealliance/component-docs) repo:
-```sh
-git clone https://github.com/bytecodealliance/component-docs
-```
 
 ## 2. Scaffolding a Component
 
 We will create a component in Rust that implements the `add` function exported
-by the [`adder` world][docs-adder] world in the
-`docs:adder`
+by the [`adder` world][docs-adder] world in the `docs:adder`
 [package](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#package-names).
 
-First `cd` into the `tutorial` directory found in the repo we just cloned:
-```sh
-cd component-docs/component-model/examples/tutorial
-```
-
-Now create a new WebAssembly component package called `add`:
+First, we will create a new WebAssembly component package called `add`:
 ```sh
 cargo component new add --lib && cd add
 ```
@@ -183,7 +173,7 @@ Because the `docs:adder` package is in a different project, we must first tell `
 
 ```toml
 [package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/adder" }  # directory containing the WIT package
+"docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
 ```
 
 > [!NOTE]
@@ -294,8 +284,8 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
 
     ```toml
     [package.metadata.component.target.dependencies]
-    "docs:calculator" = { path = "../wit/calculator" }
-    "docs:adder" = { path = "../wit/adder" }
+    "docs:calculator" = { path = "../calculator/wit" }
+    "docs:adder" = { path = "../adder/wit" }
     ```
 
     > If the external package refers to other packages, you need to provide the paths to them as well.

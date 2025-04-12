@@ -7,7 +7,7 @@ mod bindings;
 use bindings::exports::docs::adder::add::Guest;
 //            <- items bundled with `export` keyword
 //                     <- package namespace
-//                           <- package field
+//                           <- package
 //                                  <- interface name
 
 struct Component;

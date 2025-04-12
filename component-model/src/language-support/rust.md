@@ -1,8 +1,7 @@
 # Components in Rust
 
-Rust has first-class support for the component model via the [`cargo-component`
-tool][cargo-component]. We will be using
-the `cargo component` subcommand to create WebAssembly components using Rust as
+Rust has first-class support for the component model via the [`cargo-component` tool][cargo-component].
+We will be using the `cargo component` subcommand to create WebAssembly components using Rust as
 the component's implementation language.
 
 > [!NOTE]
@@ -64,8 +63,7 @@ implement.
 
 ## 5. Implementing the `Guest` trait
 
-Implement the `Guest` trait in `src/lib.rs`, using the scaffolded code. Your
-code should look something like the following:
+Implement the `Guest` trait in `src/lib.rs`, using the scaffolded code. Your code should look something like the following:
 
 ```rs
 {{#include ../../examples/tutorial/adder/src/lib.rs}}
@@ -80,12 +78,12 @@ cargo component build --release
 ```
 
 > [!WARNING]
-> Building with `--release` removes all debug-related information from the resulting .wasm file.
+> Building with `--release` removes all debug-related information from the resulting `.wasm` file.
 >
 > When prototyping or testing locally, you might want to avoid `--release` to
 > obtain useful backtraces in case of errors (for example, with
-> `wasmtime::WasmBacktraceDetails::Enable`). Note: the resulting .wasm file
-> will be considerably larger (likely 4MB+).
+> [`wasmtime::WasmBacktraceDetails::Enable`](https://docs.rs/wasmtime/latest/wasmtime/enum.WasmBacktraceDetails.html#variant.Enable)).
+> Note: the resulting `.wasm` file will be considerably larger (likely 4MB+).
 
 You can use `wasm-tools` to output the WIT package of the component:
 
@@ -125,9 +123,8 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 
 ## Importing an interface
 
-The world file (`wit/world.wit`) we generated doesn't specify any imports. If
-your component consumes other components, you can edit the `world.wit` file to
-import their interfaces.
+The world file (`wit/world.wit`) we generated doesn't specify any imports.
+If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
 > [!NOTE]
 > This section is about importing custom WIT interfaces from library components.

@@ -35,7 +35,7 @@ $ cargo run --release -- 1 2 add.wasm
 ```
 
 > [!NOTE]
-> `add.wasm` is available in thsi folder, but can be replaced with your own built WebAssembly component
+> `add.wasm` is available in this folder, but can be replaced with your own built WebAssembly component
 > at any time (written in any language that supports WebAssembly Components), given that it satisfies
 > the `adder` world described above.
 

@@ -9,14 +9,21 @@ wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
 [lib]
 crate-type = ["cdylib"]
 
-[package.metadata.component]
-package = "docs:calculator"
-
-[package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/adder" }  # directory containing the WIT package
-
+# Tell cargo-component where to find the package for the target world
+# The following tells cargo-component to fetch the WIT from a local directory
 [package.metadata.component.target]
+# Path to the directory containing the WIT
 path = "../wit/calculator"
+# World within the package to target
 world = "calculator"
 
-[package.metadata.component.dependencies]
+[package.metadata.component.target.dependencies]
+# Tell cargo-component where to find the package for the dependencies
+"docs:adder" = { path = "../wit/adder" } 
+
+## To instead fetch the package and it's dependencies from a registry, uncomment the following lines
+# [package.metadata.component.target]
+# package = "docs:calculator"
+# version = "0.1.0"
+# registry = "ghcr.io/bytecodealliance"
+# world = "calculator"

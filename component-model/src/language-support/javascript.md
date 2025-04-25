@@ -218,7 +218,7 @@ With `jco transpile` any WebAssembly binary (compiled from any language) can be 
 
 Reactor components are WebAssembly components that are long running and meant to be called repeatedly over time. They're analogous to libraries of functionality rather than an executable (a "command" component).
 
-Components expose their interfaces via [WebAssembly Interface Types][docs-wit], hand-in-hand with the [Component Model][docs-component-model] which enables components to use higher level types interchangably.
+Components expose their interfaces via [WebAssembly Interface Types][docs-wit], hand-in-hand with the [Component Model][docs-component-model] which enables components to use higher level types interchangeably.
 
 
 [docs-wit]: ../design/wit.md
@@ -314,7 +314,7 @@ You should see output like the following:
 OK Successfully written string-reverse.wasm.
 ```
 
-Now that we have a WebAssembly binary, we can *also* use `jco` to run it in a native JavaScript context by *transpiling* the WebAsssembly binary (which could have come from anywhere!) to a JavaScript module.
+Now that we have a WebAssembly binary, we can *also* use `jco` to run it in a native JavaScript context by *transpiling* the WebAssembly binary (which could have come from anywhere!) to a JavaScript module.
 
 ```console
 npx jco transpile string-reverse.wasm -o dist/transpiled

@@ -6,3 +6,6 @@
 
 # Genrated code from cargo-component
 component-model/examples/tutorial/*/src/bindings.rs linguist-generated
+
+Cargo-component.lock linguist-language=toml
+

@@ -35,18 +35,24 @@ cargo component new add --lib && cd add
 
 ## 3. Adding the WIT world
 
-We now need to change our generated `wit/world.wit` to match `docs:adder`:
-```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
-```
-
-The `package.metadata.component` section of our `Cargo.toml` should be changed
-to the following:
+Now, that we have a template generated for our app, we can use `cargo-component`'s registries support to fetch the `docs:adder` package and generate bindings for our component. Modify the `package` section of our `Cargo.toml` to only contain the following target definition:
 
 ```toml
-[package.metadata.component]
+[package.metadata.component.target]
 package = "docs:adder"
+version = "0.1.0"
+registry = "ghcr.io/bytecodealliance"
 ```
+
+This tells `cargo-component` to fetch the world from `ghcr.io/bytecodealliance/docs/adder:0.1.0`.
+
+> [!NOTE]  
+> Instead of using registries, you can also point to a package in your local file system. For example, if your package is at `/path/to/wit/directory/adder.wit`, you could specify this in your `Cargo.toml` as follows:
+> ```toml
+> [package.metadata.component.target]
+> # Path to the directory containing the WIT
+> path = "/path/to/wit/directory"
+> ```
 
 ## 4. Generating bindings
 
@@ -106,11 +112,10 @@ package docs:adder@0.1.0 {
 }
 ```
 
-
 ### Running a Component
 
 To verify that our component works, lets run it from a Rust application that knows how to run a
-component targeting the [`adder` world](#adding-the-wit-world).
+component targeting the [`adder` world](#3-adding-the-wit-world).
 
 The application uses [`wasmtime`](https://github.com/bytecodealliance/wasmtime) crates to generate
 Rust bindings, bring in WASI worlds, and execute the component.

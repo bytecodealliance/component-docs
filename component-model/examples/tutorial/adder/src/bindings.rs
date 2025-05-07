@@ -122,7 +122,7 @@ mod _rt {
 /// ```
 #[allow(unused_macros)]
 #[doc(hidden)]
-macro_rules! __export_root_impl {
+macro_rules! __export_adder_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
@@ -133,19 +133,19 @@ macro_rules! __export_root_impl {
     };
 }
 #[doc(inline)]
-pub(crate) use __export_root_impl as export;
+pub(crate) use __export_adder_impl as export;
 #[cfg(target_arch = "wasm32")]
 #[unsafe(
-    link_section = "component-type:wit-bindgen:0.41.0:root:component:root:encoded world"
+    link_section = "component-type:wit-bindgen:0.41.0:docs:adder@0.1.0:adder:encoded world"
 )]
 #[doc(hidden)]
 #[allow(clippy::octal_escapes)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 199] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07M\x01A\x02\x01A\x02\x01\
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 203] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07P\x01A\x02\x01A\x02\x01\
 B\x02\x01@\x02\x01xy\x01yy\0y\x04\0\x03add\x01\0\x04\0\x14docs:adder/add@0.1.0\x05\
-\0\x04\0\x13root:component/root\x04\0\x0b\x0a\x01\0\x04root\x03\0\0\0G\x09produc\
-ers\x01\x0cprocessed-by\x02\x0dwit-component\x070.227.1\x10wit-bindgen-rust\x060\
-.41.0";
+\0\x04\0\x16docs:adder/adder@0.1.0\x04\0\x0b\x0b\x01\0\x05adder\x03\0\0\0G\x09pr\
+oducers\x01\x0cprocessed-by\x02\x0dwit-component\x070.227.1\x10wit-bindgen-rust\x06\
+0.41.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {

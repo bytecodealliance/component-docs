@@ -9,17 +9,11 @@ wit-bindgen-rt = { version = "0.37.0", features = ["bitflags"] }
 [lib]
 crate-type = ["cdylib"]
 
-# Tell cargo-component where to find the package for the target world
-# The following tells cargo-component to fetch the WIT from ghcr.io/bytecodealliance/docs/adder:0.1.0
-[package.metadata.component.target]
-# The registry which contains the package
-registry = "ghcr.io/bytecodealliance"
-# The package name
+[package.metadata.component]
 package = "docs:adder"
-# The package version
-version = "0.1.0"
 
-# # To instead use a WIT on the local filesystem, uncomment the following lines
-# [package.metadata.component.target]
-# # Path to the directory containing the WIT
-# path = "../wit/adder"
+[package.metadata.component.dependencies]
+
+[package.metadata.component.target]
+path = "../wit/adder"
+world = "adder"

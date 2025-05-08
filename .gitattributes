@@ -1,0 +1,11 @@
+# Ensure all text is checked out with Unix EOL
+* text=auto eol=lf
+
+# Ensure binary files aren't considered as text
+*.wasm binary
+
+# Genrated code from cargo-component
+component-model/examples/tutorial/*/src/bindings.rs linguist-generated
+
+Cargo-component.lock linguist-language=toml
+

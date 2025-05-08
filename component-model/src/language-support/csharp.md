@@ -95,7 +95,7 @@ To fix this, add the following code to your in a file called `Component.cs`:
 ```csharp
 namespace AdderWorld;
 
-public class AdderWorldImpl : IAdderWorld
+public class AddImpl : IAdderWorld
 {
     public static uint Add(uint x, uint y)
     {

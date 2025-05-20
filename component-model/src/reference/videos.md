@@ -29,6 +29,3 @@ This page is a non-exhaustive list of some of the best talks and videos related 
 [Wasm I/O 2024 Playlist](https://www.youtube.com/playlist?list=PLP3xGl7Eb-4Nmj4CJ5WLQZx5UAYvhH920)
 
 [Wasm I/O 2023 Playlist](https://www.youtube.com/playlist?list=PLP3xGl7Eb-4NtSX-wzOxUCjPsBcw2zrPA)
-
-[witx]: https://github.com/WebAssembly/WASI/tree/main/legacy/preview1/witx
-[wit]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md

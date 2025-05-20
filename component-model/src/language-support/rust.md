@@ -559,3 +559,5 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
 [cargo-component]: https://github.com/bytecodealliance/cargo-component
 [cargo-component-install]: https://github.com/bytecodealliance/cargo-component#install
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
+[!NOTE]: #
+[!WARNING]: #

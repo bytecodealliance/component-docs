@@ -37,7 +37,7 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 
 [WASI 0.2.0 was released](https://github.com/WebAssembly/WASI/pull/577) Jan 25, 2024, providing a stable release of WASI and the component model.
 This [is a stable set of WIT definitions](https://github.com/WebAssembly/WASI/tree/main/wasip2) that components can target. WASI proposals will
-continue to evolve and new ones will be introduced; however, users of the component model can now pin to any stable release >= 0.2.0. See WASI.dev to stay up to date on the latest releases.
+continue to evolve and new ones will be introduced; however, users of the component model can now pin to any stable release >= `v0.2.0`. See [WASI.dev](www.wasi.dev) to stay up to date on the latest releases.
 
 ## Contributing
 

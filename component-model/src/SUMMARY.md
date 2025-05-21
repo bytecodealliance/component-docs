@@ -6,7 +6,7 @@
 # Understanding Component Model
 
 - [Why the Component Model?](./design/why-component-model.md)
-- [Component Model concepts](./design/component-model-concepts.md)
+- [Component Model Concepts](./design/component-model-concepts.md)
   - [Components](./design/components.md)
   - [Interfaces](./design/interfaces.md)
   - [Worlds](./design/worlds.md)

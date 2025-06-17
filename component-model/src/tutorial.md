@@ -79,8 +79,7 @@ These files define:
 
 ## Create an `add` component
 
-Reference the [language guide](language-support.md) and [authoring components
-documentation](creating-and-consuming/authoring.md) to create a component that implements the
+Reference the [language guide](language-support.md) to create a component that implements the
 `adder` world of `adder/wit/world.wit`.
 
 For reference, see the completed
@@ -88,8 +87,7 @@ For reference, see the completed
 
 ## Create a `calculator` component
 
-Reference the [language guide](language-support.md) and [authoring components
-documentation](creating-and-consuming/authoring.md) to create a component that implements the
+Reference the [language guide](language-support.md) to create a component that implements the
 `calculator` world of `wit/calculator/world.wit`.
 
 For reference, see the completed

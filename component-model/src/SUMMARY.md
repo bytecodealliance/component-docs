@@ -25,7 +25,6 @@
 - [Creating and Consuming Components](./creating-and-consuming.md)
   - [Authoring Components](./creating-and-consuming/authoring.md)
   - [Composing Components](./creating-and-consuming/composing.md)
-  - [Running Components](./creating-and-consuming/running.md)
   - [Distributing and Fetching Components and WIT](./creating-and-consuming/distributing.md)
 - [Tutorial](./tutorial.md)
 

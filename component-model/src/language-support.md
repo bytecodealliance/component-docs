@@ -89,5 +89,4 @@ working with WebAssembly modules and components.
 You can "run" a component by calling one of its exports. Hosts and runtimes often only support
 running components with certain exports. The [`wasmtime`](https://github.com/bytecodealliance/wasmtime) CLI can only run "command" components, so in
 order to run the `add` function above, it first must be composed with a primary "command" component
-that calls it. See [documentation on running components](./creating-and-consuming/running.md) for
-more details.
+that calls it. See [documentation on running components](./runtimes/wasmtime.md) for more details.

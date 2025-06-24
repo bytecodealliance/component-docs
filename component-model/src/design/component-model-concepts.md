@@ -13,7 +13,7 @@ This section introduces the core concepts and [rationale](./why-component-model.
 * The Component Model introduces the idea of a "platform" to core WebAssembly -- enabling the structured, standardized use of "host" functionality for WebAssembly "guest"s.
   * The WebAssembly System Interface (WASI) defines in WIT a family of interfaces for common system-level functions.
   * WASI defines common execution environments such as the command line (`wasi:cli`) or a HTTP server (`wasi:http`).
-* The Component Model introducs makes core WebAssembly composable -- components that provide functionality and those that use them can be composed together into *one* resulting component
+* The Component Model makes core WebAssembly composable -- components that provide functionality and those that use them can be composed together into *one* resulting component
 
 > [!NOTE]
 > The Component Model is stewarded by the Bytecode Alliance and designed [in the open][cm-repo].

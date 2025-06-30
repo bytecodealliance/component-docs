@@ -1,3 +1,12 @@
 {
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "transpile": "jco transpile calculator.composed.wasm -o bindings",
+    "calc": "node cli-calc.js",
+    "all": "npm run transpile && npm run calc"
+  },
+  "devDependencies": {
+    "@bytecodealliance/componentize-js": "^0.17.0",
+    "@bytecodealliance/jco": "^1.11.2"
+  }
 }

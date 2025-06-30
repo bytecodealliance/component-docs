@@ -1,0 +1,56 @@
+name: rust
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        projects:
+          - folder: component-model/examples/example-host
+          - folder: component-model/examples/tutorial/adder
+            type: component
+          - folder: component-model/examples/tutorial/calculator
+            type: component
+          - folder: component-model/examples/tutorial/command
+            type: component
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install Rust
+        run: rustup update stable --no-self-update
+
+      - uses: taiki-e/cache-cargo-install-action@5c9abe9a3f79d831011df7c47177debbeb320405 # v2.1.2
+        with:
+          tool: cargo-component
+
+      - uses: Swatinem/rust-cache@9d47c6ad4b02e050fd481d890b2ea34778fd09d6 # v2.7.8
+        with:
+          shared-key: ${{ hashFiles('${{ matrix.projects.folder }}/Cargo.lock') }}
+
+      - name: Cargo bulid the package
+        working-directory: ${{ matrix.projects.folder }}
+        if: ${{ matrix.projects.type != 'component' }}
+        run: cargo build
+
+      - name: Cargo component build
+        working-directory: ${{ matrix.projects.folder }}
+        if: ${{ matrix.projects.type == 'component' }}
+        run: cargo component build

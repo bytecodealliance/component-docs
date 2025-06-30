@@ -40,4 +40,5 @@
 
 # Reference
 
+- [Frequently Asked Questions (FAQ)](./reference/faq.md)
 - [Useful Links](./reference/useful-links.md)

@@ -16,14 +16,15 @@ has to offer.
 WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
 *cannot not* contain Components. One easy way to differentiate is by reading the WAT for a component:
 
-A WebAssembly core module generally starts with a `(module)` s-expression:
+A WebAssembly core module generally consists of a `(module)` s-expression:
 ```wat
 (module
   ;; ...
 )
 ```
 
-A WebAssembly component starts with the `(component)` s-expression:
+A WebAssembly component generally consists of a `(component)` s-expression (and may contain
+nested `(module)`/`(component)` s-expressions):
 
 ```wat
 (component

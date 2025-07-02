@@ -3,7 +3,7 @@
 This page hosts a series of questions that are frequently asked or that might be confusing about
 WebAssembly (core), components, and the WebAssembly ecosystem as a whole.
 
-## Q: What is the difference between a WebAssembly component and a WebAssembly module?
+## Q: What is the difference between a _component_ and _module_ in WebAssembly?
 
 A WebAssembly module (more precisely referred to as a "WebAssembly core module") is a
 binary that conforms to the [WebAssembly Core Specification][wasm-core-spec].

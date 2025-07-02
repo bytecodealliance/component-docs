@@ -19,7 +19,7 @@ WebAssembly Components can (and often do) contain core modules, but generally We
 A WebAssembly core module generally starts with a `(module)` s-expression:
 ```wat
 (module
-  ...
+  ;; ...
 )
 ```
 

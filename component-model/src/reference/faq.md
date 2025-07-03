@@ -79,7 +79,14 @@ in practice as Preview 1 components can be *adapted* into Preview 2 components a
 ## Q: What are component imports?
 
 WebAssembly components are self-describing -- information about required external functionality (which must be provided by the platform or another component) is included in the binary.
-This means that WebAssembly components have functionality that they might *import* (e.g. `wasi:cli/environment`).
+For example, a WebAssembly component that may require some use of outside environment variables may *import* a WASI interface like `wasi:cli/environment`.
+
+> [!NOTE]
+> The values provided by the `wasi:cli/environment` are not guaranteed
+> to be ENV variables on the host machine -- this is a choice left to the
+> platform, in the implementation of `wasi:cli/environment` that it exposes.
+>
+> For example, platforms may choose to elide sensitive environment variables, or provide none at all, in practice.
 
 Imports are easiest illustrated with WIT:
 

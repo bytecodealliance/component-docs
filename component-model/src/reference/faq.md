@@ -97,7 +97,7 @@ The component is said to "import" the `wasi:cli/environment` interface, using th
 
 ## Q: What are component exports?
 
-WebAssembly components represent a new kind of binary that can *describe* it's expected usage natively. This means that
+WebAssembly components represent a new kind of binary that can *describe* its expected usage natively. This means that
 WebAssembly components have functionality that they *export*, which users of the component (e.g. another component, or
 a WebAssembly host) can use.
 

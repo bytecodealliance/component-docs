@@ -45,7 +45,7 @@ WebAssembly core modules use functions provided by the host system (the "outside
 computations on a fixed set of primitive types (`i32`, `i64`, `f32`, `f64`), `v128`). The component model enables core components to interact with the "outside world"
  via a rich set of types ([WebAssembly Interface Types][wit]).
 
-Where as WebAssembly core components must find a way to represent higher level types with the primitives defined in an ad hoc manner, the Component Model presents a consistent way of representing complex types familiar in most high level languages.
+While WebAssembly core module *can* represent higher level types using the available primitives, every binary and platform may do so in an ad-hoc manner. The Component Model presents a consistent way of representing a rich set of types familiar in most high level languages that is consistent across binaries and platforms.
 
 The WebAssembly System Interface (WASI) is a *standardization* of the interfaces, functions and types that
 a system or platform can expose to a WebAssembly component. At a glance, many parts of WASI are UNIX-like,

@@ -41,15 +41,14 @@ set of imports and exports ([legacy specification][wasi-p1]).
 
 ## Q: How do WebAssembly Components and the WebAssembly System Interface (WASI) relate to each other?
 
-WebAssembly core modules use functions provided by the host system (the "outside world") but they can only perform
-computations on a fixed set of primitive types (`i32`, `i64`, `f32`, `f64`), `v128`). The component model enables core components to interact with the "outside world"
- via a rich set of types ([WebAssembly Interface Types][wit]).
+While WebAssembly core module *can* represent higher level types using the available primitives, every binary and platform
+may do so in an ad-hoc manner. The Component Model presents a consistent way of representing a rich set of types familiar in
+most high level languages that is consistent across binaries and platforms.
 
-While WebAssembly core module *can* represent higher level types using the available primitives, every binary and platform may do so in an ad-hoc manner. The Component Model presents a consistent way of representing a rich set of types familiar in most high level languages that is consistent across binaries and platforms.
+The set of rich types which can be used by WebAssembly components are called [WebAssembly Interface Types (WIT)][wit].
 
-The WebAssembly System Interface (WASI) is a set of APIs for WASI being developed for eventual standardization by the WASI Subgroup, which is a subgroup of the WebAssembly Community Group.
-
-WASI defines interfaces, functions and types that
+The WebAssembly System Interface (WASI) is a set of APIs (specified in WIT) developed for eventual standardization by the WASI
+Subgroup, which is a subgroup of the WebAssembly Community Group. WASI defines interfaces, functions and types that
 a system or platform can expose to a WebAssembly component. At a glance, many parts of WASI are UNIX-like,
 in that they match traditional expectations for programs like STDIN, STDOUT, and writing to files.
 

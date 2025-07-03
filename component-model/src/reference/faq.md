@@ -47,7 +47,9 @@ computations on a fixed set of primitive types (`i32`, `i64`, `f32`, `f64`), `v1
 
 While WebAssembly core module *can* represent higher level types using the available primitives, every binary and platform may do so in an ad-hoc manner. The Component Model presents a consistent way of representing a rich set of types familiar in most high level languages that is consistent across binaries and platforms.
 
-The WebAssembly System Interface (WASI) is a *standardization* of the interfaces, functions and types that
+The WebAssembly System Interface (WASI) is a set of APIs for WASI being developed for eventual standardization by the WASI Subgroup, which is a subgroup of the WebAssembly Community Group.
+
+WASI defines interfaces, functions and types that
 a system or platform can expose to a WebAssembly component. At a glance, many parts of WASI are UNIX-like,
 in that they match traditional expectations for programs like STDIN, STDOUT, and writing to files.
 

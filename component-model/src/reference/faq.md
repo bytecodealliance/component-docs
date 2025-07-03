@@ -1,20 +1,25 @@
 # Frequently Asked Questions (FAQ)
 
-This page hosts a series of questions that are frequently asked or that might be confusing about
-WebAssembly (core), components, and the WebAssembly ecosystem as a whole.
+This page hosts a series of questions that are frequently asked along with descriptions
+of concepts that may be confusing with regards to core WebAssembly, WebAssembly components
+(i.e. the Component Model), and the WebAssembly ecosystem as a whole.
 
-## Q: What is the difference between a _component_ and _module_ in WebAssembly?
+## Q: What is the difference between a _module_ and _component_ in WebAssembly?
 
 A WebAssembly module (more precisely referred to as a "WebAssembly core module") is a
 binary that conforms to the [WebAssembly Core Specification][wasm-core-spec].
 
-A WebAssembly component is a WebAssembly binary that:
+A WebAssembly component:
 - Adheres to the component model [binary format][cm-binary-format] (as opposed to a WebAssembly core binary format)
 - Uses the [WebAssembly Interface types][wit] specification to encode type information.
 - Adheres to the Component Model [Canonical ABI][cabi] for converting between rich types and those present in core WebAssembly.
-WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
-*cannot not* contain Components. One easy way to differentiate is by reading the WAT for a component:
 
+WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
+*cannot* contain Components. WebAssembly components and WebAssembly core modules have a different binary format.
+
+WebAssembly can be expressed via both a binary and textual format (["WAT", the WebAssembly Text format][wat]).
+
+[wat]: https://webassembly.github.io/spec/core/text/index.html
 [cabi]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md
 [cm-binary-format]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/Binary.md
 [wasi-p1]: https://github.com/WebAssembly/WASI/blob/main/legacy/preview1/witx/wasi_snapshot_preview1.witx
@@ -22,7 +27,10 @@ WebAssembly Components can (and often do) contain core modules, but generally We
 
 ## Q: How can I tell if a WebAssembly binary is a component or a module?
 
-A WebAssembly core module generally consists of a `(module)` s-expression:
+After converting a WebAssembly binary to it's textual format (e.g. via a tool like [`wasm-tools print`][wasm-tools-examples]),
+it is easy to tell a WebAssembly core module and a WebAssembly component apart.
+
+A WebAssembly core module generally consists of a top level `(module)` s-expression:
 ```wat
 (module
   ;; ...
@@ -30,13 +38,15 @@ A WebAssembly core module generally consists of a `(module)` s-expression:
 ```
 
 A WebAssembly component generally consists of a `(component)` s-expression (and may contain
-nested `(module)`/`(component)` s-expressions):
+nested `(core:module)`/`(component)` s-expressions):
 
 ```wat
 (component
   ;; ...
 )
 ```
+
+[WASM-tools-examples]: https://github.com/bytecodealliance/wasm-tools?tab=readme-ov-file#examples
 
 ## Q: How do WebAssembly Components and the WebAssembly System Interface (WASI) relate to each other?
 
@@ -108,9 +118,8 @@ The component is said to "import" the `wasi:cli/environment` interface, using th
 
 ## Q: What are component exports?
 
-WebAssembly components represent a new kind of binary that can *describe* its expected usage natively. This means that
-WebAssembly components have functionality that they *export*, which users of the component (e.g. another component, or
-a WebAssembly host) can use.
+WebAssembly components are self-describing -- along with imports, WebAssembly components can also describe what functionality
+they *export*, which callers of the component (e.g. another component, a WebAssembly host) can reference.
 
 Exports are easiest illustrated with WIT:
 
@@ -126,7 +135,7 @@ world example-world {
 }
 ```
 
-For the component that inhabits the `example-world` defined above, the outside world can expect the WebAssembly binary to
+For the component that inhabits the `example-world` defined above, callers can expect the WebAssembly binary to
 have a `say-hello` function that is callable via the `example-namespace:example-package/example-interface` interface.
 
 The component is said to "export" the `example-interface` interface, making available the functions and types therein.

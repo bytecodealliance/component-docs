@@ -14,7 +14,14 @@ A WebAssembly component is a WebAssembly binary that:
 - Adheres to the Component Model [Canonical ABI][cabi] for converting between rich types and those present in core WebAssembly.
 WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
 *cannot not* contain Components. One easy way to differentiate is by reading the WAT for a component:
+
+[cabi]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md
+[cm-binary-format]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/Binary.md
+[wasi-p1]: https://github.com/WebAssembly/WASI/blob/main/legacy/preview1/witx/wasi_snapshot_preview1.witx
+[wasm-core-spec]: https://webassembly.github.io/spec/core/
+
 ## Q: How can I tell if a WebAssembly binary is a component or a module?
+
 A WebAssembly core module generally consists of a `(module)` s-expression:
 ```wat
 (module
@@ -30,14 +37,6 @@ nested `(module)`/`(component)` s-expressions):
   ;; ...
 )
 ```
-
-One part that might cause confusion here is that a WASI Preview 1 "component" is in fact a
-*core module*. More precisely, a Preview 1 "component" is a WebAssembly core module with a well-defined
-set of imports and exports ([legacy specification][wasi-p1]).
-
-[cabi]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md
-[wasi-p1]: https://github.com/WebAssembly/WASI/blob/main/legacy/preview1/witx/wasi_snapshot_preview1.witx
-[wasm-core-spec]: https://webassembly.github.io/spec/core/
 
 ## Q: How do WebAssembly Components and the WebAssembly System Interface (WASI) relate to each other?
 
@@ -74,6 +73,9 @@ https://github.com/WebAssembly/WASI/tree/main/wasip2
 
 Many programming language toolchains may only support Preview 1 components natively, but this isn't a problem
 in practice as Preview 1 components can be *adapted* into Preview 2 components automatically.
+
+While somewhat confusing a WASI Preview 1 "component" is in fact a *WebAssembly core module*. More precisely, a
+Preview 1 "component" is a WebAssembly core module with a well-defined set of imports and exports ([legacy specification][wasi-p1]).
 
 ## Q: What are component imports?
 
@@ -135,3 +137,5 @@ Please contribute to the Component Book by filing your question (or one that you
 [an issue on GitHub][gh-issues].
 
 [gh-issues-new]: https://github.com/bytecodealliance/component-docs/issues/new
+
+[!NOTE]: #

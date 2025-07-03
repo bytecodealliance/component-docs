@@ -298,10 +298,10 @@ add: func(a: u64, b: u64) -> u64;
 lookup: func(store: kv-store, key: string) -> option<string>;
 ```
 
-A function can have multiple return values. In this case the return values must be named, similar to the parameter list. All return values must be populated (in the same way as tuple or record fields).
+For multi-value returns from a function, you can use a [tuple](#tuple) or [record](#record).
 
 ```wit
-get-customers-paged: func(cont: continuation-token) -> (customers: list<customer>, cont: continuation-token);
+get-customers-paged: func(cont: continuation-token) -> tuple<list<customer>, continuation-token>;
 ```
 
 A function can be declared as part of an [interface](#interfaces), or can be declared as an import or export in a [world](#worlds).

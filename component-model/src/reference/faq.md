@@ -8,8 +8,10 @@ WebAssembly (core), components, and the WebAssembly ecosystem as a whole.
 A WebAssembly module (more precisely referred to as a "WebAssembly core module") is a
 binary that conforms to the [WebAssembly Core Specification][wasm-core-spec].
 
-A WebAssembly component refers to a WebAssembly core module that has been wrapped in
-the [Canonical ABI][cabi], i.e. the binary contract for the Component Model. By adhering to the
+A WebAssembly component is a WebAssembly binary that:
+- Adheres to the component model [binary format][cm-binary-format] (as opposed to a WebAssembly core binary format)
+- Uses the [WebAssembly Interface types][wit] specification to encode type information.
+- Adheres to the Component Model [Canonical ABI][cabi] for converting between rich types and those present in core WebAssembly.
 canonical ABI, WebAssembly components can take advantage of all the features the Component Model
 has to offer.
 WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules

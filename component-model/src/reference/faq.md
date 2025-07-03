@@ -57,7 +57,7 @@ Some WASI system interfaces work at a much higher level than the command line ho
 [`wasi:http`][wasi-http]. `wasi:http` is included as a standardized platform due to the ubiquity
 of the internet and the common use case of WebAssembly components with "the web" as a platform.
 
-With WIT, platform builders can define *any* interface to be *your* system interfaces that WebAssembly components can
+With WIT, platform builders can define *any* interface that WebAssembly components
 expect to access -- WASI is a standardized set which enables to build on a shared base set of abstractions.
 
 [wit]: https://component-model.bytecodealliance.org/design/wit.html

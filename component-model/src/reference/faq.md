@@ -12,7 +12,6 @@ A WebAssembly component refers to a WebAssembly core module that has been wrappe
 the [Canonical ABI][cabi], i.e. the binary contract for the Component Model. By adhering to the
 canonical ABI, WebAssembly components can take advantage of all the features the Component Model
 has to offer.
-}
 WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
 *cannot not* contain Components. One easy way to differentiate is by reading the WAT for a component:
 

@@ -41,7 +41,7 @@ set of exports ([legacy specification][wasi-p1]).
 
 ## Q: How do WebAssembly Components and the WebAssembly System Interface (WASI) relate to each other?
 
-WebAssembly core components do not have any access to the host system (by design) -- they can only perform
+WebAssembly core modules do not have any access to the host system (by design) -- they can only perform
 computations on a fixed set of types. The component model enables core components to interact with the "outside"
 world via a rich set of types ([WebAssembly Interface Types][wit]).
 

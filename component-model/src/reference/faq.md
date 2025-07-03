@@ -33,7 +33,7 @@ nested `(module)`/`(component)` s-expressions):
 
 One part that might cause confusion here is that a WASI Preview 1 "component" is in fact a
 *core module*. More precisely, a Preview 1 "component" is a WebAssembly core module with a well-defined
-set of exports ([specified in WITX][wasi-p1]).
+set of exports ([legacy specification][wasi-p1]).
 
 [cabi]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md
 [wasi-p1]: https://github.com/WebAssembly/WASI/blob/main/legacy/preview1/witx/wasi_snapshot_preview1.witx

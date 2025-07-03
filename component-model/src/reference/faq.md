@@ -43,7 +43,7 @@ set of exports ([legacy specification][wasi-p1]).
 
 WebAssembly core modules use functions provided by the host system (the "outside world") but they can only perform
 computations on a fixed set of primitive types (`i32`, `i64`, `f32`, `f64`), `v128`). The component model enables core components to interact with the "outside world"
-world via a rich set of types ([WebAssembly Interface Types][wit]).
+ via a rich set of types ([WebAssembly Interface Types][wit]).
 
 Where as WebAssembly core components must find a way to represent higher level types with the primitives defined in an ad hoc manner, the Component Model presents a consistent way of representing complex types familiar in most high level languages.
 

@@ -27,7 +27,7 @@ WebAssembly components can be expressed via both a binary and textual format (["
 
 ## Q: How can I tell if a WebAssembly binary is a component or a module?
 
-After converting a WebAssembly binary to it's textual format (e.g. via a tool like [`wasm-tools print`][wasm-tools-examples]),
+After converting a WebAssembly binary to its textual format (e.g. via a tool like [`wasm-tools print`][wasm-tools-examples]),
 it is easy to tell a WebAssembly core module and a WebAssembly component apart.
 
 A WebAssembly core module generally consists of a top level `(module)` s-expression:

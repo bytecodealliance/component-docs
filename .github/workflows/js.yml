@@ -1,0 +1,55 @@
+name: javascript
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 18.x
+          - 20.x
+          - latest
+        projects:
+          - folder: component-model/examples/tutorial/jco
+            script-target: all
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache npm install
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          key: node-modules-${{ matrix.node-version }}-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('${{ matrix.projects.folder }}/package-lock.json') }}
+          path: |
+            ${{ matrix.projects.folder }}
+
+      - name: Install NodeJS dependencies
+        working-directory: ${{ matrix.projects.folder }}
+        run: |
+          npm install
+
+      - name: Run NodeJS script target
+        working-directory: ${{ matrix.projects.folder }}
+        run: |
+          npm run ${{ matrix.projects.script-target }}

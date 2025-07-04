@@ -42,7 +42,7 @@ pub fn add(path: PathBuf, x: u32, y: u32) -> wasmtime::Result<u32> {
 
     // Add wasi exports to linker to support I/O (as in `wasi:io`) interfaces
     // see: https://github.com/WebAssembly/wasi-io
-    wasmtime_wasi::add_to_linker_sync(&mut linker).expect("Could not add wasi to linker");
+    wasmtime_wasi::p2::add_to_linker_sync(&mut linker).expect("Could not add wasi to linker");
 
     // Instantiate the component as an instance of the `adder` world,
     // with the generated bindings

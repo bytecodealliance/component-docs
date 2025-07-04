@@ -17,7 +17,7 @@ A WebAssembly component:
 WebAssembly Components can (and often do) contain core modules, but generally WebAssembly core modules
 *cannot* contain Components. WebAssembly components and WebAssembly core modules have a different binary format.
 
-WebAssembly can be expressed via both a binary and textual format (["WAT", the WebAssembly Text format][wat]).
+WebAssembly components can be expressed via both a binary and textual format (["WAT", the WebAssembly Text format][wat]).
 
 [wat]: https://webassembly.github.io/spec/core/text/index.html
 [cabi]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md

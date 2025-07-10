@@ -9,6 +9,14 @@ title = "The WebAssembly Component Model"
 git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/main/component-model"
 edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"
 additional-css = ["theme/head.hbs"]
+[output.html.redirect]
+"/creating-and-consuming/composing.html" = "/composing-and-distributing/composing.html"
+"/creating-and-consuming/distributing.html" = "/composing-and-distributing/distributing.html"
+"/creating-and-consuming/running.html" = "/running-components.html"
+"/creating-and-consuming/authoring.html" = "/language-support.html"
+"/creating-and-consuming.html" = "/language-support.html"
+"/runtimes/wasmtime.html" = "/running-components/wasmtime.html"
+"/runtimes/jco.html" = "/running-components/jco.html"
 
 [preprocessor.alerts]
 

@@ -158,7 +158,7 @@ wac plug calculator.wasm --plug adder.wasm -o composed.wasm
 wac plug command.wasm --plug composed.wasm -o final.wasm
 ```
 
-> If you'd prefer to take a more visual approach to composing components, see the [documentation on composing components with wasmbuilder.app](creating-and-consuming/composing.md#composing-components-with-a-visual-interface).
+> If you'd prefer to take a more visual approach to composing components, see the [documentation on composing components with wasmbuilder.app](composing-and-distributing/composing.md#composing-components-with-a-visual-interface).
 
 ## Running the calculator
 

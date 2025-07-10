@@ -1,6 +1,6 @@
 # Wasmtime
 
-[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. It supports running components that implement the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit) and serving components that implement the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit).
+[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. It supports running components that implement the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit) and serving components that implement the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit). It can also invoke functions exported from a component.
 
 ## Running command components with Wasmtime
 To run a command component with Wasmtime, execute:

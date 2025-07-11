@@ -5,8 +5,8 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 | Understanding components | Building components  | Using components  |
 |--------------------------|----------------------|-------------------|
 | [Why Components?]        | [C/C++]              | [Composing]       |
-| [Components]             | [C#]                 | [Distributing]    |
-| [Interfaces]             | [Go]                 |                   |
+| [Components]             | [C#]                 | [Running]         |
+| [Interfaces]             | [Go]                 | [Distributing]    |
 | [Worlds]                 | [JavaScript]         |                   |
 |                          | [Python]             |                   |
 |                          | [Rust]               |                   |
@@ -24,7 +24,7 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 [Rust]: ./language-support/rust.md
 
 [Composing]: ./composing-and-distributing/composing.md
-[Running]: ./running-components/running.md
+[Running]: ./running-components.md
 [Distributing]: ./composing-and-distributing/distributing.md
 
 > [!NOTE]

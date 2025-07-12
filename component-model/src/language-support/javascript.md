@@ -281,7 +281,7 @@ As a slightly deeper crash course on [WIT][wit], here's what the above code desc
 - This WIT file corresponds to version `0.1.0` of `example:string-reverse` package
 - We've defined an interface called `reverse` which contains *one* function called `reverse-string`
 - We specify that the `reverse` interface has existed *since* the `0.1.0` version
-- The `reverse-string` function (AKA. `example:reverse-string/reverse.reverse-string`) takes a string and returns a string
+- The `reverse-string` function (AKA. `example:string-reverse/reverse.reverse-string`) takes a string and returns a string
 - We've defined a `world` called `string-reverse` which exports the functionality provided by the `reverse` interface
 
 > [!WARNING]

@@ -215,7 +215,7 @@ To use this component from [NodeJS][nodejs], you can write code like the followi
 ```mjs
 import { add } from "./dist/transpiled/adder.js";
 
-console.log("1 + 2 = " + add(1, 2));
+console.log("1 + 2 = " + add.add(1, 2));
 ```
 
 You can execute the JavaScript module with `node` directly:

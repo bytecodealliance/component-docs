@@ -54,7 +54,7 @@ download a pre-existing interface that defines what your component should do.
 The [`adder` world][adder-world] contains an interface with a single `add` function that sums two numbers:
 
 ```wit
-{{#include ../../exmaples/tutorial/wit/adder/world.wit}}
+{{#include ../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 > [!NOTE]

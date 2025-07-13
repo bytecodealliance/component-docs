@@ -207,7 +207,7 @@ world root {
 ```
 
 As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that
-only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../creating-and-consuming/composing.md).
+only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../composing-and-distributing/composing.md).
 
 ## Creating a command component with `cargo component`
 
@@ -284,7 +284,7 @@ As mentioned above, `cargo component build` doesn't generate a WIT file for a co
     }
     ```
 
-5. [Compose the command component with the `.wasm` components that implement the imports.](../creating-and-consuming/composing.md)
+5. [Compose the command component with the `.wasm` components that implement the imports.](../composing-and-distributing/composing.md)
 
 6. Run the composed component:
 
@@ -488,7 +488,7 @@ To use the calculator engine in another component, that component must import th
     }
     ```
 
-You can now build the command component and [compose it with the `.wasm` component that implements the resource.](../creating-and-consuming/composing.md). You can then run the composed command with `wasmtime run`.
+You can now build the command component and [compose it with the `.wasm` component that implements the resource.](../composing-and-distributing/composing.md). You can then run the composed command with `wasmtime run`.
 
 ### Implementing and exporting a resource implementation in a host
 

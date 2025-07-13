@@ -22,17 +22,13 @@
   - [JavaScript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
   - [Rust](./language-support/rust.md)
-- [Creating and Consuming Components](./creating-and-consuming.md)
-  - [Authoring Components](./creating-and-consuming/authoring.md)
-  - [Composing Components](./creating-and-consuming/composing.md)
-  - [Running Components](./creating-and-consuming/running.md)
-  - [Distributing and Fetching Components and WIT](./creating-and-consuming/distributing.md)
+- [Running Components](./running-components.md)
+  - [Wasmtime](./running-components/wasmtime.md)
+  - [jco](./running-components/jco.md)
+- [Consuming and Distributing Components](./composing-and-distributing.md)
+  - [Composing Components](./composing-and-distributing/composing.md)
+  - [Distributing and Fetching Components and WIT](./composing-and-distributing/distributing.md)
 - [Tutorial](./tutorial.md)
-
-# Runtime Support
-
-- [Wasmtime](./runtimes/wasmtime.md)
-- [jco](./runtimes/jco.md)
 
 # Advanced Topics
 

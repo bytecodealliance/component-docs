@@ -23,9 +23,9 @@ The WebAssembly Component Model is a broad-reaching architecture for building in
 [Python]: ./language-support/python.md
 [Rust]: ./language-support/rust.md
 
-[Composing]: ./creating-and-consuming/composing.md
-[Running]: ./creating-and-consuming/running.md
-[Distributing]: ./creating-and-consuming/distributing.md
+[Composing]: ./composing-and-distributing/composing.md
+[Running]: ./running-components.md
+[Distributing]: ./composing-and-distributing/distributing.md
 
 > [!NOTE]
 >This documentation is aimed at _users_ of the component model: developers of libraries and applications.

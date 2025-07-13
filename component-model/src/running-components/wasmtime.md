@@ -29,7 +29,7 @@ Try out building and running HTTP components with one of these tutorials
 2. [HTTP Auth Middleware tutorial](https://github.com/fermyon/http-auth-middleware#running-with-wasmtime) - compose a HTTP authentication middleware component with a business logic component
 
 ## Running components with custom exports
-As of Wasmtime Version 33.0.0, there is [support for invoking custom component exports](https://bytecodealliance.org/articles/invoking-component-functions-in-wasmtime-cli).
+As of Wasmtime Version 33.0.0, there is [support for invoking components with custom exports](https://bytecodealliance.org/articles/invoking-component-functions-in-wasmtime-cli).
 
 
 As an example, if your component exports a function `add` which takes two numeric arguments, you can make use of this feature with the following command.

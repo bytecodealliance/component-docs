@@ -143,7 +143,7 @@ The component is said to "export" the `example-interface` interface, making avai
 ## Still have questions?
 
 Please contribute to the Component Book by filing your question (or one that you think should be covered here) as
-[an issue on GitHub][gh-issues].
+[an issue on GitHub][gh-issues-new].
 
 [gh-issues-new]: https://github.com/bytecodealliance/component-docs/issues/new
 

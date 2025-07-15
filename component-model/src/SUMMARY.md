@@ -3,7 +3,7 @@
 
 - [Introduction](./introduction.md)
 
-# Understanding Component Model
+# Understanding WebAssembly Components
 
 - [Why the Component Model?](./design/why-component-model.md)
 - [Component Model Concepts](./design/component-model-concepts.md)
@@ -13,7 +13,7 @@
   - [Packages](./design/packages.md)
 - [WIT Reference](./design/wit.md)
 
-# Using Component Model
+# Using WebAssembly Components
 
 - [Language Support for Components](./language-support.md)
   - [C/C++](./language-support/c.md)

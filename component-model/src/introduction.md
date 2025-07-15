@@ -3,6 +3,7 @@
 The WebAssembly Component Model is a broad-reaching architecture for building interoperable WebAssembly libraries, applications, and environments.
 
 This documentation is aimed at _users_ of the component model: developers of libraries and applications.
+
 > [!NOTE]
 >
 > _Compiler and Wasm runtime developers_ can take a look at the [Component Model specification](https://github.com/WebAssembly/component-model) to

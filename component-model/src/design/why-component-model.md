@@ -1,19 +1,126 @@
 # Why the Component Model?
 
-If you've tried out WebAssembly, you'll be familiar with the concept of a _module_. Roughly speaking, a module corresponds to a single `.wasm` file, with functions, memory, imports and exports, and so on. These "core" modules can run in the browser, or via a separate runtime such as Wasmtime or WAMR. A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/), and if you compile a program written in Rust, C, Go or whatever to WebAssembly, then a core module is what you'll get.
+WebAssembly programs can be written by hand,
+but it's more likely that you will use a compiler to generate your programs.
+In general, a compiler translates programs from a source language
+to a target language.
+Compilers whose target language is WebAssembly may take
+Rust, C, Go, or a variety of other languages as a source language.
+In this case, the compiler produces a WebAssembly _core module_.
+Core modules have some limitations, which components address.
 
-Core modules are, however, limited in how they expose their functionality to the outside world to functions that take and return only a small number of core WebAssembly types (essentially only integers and floating-point numbers). Richer types, such as strings, lists, records (a.k.a. structs), etc. have to be represented in terms of integers and floating point numbers, for example by the use of pointers and offsets. Those representations are often times not interchangeable across languages. For example, a string in C might be represented entirely differently from a string in Rust or in JavaScript.
+## Core modules
 
-For Wasm modules to interoperate, therefore, there needs to be an agreed-upon way for exposing those richer types across module boundaries.
+Typically, a core module defines a set of _functions_
+along with auxiliary definitions
+that are necessary for executing those functions.
+Functions are made up of _instructions_.
+Auxiliary definitions include:
+* _Linear memories_ define untyped buffers that can be read from
+  and written to by instructions.
+* _Imports_ define the names of other modules
+   that are required to be available to execute
+   the functions in the module,
+   along with type signatures for required functions
+   in the imported module.
+* _Exports_ define the names of functions within
+  the module that should be accessible externally.
+* And others; see [the Core Specification](https://webassembly.github.io/spec/core/syntax/modules.html)
+  for the complete list.
 
-In the component model, these type definitions are written in a language called [WIT (Wasm Interface Type)](./wit.md), and the way they translate into bits and bytes is called the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.md). A Wasm [component](./components.md) is thus a wrapper around a core module that specifies its imports and exports using such [Interfaces](./interfaces.md).
+A core module usually corresponds to a single `.wasm` file.
+These modules can be run in the browser,
+or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
+or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 
-The agreement of an interface adds a new dimension to Wasm portability. Not only are components portable across architectures and operating systems, but they are now portable across languages. A Go component can communicate directly and safely with a C or Rust component. It need not even know which language another component was written in - it needs only the component interface, expressed in WIT. Additionally, components can be linked into larger graphs, with one component's exports satisfying another's imports.
+A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/).
 
-Combined with Wasm's strong sandboxing, this opens the door to yet further benefits. By expressing higher-level semantics than integers and floats, it becomes possible to statically analyse and reason about a component's behaviour - to enforce and guarantee properties just by looking at the surface of the component. The relationships within a graph of components can be analysed, for example to verify that a component containing business logic has no access to a component containing personally identifiable information.
+### Limitations of core modules
 
-Moreover, a component interacts with a runtime or other components _only_ by calling its imports and having its exports called. Specifically, unlike core modules, a component may not export Wasm memory, and thus it cannot indirectly communicate to others by writing to its memory and having others read from that memory. This not only reinforces sandboxing, but enables interoperation between languages that make different assumptions about memory - for example, allowing a component that relies on Wasm GC (garbage collected) memory to collaborate with one that uses conventional linear memory.
+Core modules are, however, limited in how they expose their functionality to the outside world.
+Core modules expose their functionality by exporting functions.
+These functions' argument and return types are restricted, essentially,
+to only integers and floating-point numbers.
+Compound types, such as strings, lists, arrays, records, or structs,
+have to be represented in terms of integers and floating-point numbers.
+
+Recall that a linear memory is an uninitialized region of bytes
+declared within a module.
+So, a string argument might be represented as two separate arguments:
+an integer offset into a memory,
+and an integer representing the length of the string.
+These representations are frequently specific to each programming language.
+For example, a string in C might be represented entirely differently
+from a string in Rust or in JavaScript.
+Moreover, to make this approach work, modules must import and export memories,
+which can be error-prone, as different languages
+make different assumptions about memory layout.
+
+For WebAssembly modules to interoperate, therefore, there needs to be an agreed-upon way
+to expose these richer types across module boundaries.
+
+## Components
+
+Components were developed to ease interoperability between modules.
+Conceptually, a component is a module that is restricted
+to interact only through its imported and exported functions.
+Compared to core modules, components also use a richer
+mechanism for expressing the types of functions.
+
+### Interfaces
+
+These interfaces are expressed in a separate language called [WIT (Wasm Interface Type)](./wit.md).
+Interfaces contain _types_.
+The bit-level representations of these types are specified by
+the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.md).
+
+### Interoperability
+
+Interfaces make it possible to write components that are
+portable across different architectures and operating systems.
+Not only that, components are portable across different programming languages.
+A component implemented in Go can communicate directly and safely
+with a C or Rust component.
+Writing a component doesn't even require knowledge
+of which language its dependent components are implemented in,
+only the component interface expressed in WIT.
+Additionally, components can be linked into larger graphs,
+with one component's exports satisfying another's imports.
+
+### Benefits of the component model
+
+Putting all of the pieces together:
+the component model is a way of writing WebAssembly modules
+that interact with each other only through exports and imports of functions
+whose types are expressed using WIT.
+
+When combined with Wasm's strong [sandboxing](https://webassembly.org/docs/security/),
+the component model has further benefits.
+Richer type signatures express richer semantic properties
+than type signatures made up only of integers and floats.
+Rich types make it possible to statically analyse
+and reason about a component's behaviour.
+Simply by examining the surface of the component—the types
+of its imports and exports—properties can be
+enforced and guaranteed.
+The relationships within a graph of components can be analysed:
+for example, to verify that a component containing business logic
+has no access to a component containing personally identifiable information.
+
+Moreover, a component interacts with a runtime or other components
+_only_ by calling its imports and having its exports called.
+Specifically, unlike core modules, a component may not export a memory
+and thus it cannot indirectly communicate to others
+by writing to its memory and having others read from that memory.
+This not only reinforces sandboxing, but enables interoperation
+between languages that make different assumptions about memory:
+for example, allowing a component that relies garbage-collected memory
+to interoperate with one that uses conventional linear memory.
+
+## Using components
 
 Now that you have a better idea about how the component model can help you, take a look at [how to build components](../language-support.md) in your favorite language!
+
+## Further reading
 
 > For more background on why the component model was created, take a look at the specification's [goals](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Goals.md), [use cases](https://github.com/WebAssembly/component-model/blob/main/design/high-level/UseCases.md) and [design choices](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md).

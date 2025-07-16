@@ -113,7 +113,9 @@ there needs to be an agreed-upon way to expose these richer types across module 
 
 ## Components
 
-Components were developed to ease interoperability between modules.
+Components solve the two problems that we've seen so far:
+the limited type system of core module functions,
+and cross-language interoperability.
 Conceptually, a component is a module that is restricted
 to interact only through its imported and exported functions.
 Compared to core modules, components also use a richer

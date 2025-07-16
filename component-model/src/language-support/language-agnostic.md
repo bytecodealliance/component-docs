@@ -46,8 +46,25 @@ and simply adds two numbers.
 
 ### Running a Component with Wasmtime
 
-You can "run" a component by calling one of its exports. Hosts and runtimes often only support
-running components with certain exports. The [`wasmtime`](https://github.com/bytecodealliance/wasmtime) CLI can only run "command" components, so in
-order to run the `add` function above, it first must be composed with a primary "command" component
-that calls it. See [documentation on running components](../running-components/wasmtime.md) for more details.
+You can "run" a component by calling one of its exports.
+Hosts and runtimes often only support running components with certain exports.
 
+Using the [`wasmtime`](https://github.com/bytecodealliance/wasmtime) CLI,
+we can execute the `add` function in the component you just built,
+passing in arguments:
+
+```sh
+wasmtime run --invoke 'add(1, 2)' add.component.wasm
+```
+
+The output is ```3```.
+You can try passing other arguments to `add()`
+by changing the arguments inside the parentheses.
+
+> [!NOTE]
+>
+> This example was tested with `wasmtime` 34.0.1.
+> Earlier versions of `wasmtime` may not support the `--invoke` option.
+
+Any other compliant WebAssembly runtime that supports components
+can also run this component.

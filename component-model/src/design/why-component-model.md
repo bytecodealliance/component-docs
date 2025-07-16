@@ -39,16 +39,18 @@ Kinds of definitions include:
 
 A core module usually corresponds to a single binary `.wasm` file.
 These modules can be run in the browser,
-or via a server-side WebAssembly runtime such as [Wasmtime](https://wasmtime.dev/)
+or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 
 ### Limitations of core modules
 
 Core modules are, however, limited in how they expose their functionality to the outside world.
-Core modules expose their functionality by exporting functions.
-These functions' argument and return types are restricted, essentially,
-to only integers and floating-point numbers.
-Compound types, such as strings, lists, arrays, records, or structs,
+In WebAssembly core modules, functions are restricted, essentially,
+to using integer (`i32` or `i64`) or floating-point (`f32` or `f64`) types.
+Only these types can be passed as arguments to functions,
+and only these types can be returned from functions as results.
+Compound types common in higher-level programming languages,
+such as strings, lists, arrays, enums (enumerations), or structs (records),
 have to be represented in terms of integers and floating-point numbers.
 
 Recall that a linear memory is an uninitialized region of bytes
@@ -56,15 +58,36 @@ declared within a module.
 So, a string argument might be represented as two separate arguments:
 an integer offset into a memory,
 and an integer representing the length of the string.
-These representations are frequently specific to each programming language.
-For example, a string in C might be represented entirely differently
+
+In pseudocode, a type signature for a string-manipulating function
+might look like:
+
+```
+remove-duplicates: func(offset: i32, length: i32) -> [i32, i32]
+```
+
+supposing that `remove-duplicates` is a function
+to create a new string consisting of the unique characters
+in its argument.
+The return type is a pair of 32-bit integers,
+reflecting that the function must return
+the new offset for the newly allocated string, as well as its length.
+
+We would prefer to write a pseudocode type signature like this:
+
+```
+remove-duplicates: func(s: string) -> string
+```
+
+Data representations are frequently specific to each programming language.
+For example, a string in C is represented entirely differently
 from a string in Rust or in JavaScript.
 Moreover, to make this approach work, modules must import and export memories,
 which can be error-prone, as different languages
 make different assumptions about memory layout.
 
-For WebAssembly modules written in different languages to interoperate smoothly, there needs to be an agreed-upon way
-to expose these richer types across module boundaries.
+For WebAssembly modules written in different languages to interoperate smoothly,
+there needs to be an agreed-upon way to expose these richer types across module boundaries.
 
 ## Components
 

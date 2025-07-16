@@ -1,5 +1,14 @@
 # Why the Component Model?
 
+At a high level, the component model builds upon WebAssembly _core modules_
+to enhance interoperability, both by enriching the type system
+used for checking the safety of interactions between modules,
+and by removing potentially error-prone ways for modules to interact.
+To understand what the limitations of core modules are,
+we start by defining them.
+
+## WebAssembly Core modules
+
 WebAssembly programs can be written by hand,
 but it's more likely that you will use a compiler to generate your programs.
 In general, a compiler translates programs from a source language
@@ -7,9 +16,6 @@ to a target language.
 Compilers whose target language is WebAssembly may take
 Rust, C, Go, or a variety of other languages as a source language.
 In this case, the compiler produces a WebAssembly _core module_.
-Core modules have some limitations, which components address.
-
-## WebAssembly Core modules
 
 Typically, a core module defines a set of _functions_
 along with auxiliary definitions

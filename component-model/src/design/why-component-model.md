@@ -9,20 +9,23 @@ we start by defining them.
 
 ## WebAssembly Core modules
 
+A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/).
+
 WebAssembly programs can be written by hand,
 but it's more likely that you will use a compiler to generate your programs.
 In general, a compiler translates programs from a source language
 to a target language.
 Compilers whose target language is WebAssembly may take
 Rust, C, Go, or a variety of other languages as a source language.
-In this case, the compiler produces a WebAssembly _core module_.
+In this case, the compiler produces a WebAssembly [core module](https://webassembly.github.io/spec/core/syntax/modules.html).
 
-Typically, a core module defines a set of _functions_
-along with auxiliary definitions
-that are necessary for executing those functions.
-Functions are made up of _instructions_.
-Auxiliary definitions include:
-* _Linear memories_ define untyped buffers that can be read from
+A core module is a set of definitions.
+Kinds of definitions include:
+* _Functions_ define executable units of code
+  (sequences of instructions along with declarations
+  for argument names and types and return types).
+* [_Linear memories_](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-mem)
+  define buffers of uninterpreted bytes that can be read from
   and written to by instructions.
 * _Imports_ define the names of other modules
    that are required to be available to execute
@@ -34,12 +37,10 @@ Auxiliary definitions include:
 * And others; see [the Core Specification](https://webassembly.github.io/spec/core/syntax/modules.html)
   for the complete list.
 
-A core module usually corresponds to a single `.wasm` file.
+A core module usually corresponds to a single binary `.wasm` file.
 These modules can be run in the browser,
 or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
-
-A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/).
 
 ### Limitations of core modules
 

@@ -15,7 +15,8 @@
 
 # Using WebAssembly Components
 
-- [Language Support for Components](./language-support.md)
+- [Creating Components in Specific Source Languages](./language-support.md)
+  - [Language-Agnostic Tooling](./language-support/language-agnostic.md)
   - [C/C++](./language-support/c.md)
   - [C#](./language-support/csharp.md)
   - [Go](./language-support/go.md)

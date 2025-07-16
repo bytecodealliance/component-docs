@@ -16,30 +16,16 @@ and simply adds two numbers.
 2. The `add` function is defined inside the following world.
    Create a file called `adder.wit` whose contents are as follows:
 
-   ```wit
-   package docs:adder@0.1.0;
-
-   interface add {
-       add: func(x: u32, y: u32) -> u32;
-   }
-
-   world adder {
-       export add;
-   }
-   ```
+  ```wit
+  {{#include ../../examples/tutorial/wit/adder/world.wit}}
+  ```
 
 3. Define an `add` core module in WAT that exports an `add` function that adds two parameters.
    Create a file called `add.wat` whose contents are as follows:
 
-   ```wat
-   (module
-     (func $add (param $lhs i32) (param $rhs i32) (result i32)
-         local.get $lhs
-         local.get $rhs
-         i32.add)
-     (export "docs:adder/add@0.1.0#add" (func $add))
-   )
-   ```
+  ```wat
+  {{#include ../../examples/tutorial/wat/adder/add.wat}}
+  ```
 
 4. Use `wasm-tools` to create a binary core module with component metadata embedded inside it:
 

@@ -40,6 +40,10 @@ and simply adds two numbers.
    wasm-tools component new add.wasm -o add.component.wasm
    ```
 
+   The suffix `.component.wasm` is just a convention.
+   You could also name the output file `add_component.wasm` or anything else
+   with the `.wasm` suffix.
+
 ### Running a Component with Wasmtime
 
 You can "run" a component by calling one of its exports. Hosts and runtimes often only support

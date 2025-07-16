@@ -63,7 +63,7 @@ Moreover, to make this approach work, modules must import and export memories,
 which can be error-prone, as different languages
 make different assumptions about memory layout.
 
-For WebAssembly modules to interoperate, therefore, there needs to be an agreed-upon way
+For WebAssembly modules written in different languages to interoperate smoothly, there needs to be an agreed-upon way
 to expose these richer types across module boundaries.
 
 ## Components

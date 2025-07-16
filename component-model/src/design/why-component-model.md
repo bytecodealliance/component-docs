@@ -9,7 +9,7 @@ Rust, C, Go, or a variety of other languages as a source language.
 In this case, the compiler produces a WebAssembly _core module_.
 Core modules have some limitations, which components address.
 
-## Core modules
+## WebAssembly Core modules
 
 Typically, a core module defines a set of _functions_
 along with auxiliary definitions

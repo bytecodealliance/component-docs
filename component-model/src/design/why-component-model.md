@@ -73,11 +73,33 @@ The return type is a pair of 32-bit integers,
 reflecting that the function must return
 the new offset for the newly allocated string, as well as its length.
 
+For this to work, the module defining the `remove-duplicates` function
+would also need to include
+an export declaration that exports a memory to be used
+for the argument and result strings. Pseudocode:
+
+```
+export "string_mem" (mem 1)
+```
+
+And, the module using the `remove-duplicates` function
+would need to import this memory. Pseudocode:
+
+```
+import "strings" "string_mem"
+```
+
+(This pseudocode is still simplified, since the importer
+also needs to declare the size of the memory being
+imported.)
+
 We would prefer to write a pseudocode type signature like this:
 
 ```
 remove-duplicates: func(s: string) -> string
 ```
+
+and dispense with the memory exports and imports altogether.
 
 Data representations are frequently specific to each programming language.
 For example, a string in C is represented entirely differently

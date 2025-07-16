@@ -21,7 +21,8 @@ Each section covers how to build and
 run components for a given toolchain:
 
   - [Language Agnostic Tooling](./language-support/language-agnostic.md)
-    - [Building a Component with `wasm-tools`](./language-support/language-agnostic.md#building-a-component-with-wasm-tools)
+    - [WAT (WebAssembly Text Format)](./language-support/language-agnostic.md#wat-webassembly-text-format)
+    - [Building a Component from WAT with `wasm-tools`](./language-support/language-agnostic.md#building-a-component-with-wasm-tools)
     - [Running a Component with Wasmtime](./language-support/language-agnostic.md#running-a-component-with-wasmtime)
   - [C/C++ Tooling](./language-support/c.md)
     - [Building a Component with `wit-bindgen` and `wasm-tools`](./language-support/c.md#building-a-component-with-wit-bindgen-and-wasm-tools)

@@ -3,5 +3,5 @@
        local.get $lhs
        local.get $rhs
        i32.add)
-    (export "docs:adder/add@0.1.0#add" (func $add))
+   (export "docs:adder/add@0.1.0#add" (func $add))
 )

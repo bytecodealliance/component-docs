@@ -44,7 +44,7 @@ and simply adds two numbers.
 4. Use `wasm-tools` to create a binary core module with component metadata embedded inside it:
 
    ```sh
-   $ wasm-tools component embed adder.wit add.wat -o add.wasm
+   wasm-tools component embed adder.wit add.wat -o add.wasm
    ```
 
 5. Use `wasm-tools` to create a new component `.wasm` file

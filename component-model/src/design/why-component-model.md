@@ -39,7 +39,7 @@ Kinds of definitions include:
 
 A core module usually corresponds to a single binary `.wasm` file.
 These modules can be run in the browser,
-or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
+or via a server-side WebAssembly runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 
 ### Limitations of core modules

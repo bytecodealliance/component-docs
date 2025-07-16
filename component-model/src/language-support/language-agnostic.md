@@ -51,7 +51,7 @@ and simply adds two numbers.
    from the binary core module you just created:
 
    ```sh
-   $ wasm-tools component new add.wasm -o add.component.wasm
+   wasm-tools component new add.wasm -o add.component.wasm
    ```
 
 ### Running a Component with Wasmtime

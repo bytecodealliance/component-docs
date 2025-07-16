@@ -37,7 +37,38 @@ This documentation is aimed at _users_ of the component model: developers of lib
 [Distributing]: ./composing-and-distributing/distributing.md
 
 
+## WebAssembly components
+
+As with all programming, the goal of writing a component
+is to make new functionality available
+by building it out of existing functionality.
+
+A WebAssembly component runs on a _platform_,
+which may be a Web browser,
+a stand-alone runtime,
+or even an operating system (when compiling WebAssembly to an executable).
+By running the component, the platform gains the functionality
+that the component implements.
+Likewise, the platform provides functionality
+that code in components can use to interact
+with the outside world.
+
+For example:
+
+- A user of the component model can build a component
+  that converts the system time to another time zone.
+- For the component to work as intended, the underlying platform
+  must provide the component with a means to access
+  the current system time and the system time zone.
+
 ## APIs for building WebAssembly components
+
+In general, a platform that runs components
+must provide well-defined APIs for accessing functionality
+that components need:
+for example, reading from standard input,
+accessing environment variables,
+or manipulating network sockets.
 
 It's useful to have a standard, shared set of APIs
 that WebAssembly components can depend on.

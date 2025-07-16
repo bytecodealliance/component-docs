@@ -1,6 +1,6 @@
 ## Language Agnostic Tooling
 
-### Building a Component with `wasm-tools`
+### Building a Component from WebAssembly Text Format (WAT) with `wasm-tools`
 
 [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) provides a suite of subcommands for
 working with WebAssembly modules and components.

@@ -12,6 +12,7 @@ and simply adds two numbers.
 
 1. Install [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools/tree/main#installation), a
    tool for low-level manipulation of Wasm modules and components.
+
 2. The `add` function is defined inside the following world.
    Create a file called `adder.wit` whose contents are as follows:
 

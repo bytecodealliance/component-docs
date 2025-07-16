@@ -3,7 +3,7 @@
 Many popular programming languages can be compiled to WebAssembly,
 but the level of support varies across languages.
 This document details languages with compilers and runtimes
-that support WebAssembly with WASI as a target language.
+that support WebAssembly with WASI as a target platform.
 
 > This is a living document, so if you are aware of advancements in a toolchain, please do
 not hesitate to [contribute documentation](https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md). You can find more information about the development of support for specific languages in the [Guest Languages Special Interest Group Proposal](https://github.com/bytecodealliance/governance/blob/main/SIGs/SIG-guest-languages/proposal.md) document.

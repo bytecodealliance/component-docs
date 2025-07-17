@@ -135,7 +135,7 @@ Interfaces make it possible to write components that are
 portable across different architectures and operating systems.
 Not only that, components are portable across different programming languages.
 A component implemented in Go can communicate directly and safely
-with a C or Rust component.
+with a C or Rust component, by relying on the shared conventions of the Component Model ABI.
 Writing a component doesn't even require knowledge
 of which language its dependent components are implemented in,
 only the component interface expressed in WIT.

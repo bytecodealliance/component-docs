@@ -1,7 +1,7 @@
 # Why the Component Model?
 
 At a high level, the component model builds upon WebAssembly _core modules_
-to enhance interoperability, both by enriching the type system
+to enhance interoperability between languages and libraries, both by enriching the type system
 used for checking the safety of interactions between modules,
 and by removing potentially error-prone ways for modules to interact.
 To understand what the limitations of core modules are,

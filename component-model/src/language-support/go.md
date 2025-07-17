@@ -2,8 +2,10 @@
 
 The [TinyGo compiler](https://tinygo.org/) v0.34.0 and above has native support for the WebAssembly Component Model and WASI 0.2.0.
 
-This guide walks through building a component that implements `adder` world defined in the [`adder/world.wit` package][adder-wit].
-The component will implement the `adder` world, which contains `add` interface with a `add` function.
+This guide walks through building a component that implements
+the `adder` world defined in the [`adder/world.wit` package][adder-wit].
+The component will implement the `adder` world,
+which contains an `add` interface with an `add` function.
 
 [adder-wit]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
 
@@ -32,9 +34,13 @@ $ wasm-tools -V
 wasm-tools 1.255.0 ...
 ```
 
-Optional: Install the [`wkg`][wkg] CLI tool to resolve the imports in the WIT file. The `wkg` CLI is a part of the [Wasm Component package manager](https://github.com/bytecodealliance/wasm-pkg-tools/releases)
+Optional: Install the [`wkg`][wkg] CLI tool to resolve the imports in the WIT file.
+The `wkg` CLI is a part of the [Wasm Component package manager][wasm-pkg-tools-releases].
+See [the wasm-pkg-tools installation instructions][wasm-pkg-tools] to install manually or using `cargo`.
 
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
+[wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools?tab=readme-ov-file#installation
+[wasm-pkg-tools-releases]: https://github.com/bytecodealliance/wasm-pkg-tools/releases
 
 ## 2. Create your Go project
 
@@ -45,12 +51,10 @@ mkdir add && cd add
 go mod init example.com
 ```
 
-Ensure that the following `tool`s are installed:
+Install the following `tool`:
 
-```
-tool (
-	go.bytecodealliance.org/cmd/wit-bindgen-go
-)
+```console
+go get -tool go.bytecodealliance.org/cmd/wit-bindgen-go
 ```
 
 > [!NOTE]
@@ -60,41 +64,28 @@ Consider also running `go mod tidy` after adding the above tool.
 
 [go-1-24-release]: https://go.dev/blog/go1.24
 
-## 2. Determine which World the Component will Implement
+## 2. Determine which world the component will implement
 
-Since we will be implementing the [`adder` world][adder-wit], we can copy the WIT to our project,
-under the `wit` folder (e.g. `wit/component.wit`):
-
-```wit
-package docs:adder@0.1.0;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world adder {
-    export add;
-}
-```
-
-The `wasip2` target of TinyGo assumes that the component is targeting `wasi:cli/command@0.2.0` world
-(part of [`wasi:cli`][wasi-cli]) so it requires the imports of `wasi:cli/imports@0.2.0`.
-
-We need to include those interfaces as well in `component.wit`, by editing the `adder` world:
+Since we will be implementing the [`adder` world][adder-wit], we can copy the WIT to our project.
+Create a subdirectory called `wit` and paste the following code
+into a file called `wit/component.wit`:
 
 ```wit
-world adder {
-  include wasi:cli/imports@0.2.0;
-  export add;
-}
+{{#include ../../examples/tutorial/wit/adder/world2.wit}}
 ```
+
+The line `include wasi:cli/imports@0.2.0` is necessary because
+we are using the `wasip2` target of TinyGo.
+TinyGo assumes that the component targets the `wasi:cli/command@0.2.0` world
+(part of [`wasi:cli`][wasi-cli]),
+so it requires the imports of `wasi:cli/imports@0.2.0`.
 
 ### Using `wkg` to automatically resolve and download imports
 
 Tools like [`wkg`][wkg] can be convenient to build a complete WIT package by resolving the imports.
 
-Running the `wkg wit fetch` command will resolve the imports and populate your `wit` folder with all relevant
-imported namespaces and packages.
+Running the `wkg wit build` command will resolve the imports
+and populate your `wit` folder with all relevant imported namespaces and packages.
 
 ```
 $ wkg wit build
@@ -105,8 +96,8 @@ WIT package written to docs:adder@0.1.0.wasm
 
 ## 3. Generate bindings for the Wasm component
 
-Now that we have our WIT definitions bundled together into a WASM file,
-we can generate the bindings for our Wasm component, by adding a build directive:
+Now that we have our WIT definitions bundled together into a `.wasm` file,
+we can generate the bindings for our WebAssembly component, by adding a build directive:
 
 ```console
 go tool wit-bindgen-go generate --world adder --out internal ./docs:adder@0.1.0.wasm
@@ -116,7 +107,7 @@ go tool wit-bindgen-go generate --world adder --out internal ./docs:adder@0.1.0.
 > The `go tool` directive (added in [Golang 1.24][go-1-24-release]) installs and enables use of `wit-bindgen-go`,
 > part of the Bytecode Alliance suite of Golang tooling.
 
-The `internal` directory will contain the generated Go code that WIT package.
+The `internal` directory will contain the generated Go code for that WIT package.
 
 ```console
 $ tree internal
@@ -254,50 +245,54 @@ internal
 39 directories, 91 files
 ```
 
-The `adder.exports.go` file contains the exported functions that need to be implemented in the Go code called `Exports`.
+The `add.exports.go` file contains an `Exports` struct, containing declarations for
+the exported functions that need to be implemented in the Go code.
 
 ## 4. Implement the `add` Function
 
+In your `add` directory, create a file called `main.go`
+and paste the following code into it:
+
 ```Go
-//go:generate go tool wit-bindgen-go generate --world adder --out internal ./docs:adder@0.1.0.wasm
-
-package main
-
-import (
-	"example.com/internal/docs/adder/add"
-)
-
-func init() {
-	add.Exports.Add = func(x uint32, y uint32) uint32 {
-		return x + y
-	}
-}
-
-// main is required for the `wasi` target, even if it isn't used.
-func main() {}
+{{#include ../../examples/tutorial/go/adder/main.go}}
 ```
 
-Go's `init` functions are used to do initialization tasks that
-should be done before any other tasks. In this case, we are using it to export the `Add` function.
+Go's `init` function is used to do initialization tasks
+that should be done before any other tasks.
+In this case, we are using it to export the `Add` function.
 
 ## 5. Build the Component
 
-We can build our component using TinyGo by specifying the wit-package to be `add.wit` and the WIT world to be `adder`.
-
-Under the hood, TinyGo invokes `wasm-tools` to embed the WIT file to the module and componentize it.
+We can build our component using TinyGo.
+Under the hood, TinyGo invokes `wasm-tools`
+to embed the WIT file to the module and componentize it.
 
 ```console
-tinygo build -target=wasip2 -o add.wasm --wit-package docs:adder@0.1.0.wasm --wit-world adder main.go
+tinygo build -target=wasip2 -o adder.wasm \
+    --wit-package docs:adder@0.1.0.wasm \
+    --wit-world adder main.go
 ```
 
-> **WARNING:** By default, tinygo includes all debug-related information in your .wasm file. That is desirable when prototyping or testing locally to obtain useful backtraces in case of errors (for example, with `wasmtime::WasmBacktraceDetails::Enable`). To remove debug data and optimize your binary file, build with `-no-debug`. The resulting .wasm file will be considerably smaller (up to 75% reduction in size).
+* The `-target=wasip2` flag specifies that the code should be compiled
+  to WebAssembly using Preview 2 methods.
+* The `-o adder.wasm` flag directs the output to be saved in `add.wasm` in the current directory.
+* The `--wit-package` flag specifies the package name for the WIT code we are using.
+* The `--wit-world` flag specifies that the WIT world that defines the imports and exports
+  for our component is `adder`.
 
-We now have an add component that satisfies our `adder` world, exporting the `add` function, which
+We now have an `adder` component that satisfies our `adder` world, exporting the `add` function.
+
+> [!WARNING]
+> By default, tinygo includes all debug-related information in your .wasm file.
+> That is desirable when prototyping or testing locally to obtain useful backtraces in case of errors
+> (for example, with `wasmtime::WasmBacktraceDetails::Enable`).
+> To remove debug data and optimize your binary file, build with `-no-debug`.
+> The resulting .wasm file will be considerably smaller (up to 75% reduction in size).
 
 We can confirm using the `wasm-tools component wit` command:
 
 ```console
-$ wasm-tools component wit add.wasm
+$ wasm-tools component wit adder.wasm
 package root:component;
 
 world root {
@@ -313,20 +308,20 @@ world root {
 
 ## 5. Testing the `add` Component
 
-To run our add component, we need to use a host program with a WASI runtime that understands the
-`example` world -- we've provided an [`example-host`][example-host] that does just that.
+The following section requires you to have [a Rust toolchain][rust] installed.
 
-The example host calls the `add` function of a passed in component providing two operands.
+To run our add component, we need to use a host program with a WASI runtime that understands
+the `example` world.
 
-To use the example host, clone this repository and run the Rust program:
+{{#include example-host-part1.md}}
 
-```console
-git clone git@github.com:bytecodealliance/component-docs.git
-cd component-docs/component-model/examples/example-host
-cargo run --release -- 1 2 /path/to/add.wasm
-```
+A successful run should show the following output
+(of course, the paths to your example host and adder component will vary):
+
+{{#include example-host-part2.md}}
 
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
+[rust]: https://www.rust-lang.org/learn/get-started
 
 [!NOTE]: #
 [!WARNING]: #

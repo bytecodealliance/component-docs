@@ -150,7 +150,7 @@ the component model is a way of writing WebAssembly modules
 that interact with each other only through exports and imports of functions
 whose types are expressed using WIT.
 
-When combined with Wasm's strong [sandboxing](https://webassembly.org/docs/security/),
+Building upon Wasm's strong [sandboxing](https://webassembly.org/docs/security/),
 the component model has further benefits.
 Richer type signatures express richer semantic properties
 than type signatures made up only of integers and floats.
@@ -179,4 +179,7 @@ Now that you have a better idea about how the component model can help you, take
 
 ## Further reading
 
-> For more background on why the component model was created, take a look at the specification's [goals](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Goals.md), [use cases](https://github.com/WebAssembly/component-model/blob/main/design/high-level/UseCases.md) and [design choices](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md).
+For more background on why the component model was created,
+take a look at the specification's [goals](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Goals.md),
+[use cases](https://github.com/WebAssembly/component-model/blob/main/design/high-level/UseCases.md)
+and [design choices](https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md).

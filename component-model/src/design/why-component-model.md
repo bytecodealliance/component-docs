@@ -1,9 +1,11 @@
 # Why the Component Model?
 
 At a high level, the component model builds upon WebAssembly _core modules_
-to enhance interoperability between languages and libraries, both by enriching the type system
+to enhance interoperability between languages and libraries,
+both by enriching the type system
 used for checking the safety of interactions between modules,
-and by clearly defining and enforcing the low-level calling contract between separately-compiled modules.
+and by clearly defining and enforcing
+the low-level calling contract between separately-compiled modules.
 To understand what the limitations of core modules are,
 we start by defining them.
 
@@ -152,6 +154,9 @@ Interfaces are expressed in a separate language called [WebAssembly Interface Ty
 and type signatures for [_functions_](./wit.md#functions).
 The bit-level representations of types are specified by
 the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.md).
+Together, interfaces and the Canonical ABI
+achieve the goal of clearly defining and enforcing
+the low-level calling contract between modules.
 
 ### Interoperability
 

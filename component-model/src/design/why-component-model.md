@@ -139,7 +139,7 @@ with a C or Rust component.
 Writing a component doesn't even require knowledge
 of which language its dependent components are implemented in,
 only the component interface expressed in WIT.
-Additionally, components can be linked into larger graphs,
+Additionally, components can be composed into larger graphs,
 with one component's exports satisfying another's imports.
 
 ### Benefits of the component model

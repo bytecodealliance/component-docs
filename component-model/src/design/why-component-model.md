@@ -49,7 +49,8 @@ or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 
 ### Limitations of core modules
 
-Core modules are, however, limited in how they expose their functionality to the outside world.
+Core modules are limited in the computation they can perform and 
+how they expose their functionality to the outside world.
 In WebAssembly core modules, functions are restricted, essentially,
 to using integer (`i32` or `i64`) or floating-point (`f32` or `f64`) types.
 Only these types can be passed as arguments to functions,

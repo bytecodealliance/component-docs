@@ -74,9 +74,13 @@ remove-duplicates: func(offset: i32, length: i32) -> [i32, i32]
 supposing that `remove-duplicates` is a function
 to create a new string consisting of the unique characters
 in its argument.
-The return type is a pair of 32-bit integers,
-reflecting that the function must return
-the new offset for the newly allocated string, as well as its length.
+The return type is a list of two 32-bit integers.
+The first integer is an offset into one of the linear memories
+declared by the module—where the newly allocated string starts—and
+the second integer is the length of the string.
+After calling the function,
+the caller has to reach into the appropriate linear memory
+and read the output string, using the returned offset and length.
 
 For this to work, the module defining the `remove-duplicates` function
 would also need to include
@@ -97,6 +101,15 @@ import "strings" "string_mem"
 (This pseudocode is still simplified, since the importer
 also needs to declare the size of the memory being
 imported.)
+
+Note that there is nothing in the type system to prevent
+the returned length from being confused with the returned offset,
+since both are integers.
+Also, the name of the memory used for the input and output strings
+must be established by convention,
+and there is also nothing in the type system to stop client code
+from indexing into a different memory
+(as long as the sum of the offset and length is within bounds).
 
 We would prefer to write a pseudocode type signature like this:
 

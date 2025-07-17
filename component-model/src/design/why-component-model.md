@@ -13,8 +13,17 @@ A module is defined by the [WebAssembly Core Specification](https://webassembly.
 
 WebAssembly programs can be written by hand,
 but it's more likely that you will use a higher level programming language
-such as Rust, C, Go, Javascript, or Python to build WebAssembly programs.
-Many existing toolchains currently produce a [WebAssembly core module](https://webassembly.github.io/spec/core/syntax/modules.html) -- a single binary `.wasm` file.
+such as Rust, C, Go, JavaScript, or Python to build WebAssembly programs.
+Many existing toolchains currently produce a
+[WebAssembly core module](https://webassembly.github.io/spec/core/syntax/modules.html)—a single
+binary `.wasm` file.
+
+A core module usually corresponds to a single binary `.wasm` file.
+Here's what the `file` command outputs for a sample `.wasm` file:
+```console
+$ file adder.wasm
+adder.wasm: WebAssembly (wasm) binary module version 0x1 (MVP)
+```
 
 A core module is a set of definitions.
 Kinds of definitions include:
@@ -34,13 +43,7 @@ Kinds of definitions include:
 * And others; see [the Core Specification](https://webassembly.github.io/spec/core/syntax/modules.html)
   for the complete list.
 
-A core module usually corresponds to a single binary `.wasm` file.
-Here's what the `file` command outputs for a sample `.wasm` file:
-```console
-$ file adder.wasm
-adder.wasm: WebAssembly (wasm) binary module version 0x1 (MVP)
-```
-These modules can be run in the browser,
+Core modules can be run in the browser,
 or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 

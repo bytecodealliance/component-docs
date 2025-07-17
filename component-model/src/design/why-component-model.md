@@ -157,7 +157,7 @@ the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.m
 
 WebAssembly core modules are already portable across different architectures
 and operating systems;
-components retain these benefits and, using interfaces,
+components retain these benefits and, using the Component Model ABI,
 add portability across different programming languages.
 A component implemented in Go can communicate directly and safely
 with a C or Rust component, by relying on the shared conventions of the Component Model ABI.

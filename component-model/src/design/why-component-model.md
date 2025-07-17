@@ -137,10 +137,13 @@ there needs to be an agreed-upon way to expose these richer types across module 
 Components solve the two problems that we've seen so far:
 the limited type system of core module functions,
 and cross-language interoperability.
-Conceptually, a component is a WebAssembly binary (which may or may not contain modules) that is restricted
-to interact only through its imported and exported functions.
+Conceptually, a component is a WebAssembly binary
+(which may or may not contain modules)
+that is restricted to interact
+only through the modules' imported and exported functions.
+Components use a different binary format.
 Compared to core modules, components also use a richer
-mechanism for expressing the types of functions: _interfaces_.
+mechanism by default for expressing the types of functions: _interfaces_.
 
 ### Interfaces
 

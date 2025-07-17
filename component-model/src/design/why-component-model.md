@@ -3,7 +3,7 @@
 At a high level, the component model builds upon WebAssembly _core modules_
 to enhance interoperability between languages and libraries, both by enriching the type system
 used for checking the safety of interactions between modules,
-and by removing potentially error-prone ways for modules to interact.
+and by clearly defining and enforcing the low-level calling contract between separately-compiled modules.
 To understand what the limitations of core modules are,
 we start by defining them.
 

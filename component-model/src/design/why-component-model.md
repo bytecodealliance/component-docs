@@ -51,7 +51,7 @@ or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 
 ### Limitations of core modules
 
-Core modules are limited in the computation they can perform and 
+Core modules are limited in the computation they can perform and
 how they expose their functionality to the outside world.
 In WebAssembly core modules, functions are restricted, essentially,
 to using integer (`i32` or `i64`) or floating-point (`f32` or `f64`) types.
@@ -183,12 +183,12 @@ whose types are expressed using WIT.
 
 Building upon Wasm's strong [sandboxing](https://webassembly.org/docs/security/),
 the component model has further benefits.
+Rich types make it easier to know what a component or interface
+is doing at a glance
+and have guarantees of what bad things cannot happen.
 Richer type signatures express richer semantic properties
 than type signatures made up only of integers and floats.
-Rich types make it easier to know what a component or interface is 
-doing at a glance and have guarantees of what bad things cannot happen.
-enforced and guaranteed.
-The relationships within a graph of components can be analysed:
+The relationships within a graph of components can be statically analysed:
 for example, to verify that a component containing business logic
 has no access to a component containing personally identifiable information.
 

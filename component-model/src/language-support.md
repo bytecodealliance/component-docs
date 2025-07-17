@@ -18,12 +18,11 @@ example host or from an application of that toolchain. This aims to provide a fu
 components within and among toolchains.
 
 Each section covers how to build and
-run components for a given toolchain:
+run components for a given toolchain.
+The last section, on WebAssembly Text Format (WAT),
+details how to write WebAssembly components by hand,
+without using a higher-level language front-end.
 
-  - [Language Agnostic Tooling](./language-support/language-agnostic-tooling.md)
-    - [WAT (WebAssembly Text Format)](./language-support/language-agnostic-tooling.md#wat-webassembly-text-format)
-    - [Building a Component from WAT with `wasm-tools`](./language-support/language-agnostic-tooling.md#building-a-component-with-wasm-tools)
-    - [Running a Component with Wasmtime](./language-support/language-agnostic-tooling.md#running-a-component-with-wasmtime)
   - [C/C++ Tooling](./language-support/c.md)
     - [Building a Component with `wit-bindgen` and `wasm-tools`](./language-support/c.md#building-a-component-with-wit-bindgen-and-wasm-tools)
     - [Running a Component from C/C++ Applications](./language-support/c.md#running-a-component-from-cc-applications)
@@ -38,3 +37,6 @@ run components for a given toolchain:
   - [Rust Tooling](./language-support/rust.md)
     - [Building a Component with `cargo component`](./language-support/rust.md#building-a-component-with-cargo-component)
     - [Running a Component from Rust Applications](./language-support/rust.md#running-a-component-from-rust-appliacations)
+  - [WebAssembly Text Format (WAT)](./language-support/wat.md#wat-webassembly-text-format)
+    - [Building a Component from WAT with `wasm-tools`](./language-support/wat.md#building-a-component-with-wasm-tools)
+    - [Running a Component with Wasmtime](./language-support/wat.md#running-a-component-with-wasmtime)

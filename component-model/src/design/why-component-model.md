@@ -131,15 +131,16 @@ the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.m
 
 ### Interoperability
 
-Interfaces make it possible to write components that are
-portable across different architectures and operating systems.
-Not only that, components are portable across different programming languages.
+WebAssembly core modules are already portable across different architectures
+and operating systems;
+components retain these benefits and, using interfaces,
+add portability across different programming languages.
 A component implemented in Go can communicate directly and safely
 with a C or Rust component, by relying on the shared conventions of the Component Model ABI.
 Writing a component doesn't even require knowledge
 of which language its dependent components are implemented in,
 only the component interface expressed in WIT.
-Additionally, components can be composed into larger graphs,
+Additionally, components can be [composed](../composing-and-distributing.md) into larger graphs,
 with one component's exports satisfying another's imports.
 
 ### Benefits of the component model

@@ -124,8 +124,9 @@ mechanism for expressing the types of functions.
 ### Interfaces
 
 These interfaces are expressed in a separate language called [WIT (Wasm Interface Type)](./wit.md).
-Interfaces contain _types_.
-The bit-level representations of these types are specified by
+[Interfaces](./wit.md#interfaces) contain definitions of _types_
+and type signatures for [_functions_](./wit.md#functions).
+The bit-level representations of types are specified by
 the [Canonical ABI (Application Binary Interface)](./../advanced/canonical-abi.md).
 
 ### Interoperability

@@ -170,7 +170,9 @@ with one component's exports satisfying another's imports.
 ### Benefits of the component model
 
 Putting all of the pieces together:
-the component model is a way of writing WebAssembly modules
+the component model introduces a binary WebAssembly format
+that encapsulates WebAssembly modules.
+This format enables the construction of WebAssembly modules
 that interact with each other only through exports and imports of functions
 whose types are expressed using WIT.
 

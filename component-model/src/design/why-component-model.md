@@ -185,10 +185,8 @@ Building upon Wasm's strong [sandboxing](https://webassembly.org/docs/security/)
 the component model has further benefits.
 Richer type signatures express richer semantic properties
 than type signatures made up only of integers and floats.
-Rich types make it possible to statically analyse
-and reason about a component's behaviour.
-Simply by examining the surface of the component—the types
-of its imports and exports—properties can be
+Rich types make it easier to know what a component or interface is 
+doing at a glance and have guarantees of what bad things cannot happen.
 enforced and guaranteed.
 The relationships within a graph of components can be analysed:
 for example, to verify that a component containing business logic

@@ -31,7 +31,8 @@ A core module is a set of definitions.
 Kinds of definitions include:
 * _Functions_ define executable units of code
   (sequences of instructions along with declarations
-  for argument names and types and return types).
+  for the names of arguments
+  and the types of arguments and return values).
 * [_Linear memories_](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-mem)
   define buffers of uninterpreted bytes that can be read from
   and written to by instructions.
@@ -199,7 +200,7 @@ and thus it cannot indirectly communicate to others
 by writing to its memory and having others read from that memory.
 This not only reinforces sandboxing, but enables interoperation
 between languages that make different assumptions about memory:
-for example, allowing a component that relies garbage-collected memory
+for example, allowing a component that relies on garbage-collected memory
 to interoperate with one that uses conventional linear memory.
 
 ## Using components

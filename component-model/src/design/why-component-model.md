@@ -7,7 +7,7 @@ and by removing potentially error-prone ways for modules to interact.
 To understand what the limitations of core modules are,
 we start by defining them.
 
-## WebAssembly Core modules
+## WebAssembly core modules
 
 A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/).
 
@@ -59,11 +59,12 @@ Compound types common in higher-level programming languages,
 such as strings, lists, arrays, enums (enumerations), or structs (records),
 have to be represented in terms of integers and floating-point numbers.
 
-Recall that a linear memory is an uninitialized region of bytes
-declared within a module.
-So, a string argument might be represented as two separate arguments:
-an integer offset into a memory,
+For example, for a function to accept a string, the string argument
+might be represented as two separate arguments:
+an integer offset into a memory
 and an integer representing the length of the string.
+Recall that a (linear) memory is an uninitialized region of bytes
+declared within a module.
 
 In pseudocode, a type signature for a string-manipulating function
 might look like:
@@ -120,6 +121,7 @@ remove-duplicates: func(s: string) -> string
 
 and dispense with the memory exports and imports altogether.
 
+The complexity doesn't stop there!
 Data representations are frequently specific to each programming language.
 For example, a string in C is represented entirely differently
 from a string in Rust or in JavaScript.

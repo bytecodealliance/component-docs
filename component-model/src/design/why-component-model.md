@@ -141,7 +141,7 @@ mechanism for expressing the types of functions: _interfaces_.
 
 ### Interfaces
 
-Interfaces are expressed in a separate language called [WIT (Wasm Interface Type)](./wit.md).
+Interfaces are expressed in a separate language called [WebAssembly Interface Types (WIT)](./wit.md).
 [Interfaces](./wit.md#interfaces) contain definitions of _types_
 and type signatures for [_functions_](./wit.md#functions).
 The bit-level representations of types are specified by

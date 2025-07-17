@@ -38,6 +38,11 @@ Kinds of definitions include:
   for the complete list.
 
 A core module usually corresponds to a single binary `.wasm` file.
+Here's what the `file` command outputs for a sample `.wasm` file:
+```console
+$ file adder.wasm
+adder.wasm: WebAssembly (wasm) binary module version 0x1 (MVP)
+```
 These modules can be run in the browser,
 or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
@@ -119,11 +124,11 @@ and cross-language interoperability.
 Conceptually, a component is a module that is restricted
 to interact only through its imported and exported functions.
 Compared to core modules, components also use a richer
-mechanism for expressing the types of functions.
+mechanism for expressing the types of functions: _interfaces_.
 
 ### Interfaces
 
-These interfaces are expressed in a separate language called [WIT (Wasm Interface Type)](./wit.md).
+Interfaces are expressed in a separate language called [WIT (Wasm Interface Type)](./wit.md).
 [Interfaces](./wit.md#interfaces) contain definitions of _types_
 and type signatures for [_functions_](./wit.md#functions).
 The bit-level representations of types are specified by

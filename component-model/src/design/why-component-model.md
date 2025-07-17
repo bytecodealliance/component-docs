@@ -12,11 +12,8 @@ we start by defining them.
 A module is defined by the [WebAssembly Core Specification](https://webassembly.github.io/spec/core/).
 
 WebAssembly programs can be written by hand,
-but it's more likely that you will use a compiler to generate your programs.
-In general, a compiler translates programs from a source language
-to a target language.
-Compilers whose target language is WebAssembly may take
-Rust, C, Go, or a variety of other languages as a source language.
+but it's more likely that you will use a higher level programming language
+such as Rust, C, Go, Javascript, or Python to build WebAssembly programs.
 In this case, the compiler produces a WebAssembly [core module](https://webassembly.github.io/spec/core/syntax/modules.html).
 
 A core module is a set of definitions.

@@ -15,13 +15,14 @@
 
 # Using WebAssembly Components
 
-- [Language Support for Components](./language-support.md)
+- [Creating Components](./language-support.md)
   - [C/C++](./language-support/c.md)
   - [C#](./language-support/csharp.md)
   - [Go](./language-support/go.md)
   - [JavaScript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
   - [Rust](./language-support/rust.md)
+  - [WebAssembly Text Format (WAT)](./language-support/wat.md)
 - [Running Components](./running-components.md)
   - [Wasmtime](./running-components/wasmtime.md)
   - [jco](./running-components/jco.md)

@@ -1,4 +1,4 @@
-# Creating components in specific source languages
+# Creating components
 
 Many popular programming languages can be compiled to WebAssembly,
 but the level of support varies across languages.

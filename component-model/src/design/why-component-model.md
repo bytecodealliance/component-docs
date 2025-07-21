@@ -55,7 +55,9 @@ Kinds of definitions include:
 * And others; see [the Core Specification](https://webassembly.github.io/spec/core/syntax/modules.html)
   for the complete list.
 
-Core modules can be run in the browser,
+A compiled core module is sometimes called a "WebAssembly binary",
+and usually corresponds to a single `.wasm` file.
+These modules can be run in the browser,
 or via a separate runtime such as [Wasmtime](https://wasmtime.dev/)
 or [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime).
 

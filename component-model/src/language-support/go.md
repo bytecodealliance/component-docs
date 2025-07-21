@@ -13,12 +13,6 @@ Follow the [TinyGo installation instructions](https://tinygo.org/getting-started
 
 Additionally, install the `wasm-tools` CLI tool from the [wasm-tools repository](https://github.com/bytecodealliance/wasm-tools/releases).
 
-> [!WARNING]
-> Due to some upstream issues, only `wasm-tools` versions 1.225.0 or earlier can be used with `wit-bindgen-go`
->
-> If using the Rust toolchain to install `wasm-tools`, it can be installed like so:
-> `cargo install --locked wasm-tools@1.225.0 --force`
-
 To verify the installation, run the following commands:
 
 ```

@@ -26,6 +26,12 @@ Here's what the `file` command outputs for a sample `.wasm` file:
 $ file adder.wasm
 adder.wasm: WebAssembly (wasm) binary module version 0x1 (MVP)
 ```
+The file can also be inspected
+using [the `wasm-tools` CLI](https://github.com/bytecodealliance/wasm-tools):
+```console
+$ wasm-tools print adder.wasm | head -1
+(module
+```
 
 A core module is a set of definitions.
 Kinds of definitions include:
@@ -144,7 +150,18 @@ Conceptually, a component is a WebAssembly binary
 (which may or may not contain modules)
 that is restricted to interact
 only through the modules' imported and exported functions.
-Components use a different binary format.
+Components use a different binary format:
+```console
+$ file add.component.wasm
+add.component.wasm: WebAssembly (wasm) binary module version 0x1000d
+```
+Inspecting the file with the `wasm-tools` CLI
+shows more clearly that it contains a component:
+```
+$ wasm-tools print add.component.wasm | head -1
+(component
+```
+
 Compared to core modules, components also use a richer
 mechanism by default for expressing the types of functions: _interfaces_.
 

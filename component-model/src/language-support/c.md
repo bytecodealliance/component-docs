@@ -53,9 +53,30 @@ uint32_t exports_docs_adder_add_add(uint32_t x, uint32_t y)
 }
 ```
 
-## 4. Compile a WebAssembly module (P1) with `clang`
+## 4. Compile a WebAssembly P2 component with `wasi-sdk`'s `wasm32-wasip2-clang`
 
-Now, you can compile the function into a Wasm module via clang:
+Given that `wasi-sdk` has ben installed, we can build a Preview 2 component quickly by using the provided `wasm32-wasip2-clang` binary:
+
+```console
+/opt/wasi-sdk/bin/wasm32-wasip2-clang \
+    -o adder.wasm \
+    -mexec-model=reactor \
+    component.c \
+    adder.c \
+    adder_component_type.o
+```
+
+After this command completes, you will have a new file named `adder.wasm` available in the source folder.
+
+For use cases that require building a P1 module and/or adapting an existing P1 module into a P2 module,
+such as buliding for a platform that does not support P2, details on a more manual approach can be found below:
+
+<details>
+<summary>Manual P1 & P2 build using `wasi-sdk`'s `clang` and `wasm-tools`</summary>
+
+## Build a WebAssembly module (P1) with `clang`
+
+Compile the component code into a WebAssembly P1 module via clang:
 
 ```console
 clang component.c adder.c adder_component_type.o -o adder.wasm -mexec-model=reactor
@@ -77,7 +98,7 @@ clang component.c adder.c adder_component_type.o -o adder.wasm -mexec-model=reac
 [wasi-sdk-images]: https://github.com/WebAssembly/wasi-sdk/pkgs/container/wasi-sdk
 [wasi-sdk-dockerfile]: https://github.com/WebAssembly/wasi-sdk/blob/main/docker/Dockerfile
 
-## 5. Convert the P1 component to a P2 component with `wasm-tools`
+### Convert the P1 component to a P2 component with `wasm-tools`
 
 Next, we need to transform the P1 component to a P2 component. To do this, we can use `wasm-tools component new`:
 
@@ -88,7 +109,7 @@ wasm-tools component new ./adder.wasm -o adder.component.wasm
 > [!NOTE]
 > The `.component.` extension has no special meaning -- `.wasm` files can be either modules or components.
 
-## 6. (optional) Build a WASI-enabled WebAssembly (P2) component with `wasm-tools`
+### (optional) Build a WASI-enabled WebAssembly (P2) component with `wasm-tools`
 
 Do note `wasm-tools component new` may fail if your code references any [WASI][wasi] APIs that must be imported, for
 example via standard library imports like `stdio.h`.
@@ -135,7 +156,9 @@ wasm-tools component new adder.wasm --adapt wasi_snapshot_preview1.wasm -o adder
 
 [wasmtime-releases]: https://github.com/bytecodealliance/wasmtime/releases
 
-## 7. Inspect the built component
+</details>
+
+## 5. Inspect the built component
 
 Finally, you can inspect the embedded wit to see your component (including any WASI imports if necessary):
 

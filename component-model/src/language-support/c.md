@@ -25,7 +25,7 @@ The WASI SDK will install a local version of `clang` configured with a wasi-sysr
 
 ## 2. Generate program skeleton from WIT
 
-Start by generating a C skeleton from `wit-bindgen` using the [sample `adder/world.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/examples/tutorial/wit/adder/world.wit):
+Start by generating a C skeleton from `wit-bindgen` using the [sample `adder/world.wit` file](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit):
 
 ```
 > wit-bindgen c path/to/adder/world.wit

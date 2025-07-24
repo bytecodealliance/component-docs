@@ -27,7 +27,7 @@ Let's break down what each of these terms means:
 Logically, a component is a structure
 that may contain core modules and/or other components.
 The component encodes the interfaces of these contained
-modules and sub-components using [WIT](./wit.md).
+modules and sub-components using [WebAssembly Interface Types (WIT)](./wit.md).
 
 The on-disk representation of a component
 is a specially-formatted WebAssembly file.

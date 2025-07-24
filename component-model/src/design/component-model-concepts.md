@@ -73,9 +73,9 @@ of host functionality for WebAssembly guests.
 
 The WebAssembly System Interface ([WASI][wasi]) defines in WIT
 a family of interfaces for common system-level functions.
-WASI standardizes the functionality provided by platforms,
-so that component writers can rely on functionality
-that is guaranteed to be available on any conformant platform.
+WASI defines a platform for component writers that mimics
+existing programs that developers are familiar with (ex. `wasi-cli`, `wasi-http`), 
+standardizing the functionality components depend on.
 
 WASI defines common collections of functionality
 such as the command line ([`wasi:cli`][wasi-cli])

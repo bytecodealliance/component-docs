@@ -5,7 +5,7 @@ than a single interface.
 A world describes the functionality a component provides,
 and the functionality it requires in order to work.
 
-A world simultaneously describes a component,
+A world can be used to describe a component,
 and a hosting environment for other components.
 This is because components can be composed: a component
 can provide functionality that other components can depend on.

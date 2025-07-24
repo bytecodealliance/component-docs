@@ -355,7 +355,7 @@ flags allowed-methods {
 
 ### Type aliases
 
-You can define a new named type using `type ... = ...`.
+You can define a new type alias using `type ... = ...`.
 This can be useful for giving shorter or more meaningful names to types:
 
 ```wit

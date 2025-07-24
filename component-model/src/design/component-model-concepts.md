@@ -25,7 +25,7 @@ with a component that does the main arithmetic.
 used to formally define functionality for WebAssembly components.
 WIT gives WebAssembly components the ability to express type signatures
 in a language-agnostic way,
-so any component binary can be both checked and executed.
+so any component binary can be checked, composed and executed.
 
 ### Interfaces
 

@@ -266,7 +266,7 @@ enum color {
 ```
 
 This can provide a simpler representation in languages without discriminated unions.
-For example, a WIT `enum` can translate directly to a C `enum`.
+For example, a WIT `enum` can translate directly to a C/C++ `enum`.
 
 ### Resources
 

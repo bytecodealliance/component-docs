@@ -182,7 +182,7 @@ result<_, u32>  // no data associated with the success case
 result          // no data associated with either case
 ```
 
-The underscore `_` stands in for "no data".
+The underscore `_` stands in "no data" and is generally represented as the unit type in a target language (e.g. `()` in rust, `null` in Javsacript).
 
 ### Tuples
 

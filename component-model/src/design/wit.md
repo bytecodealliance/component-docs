@@ -270,7 +270,7 @@ For example, a WIT `enum` can translate directly to a C/C++ `enum`.
 
 ### Resources
 
-A resources is a handle to some entity that exists outside of the component.
+A resource is a handle to some entity that exists outside of the component.
 Resources describe things that shouldn't be passed by value
 because they can't or shouldn't be copied.
 Instead, they should be passed by reference.

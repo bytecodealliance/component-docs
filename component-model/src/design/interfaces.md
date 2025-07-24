@@ -4,8 +4,7 @@ Interfaces are based on the idea of [design by contract][wp-contract].
 In software design, a _contract_ is a specification
 of how a unit of code should behave.
 
-Conceptually, an _interface_ describes a single-focus,
-composable contract
+Conceptually, an _interface_ describes a single-focus, composable contract
 through which components can interact with each other
 and with hosts.
 * _Single-focus_: By convention, an interface describes

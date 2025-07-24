@@ -1,6 +1,6 @@
 # Components
 
-Conceptually, a component is a self-describing unit of code
+Conceptually, a component is a self-describing WebAssembly binary
 that interacts only through interfaces
 instead of shared memory.
 Let's break down what each of these terms means:

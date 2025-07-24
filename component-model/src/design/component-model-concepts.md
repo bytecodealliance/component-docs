@@ -58,8 +58,8 @@ must implement those three interfaces.
 
 ### Platforms
 
-In the context of WebAssembly, the _host_ is the browser or stand-alone runtime
-that runs WebAssembly modules.
+In the context of WebAssembly, a _host_ refers to a WebAssembly runtime
+capable of executing WebAssembly binaries.
 The _guest_ is the WebAssembly module that is executed by the host.
 (These terms come from virtualization, where a guest is
 a software-based virtual machine that runs on physical hardware,

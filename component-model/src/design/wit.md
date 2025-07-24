@@ -152,7 +152,7 @@ This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 
 ### Results
 
-`result<T, E>` for any types `T` and `E
+`result<T, E>` for any types `T` and `E`
 may contain a value of type `T` _or_ a value of type `E`
 (but not both).
 This is typically used for "value or error" situations:

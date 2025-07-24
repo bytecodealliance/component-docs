@@ -386,7 +386,7 @@ lookup: func(store: kv-store, key: string) -> option<string>;
 ```
 
 To express a function that returns multiple values,
-you can use a [tuple](#tuple) or [record](#record).
+you can use any compound type ([tuples](#tuple), [record](#record), etc).
 
 ```wit
 get-customers-paged: func(cont: continuation-token) -> tuple<list<customer>, continuation-token>;

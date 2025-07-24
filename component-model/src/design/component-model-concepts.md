@@ -12,7 +12,11 @@ For the rationale behind the component model, see [the previous section](./why-c
 
 ### Components
 
-A [WebAssembly Component](./components.md) is a core module extended with higher-level types and interfaces.
+A [WebAssembly Component](./components.md) is a binary that
+conforms to the [Canonical ABI](../advanced/canonical-abi.md);
+often a WebAssembly core module extended with the features
+of the Component Model
+(higher-level types, interfaces).
 WebAssembly components are *nestable*:
 they may contain zero or more core modules and/or sub-components composed together.
 For example, a component implementing a simple calculator might be written
@@ -27,7 +31,7 @@ WIT gives WebAssembly components the ability to express type signatures
 in a language-agnostic way,
 so any component binary can be checked, composed and executed.
 
-### Interfaces
+#### Interfaces
 
 An [_interface_](./interfaces.md) is a collection of type definitions
 and function declarations (function names accompanied by type signatures).
@@ -42,24 +46,26 @@ three separate interfaces are used to implement `stdin`, `stdout`, and `stderr`
 A [_world_](./worlds.md) is a collection of interfaces and types
 that expresses what features a component offers
 and what features it depends on.
-For example, wasi-cli includes the [`stdio` world][wasi-cli-stdio],
-which collects together three separate interfaces
-that represent the `stdin`, `stdout`, and `stderr` streams.
-Any component implementing the `stdio` world
-must implement those three interfaces.
+For example, wasi-cli includes the [`command` world][wasi-cli-command],
+which depends on interfaces
+that represent the `stdin`, `stdout`, and `stderr` streams,
+among other things.
+A component implementing the `command` world
+must be invoked in an environment that implements those interfaces.
 
 ### Packages
 
  A [_package_](./packages.md) is a set of WIT files
  containing a related set of interfaces and worlds.
- For example, the wasi-cli package includes
- the `stdio` world and the `environment` world, among others,
- with each defined in its own WIT file.
+ For example, the [wasi-http](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) package includes
+an `imports` world encapsulating the interfaces that an HTTP proxy depends on,
+and a `proxy` world that depends on `imports`.
 
 ### Platforms
 
 In the context of WebAssembly, a _host_ refers to a WebAssembly runtime
 capable of executing WebAssembly binaries.
+The runtime can be inside a browser or can stand alone.
 A _guest_ refers to the WebAssembly binary that is executed by the host.
 (These terms borrow from their analogs in [virtualization](https://en.wikipedia.org/wiki/Virtualization), where a guest is
 a software-based virtual machine that runs on physical hardware,
@@ -68,18 +74,17 @@ which is the "host")
 The Component Model introduces the idea of a _platform_
 to core WebAssembly—enabling the structured, standardized use
 of host functionality for WebAssembly guests.
+Components may import functionality that is provided
+by the platform on which they are executed.
 
-## WASI
+### WASI
 
 The WebAssembly System Interface ([WASI][wasi]) defines in WIT
 a family of interfaces for common system-level functions.
 WASI defines a platform for component writers that mimics
-existing programs that developers are familiar with (ex. `wasi-cli`, `wasi-http`), 
+existing programs that developers are familiar with
+(for example, `wasi-cli` or `wasi-http`),
 standardizing the functionality components depend on.
-
-WASI defines common collections of functionality
-such as the command line ([`wasi:cli`][wasi-cli])
-or an HTTP server ([`wasi:http`][wasi-http]).
 
 > [!NOTE]
 > The Component Model is stewarded by the [Bytecode Alliance](https://bytecodealliance.org/) and designed [in the open][cm-repo].
@@ -95,6 +100,7 @@ or an HTTP server ([`wasi:http`][wasi-http]).
 [wasi]: https://wasi.dev/
 [wasi-cli]: https://github.com/WebAssembly/wasi-cli/
 [wasi-cli-stdio]: https://github.com/WebAssembly/wasi-cli/blob/main/wit/stdio.wit
+[wasi-cli-command]: https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit
 [wasi-http]: https://github.com/WebAssembly/wasi-http
 
 [!NOTE]: #

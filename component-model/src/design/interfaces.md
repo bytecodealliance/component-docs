@@ -21,7 +21,7 @@ and with hosts.
 
 Concretely, an interface is a collection of type definitions
 and function declarations
-that are used to carry out interactions between components.
+that are used to enable interactions between components and hosts.
 For example:
 
 * A "receive HTTP requests" interface might declare

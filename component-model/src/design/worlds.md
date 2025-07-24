@@ -8,7 +8,9 @@ and the functionality it requires in order to work.
 A world can be used to describe a component,
 and a hosting environment for other components, 
 depending on which imports and exports are specified.
-This is because components can be composed: a component
+Worlds can represent either a component or host environment because components can 
+be composed: a component can provide functionality required by another component, just
+like a host environment can.
 can provide functionality that other components can depend on.
 
 On the one hand, a world describes how a component relates to other components:

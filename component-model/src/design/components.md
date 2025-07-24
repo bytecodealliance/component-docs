@@ -34,7 +34,7 @@ is a specially-formatted WebAssembly file.
 Internally, this file could include representations
 of one or many traditional ("core") WebAssembly modules
 and sub-components,
-`composed` via their imports and exports.
+composed together via their imports and exports.
 Two modules or components can be composed if the
 imports of one are satisfied by the exports of another.
 Composition can be repeated arbitarily, composing a

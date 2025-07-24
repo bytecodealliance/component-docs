@@ -340,7 +340,6 @@ or returning without transferring ownership to another function.)
 ### Flags
 
 A `flags` type is a set of named booleans.
-In an instance of the type, each flag will be either `true` or `false`.
 
 ```wit
 flags allowed-methods {

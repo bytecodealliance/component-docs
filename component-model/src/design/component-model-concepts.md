@@ -35,8 +35,7 @@ Typically, a single interface describes a specific, focused bit
 of functionality.
 For example, in [wasi-cli][wasi-cli-stdio],
 three separate interfaces are used to implement `stdin`, `stdout`, and `stderr`
-(the three input and output streams typically available
-in a command-line environment.)
+(streams typically available in command-line-like environments)
 
 ### Worlds
 

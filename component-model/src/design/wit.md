@@ -351,7 +351,7 @@ flags allowed-methods {
 ```
 
 > A `flags` type is logically equivalent to a record type where each field is of type `bool`,
-but it is represented more efficiently (as a bitfield) at the binary level.
+> but it is represented more efficiently (as a bitfield) at the binary level.
 
 ### Type aliases
 

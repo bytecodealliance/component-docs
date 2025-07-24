@@ -168,7 +168,7 @@ This is similar to Rust `Result`, or Haskell `Either`.
 
 > This is a special case of a [variant](#variants) type.
 > WIT defines the `result` type so that there is a common way of expressing this behavior,
-> so that you don't need to create a variant type for every combination of value and error types,
+> so that developers don't need to create variant types for every combination of value and error types,
 > and to enable it to be mapped idiomatically into languages with result or "either" types.
 
 Sometimes there is no data associated with one or both of the cases.

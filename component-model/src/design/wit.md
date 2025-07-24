@@ -438,8 +438,7 @@ interface canvas {
 }
 ```
 
-The `canvas` interface uses the types `dimension` and `point`
-declared in the `types` interface.
+The `canvas` interface uses the types `dimension` and `point` declared in the `types` interface.
 
 > Even if you are only using one type, it must still be enclosed in braces.
 > For example, `use types.{dimension}` is legal but `use types.dimension` is not.

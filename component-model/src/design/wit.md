@@ -155,8 +155,7 @@ This is similar to Rust `Option`, C++ `std::optional`, or Haskell `Maybe`.
 `result<T, E>` for any types `T` and `E`
 may contain a value of type `T` _or_ a value of type `E`
 (but not both).
-This is typically used for "value or error" situations:
-for example, a HTTP request function might return a result,
+For example, a HTTP request function might return a result,
 with the success case (the `T` type) representing a HTTP response,
 and the error case (the `E` type) representing the various kinds of error that might occur:
 
@@ -182,7 +181,8 @@ result<_, u32>  // no data associated with the success case
 result          // no data associated with either case
 ```
 
-The underscore `_` stands in "no data" and is generally represented as the unit type in a target language (e.g. `()` in rust, `null` in Javsacript).
+The underscore `_` stands in "no data" and is generally represented as
+the unit type in a target language (e.g. `()` in Rust, `null` in JavaScript).
 
 ### Tuples
 
@@ -199,8 +199,7 @@ This is similar to tuples in Rust or OCaml.
 
 ## User-defined types
 
-You can define your own types within an `interface` or `world`.
-WIT offers several ways of defining new types.
+New domain-specific types can be defined within an `interface` or `world`.
 
 ### Records
 
@@ -271,8 +270,8 @@ For example, a WIT `enum` can translate directly to a C/C++ `enum`.
 ### Resources
 
 A resource is a handle to some entity that exists outside of the component.
-Resources describe entities that can't or shouldn't be copied; entities that should
-be passed by reference rather than by value.
+Resources describe entities that can't or shouldn't be copied:
+entities that should be passed by reference rather than by value.
 Components can pass resources to each other via a handle.
 They can pass ownership of resources, or pass non-owned references to resources.
 
@@ -386,7 +385,7 @@ lookup: func(store: kv-store, key: string) -> option<string>;
 ```
 
 To express a function that returns multiple values,
-you can use any compound type ([tuples](#tuple), [record](#record), etc).
+you can use any compound type (such as [tuples](#tuple) or [records](#record)).
 
 ```wit
 get-customers-paged: func(cont: continuation-token) -> tuple<list<customer>, continuation-token>;

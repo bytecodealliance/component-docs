@@ -14,7 +14,7 @@ For the rationale behind the component model, see [the previous section](./why-c
 
 A [WebAssembly Component](./components.md) is a core module extended with higher-level types and interfaces.
 WebAssembly components are *nestable*:
-they may contain one or more core modules and/or sub-components composed together.
+they may contain zero or more core modules and/or sub-components composed together.
 For example, a component implementing a simple calculator might be written
 by composing together a component that parses strings to floating-point numbers
 with a component that does the main arithmetic.

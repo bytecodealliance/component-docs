@@ -503,8 +503,7 @@ world http-proxy {
 > while exporting another interface defined in the same package.
 > A package groups definitions together; it doesn't describe a coherent set of behaviours.
 
-WIT does not define how packages are resolved;
-different tools may resolve them in different ways.
+WIT does not define how packages are resolved; different tools may resolve them in different ways.
 
 ### Inline interfaces
 

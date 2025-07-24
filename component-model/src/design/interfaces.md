@@ -4,6 +4,8 @@ Interfaces are based on the idea of [design by contract][wp-contract].
 In software design, a _contract_ is a specification
 of how a unit of code should behave.
 
+Concretely, an interface is a collection of type definitions
+and function declarations.
 Conceptually, an _interface_ describes a single-focus, composable contract
 through which components can interact with each other
 and with hosts.
@@ -29,11 +31,15 @@ For example:
   along with definitions of types representing
   incoming requests, outgoing responses,
   HTTP methods and headers, and other data structures.
+  This might look like the `incoming-handler` interface
+  in [wasi-http][wasi-http-handler]
 * A "wall clock" interface might declare two functions,
   one to get the current time
   and one to get the granularity of the timer (whether time
   is measured in seconds, milliseconds, nanoseconds, or another unit).
   It would also define a type to represent an instant in time.
+  This might look like the `wall-clock` interface
+  in [wasi-clocks][wasi-clocks-wall-clock].
 
 As an example of composing interfaces together,
 imagine defining a "timer" interface that declares two functions,
@@ -47,5 +53,7 @@ and imports anything imported by the "wall clock" interface.
 Interfaces are defined using [the WIT language](./wit.md).
 
 [wp-contract]: https://en.wikipedia.org/wiki/Design_by_contract
+[wasi-http-handler]: https://github.com/WebAssembly/wasi-http/blob/main/wit/handler.wit
+[wasi-clocks-wall-clock]: https://github.com/WebAssembly/wasi-clocks/blob/main/wit/wall-clock.wit
 
 > For a more formal definition of an interface, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

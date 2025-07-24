@@ -300,7 +300,7 @@ resource blob {
 
 As shown in the `blob` example, a resource can contain:
 
-- _methods_: functions that implicitly take a `self` parameter that is a handle.
+- _methods_: functions that implicitly take a `self` (AKA `this`) parameter that is a handle.
   (Some programming languages use the `this` keyword instead of `self`.)
   `read` and `write` are methods.
 - _static functions_: functions which do not have an implicit `self` parameter

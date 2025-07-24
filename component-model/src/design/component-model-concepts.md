@@ -39,7 +39,7 @@ three separate interfaces are used to implement `stdin`, `stdout`, and `stderr`
 
 ### Worlds
 
-A [_world_](./worlds.md) is a collection of interfaces
+A [_world_](./worlds.md) is a collection of interfaces and types
 that expresses what features a component offers
 and what features it depends on.
 For example, wasi-cli includes the [`stdio` world][wasi-cli-stdio],

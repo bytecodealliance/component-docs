@@ -29,11 +29,13 @@ that may contain core modules and/or other components.
 The component encodes the interfaces of these contained
 modules and sub-components using [WebAssembly Interface Types (WIT)](./wit.md).
 
+> For a more formal definition of a component,
+> take a look at the [Component Model specification](https://github.com/WebAssembly/component-model).
+
 The on-disk representation of a component
-is a specially-formatted WebAssembly file.
+is [a specially-formatted WebAssembly binary](../advanced/canonical-abi.md).
 Internally, this file could include representations
-of one or many traditional ("core") WebAssembly modules
-and sub-components,
+of one or many traditional ("core") WebAssembly modules and sub-components,
 composed together via their imports and exports.
 Two modules or components can be composed if the
 imports of one are satisfied by the exports of another.
@@ -48,5 +50,11 @@ to describe all the imports and exports of the component.
 The world only describes the types of imported and exported functions;
 the component internally defines the code to implement the world.
 
-> For a more formal definition of a component,
-> take a look at the [Component Model specification](https://github.com/WebAssembly/component-model).
+## Composition
+
+Two modules or components can be composed if the
+imports of one are satisfied by the exports of another.
+Composition can be repeated arbitarily, composing a
+single component out of many interlocking modules and components.
+[Interfaces](./interfaces.md) enable checking that
+a particular composition makes sense.

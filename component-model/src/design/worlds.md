@@ -6,7 +6,8 @@ A world describes the functionality a component provides,
 and the functionality it requires in order to work.
 
 A world can be used to describe a component,
-and a hosting environment for other components.
+and a hosting environment for other components, 
+depending on which imports and exports are specified.
 This is because components can be composed: a component
 can provide functionality that other components can depend on.
 

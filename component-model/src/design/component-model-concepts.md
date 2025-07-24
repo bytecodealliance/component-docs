@@ -61,7 +61,7 @@ must implement those three interfaces.
 In the context of WebAssembly, a _host_ refers to a WebAssembly runtime
 capable of executing WebAssembly binaries.
 A _guest_ refers to the WebAssembly binary that is executed by the host.
-(These terms come from virtualization, where a guest is
+(These terms borrow from their analogs in [virtualization](https://en.wikipedia.org/wiki/Virtualization), where a guest is
 a software-based virtual machine that runs on physical hardware,
 which is the "host")
 

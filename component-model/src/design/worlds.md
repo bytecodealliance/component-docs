@@ -6,12 +6,14 @@ A world describes the functionality a component provides,
 and the functionality it requires in order to work.
 
 A world can be used to describe a component,
-and a hosting environment for other components, 
+and a hosting environment for other components,
 depending on which imports and exports are specified.
-Worlds can represent either a component or host environment because components can 
-be composed: a component can provide functionality required by another component, just
-like a host environment can.
-can provide functionality that other components can depend on.
+Worlds can represent either a component or host environment
+because components can be composed:
+a component can provide functionality required by another component,
+just like a host environment can.
+
+## Fulfilling worlds with components versus hosts
 
 On the one hand, a world describes how a component relates to other components:
 it describes the functionality the component exposes
@@ -41,6 +43,8 @@ Targeting a world is analogous to relying on a particular version of a standard 
 except that components give you the ability to precisely specify
 exactly what functions your code depends on.
 
+## Example: the `wasi:cli` world
+
 For example, WASI (the WebAssembly System Interface) defines a "command line" world
 that imports interfaces that command-line programs typically expect to have available to them:
 for example, file input/output, random number generation, and clocks.
@@ -57,6 +61,8 @@ and may invoke the single export.
 Running your example disk usage component
 would mean invoking it in a hosting environment
 that supports the "command line" world.
+
+## Worlds and interfaces
 
 A world is a collection of interfaces, where each interface is _directional_.
 Each interface is explicitly labeled as either an export or an import.
@@ -76,7 +82,7 @@ Connecting up some or all of a component's imports to other components' matching
 
 A world is defined in a WIT file; a single WIT files can contain multiple worlds.
 
-## Example Worlds
+## Example worlds
 
 * A (trivial) "HTTP proxy" world would export a "handle HTTP requests" interface
 and import a "send HTTP requests" interface.

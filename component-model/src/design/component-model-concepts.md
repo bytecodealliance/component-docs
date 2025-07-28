@@ -1,9 +1,10 @@
 ## Component Model Concepts
 
-The WebAssembly Component Model extends core WebAssembly in several ways:
-* It adds consistent representation of higher-level types
-* It enables interface-driven development
-* It makes core WebAssembly composable:
+The WebAssembly Component Model extends core WebAssembly in several ways.
+The Component Model:
+* Adds consistent representation of higher-level types
+* Enables interface-driven development
+* Makes core WebAssembly composable:
 components that provide functionality and those that use them
 can be composed together into *one* resulting component.
 

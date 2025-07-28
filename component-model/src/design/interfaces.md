@@ -21,9 +21,8 @@ and with hosts.
   Interfaces enable typechecking so that interfaces can
   be composed only when it makes sense to do so.
 
-Concretely, an interface is a collection of type definitions
-and function declarations
-that are used to enable interactions between components and hosts.
+The types and functions in an interface
+are used to enable interactions between components and hosts.
 For example:
 
 * A "receive HTTP requests" interface might declare

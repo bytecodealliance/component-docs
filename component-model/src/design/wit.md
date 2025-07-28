@@ -276,7 +276,7 @@ Components can pass resources to each other via a handle.
 They can pass ownership of resources, or pass non-owned references to resources.
 
 > If you're not familiar with the concepts of borrowing and ownership
-> for pointers, see [the Rust documentation](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html).
+> for references, see [the Rust documentation](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html).
 
 Unlike other WIT types, which are simply plain data,
 resources only expose behavior through methods.

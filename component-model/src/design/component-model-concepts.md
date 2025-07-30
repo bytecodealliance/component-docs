@@ -48,6 +48,7 @@ three separate interfaces are used to implement `stdin`, `stdout`, and `stderr`
 A [_world_](./worlds.md) is a collection of interfaces and types
 that expresses what features a component offers
 and what features it depends on.
+
 For example, wasi-cli includes the [`command` world][wasi-cli-command],
 which depends on interfaces
 that represent the `stdin`, `stdout`, and `stderr` streams,
@@ -58,8 +59,9 @@ must be invoked in an environment that implements those interfaces.
 ### Packages
 
  A [_package_](./packages.md) is a set of WIT files
- containing a related set of interfaces and worlds.
- For example, the [wasi-http](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) package includes
+containing a related set of interfaces and worlds.
+ 
+For example, the [wasi-http](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) package includes
 an `imports` world encapsulating the interfaces that an HTTP proxy depends on,
 and a `proxy` world that depends on `imports`.
 

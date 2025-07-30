@@ -38,6 +38,7 @@ An [_interface_](./interfaces.md) is a collection of type definitions
 and function declarations (function names accompanied by type signatures).
 Typically, a single interface describes a specific, focused bit
 of functionality.
+
 For example, in [wasi-cli][wasi-cli-stdio],
 three separate interfaces are used to implement `stdin`, `stdout`, and `stderr`
 (streams typically available in command-line-like environments)

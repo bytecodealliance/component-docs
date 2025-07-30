@@ -26,7 +26,7 @@ with a component that does the main arithmetic.
 
 ### WebAssembly Interface Types (WIT)
 
-[WebAssembly Interface Types (WIT)][wit] is the [IDL (Interface Definition Language)][wiki-idl]
+[WebAssembly Interface Types (WIT)][wit] is the [Interface Definition Language (IDL)][wiki-idl]
 used to formally define functionality for WebAssembly components.
 WIT gives WebAssembly components the ability to express type signatures
 in a language-agnostic way,

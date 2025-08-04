@@ -52,7 +52,7 @@ in a file called `app.py`:
 ```py
 from wit_world import exports
 
-class Add(exports.Adder):
+class Add(exports.Add):
     def add(self, x: int, y: int) -> int:
         return x + y
 ```

@@ -87,41 +87,6 @@ $ cargo run --release -- 1 2 ../path/to/add.wasm
 
 See [`componentize-py`'s examples](https://github.com/bytecodealliance/componentize-py/tree/main/examples) to try out build HTTP, CLI, and TCP components from Python applications.
 
-### Building a Component that Exports an Interface
-
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. Let's expand our example world to export an interface rather than directly export the function.
-
-```wit
-// add-interface.wit
-package example:component;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world example {
-    export add;
-}
-```
-
-If you peek at the bindings, you'll notice that we now implement a class for the `add` interface rather than for the `example` world. This is a consistent pattern. As you export more interfaces from your world, you implement more classes. Our add example gets the slight update of:
-
-```py
-# app.py
-import example
-
-class Add(example.Example):
-    def add(self, a: int, b: int) -> int:
-        return a + b
-```
-
-Once again, compile an application to a Wasm component using the `componentize` subcommand:
-
-```sh
-$ componentize-py --wit-path add-interface.wit --world example componentize app -o add.wasm
-Component built successfully
-```
-
 ## Running components from Python Applications
 
 Wasm components can also be invoked from Python applications. This section walks through using tooling

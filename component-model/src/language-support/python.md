@@ -15,15 +15,7 @@ Next, create or download the WIT world you would like to target. For this exampl
 world][adder-wit] with an `add` function (e.g. `wit/component.wit`):
 
 ```wit
-package docs:adder@0.1.0;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world adder {
-    export add;
-}
+{{#include ../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 If you want to generate bindings produced for the WIT world (for an IDE or typechecker), you can generate them using the `bindings` subcommand. Specify the path to the WIT interface with the world you are targeting:

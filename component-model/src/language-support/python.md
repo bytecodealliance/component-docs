@@ -28,21 +28,39 @@ world adder {
 
 If you want to generate bindings produced for the WIT world (for an IDE or typechecker), you can generate them using the `bindings` subcommand. Specify the path to the WIT interface with the world you are targeting:
 
-```sh
-$ componentize-py --wit-path wit/component/wit --world adder bindings .
+```console
+componentize-py --wit-path wit --world adder bindings .
 ```
 
 > [!NOTE]
 > You do not need to generate the bindings in order to `componentize` in the next step. `componentize` will generate bindings on-the-fly and bundle them into the produced component.
+>
+> If you attempt to run bindings generation twice, it will fail if the `bindings` folder already exists.
 
-Bindings were created in an `adder` package which contains an `Add` protocol with an `add` method that we can implement.
+Bindings are generated in a folder called `wit_world` by default:
 
-To implement this interface, put the following code in a file called `app.py`:
+```
+<project folder>
+├── wit
+│   └── component.wit
+└── wit_world
+    ├── exports
+    │   ├── add.py
+    │   └── __init__.py
+    ├── __init__.py
+    └── types.py
+```
+
+The `wit_world/exports` folder contains an `Add` protocol which has an `add` method that we can implement,
+which represents the export defined in the `adder` world WIT.
+
+To implement the `adder` world (in particular the `add` interface that is exported), put the following code
+in a file called `app.py`:
 
 ```py
-import adder
+from wit_world import exports
 
-class Add(adder.Adder):
+class Add(exports.Adder):
     def add(self, x: int, y: int) -> int:
         return x + y
 ```

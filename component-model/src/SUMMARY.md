@@ -11,6 +11,7 @@
   - [Interfaces](./design/interfaces.md)
   - [Worlds](./design/worlds.md)
   - [Packages](./design/packages.md)
+- [WIT By Example](./design/wit-example.md)
 - [WIT Reference](./design/wit.md)
 
 # Using WebAssembly Components

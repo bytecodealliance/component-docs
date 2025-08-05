@@ -15,34 +15,44 @@ Next, create or download the WIT world you would like to target. For this exampl
 world][adder-wit] with an `add` function (e.g. `wit/component.wit`):
 
 ```wit
-package docs:adder@0.1.0;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world adder {
-    export add;
-}
+{{#include ../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 If you want to generate bindings produced for the WIT world (for an IDE or typechecker), you can generate them using the `bindings` subcommand. Specify the path to the WIT interface with the world you are targeting:
 
-```sh
-$ componentize-py --wit-path wit/component/wit --world adder bindings .
+```console
+componentize-py --wit-path wit --world adder bindings .
 ```
 
 > [!NOTE]
 > You do not need to generate the bindings in order to `componentize` in the next step. `componentize` will generate bindings on-the-fly and bundle them into the produced component.
+>
+> If you attempt to run bindings generation twice, it will fail if the `bindings` folder already exists.
 
-Bindings were created in an `adder` package which contains an `Add` protocol with an `add` method that we can implement.
+Bindings are generated in a folder called `wit_world` by default:
 
-To implement this interface, put the following code in a file called `app.py`:
+```
+<project folder>
+├── wit
+│   └── component.wit
+└── wit_world
+    ├── exports
+    │   ├── add.py
+    │   └── __init__.py
+    ├── __init__.py
+    └── types.py
+```
+
+The `wit_world/exports` folder contains an `Add` protocol which has an `add` method that we can implement,
+which represents the export defined in the `adder` world WIT.
+
+To implement the `adder` world (in particular the `add` interface that is exported), put the following code
+in a file called `app.py`:
 
 ```py
-import adder
+from wit_world import exports
 
-class Add(adder.Adder):
+class Add(exports.Add):
     def add(self, x: int, y: int) -> int:
         return x + y
 ```
@@ -68,41 +78,6 @@ $ cargo run --release -- 1 2 ../path/to/add.wasm
 ```
 
 See [`componentize-py`'s examples](https://github.com/bytecodealliance/componentize-py/tree/main/examples) to try out build HTTP, CLI, and TCP components from Python applications.
-
-### Building a Component that Exports an Interface
-
-The [sample `add.wit` file](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit) exports a function. However, you'll often prefer to export an interface, either to comply with an existing specification or to capture a set of functions and types that tend to go together. Let's expand our example world to export an interface rather than directly export the function.
-
-```wit
-// add-interface.wit
-package example:component;
-
-interface add {
-    add: func(x: u32, y: u32) -> u32;
-}
-
-world example {
-    export add;
-}
-```
-
-If you peek at the bindings, you'll notice that we now implement a class for the `add` interface rather than for the `example` world. This is a consistent pattern. As you export more interfaces from your world, you implement more classes. Our add example gets the slight update of:
-
-```py
-# app.py
-import example
-
-class Add(example.Example):
-    def add(self, a: int, b: int) -> int:
-        return a + b
-```
-
-Once again, compile an application to a Wasm component using the `componentize` subcommand:
-
-```sh
-$ componentize-py --wit-path add-interface.wit --world example componentize app -o add.wasm
-Component built successfully
-```
 
 ## Running components from Python Applications
 

@@ -370,7 +370,7 @@ This kind of error normally indicates that the host in question does not satisfy
 
 ## 7. Run the component from C/C++ Applications
 
-It is not yet possible to run a WebAssembly Component using the C API of `wasmtime` `c-api`.
+It is not yet possible to run a WebAssembly Component using the `wasmtime` C API.
 See [`wasmtime` issue #6987](https://github.com/bytecodealliance/wasmtime/issues/6987) for more details.
 The c-api is preferred over directly using the example host Rust crate in C++.
 

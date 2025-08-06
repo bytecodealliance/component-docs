@@ -17,7 +17,7 @@ For WIT interfaces that are built in to WASI, the code is part of the
 WebAssembly runtime that you will be using.
 
 C/C++ currently lacks an integrated toolchain like Rust's [`cargo-component`][cargo-component]).
-However, the standaline `wit-bindgen` tool can generate source-level bindings for
+However, `wit-bindgen` can generate source-level bindings for
 Rust, C, Java ([TeaVM](https://teavm.org/)), and [TinyGo](https://tinygo.org/),
 with the ability to add more language generators in the future.
 

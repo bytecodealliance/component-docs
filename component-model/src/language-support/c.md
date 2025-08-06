@@ -285,7 +285,7 @@ Finally, you can inspect the embedded WIT to see your component
 (including any WASI imports if you used them):
 
 ```
-> wasm-tools component wit adder.component.wasm
+$ wasm-tools component wit adder.component.wasm
 package root:component;
 
 world root {

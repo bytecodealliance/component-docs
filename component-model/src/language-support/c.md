@@ -192,8 +192,8 @@ You can verify that `adder.wasm` is a valid WebAssembly P1 component (i.e. a Web
 > Replace `path/to/app/src` with the absolute path of the directory
 > containing the code for your sample app.
 >
-> Then inside the container, after changing to the directory containing
-> the code for your sample app, you can run:
+> Inside the container your source code will be available at `/app`. After changing
+> to that directory, you can run:
 >
 > ```console
 > /opt/wasi-sdk/bin/clang component.c adder.c adder_component_type.o \

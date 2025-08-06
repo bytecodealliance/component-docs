@@ -126,7 +126,7 @@ the WASI SDK.
 Breaking down each part of this command:
 
 * `-o adder.wasm` configures the output file that will contain binary WebAssembly code.
-* The `-mexec-model` flag controls the desired execution model of the
+* `-mexec-model=reactor` controls the desired execution model of the
   generated code. The argument can be either `reactor` or `command`.
   In this case, we pass in `-mexec-model=reactor` to build a _reactor_ component.
   A reactor component is more like a library, while a command component

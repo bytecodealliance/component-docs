@@ -16,7 +16,7 @@ if you're developing your own `.wit` files.
 For WIT interfaces that are built in to WASI, the code is part of the
 WebAssembly runtime that you will be using.
 
-C/C++ currently lacks an integrated toolchain like Rust's [`cargo-component`][cargo-component]).
+C/C++ currently lacks an integrated toolchain (like Rust's [`cargo-component`][cargo-component]).
 However, `wit-bindgen` can generate source-level bindings for
 Rust, C, Java ([TeaVM](https://teavm.org/)), and [TinyGo](https://tinygo.org/),
 with the ability to add more language generators in the future.
@@ -30,6 +30,7 @@ with the ability to add more language generators in the future.
 [cargo-component]: https://crates.io/crates/cargo-component
 [rust]: https://www.rust-lang.org/learn/get-started
 [sample-wit]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit
+[cargo-config]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/Cargo.toml
 
 ## 1. Download dependencies
 
@@ -64,7 +65,7 @@ into a local file.
 Then generate a C skeleton from `wit-bindgen` using this file:
 
 ```
-> wit-bindgen c path/to/adder/world.wit
+$ wit-bindgen c path/to/adder/world.wit
 Generating "adder.c"
 Generating "adder.h"
 Generating "adder_component_type.o"
@@ -108,7 +109,7 @@ the initial version of the WASI APIs.
 which introduced the component model.
 
 While in the past building a P2 component required conversion from a P1 component,
-we can build a P2 component directly by using the `wasm32-wasip2-clang` binary
+we can now build a P2 component directly by using the `wasm32-wasip2-clang` binary
 that was installed by the WASI SDK.
 
 If necessary, change `/opt/wasi-sdk` to the path where you installed
@@ -226,7 +227,8 @@ wasm-tools component new adder.wasm -o adder.component.wasm
 ### (optional) Build a WASI-enabled WebAssembly (P2) component with `wasm-tools`
 
 Note that `wasm-tools component new` may fail if your code references any
-[WASI][wasi] APIs that must be imported, for example via standard library imports like `stdio.h`.
+[WASI][wasi] APIs that must be imported:
+for example, via standard library imports like `stdio.h`.
 
 Using WASI interfaces requires an additional step,
 as the WASI SDK still references WASI Preview 1 APIs (those with `wasi_snapshot_preview1` in their names)
@@ -313,8 +315,11 @@ world root {
 The following section requires you to have [a Rust toolchain][rust] installed.
 
 > [!WARNING]
-> You must be careful to use a version of the adapter (`wasi_snapshot_preview1.wasm`) that is compatible with the version of
-> `wasmtime` that will be used, to ensure that WASI interface versions (and relevant implementation) match.
+> You must be careful to use a version of the adapter (`wasi_snapshot_preview1.wasm`)
+> that is compatible with the version of `wasmtime` that will be used,
+> to ensure that WASI interface versions (and relevant implementation) match.
+> (The `wasmtime` version is specified in [the Cargo configuration file][cargo-config]
+> for the example host.)
 
 This repository contains an [example WebAssembly host][example-host] written in Rust
 that can run components that implement the `adder` world.
@@ -371,7 +376,7 @@ This kind of error normally indicates that the host in question does not satisfy
 
 It is not yet possible to run a WebAssembly Component using the `wasmtime` C API.
 See [`wasmtime` issue #6987](https://github.com/bytecodealliance/wasmtime/issues/6987) for more details.
-The c-api is preferred over directly using the example host Rust crate in C++.
+The C API is preferred over directly using the example host Rust crate in C++.
 
 However, C/C++ language guest components can be composed with components written in any other language
 and run by their toolchains,

@@ -189,7 +189,7 @@ You can verify that `adder.wasm` is a valid WebAssembly P1 component (i.e. a Web
 >     ghcr.io/webassembly/wasi-sdk:wasi-sdk-27
 > ```
 >
-> where `path/to/app/src` is replaced with the absolute path of the directory
+> Replace `path/to/app/src` with the absolute path of the directory
 > containing the code for your sample app.
 >
 > Then inside the container, after changing to the directory containing

@@ -269,7 +269,9 @@ the [instructions here](https://github.com/bytecodealliance/wasmtime/tree/main/c
 Now, you can adapt preview1 to preview2 to build a component:
 
 ```console
-wasm-tools component new adder.wasm --adapt wasi_snapshot_preview1.wasm \
+wasm-tools component new \
+    adder.wasm \
+    --adapt wasi_snapshot_preview1.wasm \
     -o adder.component.wasm
 ```
 

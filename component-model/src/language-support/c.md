@@ -93,7 +93,7 @@ the prototype of the `add` function, which should look like this.
 
 ## 3. Write program code
 
-Next, create an `component.c` that implements the `adder` world:
+Next, create a file named `component.c` with code that implements the `adder` world:
 that is, which provides definitions for the interface function declared in `adder.h`.
 
 ```c

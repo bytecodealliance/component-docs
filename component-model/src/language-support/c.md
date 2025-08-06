@@ -50,10 +50,10 @@ A WASI SDK installation will include a local version of `clang` configured with 
 (A sysroot is a directory containing header files and libraries
 for a particular target platform.)
 Follow [these instructions](https://github.com/WebAssembly/wasi-sdk#use) to configure WASI SDK for use.
-Note that you can also use your installed system or [Emscripten](https://emscripten.org/) `clang`
-by building with `--target=wasm32-wasi`, but you will need some artifacts from WASI SDK
-to enable and link that build target (see the text about `libclang_rt.*.a` objects in
-[the WASI SDK README](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#about-this-repository)).
+> [!NOTE]: Note that you can also use your installed system or [Emscripten](https://emscripten.org/) `clang`
+> by building with `--target=wasm32-wasi`, but you will need some artifacts from WASI SDK
+> to enable and link that build target (see the text about `libclang_rt.*.a` objects in
+> [the WASI SDK README](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#about-this-repository)).
 
 ## 2. Generate program skeleton from WIT
 

@@ -110,6 +110,7 @@ which introduced the component model.
 While in the past building a P2 component required conversion from a P1 component,
 we can build a P2 component directly by using the `wasm32-wasip2-clang` binary
 that was installed by the WASI SDK.
+
 If necessary, change `/opt/wasi-sdk` to the path where you installed
 the WASI SDK.
 

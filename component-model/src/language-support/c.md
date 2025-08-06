@@ -170,7 +170,7 @@ $WASI_SDK_PATH/bin/clang \
     adder_component_type.o
 ```
 
-You can see that this command created a module with the following command:
+You can verify that `adder.wasm` is a valid WebAssembly P1 component (i.e. a WebAssembly core module) with the following command:
 
 ```console
 > wasm-tools print adder.wasm | head -1

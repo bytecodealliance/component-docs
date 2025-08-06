@@ -325,10 +325,9 @@ that can run components that implement the `adder` world.
 * The double dashes separate the flags passed to `cargo` from
   the flags passed in to your code.
 * The arguments 1 and 2 are the arguments to the adder.
-
-In place of `<PATH>`, substitute the directory that contains your
-generated `adder.wasm` file (or `adder.component.wasm` if you used
-the manual instructions).
+* In place of `<PATH>`, substitute the directory that contains your
+  generated `adder.wasm` file (or `adder.component.wasm` if you used
+  the manual instructions).
 
 > [!NOTE]
 > When hosts run components that use WASI interfaces, they must *explicitly*

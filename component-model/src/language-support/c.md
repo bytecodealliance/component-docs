@@ -138,7 +138,8 @@ Breaking down each part of this command:
 
 After this command completes, you will have a new file named `adder.wasm`
 available in the source folder.
-You can see that `adder.wasm` contains a component with the following command:
+
+You can verify that `adder.wasm` is a valid WebAssembly component with the following command:
 
 ```console
 > wasm-tools print adder.wasm | head -1

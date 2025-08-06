@@ -36,7 +36,7 @@ with the ability to add more language generators in the future.
 First, install the following dependencies:
 1. The CLI for [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen#cli-installation)
 2. [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools)
-    * `wasm-tools` is a program that inspects compiled WebAssembly modules and components,
+    * `wasm-tools` can be used to inspect compiled WebAssembly modules and components,
     as well as converting between preview1 modules and preview2 components in
     the optional manual workflow.
 3. The [`WASI SDK`](https://github.com/webassembly/wasi-sdk)

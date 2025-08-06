@@ -40,7 +40,8 @@ First, install the following dependencies:
     as well as converting between preview1 modules and preview2 components in
     the optional manual workflow.
 3. The [`WASI SDK`](https://github.com/webassembly/wasi-sdk)
-    * The WASI SDK includes a version of the C standard library (`libc`) based on WASI,
+    * WASI SDK is a WASI enabled C/C++ toolchain which includes a version of the C standard 
+    library (`libc`) implemented with WASI interfaces,
       among other artifacts necessary to compile C/C++ to WebAssembly.
     * On a Linux system, you can skip to the ["Install"](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#install) section.
       To build from source, start from the beginning of the README.

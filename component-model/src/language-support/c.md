@@ -78,14 +78,14 @@ the prototype of the `add` function, which should look like this.
 
 ```c
   uint32_t exports_docs_adder_add_add(uint32_t x, uint32_t y);
-  ```
+```
 
 2. `adder.c`, which interfaces with the component model ABI to call your function.
    This file contains an `extern` declaration that looks like:
 
-   ```c
+```c
     extern void __component_type_object_force_link_adder(void);
-    ```
+```
 
 3. `adder_component_type.o`, which contains object code, including
    the definition of the `__component_type_object_force_link_adder` function,

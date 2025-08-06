@@ -281,7 +281,7 @@ wasm-tools component new \
 
 ## 5. Inspect the built component
 
-Finally, you can inspect the embedded WIT to see your component
+Finally, you can inspect the WIT embedded in your component
 (including any WASI imports if you used them):
 
 ```

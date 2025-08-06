@@ -162,8 +162,12 @@ the ["Use" section](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#u
 in the WASI SDK README, execute:
 
 ```console
-$WASI_SDK_PATH/bin/clang component.c adder.c adder_component_type.o \
-    -o adder.wasm -mexec-model=reactor
+$WASI_SDK_PATH/bin/clang \
+    -o adder.wasm \
+    -mexec-model=reactor \
+    component.c \
+    adder.c \
+    adder_component_type.o
 ```
 
 You can see that this command created a module with the following command:

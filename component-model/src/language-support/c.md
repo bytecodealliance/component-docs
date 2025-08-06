@@ -46,7 +46,7 @@ First, install the following dependencies:
     * On a Linux system, you can skip to the ["Install"](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#install) section.
       To build from source, start from the beginning of the README.
 
-The WASI SDK will install a local version of `clang` configured with a WASI sysroot.
+A WASI SDK installation will include a local version of `clang` configured with a WASI sysroot.
 (A sysroot is a directory containing header files and libraries
 for a particular target platform.)
 Follow [these instructions](https://github.com/WebAssembly/wasi-sdk#use) to configure it for use.

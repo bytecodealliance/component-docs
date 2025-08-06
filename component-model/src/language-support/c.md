@@ -319,9 +319,7 @@ The following section requires you to have [a Rust toolchain][rust] installed.
 This repository contains an [example WebAssembly host][example-host] written in Rust
 that can run components that implement the `adder` world.
 
-1. Check out the repository:
-
-   `git clone https://github.com/bytecodealliance/component-docs.git`
+1. `git clone https://github.com/bytecodealliance/component-docs.git`
 2. `cd component-docs/component-model/examples/example-host`
 3. `cargo run --release -- 1 2 <PATH>/adder.wasm`
 * The double dashes separate the flags passed to `cargo` from

@@ -196,8 +196,12 @@ You can verify that `adder.wasm` is a valid WebAssembly P1 component (i.e. a Web
 > to that directory, you can run:
 >
 > ```console
-> /opt/wasi-sdk/bin/clang component.c adder.c adder_component_type.o \
-> -o adder.wasm -mexec-model=reactor
+> /opt/wasi-sdk/bin/clang \
+>     -o adder.wasm \
+>     -mexec-model=reactor \
+>     component.c \
+>     adder.c \
+>     adder_component_type.o
 > ```
 >
 > Using the Dockerfile avoids the need to install the WASI SDK on your system.

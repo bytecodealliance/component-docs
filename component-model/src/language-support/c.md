@@ -184,8 +184,9 @@ You can verify that `adder.wasm` is a valid WebAssembly P1 component (i.e. a Web
 > For example, to enter a container with `wasi-sdk` installed:
 >
 > ```console
-> docker run --rm -it --mount type=bind,src=path/to/app/src,dst=/app \
->     ghcr.io/webassembly/wasi-sdk:wasi-sdk-25
+> docker run --rm -it \
+>     --mount type=bind,src=path/to/app/src,dst=/app \
+>     ghcr.io/webassembly/wasi-sdk:wasi-sdk-27
 > ```
 >
 > where `path/to/app/src` is replaced with the absolute path of the directory

@@ -369,7 +369,7 @@ Caused by:
 This kind of error normally indicates that the host in question does not satisfy WASI imports.
 
 [host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
-[add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/fn.add_to_linker_sync.html
+[add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/p2/fn.add_to_linker_sync.html
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 
 ## 7. Run the component from C/C++ Applications

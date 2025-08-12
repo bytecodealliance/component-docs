@@ -1,93 +1,19 @@
 package wasi:filesystem;
 interface types {
-    use wasi:clocks/wall-clock.{datetime};
 
-    /// File size or length of a region within a file.
-    type filesize = u64;
-
-    /// The type of a filesystem object referenced by a descriptor.
-    enum descriptor-type {
-        /// The descriptor refers to a directory inode.
-        directory,
-        /// The descriptor refers to a regular file inode.
-        regular-file,
-    }
-
-    /// File attributes.
-    record descriptor-stat {
-        /// File type.
-        %type: descriptor-type,
-        /// File size in bytes.
-        size: filesize,
-        /// Last data access timestamp (optional).
-        data-access-timestamp: option<datetime>,
-    }
-
-    /// Open flags used by `open-at`.
-    flags open-flags {
-        /// Create file if it does not exist, similar to `O_CREAT` in POSIX.
-        create,
-        /// Fail if not a directory, similar to `O_DIRECTORY` in POSIX.
-        directory,
-    }
-
-    /// When setting a timestamp, this gives the value to set it to.
-    variant new-timestamp {
-        /// Leave the timestamp set to its previous value.
-        no-change,
-        /// Set the timestamp to the current time of the system clock associated
-        /// with the filesystem.
-        now,
-        /// Set the timestamp to the given value.
-        timestamp(datetime),
-    }
-
-    /// Error codes returned by functions, similar to `errno` in POSIX.
     enum error-code {
-        /// Permission denied, similar to `EACCES` in POSIX.
         access,
-        /// Resource unavailable, or operation would block, similar to `EAGAIN` and `EWOULDBLOCK` in POSIX.
-        would-block,
-        /// Connection already in progress, similar to `EALREADY` in POSIX.
-        already,
-        /// Bad descriptor, similar to `EBADF` in POSIX.
         bad-descriptor,
-        /// Device or resource busy, similar to `EBUSY` in POSIX.
-        busy,
     }
 
-    /// A descriptor is a reference to a filesystem object, which may be a
-    /// file or directory.
     resource descriptor {
-        /// Read from a descriptor, without using and updating the descriptor's offset.
-        ///
-        /// This function returns a list of bytes containing the data that was
-        /// read, along with a bool which, when true, indicates that the end of the
-        /// file was reached.
         read: func(
-            /// The maximum number of bytes to read.
             length: filesize,
-            /// The offset within the file at which to read.
             offset: filesize,
         ) -> result<tuple<list<u8>, bool>, error-code>;
 
-        /// Return the attributes of an open file or directory.
-        stat: func() -> result<descriptor-stat, error-code>;
-
-        /// Adjust the timestamps of a file or directory.
-        set-times-at: func(
-            /// The relative path of the file or directory to operate on.
-            path: string,
-            /// The desired values of the data access timestamp.
-            data-access-timestamp: new-timestamp,
-        ) -> result<_, error-code>;
-
-        /// Open a file or directory.
         open-at: func(
-            /// The relative path of the object to open.
             path: string,
-            /// The method by which to open the file.
-            open-flags: open-flags,
         ) -> result<descriptor, error-code>;
 
     }

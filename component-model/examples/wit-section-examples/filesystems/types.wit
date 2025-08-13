@@ -1,4 +1,7 @@
 package wasi-example:filesystem;
+
+/// The following is a simplified copy of an interface from wasi:filesystems.
+/// For the full version, see https://github.com/WebAssembly/wasi-filesystem/tree/main/wit
 interface types {
 
     enum error-code {

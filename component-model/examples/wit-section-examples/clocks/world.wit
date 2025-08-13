@@ -1,4 +1,4 @@
-package wasi:clocks;
+package wasi-example:clocks;
 
 world imports {
     import wall-clock;

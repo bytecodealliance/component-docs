@@ -1,0 +1,7 @@
+package wasi-example:clocks;
+
+/// The following is a simplified copy of a world from wasi:clocks.
+/// For the full version, see https://github.com/WebAssembly/wasi-clocks/tree/main/wit
+world imports {
+    import wall-clock;
+}

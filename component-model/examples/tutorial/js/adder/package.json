@@ -1,0 +1,5 @@
+{
+  "name": "adder-wasm",
+  "description": "Simple codebase for compiling an add interface to WebAssembly with jco",
+  "type": "module"
+}

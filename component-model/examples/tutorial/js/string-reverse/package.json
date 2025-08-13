@@ -1,0 +1,5 @@
+{
+  "name": "string-reverse",
+  "description": "Simple codebase for compiling a string reversing interface to WebAssembly with jco",
+  "type": "module"
+}

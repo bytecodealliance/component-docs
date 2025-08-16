@@ -38,11 +38,12 @@ cd adder
 
 Next, create or download the WIT world you would like to target.
 
-For this example we will use the [`adder` world][adder-world], with an `add` function.
+For this example we will use a WIT file containing two worlds
+(we'll only use the `example` world at first).
 Copy and paste the following into a new file called "`wit/component.wit`".
 
 ```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
+{{#include ../../examples/tutorial/csharp/adder/world-hostapp.wit}}
 ```
 
 In the `adder.csproj` project file, add a new `<ItemGroup>`
@@ -50,7 +51,7 @@ at the same level as the existing `<ItemGroup>`:
 
 ```xml
 <ItemGroup>
-    <Wit Update="wit/component.wit" World="adder" />
+    <Wit Update="wit/component.wit" World="example" />
 </ItemGroup>
 ```
 
@@ -68,8 +69,6 @@ And remove the automatically generated `Program.cs` file:
 rm Program.cs
 ```
 
-[adder-world]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
-
 ## 3. Write the implementation for the `adder` world
 
 If you try to build the project with `dotnet build`, you'll get an error like the following:
@@ -84,7 +83,7 @@ You are using a preview version of .NET. See: https://aka.ms/dotnet-support-poli
 Build failed with 1 error(s) in 34.6s
 ```
 
-This is because we've promised an implementation, but haven't yet written one for the `adder` world.
+This is because we've promised an implementation, but haven't yet written one for the `example` world.
 
 To fix this, add the following code in a file called `Component.cs`:
 
@@ -112,56 +111,6 @@ A successful run should show the following output
 {{#include example-host-part2.md}}
 
 [rust]: https://www.rust-lang.org/learn/get-started
-
-## Building a component that exports an interface
-
-The previous example uses a WIT file that exports a function.
-However, you'll often prefer to export an interface,
-either to comply with an existing specification
-or to capture a set of functions and types that tend to go together.
-Let's expand our `example` world to export an interface rather than directly export the function.
-We are also adding the `hostapp` world to our WIT file,
-which we will implement in [the next section](#building-a-component-that-imports-an-interface)
-to demonstrate how to build a component that *imports* an interface.
-
-Edit your `wit/component.wit` file to look like this:
-
-```wit
-{{#include ../../examples/tutorial/csharp/adder/world-hostapp.wit}}
-```
-
-In our `Component.cs` example, we change the `namespace` declaration
-to refer to the package name in the `wit/component.wit` file,
-and change the `AddImpl` class so that it implements the `add` interface:
-
-```csharp
-{{#include ../../examples/tutorial/csharp/adder/Component2.cs}}
-```
-
-You also need to edit your `adder.csproj` project file as follows,
-to reflect that we are now implementing the `example` world:
-
-```diff
-- <Wit Update="wit/component.wit" World="adder" />
-+ <Wit Update="wit/component.wit" World="example" />
-```
-
-Once again, compile an application to a Wasm component using `dotnet build`:
-
-```sh
-$ dotnet build
-Restore complete (0.4s)
-You are using a preview version of .NET. See: https://aka.ms/dotnet-support-policy
-  adder succeeded (1.1s) → bin/Debug/net10.0/wasi-wasm/adder.dll
-
-Build succeeded in 2.5s
-```
-
-The component will be available at `bin/Debug/net10.0/wasi-wasm/native/adder.wasm`.
-
-If you peek at the bindings, you'll notice that we now implement a class for the `add` interface
-rather than for the `example` world—this is a consistent pattern.
-As you export more interfaces from your world, you implement more classes.
 
 ## Building a component that imports an interface
 

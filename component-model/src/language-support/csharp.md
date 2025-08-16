@@ -54,7 +54,7 @@ at the same level as the existing `<ItemGroup>`:
 </ItemGroup>
 ```
 
-Since this component will only export a function, dotnet considers this a library project.
+Since this component will only export functionality, dotnet considers this a library project.
 Let's update the `<OutputType>` to be a library in the `adder.csproj`:
 
 ```diff

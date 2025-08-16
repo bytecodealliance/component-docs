@@ -79,13 +79,13 @@ an unsigned 32-bit integer.
 The following declares a function named `now`:
 
 ```wit
-now: func() -> instant;
+now: func() -> datetime;
 ```
 
 The empty parentheses `()` indicate that the function has no arguments.
 The return type is the type after the final arrow (`->`),
-which is `instant`.
-Putting it together: `now()` is a nullary function that returns an instant.
+which is `datetime`.
+Putting it together: `now()` is a nullary function that returns a datetime.
 
 ### Summing up
 

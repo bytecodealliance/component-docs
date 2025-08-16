@@ -321,56 +321,14 @@ The following section requires you to have [a Rust toolchain][rust] installed.
 > (The `wasmtime` version is specified in [the Cargo configuration file][cargo-config]
 > for the example host.)
 
-This repository contains an [example WebAssembly host][example-host] written in Rust
-that can run components that implement the `adder` world.
-
-1. `git clone https://github.com/bytecodealliance/component-docs.git`
-2. `cd component-docs/component-model/examples/example-host`
-3. `cargo run --release -- 1 2 <PATH>/adder.wasm`
-* The double dashes separate the flags passed to `cargo` from
-  the flags passed in to your code.
-* The arguments 1 and 2 are the arguments to the adder.
-* In place of `<PATH>`, substitute the directory that contains your
-  generated `adder.wasm` file (or `adder.component.wasm` if you used
-  the manual instructions).
-
-> [!NOTE]
-> When hosts run components that use WASI interfaces, they must *explicitly*
-> [add WASI to the linker][add-to-linker] to run the built component.
+{{#include example-host-part1.md}}
 
 A successful run should show the following output
 (of course, the paths to your example host and adder component will vary,
 and you should substitute `adder.wasm` with `adder.component.wasm`
 if you followed the manual instructions above):
 
-```
-cargo run --release -- 1 2 adder.wasm
-   Compiling example-host v0.1.0 (/path/to/component-docs/component-model/examples/example-host)
-    Finished `release` profile [optimized] target(s) in 7.85s
-     Running `target/debug/example-host 1 2 /path/to/adder.wasm`
-1 + 2 = 3
-```
-
-If *not* configured correctly, you may see errors like the following:
-
-```
-cargo run --release -- 1 2 adder.wasm
-   Compiling example-host v0.1.0 (/path/to/component-docs/component-model/examples/example-host)
-    Finished `release` profile [optimized] target(s) in 7.85s
-     Running `target/release/example-host 1 2 /path/to/adder.component.wasm`
-Error: Failed to instantiate the example world
-
-Caused by:
-    0: component imports instance `wasi:io/error@0.2.2`, but a matching implementation was not found in the linker
-    1: instance export `error` has the wrong type
-    2: resource implementation is missing
-```
-
-This kind of error normally indicates that the host in question does not satisfy WASI imports.
-
-[host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
-[add-to-linker]: https://docs.wasmtime.dev/api/wasmtime_wasi/p2/fn.add_to_linker_sync.html
-[example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
+{{#include example-host-part2.md}}
 
 ## 7. Run the component from C/C++ Applications
 

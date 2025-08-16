@@ -236,9 +236,13 @@ wac plug \
     -o main.wasm
 ```
 
-If you get an error message like "error: the socket component had no matching imports
-for the plugs that were provided",
-make sure that the package names in both .wit files
+If you get an error message like:
+
+```
+error: the socket component had no matching imports for the plugs that were provided
+```
+
+then make sure that the package names in both .wit files
 (the one for your `adder` component and the one for your `host-app` component) are the same.
 
 You can also automate the process by adding the following to your `host-app.csproj`:

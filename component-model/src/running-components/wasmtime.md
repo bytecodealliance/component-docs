@@ -32,9 +32,9 @@ Try out building and running HTTP components with one of these tutorials
 As of Wasmtime Version 33.0.0, there is [support for invoking components with custom exports](https://bytecodealliance.org/articles/invoking-component-functions-in-wasmtime-cli).
 
 
-As an example, if your component exports a function `foo` which takes two numeric arguments, you can make use of this feature with the following command.
+As an example, if your component exports a function `add` which takes two numeric arguments, you can make use of this feature with the following command.
 
 ```sh
-wasmtime run --invoke 'foo(1, 2)' <path-to-wasm-file>
+wasmtime run --invoke 'add(1, 2)' <path-to-wasm-file>
 ```
 Make sure to wrap your invocation in single quotes and to include parentheses, even if your function doesn't take any arguments. For a full list of ways to represent the various wit types when passing arguments to your exported function, visit the [WAVE repo](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wasm-wave).

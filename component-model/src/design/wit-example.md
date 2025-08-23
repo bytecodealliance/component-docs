@@ -26,7 +26,7 @@ We declare a world that imports one interface:
 For exposition, version numbers have been removed.
 
 This file contains a package declaration, which declares that
-this world is in the `clocks` package in the `wasi` namespace.
+this world is in the `clocks` package in the `wasi-example` namespace.
 
 The world is declared using the keyword `world`, followed by
 the name `imports`.

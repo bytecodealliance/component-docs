@@ -4,11 +4,11 @@ More languages continue to add support for the component model. The following is
 
 [comment]: # (Add first language here)
 
-## Adding a Language to the Guide
+## Adding a New Language to the Guide
 
-Interested in adding another language to this list? Create a PR to this [document](https://github.com/bytecodealliance/component-docs/blob/main/component-model/src/language-support/other-languages.md) that adds an entry with the following format to the above list. Please insert alphabetically.
+Interested in adding another language to this list? Create a PR to this [document](https://github.com/bytecodealliance/component-docs/blob/main/component-model/src/language-support/other-languages.md) that adds an entry with the following information:
 
-### Language Name
-
-- GitHub Link:
-- Documentation on getting started with components: (feel free to use our example WITs if you want to match the style of this guide)
+- Language name as a level 3 header
+- Link to the project page on Github page
+- Link to the project hosted documentation on getting started with components. Feel free to use our example WITs if you want to match the style of this guide.
+- Please insert alphabetically

@@ -40,3 +40,4 @@ without using a higher-level language front-end.
   - [WebAssembly Text Format (WAT)](./language-support/wat.md#wat-webassembly-text-format)
     - [Building a Component from WAT with `wasm-tools`](./language-support/wat.md#building-a-component-with-wasm-tools)
     - [Running a Component with Wasmtime](./language-support/wat.md#running-a-component-with-wasmtime)
+  - [Other Languages with Component Model Support](./language-support/other-languages.md)

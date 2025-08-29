@@ -69,10 +69,10 @@ componentize-py \
 Component built successfully
 ```
 
-To test the component, run it using the [Rust `add` host](./rust.md#creating-a-command-component-with-cargo-component):
+To test the component, run it using the Rust `example-host` embedding.
 
 ```sh
-$ cd component-model/examples/add-host
+$ cd component-model/examples/example-host
 $ cargo run --release -- 1 2 ../path/to/add.wasm
 1 + 2 = 3
 ```

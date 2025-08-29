@@ -156,7 +156,6 @@ For reference, see the [completed code listing](https://github.com/bytecodeallia
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 [wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
 [wiki-entrypoint]: https://en.wikipedia.org/wiki/Entry_point
-[cargo-component]: https://crates.io/crates/cargo-component
 
 ## Composing the calculator
 

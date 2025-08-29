@@ -1,0 +1,12 @@
+package docs:adder@0.1.0;
+
+interface add {
+    variant computation-error {
+        overflow
+    }
+    add: func(x: u32, y: u32) -> result<u32, computation-error>;
+}
+
+world adder {
+    import add;
+}

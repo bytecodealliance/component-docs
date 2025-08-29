@@ -1,7 +1,8 @@
-# MoonBit Tooling
+# MoonBit
 
-MoonBit is a programming language that provides first-class support for
-WebAssembly . This guide demonstrates how to build WebAssembly components using
+[MoonBit](https://www.moonbitlang.com/) is a programming language that provides first-class support for modern WebAssembly, including WebAssembly components.
+
+This guide demonstrates how to build WebAssembly components using
 MoonBit, leveraging WIT (WebAssembly Interface Types) for interface definitions
 and the `wit-bindgen` toolchain for code generation.
 
@@ -23,7 +24,7 @@ instructions from the
 Verify your MoonBit installation (below are the versions at the time of
 writing):
 
-```
+```console
 $ moon version --all
 moon 0.1.20250826 (8ab6c9e 2025-08-26) ~/.moon/bin/moon
 moonc v0.6.25+d6913262c (2025-08-27) ~/.moon/bin/moonc
@@ -35,22 +36,21 @@ moon-pilot 0.0.1-95f12db ~/.moon/bin/moon-pilot
 
 Install the `wit-bindgen` CLI tool, which generates MoonBit bindings from WIT
 files:
-
-```
-$ cargo install wit-bindgen-cli
+```sh
+cargo install wit-bindgen-cli
 ```
 
 ### Installing `wasm-tools`
 
 Install `wasm-tools` for working with WebAssembly components:
 
-```
-$ cargo install wasm-tools
+```sh
+cargo install wasm-tools
 ```
 
 Verify the installations (below are the versions at the time of writing):
 
-```
+```console
 $ wit-bindgen --version
 wit-bindgen-cli 0.45.0
 $ wasm-tools --version
@@ -60,12 +60,14 @@ wasm-tools 1.238.0
 ## 2. Define the Interface (WIT)
 
 Before generating the MoonBit project, you need to define the component
-interface using WIT. Create a directory for your project and define the WIT
+interface using WIT.
+
+Create a directory for your project and define the WIT
 file:
 
-```console
-$ mkdir moonbit-adder && cd moonbit-adder
-$ mkdir wit
+```sh
+mkdir moonbit-adder && cd moonbit-adder
+mkdir wit
 ```
 
 Create `wit/world.wit` with the following content:
@@ -85,8 +87,8 @@ This WIT definition:
 
 Use `wit-bindgen` to generate the MoonBit project structure and bindings:
 
-```console
-$ wit-bindgen moonbit wit/world.wit --out-dir . \
+```sh
+wit-bindgen moonbit wit/world.wit --out-dir . \
     --derive-eq \
     --derive-show \
     --derive-error
@@ -136,16 +138,16 @@ The generated files include:
 - `interface/`: Generated import interface bindings
 - `world/`: Generated import world bindings
 
-## 4. Examine the Generated Code
-
 The `wit-bindgen` tool generates MoonBit bindings that handle the WebAssembly
-component interface. If you execute `moon check`, there will be a warning
+component interface.
+
+If you execute `moon check`, there will be a warning
 suggesting that file `gen/interface/docs/adder/add/stub.mbt` contains unfinished
-code, which is what we need to fulfill.
+code, which is what we need to complete.
 
 ## 5. Implement the Component Logic
 
-Now implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
+Implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 
 ```rust
 {{#include ../../examples/tutorial/moonbit/adder/stub.mbt}}
@@ -161,29 +163,28 @@ Ensure your `gen/moon.pkg.json` is properly configured for WebAssembly target:
 
 ## 7. Build the WebAssembly Component
 
-Build the MoonBit code to WebAssembly:
+Build the MoonBit code to WebAssembly core module:
 
-```console
-$ moon build
+```sh
+moon build
 ```
 
-This generates a WebAssembly module. To create a proper WebAssembly component,
-use `wasm-tools`:
+To create a proper WebAssembly component from the module we have produced, use `wasm-tools`:
 
-```console
-$ wasm-tools component embed wit target/wasm/release/build/gen/gen.wasm \
+```sh
+wasm-tools component embed wit target/wasm/release/build/gen/gen.wasm \
     --encoding utf16 \
     --output adder.wasm
-$ wasm-tools component new adder.wasm --output adder.component.wasm
+wasm-tools component new adder.wasm --output adder.component.wasm
 ```
 
 You can verify the component's interface using `wasm-tools`:
 
-```console
-$ wasm-tools component wit adder.component.wasm
+```sh
+wasm-tools component wit adder.component.wasm
 ```
 
-Expected output for both commands:
+The WIT printed should be similar if not exactly the same as the following:
 
 ```wit
 package root:component;
@@ -205,11 +206,11 @@ package docs:adder@0.1.0 {
 To test your component, use the [`example-host`][example-host] provided in this
 repository:
 
-```console
-$ git clone https://github.com/bytecodealliance/component-docs.git
-$ cd component-docs/component-model/examples/example-host
-$ cp /path/to/adder.component.wasm .
-$ cargo run --release -- 5 3 adder.component.wasm
+```sh
+git clone https://github.com/bytecodealliance/component-docs.git
+cd component-docs/component-model/examples/example-host
+cp /path/to/adder.component.wasm .
+cargo run --release -- 5 3 adder.component.wasm
 ```
 
 Expected output:
@@ -229,7 +230,7 @@ $ wasmtime run --invoke 'add(10, 20)' adder.component.wasm
 30
 ```
 
-## 9. Configurations
+## Advanced
 
 ### --derive-eq --derive-show
 

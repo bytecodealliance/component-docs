@@ -147,7 +147,7 @@ code, which is what we need to fulfill.
 
 Now implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 
-```moonbit
+```rust
 {{#include ../../examples/tutorial/moonbit/adder/stub.mbt}}
 ```
 
@@ -250,13 +250,13 @@ For example, for the following interface:
 
 Will generate the following type and function
 
-```moonbit
+```rust
 {{#include ../../examples/tutorial/moonbit/adder-with-error/top.mbt}}
 ```
 
 which you may use it as:
 
-```moonbit
+```rust
 {{#include ../../examples/tutorial/moonbit/adder-with-error/stub.mbt}}
 ```
 

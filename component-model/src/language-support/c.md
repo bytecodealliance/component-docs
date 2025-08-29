@@ -16,7 +16,7 @@ if you're developing your own `.wit` files.
 For WIT interfaces that are built in to WASI, the code is part of the
 WebAssembly runtime that you will be using.
 
-C/C++ currently lacks an integrated toolchain (like Rust's [`cargo-component`][cargo-component]).
+C/C++ currently lacks an integrated toolchain.
 However, `wit-bindgen` can generate source-level bindings for
 Rust, C, Java ([TeaVM](https://teavm.org/)), and [TinyGo](https://tinygo.org/),
 with the ability to add more language generators in the future.
@@ -27,7 +27,6 @@ with the ability to add more language generators in the future.
 [clang-tgt-wasm32-wasi]: https://clang.llvm.org/docs/ClangCommandLineReference.html#webassembly
 [llvm]: https://llvm.org/
 [wasi]: https://wasi.dev/
-[cargo-component]: https://crates.io/crates/cargo-component
 [rust]: https://www.rust-lang.org/learn/get-started
 [sample-wit]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit
 [cargo-config]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/Cargo.toml

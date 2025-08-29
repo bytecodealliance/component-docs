@@ -35,7 +35,7 @@ without using a higher-level language front-end.
     - [Building a Component with `componentize-py`](./language-support/python.md#building-a-component-with-componentize-py)
     - [Running components from Python Applications](./language-support/python.md#running-components-from-python-applications)
   - [Rust Tooling](./language-support/rust.md)
-    - [Building a Component with `cargo component`](./language-support/rust.md#building-a-component-with-cargo-component)
+    - [Building a Component](./language-support/rust.md#building-a-component)
     - [Running a Component from Rust Applications](./language-support/rust.md#running-a-component-from-rust-appliacations)
   - [MoonBit Tooling](./language-support/moonbit.md)
   - [WebAssembly Text Format (WAT)](./language-support/wat.md#wat-webassembly-text-format)

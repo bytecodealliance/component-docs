@@ -68,7 +68,7 @@ crate-type = ["cdylib"]
 ```
 
 As we are building a reactor component (the "equivalent" of a library of functions), we must use
-the `cdylib` crate type that Rust provides.
+the [`cdylib`](https://doc.rust-lang.org/reference/linkage.html#r-link.cdylib) (stands for "c dynamic library") crate type that Rust provides.
 
 ## 3. Adding the `add` Interface
 

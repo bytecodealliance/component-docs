@@ -155,7 +155,7 @@ There are a few points of note in the code listing above:
 
 ## 6. Building a Component
 
-Now, let's build our component:
+Now, let's build our component, using the native Rust toolchain to build a WASI P2 component.
 
 ```sh
 cargo build --target=wasm32-wasip2

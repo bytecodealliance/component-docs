@@ -148,7 +148,7 @@ docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {re
 ```
 
 > [!NOTE]
-> We have published the `docs:adder` WIT package ahead of time, so it is easy to find/access via the configuration above.
+> We have published the [`docs:adder` WIT package](https://github.com/orgs/bytecodealliance/packages/container/package/docs%2Fadder) to GHCR ahead of time, so it is easy to find/access via the configuration above.
 >
 > To make your own custom WITs available, please use the `wkg publish` command.
 

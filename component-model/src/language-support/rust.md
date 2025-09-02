@@ -11,6 +11,14 @@ available targets in the toolchain:
 [wasip1]: https://github.com/WebAssembly/WASI/tree/main/legacy
 [wasip2]: https://github.com/WebAssembly/WASI/tree/main/wasip2
 
+> [!NOTE]
+> To use the targets above, ensure that they are enabled via the Rust toolchain (e.g. `rustup`).
+>
+> For example, to add the `wasm32-wasip2` target:
+> ```
+> rustup target add wasm32-wasip2
+> ```
+
 With built-in support, Rust code (and the standard library) can compile to WebAssembly with native
 tooling:
 

@@ -161,7 +161,7 @@ Now, let's build our component, using the native Rust toolchain to build a WASI 
 cargo build --target=wasm32-wasip2
 ```
 
-This performs a debug build, which produces a WebAssembly module to `target/wasm32-wasip2/debug/adder.wasm`:
+This performs a debug build, which produces a WebAssembly component to `target/wasm32-wasip2/debug/adder.wasm`:
 
 ```console
 du -hs target/wasm32-wasip2/debug/adder.wasm

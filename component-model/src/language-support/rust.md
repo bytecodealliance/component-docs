@@ -20,7 +20,7 @@ cargo build --target wasm32-wasip2
 
 > [!WARNING]
 > While in the past the use of [`cargo-component`][cargo-component] was recommended,
-> the project is now deprecated as native tooling can be used directly.
+> the project is in the process of being deprecated as native tooling can be used directly.
 
 [rust]: https://rust-lang.org
 [cargo-component]: https://crates.io/crates/cargo-component

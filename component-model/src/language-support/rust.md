@@ -107,8 +107,7 @@ cargo add wit-bindgen
 > While it is also possible to use `wit-bindgen` as a binary via the [`wit-bindgen-cli`][wit-bindgen-cli]
 > crate, but here we will focus on a code-first binding build approach.
 
-Once you have `wit-bindgen` as a part of your Rust project (i.e. in `Cargo.toml`), we can add code
-to the generated `src/lib.rs` that generates Rust code based on our interface (remove the existing template code):
+Once you have `wit-bindgen` as a part of your Rust project (i.e. in `Cargo.toml`), we can use it to generate Rust code bindings for our WIT interface. Update your `src/lib.rs` file to look like the following:
 
 ```rust
 mod bindings {

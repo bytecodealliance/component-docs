@@ -102,7 +102,7 @@ cargo add wit-bindgen
 
 > [!NOTE]
 > The command above should be run from inside the `adder` directory that was created by
-> `cargo new`.
+> `cargo new` so as to be sure to add `wit-bindgen` to the dependencies of the right project. Alternatively, you can directly add `wit-bindgen` to the dependencies section of the `Cargo.toml`.
 >
 > While it is also possible to use `wit-bindgen` as a binary via the [`wit-bindgen-cli`][wit-bindgen-cli]
 > crate, but here we will focus on a code-first binding build approach.

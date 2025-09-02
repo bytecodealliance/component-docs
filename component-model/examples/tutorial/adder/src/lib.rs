@@ -6,10 +6,13 @@ mod bindings {
     //! as by default `wit_bindgen::generate` will look
     //! for a top-level `wit` directory and use the files
     //! (and interfaces/worlds) there-in.
+
+    // The line below will be expanded as Rust code containing
     wit_bindgen::generate!({
-        path: "wit/world.wit",
+        path: "wit/adder/world.wit",
     });
 
+    // In the lines below we use the generated `export!()` macro re-use and 
     use super::AdderComponent;
     export!(AdderComponent);
 }

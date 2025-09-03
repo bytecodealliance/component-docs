@@ -112,7 +112,7 @@ cargo add wit-bindgen
 > The command above should be run from inside the `adder` directory that was created by
 > `cargo new` so as to be sure to add `wit-bindgen` to the dependencies of the right project. Alternatively, you can directly add `wit-bindgen` to the dependencies section of the `Cargo.toml`.
 >
-> While it is also possible to use `wit-bindgen` as a binary via the [`wit-bindgen-cli`][crates-wit-bindgen-cli]
+> It is also possible to use `wit-bindgen` as a binary via the [`wit-bindgen-cli`][crates-wit-bindgen-cli]
 > crate, but here we will focus on a code-first binding build approach.
 
 Once you have `wit-bindgen` as a part of your Rust project (i.e. in `Cargo.toml`), we can use it to generate Rust code bindings for our WIT interface. Update your `src/lib.rs` file to look like the following:

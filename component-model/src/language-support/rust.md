@@ -246,7 +246,7 @@ $ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
 1 + 2 = 3
 ```
 
-With this, we have successfully bulit and run a basic WebAssembly component with Rust 🎉
+With this, we have successfully built and run a basic WebAssembly component with Rust 🎉
 
 [crates-wasmtime]: https://crates.io/crates/wasmtime
 [repo-component-docs]: https://github.com/bytecodealliance/component-docs

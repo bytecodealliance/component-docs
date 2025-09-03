@@ -189,8 +189,8 @@ cargo build --target=wasm32-wasip2 --release
 
 After compiling in release mode, we get a much smaller binary:
 
-```
-du -hs target/wasm32-wasip2/release/adder.wasm
+```console
+$ du -hs target/wasm32-wasip2/release/adder.wasm
 16K     target/wasm32-wasip2/release/adder.wasm
 ```
 

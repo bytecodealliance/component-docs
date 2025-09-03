@@ -150,7 +150,7 @@ docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {re
 > [!NOTE]
 > We have published the [`docs:adder` WIT package](https://github.com/orgs/bytecodealliance/packages/container/package/docs%2Fadder) to GHCR ahead of time, so it is easy to find/access via the configuration above.
 >
-> To make your own custom WITs available, please use the `wkg publish` command.
+> To make your own custom WITs available, please use the [`wkg publish`](../../composing-and-distributing/distributing.md#distributing-wit-and-components-by-package-name-with-wkg-publish) command.
 
 With the project scaffolded, now we must actually *implement* a command line application that:
 

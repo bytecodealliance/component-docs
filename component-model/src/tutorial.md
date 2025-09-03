@@ -150,7 +150,7 @@ docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {re
 > [!NOTE]
 > We have published the [`docs:adder` WIT package](https://github.com/orgs/bytecodealliance/packages/container/package/docs%2Fadder) to GHCR ahead of time, so it is easy to find/access via the configuration above.
 >
-> To make your own custom WITs available, please use the [`wkg publish`](../../composing-and-distributing/distributing.md#distributing-wit-and-components-by-package-name-with-wkg-publish) command.
+> To make your own custom WITs available, please use the [`wkg publish`](./composing-and-distributing/distributing.md#distributing-wit-and-components-by-package-name-with-wkg-publish) command.
 
 With the project scaffolded, now we must actually *implement* a command line application that:
 
@@ -163,6 +163,7 @@ For reference, see the [completed code listing](https://github.com/bytecodeallia
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 [wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
 [wiki-entrypoint]: https://en.wikipedia.org/wiki/Entry_point
+[cargo]: https://doc.rust-lang.org/cargo
 
 ## Composing the calculator
 
@@ -206,3 +207,5 @@ expanded enum.
 Another extension of this tutorial could be to remove the `op` enum and instead modify
 `eval-expression` to take in a string that can then be parsed to determine which operator component
 to call. Maybe this parser is a component of its own?!
+
+[!NOTE]: #

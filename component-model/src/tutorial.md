@@ -104,51 +104,74 @@ The WebAssembly host expects it to export the [`wasi:cli/run`
 interface](https://github.com/WebAssembly/wasi-cli/blob/main/wit/run.wit), which is the equivalent
 of the [`main` function][wiki-entrypoint] to WASI.
 
-[`cargo-component`][cargo-component] will automatically resolve a Rust `bin` package
-with a `main` function to a component with `wasi:cli/run` exported. Scaffold a new Wasm application
-with a `command` component:
+To build a command component, [`cargo`][cargo] should be configured to build a `--lib` crate which
+adheres to the `wasi:cli` interface. Crucially the component must export `wasi:cli/run`
+
+To scaffold a new runnable Wasm application:
 
 ```console
-cargo component new command --command
+cargo new --lib example
+cd example
 ```
 
-This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator.wit) world, which
+This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator/world.wit) world, which
 imports the `calculate` interface.
 
-In `Cargo.toml`, point `cargo-component` to the WIT file and specify that it should pull in bindings
-for the `app` world from the path to `calculator.wit`:
+In `Cargo.toml`, configure this crate as a `cdylib`:
 
 ```toml
-[package.metadata.component.target]
-path = "../wit/calculator/world.wit"
-world = "app"
+[lib]
+crate-type = "cdylib"
 ```
+In addition, we'll need to modify the WIT interface that *imports* the calculation function and makes use of it to be runnable:
+
+```diff
+world app {
+    import calculate;
++   export wasi:cli/run@0.2.7;
+}
+```
+
 Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
+To do this, we can [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. We must first configure wkg to find the `docs:adder` repository:
+
 ```toml
-[package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/adder" }
+# $XDG_CONFIG_HOME/wasm-pkg/config.toml
+default_registry = "ghcr.io"
+
+[namespace_registries]
+# Tell wkg that the component-book WITs can be found at ghcr.io/bytecodealliance/docs
+docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
 ```
-Now, implement a command line application that:
+
+> [!NOTE]
+> We have published the [`docs:adder` WIT package](https://github.com/orgs/bytecodealliance/packages/container/package/docs%2Fadder) to GHCR ahead of time, so it is easy to find/access via the configuration above.
+>
+> To make your own custom WITs available, please use the [`wkg publish`](./composing-and-distributing/distributing.md#distributing-wit-and-components-by-package-name-with-wkg-publish) command.
+
+With the project scaffolded, now we must actually *implement* a command line application that:
 
 1. Takes in three arguments: two operands and the name of an operator ("1 2 add")
 2. Parses the operator name and ensures it is supported in the `op` enum
 3. Calls the `calculate` interface's `eval_expression`, passing in the arguments.
 
-For reference, see a completed [example](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/).
+For reference, see the [completed code listing](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/).
 
+[wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
+[wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
 [wiki-entrypoint]: https://en.wikipedia.org/wiki/Entry_point
-[cargo-component]: https://crates.io/crates/cargo-component
+[cargo]: https://doc.rust-lang.org/cargo
 
 ## Composing the calculator
 
 Now, we are ready to bring our components together into one runnable calculator component, using
-`wac`. 
+`wac`.
 
 We will:
 
 1. Compose the calculator component with the add component to satisfy the calculator component's `adder` import
-2. Compose that resolved calculator component once more with the command component to satisfy the command component's `calculate` import. 
+2. Compose that resolved calculator component once more with the command component to satisfy the command component's `calculate` import.
 
 The result is a fully-formed command component that has all its imports satisfied and has a single
 export (the `wasi:cli/run` interface), which can be executed by [`wasmtime`][wasmtime].
@@ -182,3 +205,5 @@ expanded enum.
 Another extension of this tutorial could be to remove the `op` enum and instead modify
 `eval-expression` to take in a string that can then be parsed to determine which operator component
 to call. Maybe this parser is a component of its own?!
+
+[!NOTE]: #

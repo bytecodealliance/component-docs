@@ -12,7 +12,7 @@ mod bindings {
         path: "wit/adder/world.wit",
     });
 
-    // In the lines below we use the generated `export!()` macro re-use and 
+    // In the lines below we use the generated `export!()` macro re-use and
     use super::AdderComponent;
     export!(AdderComponent);
 }

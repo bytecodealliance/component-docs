@@ -141,8 +141,6 @@ To do this, we can [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. We must
 default_registry = "ghcr.io"
 
 [namespace_registries]
-# Tell wkg that packages with the `wasi` namespace are in an OCI registry under ghcr.io/webassembly 
-wasi = { registry = "wasi",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "webassembly/" } } }
 # Tell wkg that the component-book WITs can be found at ghcr.io/bytecodealliance/docs
 docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
 ```

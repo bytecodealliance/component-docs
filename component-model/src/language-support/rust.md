@@ -14,7 +14,7 @@ available targets in the toolchain:
 > [!NOTE]
 > To use the targets above, ensure that they are enabled via the Rust toolchain (e.g. `rustup`).
 >
-> For example, to add the `wasm32-wasip2` target:
+> For example, to add the `wasm32-wasip2` target (`rustup toolchain list` can be used to show all available toolchains):
 > ```
 > rustup target add wasm32-wasip2
 > ```

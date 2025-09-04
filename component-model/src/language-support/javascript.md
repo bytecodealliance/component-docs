@@ -66,7 +66,7 @@ into a file called `world.wit`.
 The `export add;` declaration inside the `adder` world means that
 environments that interact with the resulting WebAssembly component
 will be able to _call_ the `add` function.
-Its name must be fully qualified: `docs:adder/add.add@0.1.0`.
+The fully qualified name of the `add` interface in this context is `docs:adder/add.add@0.1.0`.
 The parts of this name are:
 * `docs:adder` is the package name.
 * `add` is the name of the interface containing the `add` function.

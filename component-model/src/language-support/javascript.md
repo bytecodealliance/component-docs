@@ -71,7 +71,7 @@ The parts of this name are:
 * `docs:adder` is the namespace and package, with `docs` being the namespace and `adder` being the package.
 * `add` is the name of the interface containing the `add` function.
 * `add` also happens to be the name of the function itself.
-* `@0.1.0` is a version number that must match the declared version number.
+* `@0.1.0` is a version number that must match the declared version number of the package.
 
 > To learn more about the WIT syntax, check out the [WIT explainer](../design/wit.md).
 

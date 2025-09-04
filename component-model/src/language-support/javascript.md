@@ -68,7 +68,7 @@ environments that interact with the resulting WebAssembly component
 will be able to _call_ the `add` function.
 The fully qualified name of the `add` interface in this context is `docs:adder/add.add@0.1.0`.
 The parts of this name are:
-* `docs:adder` is the package name.
+* `docs:adder` is the namespace and package, with `docs` being the namespace and `adder` being the package.
 * `add` is the name of the interface containing the `add` function.
 * `add` also happens to be the name of the function itself.
 * `@0.1.0` is a version number that must match the declared version number.

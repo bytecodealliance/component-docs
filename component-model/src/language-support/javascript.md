@@ -491,7 +491,7 @@ npx jco componentize \
 > begins with `package example:string-reverse-upper@0.1.0;`, and that your `wit/deps/` directory
 > contains a file beginning with `package example:string-reverse@0.1.0;`.
 > In general, your main package should be at the top level of your `wit` directory,
-> and any dependencies should be in a subdirectory of that directory.
+> and any dependencies should be in a subdirectory of that directory (normally `deps`).
 
 Although we've successfully built a WebAssembly component, unlike with the other examples,
 ours is *not yet complete*.

@@ -113,8 +113,12 @@ This means that we can `--disable` all unneeded WASI functionality when we invok
 Inside your `adder` directory, execute:
 
 ```console
-jco componentize --wit world.wit --world-name adder --out adder.wasm
-    --disable=all adder.js
+jco componentize \
+    --wit world.wit \
+    --world-name adder \
+    --out adder.wasm \
+    --disable=all \
+    adder.js
 ```
 
 > [!NOTE]
@@ -346,8 +350,12 @@ Paste the following code into a file called `string-reverse.mjs`:
 To use `jco` to compile this component, you can run the following inside your `string-reverse` directory:
 
 ```console
-npx jco componentize --wit wit/component.wit --world-name string-reverse \
-    --out string-reverse.wasm --disable=all string-reverse.mjs
+npx jco componentize \
+    --wit wit/component.wit \
+    --world-name string-reverse \
+    --out string-reverse.wasm \
+    --disable=all \
+    string-reverse.mjs
 ```
 
 You should see output like the following:

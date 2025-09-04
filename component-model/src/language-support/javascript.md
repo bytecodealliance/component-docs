@@ -129,8 +129,8 @@ OK Successfully written adder.wasm.
 You should now have an `adder.wasm` file in your `adder` directory.
 You can verify that this file contains a component with:
 
-```bash
-$ wasm-tools print adder.wasm |head -1
+```console
+$ wasm-tools print adder.wasm | head -1
 (component
 ```
 

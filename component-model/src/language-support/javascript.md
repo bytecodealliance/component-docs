@@ -44,7 +44,7 @@ npm install -g @bytecodealliance/jco
 
 Building a WebAssembly component with JavaScript often consists of:
 
-1. Determining which interface our component will target (i.e. a [WebAssembly Interface Types ("WIT")](../design/wit.md) world)
+1. Determining which interface our component will target (i.e. given a [WebAssembly Interface Types ("WIT")](../design/wit.md) world)
 2. Creating the component by writing JavaScript that satisfies the interface
 3. Compiling the interface-compliant JavaScript to WebAssembly
 

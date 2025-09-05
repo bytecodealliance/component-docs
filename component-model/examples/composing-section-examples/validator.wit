@@ -1,0 +1,11 @@
+// component `validator`
+package docs:validator@0.1.0;
+
+interface validator {
+    validate-text: func(text: string) -> string;
+}
+
+world validator {
+    export validator;
+    import docs:regex/match@0.1.0;
+}

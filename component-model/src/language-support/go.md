@@ -71,7 +71,7 @@ Create a subdirectory called `wit` and paste the following code
 into a file called `wit/component.wit`:
 
 ```wit
-{{#include ../../examples/tutorial/wit/adder/world2.wit}}
+{{#include ../../examples/tutorial/go/adder/world2.wit}}
 ```
 
 The line `include wasi:cli/imports@0.2.0` is necessary because

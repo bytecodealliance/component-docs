@@ -148,7 +148,7 @@ If you execute `moon check`, there will be a warning
 suggesting that file `gen/interface/docs/adder/add/stub.mbt` contains unfinished
 code, which is what we need to complete.
 
-## 5. Implement the Component Logic
+## 4. Implement the Component Logic
 
 Implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 
@@ -156,7 +156,7 @@ Implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 {{#include ../../examples/tutorial/moonbit/adder/stub.mbt}}
 ```
 
-## 6. Configure the Build
+## 5. Configure the Build
 
 Ensure your `gen/moon.pkg.json` is properly configured for WebAssembly target:
 
@@ -164,7 +164,7 @@ Ensure your `gen/moon.pkg.json` is properly configured for WebAssembly target:
 {{#include ../../examples/tutorial/moonbit/adder/moon.pkg.json}}
 ```
 
-## 7. Build the WebAssembly Component
+## 5. Build the WebAssembly Component
 
 Build the MoonBit code to WebAssembly core module:
 
@@ -202,7 +202,7 @@ package docs:adder@0.1.0 {
 }
 ```
 
-## 8. Testing the Component
+## 6. Testing the Component
 
 ### Using the Example Host
 
@@ -281,7 +281,7 @@ used if you are generating the project as part of a larger project.
 By default, the exportation parts are generated under `gen`. You may use this
 option to specify another directory.
 
-## 10. References and Further Reading
+## References and Further Reading
 
 - [MoonBit Official Website](https://www.moonbitlang.com/)
 - [MoonBit Language Documentation](https://docs.moonbitlang.com/)

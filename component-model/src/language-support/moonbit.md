@@ -32,20 +32,21 @@ moonrun 0.1.20250826 (8ab6c9e 2025-08-26) ~/.moon/bin/moonrun
 moon-pilot 0.0.1-95f12db ~/.moon/bin/moon-pilot
 ```
 
-### Installing `wit-bindgen`
+### Installing Wasm toolchains
 
-Install the `wit-bindgen` CLI tool, which generates MoonBit bindings from WIT
-files:
+You need to have the following tools:
+
+- [wit-bindgen](https://github.com/bytecodealliance/wit-bindgen) for generating MoonBit bindings from WIT
+- [wasm-tools](https://github.com/bytecodealliance/wasm-tools) for component conversion
+- (optional) [wasmtime](https://github.com/bytecodealliance/wasmtime) for Wasm runtime
+
+You may choose to download the executable from the respective GitHub releases, or you may,
+with [Rust toolchain](https://www.rust-lang.org/tools/install) installed:
+
 ```sh
 cargo install wit-bindgen-cli
-```
-
-### Installing `wasm-tools`
-
-Install `wasm-tools` for working with WebAssembly components:
-
-```sh
 cargo install wasm-tools
+cargo install wasmtime-cli
 ```
 
 Verify the installations (below are the versions at the time of writing):
@@ -55,6 +56,8 @@ $ wit-bindgen --version
 wit-bindgen-cli 0.45.0
 $ wasm-tools --version
 wasm-tools 1.238.0
+$ wasmtime --version
+wasmtime 36.0.2
 ```
 
 ## 2. Define the Interface (WIT)

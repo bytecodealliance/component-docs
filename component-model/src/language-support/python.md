@@ -92,7 +92,7 @@ to try out building HTTP, CLI, and TCP components from Python applications.
 ## Running components from Python Applications
 
 WebAssembly components can also be invoked from Python applications.
-This section walks through using tooling to call the [pre-built `app.wasm` component][add-wasm] in the examples.
+This section walks through using python native tooling to call the [pre-built `add.wasm` component][add-wasm] in the examples.
 
 > To use `wasmtime-py` to run a component built with `componentize-py`,
 > the `--stub-wasi` option must have been passed to `componentize-py`

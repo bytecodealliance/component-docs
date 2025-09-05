@@ -1,0 +1,10 @@
+// component 'regex'
+package docs:regex@0.1.0;
+
+interface match {
+    first-match: func(regex: string, text: string) -> string;
+}
+
+world regex {
+    export match;
+}

@@ -37,6 +37,7 @@ without using a higher-level language front-end.
   - [Rust Tooling](./language-support/rust.md)
     - [Building a Component with `cargo component`](./language-support/rust.md#building-a-component-with-cargo-component)
     - [Running a Component from Rust Applications](./language-support/rust.md#running-a-component-from-rust-appliacations)
+  - [MoonBit Tooling](./language-support/moonbit.md)
   - [WebAssembly Text Format (WAT)](./language-support/wat.md#wat-webassembly-text-format)
     - [Building a Component from WAT with `wasm-tools`](./language-support/wat.md#building-a-component-with-wasm-tools)
     - [Running a Component with Wasmtime](./language-support/wat.md#running-a-component-with-wasmtime)

@@ -19,6 +19,7 @@ This documentation is aimed at _users_ of the component model: developers of lib
 | [Worlds]                 | [JavaScript]         |                   |
 |                          | [Python]             |                   |
 |                          | [Rust]               |                   |
+|                          | [MoonBit]               |                   |
 
 [Why Components?]: ./design/why-component-model.md
 [Components]: ./design/components.md
@@ -31,6 +32,7 @@ This documentation is aimed at _users_ of the component model: developers of lib
 [JavaScript]: ./language-support/javascript.md
 [Python]: ./language-support/python.md
 [Rust]: ./language-support/rust.md
+[MoonBit]: ./language-support/moonbit.md
 
 [Composing]: ./composing-and-distributing/composing.md
 [Running]: ./running-components.md

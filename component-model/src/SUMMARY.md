@@ -23,6 +23,7 @@
   - [JavaScript](./language-support/javascript.md)
   - [Python](./language-support/python.md)
   - [Rust](./language-support/rust.md)
+  - [MoonBit](./language-support/moonbit.md)
   - [WebAssembly Text Format (WAT)](./language-support/wat.md)
   - [Other Languages](./language-support/other-languages.md)
 - [Running Components](./running-components.md)

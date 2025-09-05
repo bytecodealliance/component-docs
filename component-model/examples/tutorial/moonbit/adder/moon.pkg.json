@@ -1,0 +1,25 @@
+{
+    // link configuration for Wasm backend
+    "link": {
+        "wasm": {
+            "exports": [
+                // Export for cabi_realloc
+                "cabi_realloc:cabi_realloc",
+                // Export per the interface definition
+                "wasmExportAdd:docs:adder/add@0.1.0#add"
+            ],
+            "export-memory-name": "memory",
+            "heap-start-address": 16
+        }
+    },
+    "import": [
+        {
+            "path": "docs/adder/ffi",
+            "alias": "ffi"
+        },
+        {
+            "path": "docs/adder/gen/interface/docs/adder/add",
+            "alias": "add"
+        }
+    ]
+}

@@ -1,3 +1,7 @@
 # Running Components
 
-There are two standard wit worlds that runtimes support. These worlds are the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit) and the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit). All other wit worlds and interfaces are considered to be custom.  In the following sections, you'll see how to run components that implement either world, as well as how to invoke custom exports.
+There are two standard WIT worlds that runtimes support.
+These worlds are the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit)
+and the [`wasi:http/proxy` world](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit).
+All other WIT worlds and interfaces are considered to be custom.
+In the following sections, you'll see how to run components that implement either world, as well as how to invoke custom exports.

@@ -6,7 +6,7 @@ The Component Model documentation is a [Bytecode Alliance](https://bytecodeallia
 
 You can run the website locally using the [mdBook](https://rust-lang.github.io/mdBook/index.html) command line tool.
 
-### Prerequisites
+## Prerequisites
 
 To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html) installed on your workstation.
 
@@ -20,7 +20,7 @@ cargo install --version 0.7.7 mdbook-linkcheck
 
 [cargo]: https://doc.rust-lang.org/cargo
 
-### Running the website locally
+## Running the website locally
 
 After installing mdBook, you'll need to clone the code via git and navigate to the directory.
 
@@ -51,6 +51,28 @@ mdbook build
 ```
 
 Don't forget to remove the changes in `book.toml` before you commit!
+
+## Writing style guide
+
+This section contains what is a *somewhat loosely* applied style guide for writing that is contributed to `component-docs`.
+
+### Executable code fragments
+
+For code that should be executed by the user in their console of choice, prefer using `sh`/`bash`. While not every user's
+shell is `sh` or `bash` (with `zsh` being incredilby common), `sh`/`bash` provide a decent approximation.
+
+Importantly, code that is meant to be executed should be copy-pastable -- and should not contain `$` as a prefix. For example:
+
+```sh
+echo 'this is an example';
+```
+
+On the other hand, when commands *and* output are shown, use `console` and *do* prefix the command with `$` to differentiate it (or `#` in a sudo context):
+
+```console
+$ echo 'this is an example';
+this is an example
+```
 
 ## Submitting Changes
 

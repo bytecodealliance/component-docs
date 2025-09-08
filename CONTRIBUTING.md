@@ -20,7 +20,7 @@ cargo install --version 0.7.7 mdbook-linkcheck
 
 [cargo]: https://doc.rust-lang.org/cargo
 
-## Running the website locally
+### Running the website locally
 
 After installing mdBook, you'll need to clone the code via git and navigate to the directory.
 

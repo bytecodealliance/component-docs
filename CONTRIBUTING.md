@@ -6,7 +6,7 @@ The Component Model documentation is a [Bytecode Alliance](https://bytecodeallia
 
 You can run the website locally using the [mdBook](https://rust-lang.github.io/mdBook/index.html) command line tool.
 
-## Prerequisites
+### Prerequisites
 
 To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/guide/installation.html) installed on your workstation.
 

@@ -268,7 +268,8 @@ Under the hood, TinyGo invokes `wasm-tools`
 to embed the WIT file to the module and componentize it.
 
 ```console
-tinygo build -target=wasip2 -o adder.wasm \
+tinygo build -target=wasip2 \
+    -o adder.wasm \
     --wit-package docs:adder@0.1.0.wasm \
     --wit-world adder main.go
 ```

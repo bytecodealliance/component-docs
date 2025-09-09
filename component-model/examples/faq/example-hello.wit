@@ -1,0 +1,9 @@
+package example-namespace:example-package;
+
+interface example-interface {
+    say-hello: func(name: string) -> string;
+}
+
+world example-world {
+    export example-interface;
+}

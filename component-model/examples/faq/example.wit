@@ -1,0 +1,5 @@
+package example-namespace:example-package;
+
+world example-world {
+    import wasi:cli/environment@0.2.4;
+}

@@ -6,7 +6,7 @@ The component model accomplishes this by packaging code in a portable binary for
 and providing  machine-readable interfaces in [WIT](../design/wit.md)
 with a standardised Application Binary Interface (ABI).
 In the same way that, for example, a Rust package (crate) can be compiled together with other Rust code
-to create a higher-level library or an application, a WebAssembly component can be linked with other components.
+to create a higher-level library or an application, a WebAssembly component can be composed with other components.
 
 > Component model interoperation is more convenient and expressive than language-specific foreign function interfaces (FFIs).
 > A typical C FFI involves language-specific types, so it is not possible to link between arbitrary languages

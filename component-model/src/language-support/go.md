@@ -84,8 +84,9 @@ so it requires the imports of `wasi:cli/imports@0.2.0`.
 
 Tools like [`wkg`][wkg] can be convenient to build a complete WIT package by resolving the imports.
 
-Running the `wkg wit build` command will resolve the imports
-and populate your `wit` folder with all relevant imported namespaces and packages.
+Running the `wkg wit build` command encodes the WIT into the Component Model binary format.
+As a side effect, it resolves the imports
+and populates your `wit` folder with all relevant imported namespaces and packages.
 
 ```
 $ wkg wit build

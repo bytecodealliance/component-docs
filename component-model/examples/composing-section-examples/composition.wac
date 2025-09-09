@@ -1,0 +1,14 @@
+//composition.wac
+// Provide a package name for the resulting composition
+package docs:composition;
+
+// Instantiate the regex-impl component that implements the `regex` world.
+// Bind this instance's exports to the local name `regex`.
+let regex = new docs:regex-impl { };
+
+// Instantiate the validator-impl component which implements the `validator` world
+// and imports the match interface from the regex component.
+let validator = new docs:validator-impl { match: regex.match, ... };
+
+// Export all remaining exports of the validator instance
+export validator...;

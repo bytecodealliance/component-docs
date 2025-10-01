@@ -42,12 +42,12 @@ To expand the exercise to add more components, add another operator world, expan
 
 ## Building and running the example
 
-Use [`cargo-component`](https://github.com/bytecodealliance/cargo-component) and [`wac`](https://github.com/bytecodealliance/wac) to build and compose the calculator component.
+Use [`wac`](https://github.com/bytecodealliance/wac) to build and compose the calculator component.
 
 ```sh
-(cd calculator && cargo component build --release)
-(cd adder && cargo component build --release)
-(cd command && cargo component build --release)
+(cd calculator && cargo build --release)
+(cd adder && cargo build --release)
+(cd command && cargo build --release)
 wac plug calculator/target/wasm32-wasip1/release/calculator.wasm --plug adder/target/wasm32-wasip1/release/adder.wasm -o composed.wasm
 wac plug command/target/wasm32-wasip1/release/command.wasm --plug composed.wasm -o final.wasm
 ```

@@ -39,12 +39,7 @@ contents to `runnable-example/wit/component.wit`:
 ```wit
 package example:runnable;
 
-interface greet {
-    greet: func(name: string) -> string;
-}
-
 world greeter {
-    export greet;
     export wasi:cli/run@0.2.7;
 }
 ```
@@ -72,41 +67,19 @@ The following code can be inserted into `runnable-example/src/lib.rs`:
 
 ```rust
 mod bindings {
-    wit_bindgen::generate!()
-}
+    use super::Component;
 
+    wit_bindgen::generate!();
 
-package example:runnable;
-
-interface greet {
-    greet: func(name: string) -> string;
-}
-
-world greeter {
-    export greet;
-    export wasi:cli/run@0.2.7;
+    export!(Component);
 }
 
 /// Component off of which implementation will hang (this can be named anything)
 struct Component;
 
-impl Component {
-    fn greet(s: impl AsRef<str>) -> String {
-        format!("hello {s}!");
-    }
-}
-
-export bindings::example::runnable::greet::Guest for Component {
-    fn greet(&self, s: String) -> String {
-        self.greet(s)
-    }
-}
-
 export bindings::wasi::cli::run::Guest for Component {
     fn run(&self) -> Result<(), ()> {
-        // NOTE: here, we would normally use more of the wasi:cli interface
-        // to grab arguments and other information from the execution environment.
-        eprintln!("CLI => {}", self.greet("CLI User"));
+        eprintln!("Hello World!");
         Ok(())
     }
 }
@@ -127,34 +100,59 @@ the interface and function to run (`wasi:cli/run` is detected and used automatic
 
 ```console
 $ wasmtime run target/wasm32-wasip2/runnable-example.wasm
-CLI => hello CLI User!
+Hello World!
 ```
 
 ## Creating a command component
 
-A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime` (or other `wasi:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with a `main` function, instead of a library crate (`lib`) package.
+A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime`
+(or other `wasi:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with
+a `main` function, instead of a library crate (`lib`) package.
 
-To create a command with cargo component, run:
+### 1. Create a new Rust binary project
+
+To create a command with cargo, run:
 
 ```sh
-cargo component new <name>
+cargo new runnable-example
 ```
 
-Unlike library components, this does _not_ have the `--lib` flag. You will see that the created project is different too:
+Unlike library components, this does _not_ have the `--lib` flag (`--bin` is the default for `cargo new`).
 
-- It doesn't contain a `.wit` file. `cargo component build` will automatically export the `wasi:cli/run` interface for Rust `bin` packages, and hook it up to `main`.
-- Because there's no `.wit` file, `Cargo.toml` doesn't contain a `package.metadata.component.target` section.
-- The Rust file is called `main.rs` instead of `lib.rs`, and contains a `main` function instead of an interface implementation.
+The created Rust source file is called `main.rs` instead of `lib.rs`, and contains a `main` function.
 
 You can write Rust in this project, just as you normally would, including importing your own or third-party crates.
 
 > All the crates that make up your project are linked together at build time, and compiled to a _single_ Wasm component. In this case, all the linking is happening at the Rust level: no WITs or component composition is involved. Only if you import Wasm interfaces do WIT and composition come into play.
 
+### 2. Write the relevant Rust
+
+The following code can be inserted into `runnable-example/src/main.rs`:
+
+```rust
+pub fn main() {
+    eprintln!("Hello World!");
+}
+```
+
+### 3. Build the component
+
+To build the component, use `cargo`:
+
+```sh
+cargo build --target=wasm32-wasip2
+```
+
+### 4. Run the component with `wasmtime`
+
 To run your command component:
 
 ```sh
-cargo component build
-wasmtime run ./target/wasm32-wasip1/debug/<name>.wasm
+wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 ```
 
-> **WARNING:** If your program prints to standard out or error, you may not see the printed output! Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
+> [!WARNING]
+> If your program prints to standard out or error, you may not see the printed output!
+>
+> Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work
+> around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.

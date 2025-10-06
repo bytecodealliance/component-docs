@@ -31,17 +31,17 @@ world calculator {
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell `cargo component` how to find it. To do this, add the following to the `Cargo.toml` file:
+Because the `docs:adder` package is in a different project, we must first tell `cargo` how to find it. To do this, we add a
+custom `wkg.toml` to our project:
 
 ```toml
-[package.metadata.component.target.dependencies]
+[overrides]
 "docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
 ```
 
-> [!NOTE]
-> The path for `docs:adder` is relative to the `wit` _directory_, not to the `world.wit` file.
->
-> A WIT package may be spread across multiple files in the same directory; `cargo component` will search them all.
+After adding this configuration file, when we run `wkg wit fetch`, `wkg` will assume that the package `docs:adder` can be found
+at the path that is given, and will pull it's contents into the local project under `wit/deps`.
+
 
 ### Calling the import from Rust
 
@@ -69,11 +69,16 @@ impl Guest for Component {
 
 ### Fulfilling the import
 
-When you build this using `cargo component build`, the `add` interface remains imported. The calculator has taken a dependency on the `add` _interface_, but has not linked the `adder` implementation of that interface - this is not like referencing the `adder` crate. (Indeed, `calculator` could import the `add` interface even if there was no Rust project implementing the WIT file.) You can see this by running [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the calculator's world:
+When you build this using `cargo build`, the `add` interface remains unsatisfied (i.e. imported).
+
+The calculator has taken a dependency on the `add` _interface_, but has not linked the `adder` implementation of
+that interface - this is not like referencing the `adder` crate (Indeed, `calculator` could import the `add` interface even if there was no Rust project implementing the WIT file) .
+
+You can see this by running [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the calculator's world:
 
 ```
 # Do a release build to prune unused imports (e.g. WASI)
-$ cargo component build --release
+$ cargo build --target=wasm32-wasip2 --release
 
 $ wasm-tools component wit ./target/wasm32-wasip1/release/calculator.wasm
 package root:component;
@@ -85,8 +90,9 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. To fulfill the `add` import, so that
-only `calculate` is exported, you would need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../../composing-and-distributing/composing.md).
+As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form.
 
+To fulfill the `add` import, so that only `calculate` is exported, you would
+need to [compose the `calculator.wasm` with some `adder.wasm` into a single, self-contained component](../../composing-and-distributing/composing.md).
 
 [!NOTE]: #

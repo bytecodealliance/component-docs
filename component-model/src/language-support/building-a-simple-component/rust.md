@@ -1,4 +1,4 @@
-# Components in Rust
+# Building a simple component (Rust)
 
 [Rust][rust] has first-class support for WebAssembly core and WebAssembly components via the
 available targets in the toolchain:

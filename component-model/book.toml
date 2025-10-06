@@ -10,6 +10,10 @@ git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/ma
 edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"
 additional-css = ["theme/head.hbs"]
 
+[output.html.fold]
+enable = true
+level = 1
+
 [output.html.redirect]
 "/creating-and-consuming/composing.html" = "/composing-and-distributing/composing.html"
 "/creating-and-consuming/distributing.html" = "/composing-and-distributing/distributing.html"

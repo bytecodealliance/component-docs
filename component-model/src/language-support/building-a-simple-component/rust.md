@@ -86,7 +86,7 @@ the [`adder` world][docs-adder] world in the `docs:adder` [WebAssembly Interface
 Create a file called `wit/world.wit` and fill it with the following content:
 
 ```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
+{{#include ../../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 The (WIT) types in this file represent the interface of our component must satisfy (the `adder world`).
@@ -148,7 +148,7 @@ We can fill in functionality of the component by implementing `bindings::Guest` 
 Your code should look something like the following:
 
 ```rs
-{{#include ../../examples/tutorial/adder/src/lib.rs}}
+{{#include ../../../examples/tutorial/adder/src/lib.rs}}
 ```
 
 There are a few points of note in the code listing above:

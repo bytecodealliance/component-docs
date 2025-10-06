@@ -1,0 +1,1 @@
+# Using WIT Resources (Rust)

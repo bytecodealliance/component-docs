@@ -44,13 +44,13 @@ npm install -g @bytecodealliance/jco
 
 Building a WebAssembly component with JavaScript often consists of:
 
-1. Determining which interface our component will target (i.e. given a [WebAssembly Interface Types ("WIT")](../design/wit.md) world)
+1. Determining which interface our component will target (i.e. given a [WebAssembly Interface Types ("WIT")][docs-wit] world)
 2. Creating the component by writing JavaScript that satisfies the interface
 3. Compiling the interface-compliant JavaScript to WebAssembly
 
 ### What is WIT?
 
-[WebAssembly Interface Types ("WIT")](../design/wit.md) is a featureful Interface Definition Language ("IDL")
+[WebAssembly Interface Types ("WIT")][docs-wit] is a featureful Interface Definition Language ("IDL")
 for defining functionality, but most of the time, you shouldn't need to write WIT from scratch.
 Often, it's sufficient to download a pre-existing interface that defines what your component should do.
 
@@ -60,7 +60,7 @@ Create a new directory called `adder` and paste the following WIT code
 into a file called `world.wit`.
 
 ```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
+{{#include ../../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 The `export add;` declaration inside the `adder` world means that
@@ -73,7 +73,7 @@ The parts of this name are:
 * `add` also happens to be the name of the function itself.
 * `@0.1.0` is a version number that must match the declared version number of the package.
 
-> To learn more about the WIT syntax, check out the [WIT explainer](../design/wit.md).
+> To learn more about the WIT syntax, check out the [WIT explainer][docs-wit].
 
 [adder-world]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit
 [wit-example-world]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host/add.wit
@@ -84,7 +84,7 @@ To implement the [`adder` world][adder-world], we can write a [JavaScript ES mod
 Paste the following code into a file called `adder.js` in your `adder` directory:
 
 ```js
-{{#include ../../examples/tutorial/js/adder/adder.js}}
+{{#include ../../../examples/tutorial/js/adder/adder.js}}
 ```
 
 > [!WARNING]
@@ -161,11 +161,11 @@ $ wasm-tools print adder.wasm | head -1
 
 To run the component we've built, we can use the [`example-host` project][example-host]:
 
-{{#include example-host-part1.md}}
+{{#include ../example-host-part1.md}}
 
 The output looks like:
 
-{{#include example-host-part2.md}}
+{{#include ../example-host-part2.md}}
 
 While the output isn't exciting, the code contained in `example-host` does a lot to make it happen:
 
@@ -240,7 +240,7 @@ using a runtime that supports the [core WebAssembly specification][core-wasm] as
 To use this component from [Node.js][nodejs], you can write code like the following:
 
 ```mjs
-{{#include ../../examples/tutorial/js/adder/run.js}}
+{{#include ../../../examples/tutorial/js/adder/run.js}}
 ```
 
 Pasting this code into a file called `run.js` in your `adder` directory,
@@ -249,7 +249,7 @@ First, you will need to create a `package.json` file
 in the same directory:
 
 ```json
-{{#include ../../examples/tutorial/js/adder/package.json}}
+{{#include ../../../examples/tutorial/js/adder/package.json}}
 ```
 
 > [!NOTE]
@@ -291,8 +291,8 @@ Components expose their interfaces via [WebAssembly Interface Types][docs-wit],
 hand-in-hand with the [Component Model][docs-component-model]
 which enables components to use higher-level types interchangeably.
 
-[docs-wit]: ../design/wit.md
-[docs-component-model]: ../design/why-component-model.md
+[docs-wit]: ../../design/wit.md
+[docs-component-model]: ../../design/why-component-model.md
 
 ### Exporting WIT Interfaces with `jco`
 
@@ -310,10 +310,10 @@ To build a project like `string-reverse` from the ground up, first we'd start wi
 In a new directory called `string-reverse`, paste this code into a file called `wit/component.wit`:
 
 ```wit
-{{#include ../../examples/tutorial/js/string-reverse/component.wit}}
+{{#include ../../../examples/tutorial/js/string-reverse/component.wit}}
 ```
 
-As a slightly deeper crash course on [WIT](../design/wit.md), here's what the above code describes:
+As a slightly deeper crash course on [WIT][docs-wit], here's what the above code describes:
 
 - We've defined a namespace called `example`.
 - We've defined a package called `string-reverse` inside the `example` namespace.
@@ -337,7 +337,7 @@ OK now let's see what the JS code looks like to *implement* the `component` worl
 Paste the following code into a file called `string-reverse.mjs`:
 
 ```mjs
-{{#include ../../examples/tutorial/js/string-reverse/string-reverse.mjs}}
+{{#include ../../../examples/tutorial/js/string-reverse/string-reverse.mjs}}
 ```
 
 > This code uses `split()` to convert the string into an array of characters,
@@ -402,7 +402,7 @@ For Node.js, we can use code like this.
 Paste the following code into a file called `run.js` in your `string-reverse` directory:
 
 ```mjs
-{{#include ../../examples/tutorial/js/string-reverse/run.js}}
+{{#include ../../../examples/tutorial/js/string-reverse/run.js}}
 ```
 
 > [!NOTE]
@@ -411,7 +411,7 @@ Paste the following code into a file called `run.js` in your `string-reverse` di
 As before, we also need a `package.json` file:
 
 ```json
-{{#include ../../examples/tutorial/js/string-reverse/package.json}}
+{{#include ../../../examples/tutorial/js/string-reverse/package.json}}
 ```
 
 Then run:
@@ -458,7 +458,7 @@ functionality for reversing *and* upper-casing a string.
 Here's the WIT one might write to enable this functionality:
 
 ```wit
-{{#include ../../examples/tutorial/js/string-reverse-upper/component.wit}}
+{{#include ../../../examples/tutorial/js/string-reverse-upper/component.wit}}
 ```
 
 This time, the `world` named `revup` that we are building *relies* on the interface `reverse`
@@ -478,7 +478,7 @@ The JavaScript to make this work ([`string-reverse-upper.mjs` in `jco/examples`]
 looks like this:
 
 ```js
-{{#include ../../examples/tutorial/js/string-reverse-upper/string-reverse-upper.mjs}}
+{{#include ../../../examples/tutorial/js/string-reverse-upper/string-reverse-upper.mjs}}
 ```
 
 If we place the above WIT file in the `wit` subdirectory, we also need to create a
@@ -589,7 +589,7 @@ You should see output like the following:
 To run the transpiled component, we can write code like the following:
 
 ```js
-{{#include ../../examples/tutorial/js/string-reverse-upper/run.js}}
+{{#include ../../../examples/tutorial/js/string-reverse-upper/run.js}}
 ```
 
 > [!NOTE]

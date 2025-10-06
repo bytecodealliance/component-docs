@@ -155,3 +155,5 @@ You can compose components visually using the builder app at [wasmbuilder.app](h
 
 5. When you have connected all the imports and exports that you want,
    click the Download Component button to download the composed component as a `.wasm` file.
+
+[!NOTE]: #

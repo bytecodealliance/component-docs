@@ -76,7 +76,7 @@ mkdir wit
 Create `wit/world.wit` with the following content:
 
 ```wit
-{{#include ../../examples/tutorial/wit/adder/world.wit}}
+{{#include ../../../examples/tutorial/wit/adder/world.wit}}
 ```
 
 This WIT definition:
@@ -153,7 +153,7 @@ code, which is what we need to complete.
 Implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 
 ```rust
-{{#include ../../examples/tutorial/moonbit/adder/stub.mbt}}
+{{#include ../../../examples/tutorial/moonbit/adder/stub.mbt}}
 ```
 
 ## 5. Configure the Build
@@ -161,7 +161,7 @@ Implement the `add` function in `gen/interface/docs/adder/add/stub.mbt`:
 Ensure your `gen/moon.pkg.json` is properly configured for WebAssembly target:
 
 ```json
-{{#include ../../examples/tutorial/moonbit/adder/moon.pkg.json}}
+{{#include ../../../examples/tutorial/moonbit/adder/moon.pkg.json}}
 ```
 
 ## 5. Build the WebAssembly Component
@@ -249,19 +249,19 @@ This allows you to integrate the MoonBit's error handling easier.
 For example, for the following interface:
 
 ```wit
-{{#include ../../examples/tutorial/moonbit/adder-with-error/world.wit}}
+{{#include ../../../examples/tutorial/moonbit/adder-with-error/world.wit}}
 ```
 
 Will generate the following type and function
 
 ```rust
-{{#include ../../examples/tutorial/moonbit/adder-with-error/top.mbt}}
+{{#include ../../../examples/tutorial/moonbit/adder-with-error/top.mbt}}
 ```
 
 which you may use it as:
 
 ```rust
-{{#include ../../examples/tutorial/moonbit/adder-with-error/stub.mbt}}
+{{#include ../../../examples/tutorial/moonbit/adder-with-error/stub.mbt}}
 ```
 
 ### --ignore-stub

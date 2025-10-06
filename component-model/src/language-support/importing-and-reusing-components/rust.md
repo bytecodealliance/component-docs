@@ -7,9 +7,6 @@ If your component consumes other components, you can edit the `world.wit` file t
 
 > [!NOTE]
 > This section is about importing custom WIT interfaces from library components.
-> By default, `cargo-component` imports any required [WASI interfaces](https://wasi.dev/interfaces)
-> for us without needing to explicitly declare them.
-
 
 For example, suppose you have created and built an adder component as explained in the [exporting an interface section](#exporting-an-interface-with-cargo-component) and want to use that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 

@@ -62,8 +62,6 @@ Here are some tips to avoid or diagnose errors:
   because `regex` doesn't have any dependencies, let alone ones that `validator` can satisfy.
 * Composition cares about interface versions, and current tools are inconsistent about
   when they infer or inject versions.
-  For example, if a Rust component exports `test:mypackage`,
-  `cargo component build` will decorate this with the crate version, e.g. `test:mypackage@0.1.0`.
   If another Rust component _imports_ an interface from `test:mypackage`, that won't match `test:mypackage@0.1.0`.
   You can use [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component)
   to view the imports and exports embedded in the `.wasm` files and check whether they match up.

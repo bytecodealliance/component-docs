@@ -2,9 +2,14 @@
 
 [Resources](../design/wit.md#resources) are handles to entities that live outside the component (i.e. in a host, or other component).
 
-## An example stack-based calculator
+## An example stack-based Reverse Polish Notation (RPN) calculator
 
-In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.) A RPN calculator is a stateful entity: a consumer pushes operands and operations onto a stack maintained within the calculator, then evaluates the stack to produce a value. The resource in WIT looks like this:
+In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.)
+
+A RPN calculator is a stateful entity: a consumer pushes operands and operations onto a stack
+maintained within the calculator, then evaluates the stack to produce a value.
+
+In WIT, the resource looks like the following:
 
 ```wit
 package docs:rpn@0.1.0;
@@ -32,7 +37,7 @@ world calculator {
 
 ## Implementing and exporting a resource in a component
 
-To implement the calculator using `cargo component`:
+To implement the calculator in Rust:
 
 1. Create a library component as shown in previous sections, with the WIT given above.
 
@@ -48,9 +53,15 @@ To implement the calculator using `cargo component`:
 
     > Why is the stack wrapped in a `RefCell`? As we will see, the generated Rust trait for the calculator engine has _immutable_ references to `self`. But our implementation of that trait will need to mutate the stack. So we need a type that allows for interior mutability, such as `RefCell<T>` or `Arc<RwLock<T>>`.
 
-3. The generated bindings (`bindings.rs`) for an exported resource include a trait named `GuestX`, where `X` is the resource name. (You may need to run `cargo component build` to regenerate the bindings after updating the WIT.) For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
+3. The generated bindings (`bindings.rs`) for an exported resource include a trait named `GuestX`, where `X` is the resource name. For the calculator `engine` resource, the trait is `GuestEngine`. Implement this trait on the `struct` from step 2:
 
     ```rust
+    mod bindings {
+        use super::Component;
+        wit_bindgen::generate!();
+        export!(Component);
+    }
+
     use bindings::exports::docs::rpn::types::{GuestEngine, Operation};
 
     impl GuestEngine for CalcEngine {
@@ -86,23 +97,26 @@ To implement the calculator using `cargo component`:
 4. We now have a working calculator type which implements the `engine` contract, but we must still connect that type to the `engine` resource type. This is done by implementing the generated `Guest` trait. For this WIT, the `Guest` trait contains nothing except an associated type. You can use an empty `struct` to implement the `Guest` trait on. Set the associated type for the resource - in our case, `Engine` - to the type which implements the resource trait - in our case, the `CalcEngine` `struct` which implements `GuestEngine`. Then use the `export!` macro to export the mapping:
 
     ```rust
-    struct Implementation;
-    impl Guest for Implementation {
+    // ... bindings & CalcEngine impl code ...
+
+    struct Component;
+
+    impl bindings::Guest for Component {
         type Engine = CalcEngine;
     }
 
-    bindings::export!(Implementation with_types_in bindings);
+    bindings::export!(Component);
     ```
 
-This completes the implementation of the calculator `engine` resource. Run `cargo component build` to create a component `.wasm` file.
+This completes the implementation of the calculator `engine` resource. Run `cargo build --target=wasm32-wasip2` to create a component `.wasm` file.
 
 ## Importing and consuming a resource in a component
 
 To use the calculator engine in another component, that component must import the resource.
 
-1. Create a command component as shown in previous sections.
+1. [Create a runnable component](../../creating-runnable-components/rust.md) as shown in previous sections.
 
-2. Add a `wit/world.wit` to your project, and write a WIT world that imports the RPN calculator types:
+2. Add a `wit/component.wit` to your project, and write a WIT world that imports the RPN calculator types:
 
     ```wit
     package docs:rpn-cmd;
@@ -112,24 +126,24 @@ To use the calculator engine in another component, that component must import th
     }
     ```
 
-3. Edit `Cargo.toml` to tell `cargo component` about the new WIT file and the external RPN package file:
+3. Create a `wkg.toml` file to enable retrieving the relevant WIT files for `docs:rpn` (which contains the `engine` resource):
 
     ```toml
-    [package.metadata.component]
-    package = "docs:rpn-cmd"
-
-    [package.metadata.component.target]
-    path = "wit"
-
-    [package.metadata.component.target.dependencies]
-    "docs:rpn" = { path = "../wit" } # or wherever your resource WIT is
+    [overrides]
+    "docs:rpn" = { path = "../path/to/docs-rpn/wit" }
     ```
+
+    After doing this, you can run `wkg wit fetch` to ensure all WIT is available locally.
 
 4. The resource now appears in the generated bindings as a `struct`, with appropriate associated functions. Use these to construct a test app:
 
     ```rust
-    #[allow(warnings)]
-    mod bindings;
+    mod bindings {
+        use super::Component;
+        wit_bindgen::generate!();
+        export!(Component);
+    }
+
     use bindings::docs::rpn::types::{Engine, Operation};
 
     fn main() {
@@ -142,11 +156,19 @@ To use the calculator engine in another component, that component must import th
     }
     ```
 
-You can now build the command component and [compose it with the `.wasm` component that implements the resource.](../composing-and-distributing/composing.md). You can then run the composed command with `wasmtime run`.
+Building the component as is creates a WebAssembly component with an *unsatisfied import* -- namely the `docs:rpn/types` import.
+
+After building the component, it must be [composed with a `.wasm` component that implements the resource.](../composing-and-distributing/composing.md). After composition creates a component with no unsatisfied imports, the composed command component can be run with `wasmtime run`.
+
+Alternatively, a host that can provide the `docs:rpn/types` import (and related resource) can also be used to run the component
+in it's "incomplete" state (as the host will "complete" the componnt by providing the expected import).
 
 ## Implementing and exporting a resource implementation in a host
 
-If you are hosting a Wasm runtime, you can export a resource from your host for guests to consume. Hosting a runtime is outside the scope of this book, so we will give only a broad outline here. This is specific to the Wasmtime runtime; other runtimes may express things differently.
+If you are hosting a Wasm runtime, you can export a resource from your host for guests to consume.
+
+Hosting a runtime is outside the scope of this book, so we will give only a broad outline here. This is specific
+to the Wasmtime runtime; other runtimes may express things differently.
 
 1. Use `wasmtime::component::bindgen!` to specify the WIT you are a host for:
 
@@ -210,8 +232,6 @@ If you are hosting a Wasm runtime, you can export a resource from your host for 
     }
     ```
 
-[cargo-component]: https://github.com/bytecodealliance/cargo-component
-[cargo-component-install]: https://github.com/bytecodealliance/cargo-component#install
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
 
 [!NOTE]: #

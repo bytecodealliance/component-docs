@@ -5,8 +5,8 @@ This section contains language-specific guides on how to create runnable compone
 At a high level there are at least two ways to create components that are more like binaries than libraries
 (i.e. that are easy to run from a tool like `wasmtime`):
 
-- Creating a "command" component
-- Exporting the `wasi:cli/run` interface
+1. Exporting the `wasi:cli/run` interface (recommended)
+2. Creating a "command" component
 
 This section explores how to do the above in relevant languages.
 

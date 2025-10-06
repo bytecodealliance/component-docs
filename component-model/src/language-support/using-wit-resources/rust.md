@@ -1,6 +1,6 @@
 # Using WIT Resources (Rust)
 
-[Resources](../design/wit.md#resources) are handles to entities that live outside the component (i.e. in a host, or other component).
+[Resources](../../design/wit.md#resources) are handles to entities that live outside the component (i.e. in a host, or other component).
 
 ## An example stack-based Reverse Polish Notation (RPN) calculator
 
@@ -114,7 +114,7 @@ This completes the implementation of the calculator `engine` resource. Run `carg
 
 To use the calculator engine in another component, that component must import the resource.
 
-1. [Create a runnable component](../../creating-runnable-components/rust.md) as shown in previous sections.
+1. [Create a runnable component](../creating-runnable-components/rust.md) as shown in previous sections.
 
 2. Add a `wit/component.wit` to your project, and write a WIT world that imports the RPN calculator types:
 
@@ -158,7 +158,7 @@ To use the calculator engine in another component, that component must import th
 
 Building the component as is creates a WebAssembly component with an *unsatisfied import* -- namely the `docs:rpn/types` import.
 
-After building the component, it must be [composed with a `.wasm` component that implements the resource.](../composing-and-distributing/composing.md). After composition creates a component with no unsatisfied imports, the composed command component can be run with `wasmtime run`.
+After building the component, it must be [composed with a `.wasm` component that implements the resource.](../../composing-and-distributing/composing.md). After composition creates a component with no unsatisfied imports, the composed command component can be run with `wasmtime run`.
 
 Alternatively, a host that can provide the `docs:rpn/types` import (and related resource) can also be used to run the component
 in it's "incomplete" state (as the host will "complete" the componnt by providing the expected import).

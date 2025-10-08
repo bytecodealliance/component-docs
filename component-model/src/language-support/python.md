@@ -94,14 +94,6 @@ to try out building HTTP, CLI, and TCP components from Python applications.
 WebAssembly components can also be invoked from Python applications.
 This section walks through using python native tooling to call the [pre-built `add.wasm` component][add-wasm] in the examples.
 
-> To use `wasmtime-py` to run a component built with `componentize-py`,
-> the `--stub-wasi` option must have been passed to `componentize-py`
-> when the component was built.
-> This is because `wasmtime-py` does not yet support [resources](../design/wit.md#resources),
-> and `componentize-py` by default generates components which use resources from the `wasi:cli` world.
-> See [this example](https://github.com/bytecodealliance/componentize-py/tree/main/examples/sandbox)
-> of using the `--stub-wasi` option to generate a `wasmtime-py`-compatible component.
-
 First, install [Python 3.11 or later](https://www.python.org/) and [pip](https://pypi.org/project/pip/) if you don't already have them.
 Then, install [`wasmtime-py`](https://github.com/bytecodealliance/wasmtime-py):
 
@@ -135,6 +127,8 @@ Run the Python host program:
 $ python3 host.py
 1 + 2 = 3
 ```
+
+You can find another example of a Python host usage via `wasmtime-py` in the [componentize-py repository](https://github.com/bytecodealliance/componentize-py/tree/main/examples/sandbox).
 
 [add-wasm]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wasm
 

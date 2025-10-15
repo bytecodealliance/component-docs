@@ -3,7 +3,7 @@
 ## Exporting the `wasi:cli/run` interface
 
 Any reactor (library-like) component can *also* export the [`run` interface][wasi-cli-iface-run] inside [WASI CLI][wasi-cli],
-and signal to ecosystem projects that it can be executed.
+and signal to consumers that the library can also be run similarly to a binary.
 
 > [!WARNING]
 > Reactor components can be reused, and while most platforms may *not* choose to reuse a component after `wasi:cli/run`

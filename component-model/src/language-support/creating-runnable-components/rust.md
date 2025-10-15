@@ -1,9 +1,75 @@
 # Creating Runnable Components (Rust)
 
-## Exporting the `wasi:cli/run` interface
+## Creating a command component
+
+A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime`
+(or other `wasi:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with
+a `main` function, instead of a library crate (`lib`) package.
+
+Command components work by including a WebAssembly core export `_start` that indicates the component
+has a natural `main`-like starting point.
+
+### 1. Create a new Rust binary project
+
+To create a command with cargo, run:
+
+```sh
+cargo new runnable-example
+```
+
+Unlike library components, this does _not_ have the `--lib` flag (`--bin` is the default for `cargo new`).
+
+The created Rust source file is called `main.rs` instead of `lib.rs`, and contains a `main` function.
+
+You can write Rust in this project, just as you normally would, including importing your own or third-party crates.
+
+> All the crates that make up your project are linked together at build time, and compiled to a _single_ Wasm component. In this case, all the linking is happening at the Rust level: no WITs or component composition is involved. Only if you import Wasm interfaces do WIT and composition come into play.
+
+### 2. Write the relevant Rust
+
+The following code can be inserted into `runnable-example/src/main.rs`:
+
+```rust
+pub fn main() {
+    eprintln!("Hello World!");
+}
+```
+
+### 3. Build the component
+
+To build the component, use `cargo`:
+
+```sh
+cargo build --target=wasm32-wasip2
+```
+
+The component can also be built in release mode:
+
+```console
+cargo build --target=wasm32-wasip2 --release
+```
+
+### 4. Run the component with `wasmtime`
+
+To run your command component:
+
+```sh
+wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
+```
+
+> [!WARNING]
+> If your program prints to standard out or error, you may not see the printed output!
+>
+> Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work
+> around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
+
+## Enabling a library component to be run via the `wasi:cli/run` interface
 
 Any reactor (library-like) component can *also* export the [`run` interface][wasi-cli-iface-run] inside [WASI CLI][wasi-cli],
 and signal to consumers that the library can also be run similarly to a binary.
+
+Unlike command components, library components have no `_start`, but by exporting the `wasi:cli/run` interface,
+tooling that recognizes these exports can easily execute the given WebAssembly binary (e.g. `wasmtime run`).
 
 [wasi-cli-iface-run]: https://github.com/WebAssembly/wasi-cli/tree/main/wit/run.wit
 [wasi-cli]: https://github.com/WebAssembly/wasi-cli
@@ -125,63 +191,3 @@ the interface and function to run (`wasi:cli/run` is detected and used automatic
 $ wasmtime run target/wasm32-wasip2/runnable-example.wasm
 Hello World!
 ```
-
-## Creating a command component
-
-A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime`
-(or other `wasi:cli` hosts). In Rust terms, it's the equivalent of an application (`bin`) package with
-a `main` function, instead of a library crate (`lib`) package.
-
-### 1. Create a new Rust binary project
-
-To create a command with cargo, run:
-
-```sh
-cargo new runnable-example
-```
-
-Unlike library components, this does _not_ have the `--lib` flag (`--bin` is the default for `cargo new`).
-
-The created Rust source file is called `main.rs` instead of `lib.rs`, and contains a `main` function.
-
-You can write Rust in this project, just as you normally would, including importing your own or third-party crates.
-
-> All the crates that make up your project are linked together at build time, and compiled to a _single_ Wasm component. In this case, all the linking is happening at the Rust level: no WITs or component composition is involved. Only if you import Wasm interfaces do WIT and composition come into play.
-
-### 2. Write the relevant Rust
-
-The following code can be inserted into `runnable-example/src/main.rs`:
-
-```rust
-pub fn main() {
-    eprintln!("Hello World!");
-}
-```
-
-### 3. Build the component
-
-To build the component, use `cargo`:
-
-```sh
-cargo build --target=wasm32-wasip2
-```
-
-The component can also be built in release mode:
-
-```console
-cargo build --target=wasm32-wasip2 --release
-```
-
-### 4. Run the component with `wasmtime`
-
-To run your command component:
-
-```sh
-wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
-```
-
-> [!WARNING]
-> If your program prints to standard out or error, you may not see the printed output!
->
-> Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work
-> around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.

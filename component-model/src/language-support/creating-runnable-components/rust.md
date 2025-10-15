@@ -59,11 +59,13 @@ wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 
 ## Enabling a library component to be run via the `wasi:cli/run` interface
 
-Any reactor (library-like) component can *also* export the [`run` interface][wasi-cli-iface-run] inside [WASI CLI][wasi-cli],
-and signal to consumers that the library can also be run similarly to a binary.
+While reactor (library-like) components export interfaces that are meant to be used directly,
+they can *also* export the [`wasi:cli/run` interface][wasi-cli-iface-run] from [WASI CLI][wasi-cli],
+and signal to consumers that the library can also be run similarly to a binary that would run via a
+command line interface.
 
 Unlike command components, library components have no `_start`, but by exporting the `wasi:cli/run` interface,
-tooling that recognizes these exports can easily execute the given WebAssembly binary (e.g. `wasmtime run`).
+tooling that recognizes these exports can easily execute a given WebAssembly binary (e.g. `wasmtime run`).
 
 [wasi-cli-iface-run]: https://github.com/WebAssembly/wasi-cli/tree/main/wit/run.wit
 [wasi-cli]: https://github.com/WebAssembly/wasi-cli

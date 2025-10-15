@@ -38,7 +38,12 @@ contents to `runnable-example/wit/component.wit`:
 ```wit
 package example:runnable;
 
+interface greet {
+    greet: func(name: string) -> string;
+}
+
 world greeter {
+    export greet;
     export wasi:cli/run@0.2.7;
 }
 ```
@@ -76,8 +81,16 @@ mod bindings {
 /// Component off of which implementation will hang (this can be named anything)
 struct Component;
 
-export bindings::wasi::cli::run::Guest for Component {
-    fn run(&self) -> Result<(), ()> {
+/// Implementation for the `greet` interface export
+impl bindings::exports::example::runnable::greet::Guest for Component {
+    fn greet(name: String) -> String {
+        format!("Hello {name}!")
+    }
+}
+
+/// Implementation for `wasi:cli/run` interface export
+impl bindings::exports::wasi::cli::run::Guest for Component {
+    fn run() -> Result<(), ()> {
         eprintln!("Hello World!");
         Ok(())
     }
@@ -90,6 +103,12 @@ To build the component, use `cargo`:
 
 ```sh
 cargo build --target=wasm32-wasip2
+```
+
+The component can also be built in release mode:
+
+```console
+cargo build --target=wasm32-wasip2 --release
 ```
 
 ### 5. Run the component with `wasmtime`
@@ -140,6 +159,12 @@ To build the component, use `cargo`:
 
 ```sh
 cargo build --target=wasm32-wasip2
+```
+
+The component can also be built in release mode:
+
+```console
+cargo build --target=wasm32-wasip2 --release
 ```
 
 ### 4. Run the component with `wasmtime`

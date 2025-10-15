@@ -88,8 +88,8 @@ Package identifiers are a little more complex and will be covered in the [Packag
 * An identifier may be preceded by a single `%` sign.
   * This is _required_ if the identifier would otherwise be a WIT keyword.
     For example, `interface` is **not** a legal identifier, but `%interface` is legal.
-* Each word may contain only ASCII letters and digits. 
-  * The first word cannot begin with a digit. The remaining words can begin with either a digit or a ASCII letter. 
+* Each word may contain only ASCII letters and digits.
+  * The first word cannot begin with a digit. The remaining words can begin with either a digit or a ASCII letter.
   * A word cannot contain a non-ASCII Unicode character.
   * A word cannot contain punctuation, underscores, etc.
 * Each word must be either all `lowercase` or all `UPPERCASE`.

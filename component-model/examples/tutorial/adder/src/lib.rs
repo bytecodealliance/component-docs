@@ -20,7 +20,6 @@ mod bindings {
 /// Struct off of which the implementation will hang
 ///
 /// The name of this struct is not significant.
-#[allow(dead_code)]
 struct AdderComponent;
 
 impl bindings::exports::docs::adder::add::Guest for AdderComponent {

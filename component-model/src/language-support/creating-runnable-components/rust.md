@@ -63,6 +63,11 @@ wkg wit fetch
 
 At this point, you should have a `wit` folder with a `deps` subfolder and your original `component.wit`.
 
+The component we will create to satisfy the WIT above can be used as a library, as other components
+or platforms can use the `greet` interface export. More importantly, the component can *also* be
+recognized as a generically runnable component thanks to `wasi:cli/run`, so it can work
+with any tooling (ex. `wasmtime run`) that supports/recognizes the `wasi:cli` interface.
+
 [!WARNING]: #
 
 ### 3. Write the code for the component

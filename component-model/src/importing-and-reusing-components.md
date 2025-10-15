@@ -19,8 +19,9 @@ The `calculator` component has the following interface:
 
 This guide is implemented for various languages:
 
-| Language                                                            |
-|---------------------------------------------------------------------|
-| [Rust](./language-support/importing-and-reusing-components/rust.md) |
+| Language                                                                        |
+|---------------------------------------------------------------------------------|
+| [Rust](./language-support/importing-and-reusing-components/rust.md)             |
+| [Javascript](./language-support/importing-and-reusing-components/javascript.md) |
 
 [docs-wit]: ./design/wit.md

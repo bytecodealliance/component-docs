@@ -40,7 +40,10 @@ At a high level there are at least two ways to create components that are more l
 1. Creating a "command" component
 2. Exporting the [`wasi:cli/run` interface][wasi-cli-run]
 
-This section explores how to do the above in relevant languages.
+While command components simply have a `_start` export, components that export the [`wasi:cli/run` run interface][wasi-cli-iface-run]
+are able to make use of more robust standardized interfaces that mimic a CLI environment like stdout, stderr, via WASI.
+
+This section explores how to create components that are trivially runanbel (like binaries) in relevant languages.
 
 [wasi-cli-iface-run]: https://github.com/WebAssembly/wasi-cli/tree/main/wit/run.wit
 

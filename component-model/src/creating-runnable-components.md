@@ -48,9 +48,10 @@ This section explores how to do the above in relevant languages.
 
 This guide is implemented for various languages:
 
-| Language                                                                    |
-|-----------------------------------------------------------------------------|
-| [Rust](./language-support/creating-runnable-components/rust.md)             |
-| [Javascript](./language-support/creating-runnable-components/javascript.md) |
+| Language                                                                              |
+|---------------------------------------------------------------------------------------|
+| [Rust](./language-support/creating-runnable-components/rust.md)                       |
+| [Javascript](./language-support/creating-runnable-components/javascript.md)           |
+| [Other Languages](./language-support/creating-runnable-components/other-languages.md) |
 
 [docs-wit]: ./design/wit.md

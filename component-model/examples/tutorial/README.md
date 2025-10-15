@@ -48,8 +48,8 @@ Use [`wac`](https://github.com/bytecodealliance/wac) to build and compose the ca
 (cd calculator && cargo build --target=wasm32-wasip2 --release)
 (cd adder && cargo build --target=wasm32-wasip2 --release)
 (cd command && cargo build --target=wasm32-wasip2 --release)
-wac plug calculator/target/wasm32-wasip1/release/calculator.wasm --plug adder/target/wasm32-wasip1/release/adder.wasm -o composed.wasm
-wac plug command/target/wasm32-wasip1/release/command.wasm --plug composed.wasm -o final.wasm
+wac plug calculator/target/wasm32-wasip2/release/calculator.wasm --plug adder/target/wasm32-wasip2/release/adder.wasm -o composed.wasm
+wac plug command/target/wasm32-wasip2/release/command.wasm --plug composed.wasm -o final.wasm
 ```
 
 Now, run the component with Wasmtime:
@@ -67,9 +67,9 @@ wasmtime run final.wasm 1 2 add
 
 ```sh
 mkdir -p deps/docs
-cp adder/target/wasm32-wasip1/release/adder.wasm deps/docs/adder-impl.wasm
-cp calculator/target/wasm32-wasip1/release/calculator.wasm deps/docs/calculator-impl.wasm
-cp command/target/wasm32-wasip1/release/command.wasm deps/docs/command-impl.wasm
+cp adder/target/wasm32-wasip2/release/adder.wasm deps/docs/adder-impl.wasm
+cp calculator/target/wasm32-wasip2/release/calculator.wasm deps/docs/calculator-impl.wasm
+cp command/target/wasm32-wasip2/release/command.wasm deps/docs/command-impl.wasm
 ```
 
 Now we are ready to construct a WAC file to define our composition. Ours instantiates our three components, declaring
@@ -84,12 +84,12 @@ package example:composition;
 let adder-instance = new docs:adder-impl { };
 
 // Instantiate the calculator-impl component that implements the calculator world.
-// In the `new` expression, specify the source of the `add` import to be `adder-instance`'s `add` export.  
+// In the `new` expression, specify the source of the `add` import to be `adder-instance`'s `add` export.
 let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
 
 // Instantiate a command-impl component that implements the app world.
-// The command component might import other interfaces, such as WASI interfaces, but we want to leave  
-// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.  
+// The command component might import other interfaces, such as WASI interfaces, but we want to leave
+// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.
 // The command's exports (in this case, `wasi:cli/run`) remain unaffected in the resulting instance.
 let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
 
@@ -101,12 +101,12 @@ export command-instance["wasi:cli/run@0.2.0"];
 Now, perform your composition by passing the WAC file to `wac compose`.
 
 ```sh
-wac compose composition.wac -o final.wasm 
+wac compose composition.wac -o final.wasm
 ```
 
 > Note, instead of moving all the components to a `deps/docs` directory, you can pass the paths to the components inline
 > ```sh
-> wac compose --dep docs:adder-impl=./adder/target/wasm32-wasip1/release/adder.wasm  --dep docs:calculator-impl=./calculator/target/wasm32-wasip1/release/calculator.wasm --dep docs:command-impl=./command/target/wasm32-wasip1/release/command.wasm  -o final.wasm composition.wac
+> wac compose --dep docs:adder-impl=./adder/target/wasm32-wasip2/release/adder.wasm  --dep docs:calculator-impl=./calculator/target/wasm32-wasip2/release/calculator.wasm --dep docs:command-impl=./command/target/wasm32-wasip2/release/command.wasm  -o final.wasm composition.wac
 > ```
 
 Run the component with Wasmtime:

@@ -57,12 +57,6 @@ To run your command component:
 wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 ```
 
-> [!WARNING]
-> If your program prints to standard out or error, you may not see the printed output!
->
-> Some versions of `wasmtime` have a bug where they don't flush output streams before exiting. To work
-> around this, add a `std::thread::sleep()` with a 10 millisecond delay before exiting `main`.
-
 ## Enabling a library component to be run via the `wasi:cli/run` interface
 
 Any reactor (library-like) component can *also* export the [`run` interface][wasi-cli-iface-run] inside [WASI CLI][wasi-cli],

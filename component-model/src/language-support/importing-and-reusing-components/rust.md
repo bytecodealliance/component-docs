@@ -5,7 +5,8 @@
 The world file (`wit/world.wit`) we generated doesn't specify any imports.
 If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
 
-For example, suppose you have created and built an adder component as explained in the [exporting an interface section](#exporting-an-interface-with-cargo-component) and want to use that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
+For example, suppose you have created and built the adder component as explained in the earlier tutorials and want to use
+that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 
 ```wit
 // in the 'calculator' project
@@ -18,8 +19,9 @@ interface calculate {
 }
 
 world calculator {
-    export calculate;
     import docs:adder/add@0.1.0;
+
+    export calculate;
 }
 ```
 
@@ -39,27 +41,38 @@ at the path that is given, and will pull its contents into the local project und
 
 ### Calling the import from Rust
 
-Now the declaration of `add` in the adder's WIT file is visible to the `calculator` project. To invoke the imported `add` interface from the `calculate` implementation:
+Now the declaration of `add` in the adder's WIT file is visible to the `calculator` project.
+
+To invoke the imported `add` interface from the `calculate` implementation:
 
 ```rust
 // src/lib.rs
-mod bindings;
 
-use bindings::exports::docs::calculator::calculate::Guest;
+// Generated code that includes both the import stubs for adder functionality
+// and the stubs for exports is generated into the `bindings` module below
+//
+// Note that while wit_bindgen::generate only creates stubs for imports,
+// not implementation -- this component will be built with *unsatisfied*
+// (but usable) imports (e.g. the add).
+mod bindings {
+    use super::Component;
+    wit_bindgen::generate!();
+    export!(Component);
+}
 
-// Bring the imported add function into scope
-use bindings::docs::calculator::add::add;
-
+/// The struct from which all implementation will hang
 struct Component;
 
-impl Guest for Component {
+// Implementation of the `docs:calculator/calculate` export
+impl bindings::exports::docs::calculator::calculate::Guest for Component {
     fn eval_expression(expr: String) -> u32 {
-        // Cleverly parse `expr` into values and operations, and evaluate
-        // them meticulously.
-        add(123, 456)
+        // TODO: Cleverly parse `expr` into values and operations, and evaluate them meticulously.
+        bindings::docs::calculator::add::add(123, 456)
     }
 }
 ```
+
+Filling out the implementation of `eval_expression` and actually parsing real expressions is left as an exercise for the reader.
 
 ### Fulfilling the import
 

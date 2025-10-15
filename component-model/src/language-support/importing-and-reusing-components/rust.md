@@ -27,7 +27,7 @@ world calculator {
 
 ### Referencing the package to import
 
-Because the `docs:adder` package is in a different project, we must first tell `cargo` how to find it. To do this, we add a
+Because the `docs:adder` package is in a different project, we must first tell `wkg` how to find it. To do this, we add a
 custom `wkg.toml` to our project:
 
 ```toml

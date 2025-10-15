@@ -22,6 +22,15 @@ level = 1
 "/creating-and-consuming.html" = "/language-support.html"
 "/runtimes/wasmtime.html" = "/running-components/wasmtime.html"
 "/runtimes/jco.html" = "/running-components/jco.html"
+"/language-support/csharp.html" = "/language-support/building-a-simple-component/csharp.html"
+"/language-support/c.html" = "/language-support/building-a-simple-component/c.html"
+"/language-support/go.html" = "/language-support/building-a-simple-component/go.html"
+"/language-support/javascript.html" = "/language-support/building-a-simple-component/javascript.html"
+"/language-support/moonbit.html" = "/language-support/building-a-simple-component/moonbit.html"
+"/language-support/other-languages.html" = "/language-support/building-a-simple-component/other-languages.html"
+"/language-support/python.html" = "/language-support/building-a-simple-component/python.html"
+"/language-support/rust.html" = "/language-support/building-a-simple-component/rust.html"
+"/language-support/wat.html" = "/language-support/building-a-simple-component/wat.html"
 
 [preprocessor.alerts]
 

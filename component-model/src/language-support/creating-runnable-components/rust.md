@@ -56,7 +56,7 @@ using `wkg`:
 wkg wit fetch
 ```
 
-At this point, you should have a `wit` folder with a `deps` subfolder and yoru original `component.wit`.
+At this point, you should have a `wit` folder with a `deps` subfolder and your original `component.wit`.
 
 [!WARNING]: #
 

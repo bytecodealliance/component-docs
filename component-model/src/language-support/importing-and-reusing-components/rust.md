@@ -37,7 +37,7 @@ custom `wkg.toml` to our project:
 ```
 
 After adding this configuration file, when we run `wkg wit fetch`, `wkg` will assume that the package `docs:adder` can be found
-at the path that is given, and will pull it's contents into the local project under `wit/deps`.
+at the path that is given, and will pull its contents into the local project under `wit/deps`.
 
 
 ### Calling the import from Rust

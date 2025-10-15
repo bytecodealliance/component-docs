@@ -232,7 +232,7 @@ package docs:adder@0.1.0 {
 
 ## 8. Running the `adder` Component
 
-To verify that our component works, lets run it from a Rust application that knows how to run a
+To verify that our component works, let's run it from a Rust application that knows how to run a
 component targeting the [`adder` world](#adding-the-wit-world).
 
 The application uses [`wasmtime`][crates-wasmtime] to generate Rust "host"/"embedder" bindings,

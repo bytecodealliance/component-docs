@@ -1,7 +1,6 @@
 # Creating Runnable Components (Other Languages)
 
-Just because a given programming language is not listed in this guide does not
-mean it is impossible to create runnable WebAssembly components with it.
+This guide is a work in progress and does not have examples for all language toolchains with components support.
 
 For languages not listed in this guide, it is often possible to create runnable components by
 following the main principles of the other guides, using the help of the available WebAssembly

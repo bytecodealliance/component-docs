@@ -11,9 +11,9 @@ Generally, WebAssembly toolchains in the language in question may contain a way 
 1. Create a WebAssembly component with the `_start` export (a "command" compnent)
 2. Create a component that exports the `wasi:cli/run` interface
 
-## Adding a New Language to the Guide
+## Adding an Example for a Language to this Section
 
-Know of a language guide we should add to this guide? Create a PR to this [repository][repo-pr] that adds 
-the new language guide (similar to others in this section).
+Are you interested in documenting this section for your language toolchain? Create a PR to this [repository][repo-pr] that adds 
+the guide (similar to others in this section).
 
 [repo-pr]: https://github.com/bytecodealliance/component-docs/pulls

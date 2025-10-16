@@ -16,7 +16,7 @@ if you're developing your own `.wit` files.
 For WIT interfaces that are built in to WASI, the code is part of the
 WebAssembly runtime that you will be using.
 
-C/C++ currently lacks an integrated toolchain (like Rust's [`cargo-component`][cargo-component]).
+C/C++ currently lacks an integrated toolchain.
 However, `wit-bindgen` can generate source-level bindings for
 Rust, C, Java ([TeaVM](https://teavm.org/)), and [TinyGo](https://tinygo.org/),
 with the ability to add more language generators in the future.
@@ -27,7 +27,6 @@ with the ability to add more language generators in the future.
 [clang-tgt-wasm32-wasi]: https://clang.llvm.org/docs/ClangCommandLineReference.html#webassembly
 [llvm]: https://llvm.org/
 [wasi]: https://wasi.dev/
-[cargo-component]: https://crates.io/crates/cargo-component
 [rust]: https://www.rust-lang.org/learn/get-started
 [sample-wit]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit
 [cargo-config]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/Cargo.toml
@@ -41,7 +40,7 @@ First, install the following dependencies:
     as well as converting between preview1 modules and preview2 components in
     the optional manual workflow.
 3. The [`WASI SDK`](https://github.com/webassembly/wasi-sdk)
-    * WASI SDK is a WASI enabled C/C++ toolchain which includes a version of the C standard 
+    * WASI SDK is a WASI enabled C/C++ toolchain which includes a version of the C standard
     library (`libc`) implemented with WASI interfaces,
       among other artifacts necessary to compile C/C++ to WebAssembly.
     * On a Linux system, you can skip to the ["Install"](https://github.com/webassembly/wasi-sdk?tab=readme-ov-file#install) section.
@@ -92,7 +91,7 @@ Next, create a file named `component.c` with code that implements the `adder` wo
 that is, code which fulfills the definition of the interface function declared in `adder.h`.
 
 ```c
-{{#include ../../examples/tutorial/c/adder/component.c}}
+{{#include ../../../examples/tutorial/c/adder/component.c}}
 ```
 
 ## 4. Compile a WebAssembly Preview 2 component with `wasi-sdk`'s `wasm32-wasip2-clang`
@@ -232,7 +231,7 @@ For example, if we modify the above code to reference `printf()`,
 it would compile to a P1 component:
 
 ```c
-{{#include ../../examples/tutorial/c/adder/component_with_printf.c}}
+{{#include ../../../examples/tutorial/c/adder/component_with_printf.c}}
 ```
 
 However, the module would fail to transform to a P2 component:
@@ -315,14 +314,14 @@ The following section requires you to have [a Rust toolchain][rust] installed.
 > (The `wasmtime` version is specified in [the Cargo configuration file][cargo-config]
 > for the example host.)
 
-{{#include example-host-part1.md}}
+{{#include ../example-host-part1.md}}
 
 A successful run should show the following output
 (of course, the paths to your example host and adder component will vary,
 and you should substitute `adder.wasm` with `adder.component.wasm`
 if you followed the manual instructions above):
 
-{{#include example-host-part2.md}}
+{{#include ../example-host-part2.md}}
 
 ## 7. Run the component from C/C++ Applications
 
@@ -335,7 +334,7 @@ and run by their toolchains,
 or even composed with a C language command component and run via the `wasmtime` CLI
 or any other host.
 
-See the [Rust Tooling guide](../language-support/rust.md#running-a-component-from-rust-applications)
+See the [Rust Tooling guide](./rust.md#running-a-component-from-rust-applications)
 for instructions on how to run this component from the Rust `example-host`
 (replacing the path to `add.wasm` with your `adder.wasm` or `adder.component.wasm` above).
 

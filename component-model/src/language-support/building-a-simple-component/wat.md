@@ -12,7 +12,7 @@ It's useful for writing small examples for testing and experimentation.
 
 Here's an example of a module expressed in WAT:
 ```wat
-{{#include ../../examples/tutorial/wat/adder/add.wat}}
+{{#include ../../../examples/tutorial/wat/adder/add.wat}}
 ```
 
 The module contains two top-level declarations, a function and an export.
@@ -64,7 +64,7 @@ and simply adds two numbers.
    Create a file called `adder.wit` whose contents are as follows:
 
   ```wit
-  {{#include ../../examples/tutorial/wit/adder/world.wit}}
+  {{#include ../../../examples/tutorial/wit/adder/world.wit}}
   ```
 
 3. Define an `add` core module in WAT that exports an `add` function that adds two parameters.
@@ -72,7 +72,7 @@ and simply adds two numbers.
    (the same as the example in the WAT section):
 
 ```wat
-{{#include ../../examples/tutorial/wat/adder/add.wat}}
+{{#include ../../../examples/tutorial/wat/adder/add.wat}}
 ```
 
 4. Use `wasm-tools` to create a binary core module with component metadata embedded inside it:

@@ -10,6 +10,10 @@ git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/ma
 edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"
 additional-css = ["theme/head.hbs"]
 
+[output.html.fold]
+enable = true
+level = 1
+
 [output.html.redirect]
 "/creating-and-consuming/composing.html" = "/composing-and-distributing/composing.html"
 "/creating-and-consuming/distributing.html" = "/composing-and-distributing/distributing.html"
@@ -18,6 +22,15 @@ additional-css = ["theme/head.hbs"]
 "/creating-and-consuming.html" = "/language-support.html"
 "/runtimes/wasmtime.html" = "/running-components/wasmtime.html"
 "/runtimes/jco.html" = "/running-components/jco.html"
+"/language-support/csharp.html" = "/language-support/building-a-simple-component/csharp.html"
+"/language-support/c.html" = "/language-support/building-a-simple-component/c.html"
+"/language-support/go.html" = "/language-support/building-a-simple-component/go.html"
+"/language-support/javascript.html" = "/language-support/building-a-simple-component/javascript.html"
+"/language-support/moonbit.html" = "/language-support/building-a-simple-component/moonbit.html"
+"/language-support/other-languages.html" = "/language-support/building-a-simple-component/other-languages.html"
+"/language-support/python.html" = "/language-support/building-a-simple-component/python.html"
+"/language-support/rust.html" = "/language-support/building-a-simple-component/rust.html"
+"/language-support/wat.html" = "/language-support/building-a-simple-component/wat.html"
 
 [preprocessor.alerts]
 

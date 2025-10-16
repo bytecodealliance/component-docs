@@ -71,7 +71,7 @@ Create a subdirectory called `wit` and paste the following code
 into a file called `wit/component.wit`:
 
 ```wit
-{{#include ../../examples/tutorial/go/adder/world2.wit}}
+{{#include ../../../examples/tutorial/go/adder/world2.wit}}
 ```
 
 The line `include wasi:cli/imports@0.2.0` is necessary because
@@ -255,7 +255,7 @@ In your `add` directory, create a file called `main.go`
 and paste the following code into it:
 
 ```Go
-{{#include ../../examples/tutorial/go/adder/main.go}}
+{{#include ../../../examples/tutorial/go/adder/main.go}}
 ```
 
 Go's `init` function is used to do initialization tasks
@@ -315,12 +315,12 @@ The following section requires you to have [a Rust toolchain][rust] installed.
 To run our add component, we need to use a host program with a WASI runtime that understands
 the `example` world.
 
-{{#include example-host-part1.md}}
+{{#include ../example-host-part1.md}}
 
 A successful run should show the following output
 (of course, the paths to your example host and adder component will vary):
 
-{{#include example-host-part2.md}}
+{{#include ../example-host-part2.md}}
 
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 [rust]: https://www.rust-lang.org/learn/get-started

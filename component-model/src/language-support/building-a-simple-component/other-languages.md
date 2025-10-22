@@ -1,14 +1,14 @@
 # Other Languages with Component Model Support
 
-More languages continue to add support for the component model. The following is a living list of other languages that support the component model and documentation on how to get started using components in those languages.
+This guide is a work in progress and does not example for all langauge toolchains
+with WebAssembly component support.
 
-[comment]: # (Add first language here)
+As more languages continue to add support for the component model, we welcome
+contributions of documentation for how to get started using components in those languages.
 
-## Adding a New Language to the Guide
+## Adding an Example for a Language to this Section
 
-Interested in adding another language to this list? Create a PR to this [document](https://github.com/bytecodealliance/component-docs/blob/main/component-model/src/language-support/other-languages.md) that adds an entry with the following information:
+Are you interested in documenting this section for your language toolchain?
+Create a PR to this [repository][repo-pr] that adds the guide (similar to others in this section).
 
-- Language name as a level 3 header
-- Link to the project page on Github page
-- Link to the project hosted documentation on getting started with components. Feel free to use our example WITs if you want to match the style of this guide.
-- Please insert alphabetically
+[repo-pr]: https://github.com/bytecodealliance/component-docs/pulls

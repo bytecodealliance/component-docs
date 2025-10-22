@@ -18,7 +18,7 @@ Note that generic tooling like [`wac`][wac] can be used to compose components to
 
 ## Adding a New Language to the Guide
 
-Know of a language guide we should add to this guide? Create a PR to this [repository][repo-pr] that adds
-the new language guide (similar to others in this section).
+Are you interested in documenting this section for your language toolchain? Create a PR to this [repository][repo-pr] that adds 
+the guide (similar to others in this section).
 
 [repo-pr]: https://github.com/bytecodealliance/component-docs/pulls

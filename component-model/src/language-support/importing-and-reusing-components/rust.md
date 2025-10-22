@@ -99,7 +99,7 @@ world root {
 
 As the import is unfulfilled, the `calculator.wasm` component could not run by itself in its current form. The next step is to fulfill the `add` import, so that only `calculate` is exported, and the component can be run.
 
-The process of fufilling imports via other component's exports is called "composition". Learn more about how to compose the calculator.wasm
+The process of fulfilling imports via other component's exports is called "composition". Learn more about how to compose the calculator.wasm
 with an adder.wasm into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
 
 [!NOTE]: #

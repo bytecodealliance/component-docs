@@ -43,7 +43,7 @@ For this example we will use a WIT file containing two worlds
 Copy and paste the following into a new file called "`wit/component.wit`".
 
 ```wit
-{{#include ../../examples/tutorial/csharp/adder/world-hostapp.wit}}
+{{#include ../../../examples/tutorial/csharp/adder/world-hostapp.wit}}
 ```
 
 In the `adder.csproj` project file, add a new `<ItemGroup>`
@@ -88,7 +88,7 @@ This is because we've promised an implementation, but haven't yet written one fo
 To fix this, add the following code in a file called `Component.cs`:
 
 ```csharp
-{{#include ../../examples/tutorial/csharp/adder/Component.cs}}
+{{#include ../../../examples/tutorial/csharp/adder/Component.cs}}
 ```
 
 Then, we can build our component:
@@ -103,12 +103,12 @@ The component will be available at `bin/Debug/net10.0/wasi-wasm/native/adder.was
 
 The following section requires you to have [a Rust toolchain][rust] installed.
 
-{{#include example-host-part1.md}}
+{{#include ../example-host-part1.md}}
 
 A successful run should show the following output
 (of course, the paths to your example host and adder component will vary):
 
-{{#include example-host-part2.md}}
+{{#include ../example-host-part2.md}}
 
 [rust]: https://www.rust-lang.org/learn/get-started
 
@@ -135,7 +135,7 @@ cd host-app
 Copy the following WIT file into a file called `wit/add.wit` in your project:
 
 ```wit
-{{#include ../../examples/tutorial/csharp/adder/world-hostapp.wit}}
+{{#include ../../../examples/tutorial/csharp/adder/world-hostapp.wit}}
 ```
 
 Add it to your `host-app.csproj` project file as a new `ItemGroup` at the top level:
@@ -154,7 +154,7 @@ Now we'll be focusing on the executable side of the application—the `hostapp` 
 Modify `Program.cs` to look like this:
 
 ```csharp
-{{#include ../../examples/tutorial/csharp/adder/Program.cs}}
+{{#include ../../../examples/tutorial/csharp/adder/Program.cs}}
 ```
 
 Once again, compile your component with `dotnet build`:

@@ -583,7 +583,7 @@ world proxy {
 ```
 
 This package defines request and response types in `types.wit`,
-an incoming handler interface in `incoming wit`,
+an incoming handler interface in `incoming.wit`,
 an outgoing handler interface in `outgoing.wit`,
 and declares the package and defines a world that uses these interfaces
 in `http.wit`.

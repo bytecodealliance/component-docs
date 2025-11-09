@@ -8,7 +8,7 @@ Just as `export`ing functionality is core to building useful WebAssembly compone
 Restated, **WIT and the Component Model enable WebAssembly to *compose***. This means we can build on top of functionality
 that already exists and `export` *new* functionality that depends on existing functionality.
 
-Let's say in addition to eversing the string (in the previous example),
+Let's say in addition to reversing the string (in the previous example),
 we want to build shared functionality that *also* upper-cases the text it receives.
 
 We can reuse the reversing functionality *and* export a new interface which enables us to reverse and upper-case.

@@ -242,7 +242,7 @@ With the [`component-docs` repository][repo-component-docs] cloned locally, run 
 
 ```console
 $ cd examples/example-host
-$ cargo run --release -- 1 2 ../add/target/wasm32-wasip1/release/adder.wasm
+$ cargo run --release -- 1 2 ../add/target/wasm32-wasip2/release/adder.wasm
 1 + 2 = 3
 ```
 

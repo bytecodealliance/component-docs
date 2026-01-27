@@ -82,7 +82,7 @@ A system or platform may expose some or all of the WASI APIs to components.
 
 The current stable release of WASI is [WASI 0.2.0](https://github.com/WebAssembly/WASI/pull/577),
 which was released on January 25, 2024.
-WASI 0.2.0 is [a stable set of WIT definitions](https://github.com/WebAssembly/WASI/tree/main/wasip2)
+WASI 0.2.0 is [a stable set of WIT definitions](https://github.com/WebAssembly/WASI/blob/main/docs/Preview2.md)
 that components can target.
 WASI proposals will continue to evolve and new ones will be introduced;
 however, users of the component model can now pin to any stable release >= `v0.2.0`.

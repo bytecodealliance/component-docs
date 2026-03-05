@@ -323,20 +323,19 @@ if you followed the manual instructions above):
 
 {{#include ../example-host-part2.md}}
 
-## 7. Run the component from C/C++ Applications
+## 7. Run the component from the example C host
 
-It is not yet possible to run a WebAssembly Component using the `wasmtime` C API.
-See [`wasmtime` issue #6987](https://github.com/bytecodealliance/wasmtime/issues/6987) for more details.
-The C API is preferred over directly using the example host Rust crate in C++.
+After setting up the wasmtime toolchain 
+*TODO: somehow,* 
+the `example-c-host` project can be built, and run our `adder` much like the rust one.
 
-However, C/C++ language guest components can be composed with components written in any other language
-and run by their toolchains,
-or even composed with a C language command component and run via the `wasmtime` CLI
-or any other host.
+*TODO: the C++ API is nicer and may be more appropriate for example code*
 
-See the [Rust Tooling guide](./rust.md#running-a-component-from-rust-applications)
-for instructions on how to run this component from the Rust `example-host`
-(replacing the path to `add.wasm` with your `adder.wasm` or `adder.component.wasm` above).
+C/C++ language guest components can also be composed with components written in any other language
+and run by their toolchains, or even composed with a C language command component and run via the
+`wasmtime` CLI or any other host.
+
+*TODO: work in `wasmtime --invoke 'add(2,2)' adder.wasm`*
 
 [!NOTE]: #
 [!WARNING]: #

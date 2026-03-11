@@ -62,8 +62,6 @@ Here are some tips to avoid or diagnose errors:
   because `regex` doesn't have any dependencies, let alone ones that `validator` can satisfy.
 * Composition cares about interface versions, and current tools are inconsistent about
   when they infer or inject versions.
-  For example, if a Rust component exports `test:mypackage`,
-  `cargo component build` will decorate this with the crate version, e.g. `test:mypackage@0.1.0`.
   If another Rust component _imports_ an interface from `test:mypackage`, that won't match `test:mypackage@0.1.0`.
   You can use [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component)
   to view the imports and exports embedded in the `.wasm` files and check whether they match up.
@@ -134,24 +132,3 @@ See the [`wac` documentation](https://github.com/bytecodealliance/wac) for more 
 For an in-depth description about how to use the `wac` tool,
 you can check out the [WAC language index](https://github.com/bytecodealliance/wac/blob/main/LANGUAGE.md)
 and [examples](https://github.com/bytecodealliance/wac/tree/main/examples).
-
-## Composing components with a visual interface
-
-You can compose components visually using the builder app at [wasmbuilder.app](https://wasmbuilder.app/).
-
-1. Use the "Add Component" button to upload the `.wasm` component files you want to compose.
-   The components appear in the sidebar.
-
-2. Drag the components onto the canvas.
-   You'll see imports listed on the left of each component, and exports on the right.
-
-3. Click the box in the top left to choose the 'primary' component, that is,
-   the one whose exports will be preserved.
-   (The clickable area is quite small—wait for the cursor to change from a hand to a pointer.)
-
-4. To fulfil one of the primary component's imports with a dependency's export,
-   drag from the "I" icon next to the export to the "I" item next to the import.
-   (Again, the clickable area is quite small—wait for the cursor to change from a hand to a cross.)
-
-5. When you have connected all the imports and exports that you want,
-   click the Download Component button to download the composed component as a `.wasm` file.

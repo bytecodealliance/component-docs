@@ -26,13 +26,13 @@ This documentation is aimed at _users_ of the component model: developers of lib
 [Interfaces]: ./design/interfaces.md
 [Worlds]: ./design/worlds.md
 
-[C/C++]: ./language-support/c.md
-[C#]: ./language-support/csharp.md
-[Go]: ./language-support/go.md
-[JavaScript]: ./language-support/javascript.md
-[Python]: ./language-support/python.md
-[Rust]: ./language-support/rust.md
-[MoonBit]: ./language-support/moonbit.md
+[C/C++]: ./language-support/building-a-simple-component/c.md
+[C#]: ./language-support/building-a-simple-component/csharp.md
+[Go]: ./language-support/building-a-simple-component/go.md
+[JavaScript]: ./language-support/building-a-simple-component/javascript.md
+[Python]: ./language-support/building-a-simple-component/python.md
+[Rust]: ./language-support/building-a-simple-component/rust.md
+[MoonBit]: ./language-support/building-a-simple-component/moonbit.md
 
 [Composing]: ./composing-and-distributing/composing.md
 [Running]: ./running-components.md
@@ -82,7 +82,7 @@ A system or platform may expose some or all of the WASI APIs to components.
 
 The current stable release of WASI is [WASI 0.2.0](https://github.com/WebAssembly/WASI/pull/577),
 which was released on January 25, 2024.
-WASI 0.2.0 is [a stable set of WIT definitions](https://github.com/WebAssembly/WASI/tree/main/wasip2)
+WASI 0.2.0 is [a stable set of WIT definitions](https://github.com/WebAssembly/WASI/blob/main/docs/Preview2.md)
 that components can target.
 WASI proposals will continue to evolve and new ones will be introduced;
 however, users of the component model can now pin to any stable release >= `v0.2.0`.

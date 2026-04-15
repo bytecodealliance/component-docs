@@ -37,6 +37,8 @@
     - [Other languages](./language-support/creating-runnable-components/other-languages.md)
   - [Using WIT resources](./using-wit-resources.md)
     - [Rust](./language-support/using-wit-resources/rust.md)
+  - [Using HTTP in components](./using-http-in-components.md)
+    - [Rust](./language-support/using-http-in-components/rust.md)
 - [Running Components](./running-components.md)
   - [Wasmtime](./running-components/wasmtime.md)
   - [jco](./running-components/jco.md)

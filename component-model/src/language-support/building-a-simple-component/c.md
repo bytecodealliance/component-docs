@@ -29,7 +29,6 @@ with the ability to add more language generators in the future.
 [wasi]: https://wasi.dev/
 [rust]: https://www.rust-lang.org/learn/get-started
 [sample-wit]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/tutorial/wit/adder/world.wit
-[cargo-config]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/Cargo.toml
 
 ## 1. Download dependencies
 
@@ -303,39 +302,98 @@ world root {
 ...
 ```
 
-### 6. Run the component from the example host
+## 6. Run the component from the example C host
 
-The following section requires you to have [a Rust toolchain][rust] installed.
+This repository includes a C application that can execute components that implement the add interface. This application embeds Wasmtime using the Wasmtime C API:
+`component-model/examples/example-c-host/host.c`.
 
-> [!WARNING]
-> You must be careful to use a version of the adapter (`wasi_snapshot_preview1.wasm`)
-> that is compatible with the version of `wasmtime` that will be used,
-> to ensure that WASI interface versions (and relevant implementation) match.
-> (The `wasmtime` version is specified in [the Cargo configuration file][cargo-config]
-> for the example host.)
+The application expects three arguments: the two numbers to add and the Wasm component that executed the addition. For example:
 
-{{#include ../example-host-part1.md}}
+```sh
+./adder-host <x> <y> <path-to-component.wasm>
+```
 
-A successful run should show the following output
-(of course, the paths to your example host and adder component will vary,
-and you should substitute `adder.wasm` with `adder.component.wasm`
-if you followed the manual instructions above):
+You can either use a Dockerfile to execute your add component with the C application or directly run the application.
 
-{{#include ../example-host-part2.md}}
+### Option A: Compile and run the host directly
 
-## 7. Run the component from the example C host
+If the Wasmtime C API headers and library are installed on your system,
+you can compile and run the host directly:
 
-After setting up the wasmtime toolchain 
-*TODO: somehow,* 
-the `example-c-host` project can be built, and run our `adder` much like the rust one.
+On Linux, the following commands install the C API artifacts in `/usr/local`
+using the same approach as `Dockerfile.host`:
 
-*TODO: the C++ API is nicer and may be more appropriate for example code*
+```console
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
+  gcc libc6-dev curl xz-utils ca-certificates
 
-C/C++ language guest components can also be composed with components written in any other language
-and run by their toolchains, or even composed with a C language command component and run via the
-`wasmtime` CLI or any other host.
+WASMTIME_VERSION=42.0.1
+case "$(uname -m)" in
+  x86_64) WASMTIME_ARCH=x86_64 ;;
+  aarch64|arm64) WASMTIME_ARCH=aarch64 ;;
+  *) echo "unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+esac
 
-*TODO: work in `wasmtime --invoke 'add(2,2)' adder.wasm`*
+curl -sL "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-${WASMTIME_ARCH}-linux-c-api.tar.xz" \
+  | sudo tar xJ --strip-components=1 -C /usr/local
 
-[!NOTE]: #
-[!WARNING]: #
+sudo ldconfig
+```
+
+```console
+cd component-model/examples/example-c-host
+gcc -o adder-host host.c -lwasmtime
+./adder-host 1 2 /absolute/path/to/adder.wasm
+```
+
+If `libwasmtime.so` is not in a default library path on Linux,
+set `LD_LIBRARY_PATH` before running:
+
+```console
+LD_LIBRARY_PATH=/path/to/wasmtime/lib ./adder-host 1 2 /absolute/path/to/adder.wasm
+```
+
+Expected output:
+
+```sh
+1 + 2 = 3
+```
+
+### Option B: Run with Docker (`Dockerfile.host`)
+
+Instead of installing the Wasmtime C API, you can use the provided Dockerfile which builds the C application. 
+
+From `component-model/examples/example-c-host`:
+
+```console
+cp ../../examples/example-host/add.wasm ./add.wasm
+
+docker build \
+  -f Dockerfile.host \
+  -t example-c-host:latest \
+  .
+```
+
+Then run the container, passing in the component as a volume.
+
+```console
+docker run --rm \
+  -v /absolute/path/to/component-docs/component-model/examples/example-c-host/adder.wasm:/component/add.wasm:ro \
+  example-c-host:latest 1 2 /component/add.wasm
+```
+
+Expected output:
+
+```sh
+1 + 2 = 3
+```
+
+`Dockerfile.guest_and_host` is also provided in the same directory if you want
+an all-in-one image that builds both the guest component and the C host.
+
+Its guest build path follows the same sequence described in steps 2-4:
+`wit-bindgen c ...`, then `/opt/wasi-sdk/bin/wasm32-wasip2-clang ...`.
+The Dockerfile additionally automates fetching `world.wit` and `component.c`
+from this repository and pins tool versions for reproducibility.
+At the time of writing, `Dockerfile.guest_and_host` is Linux `x86_64`-specific.

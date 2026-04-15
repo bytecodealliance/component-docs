@@ -336,7 +336,7 @@ If the Wasmtime C API headers and library are installed on your system,
 you can compile and run the host directly:
 
 On Linux, the following commands install the C API artifacts in `/usr/local`
-using the same approach as `Dockerfile.host`:
+using the same approach as the `Dockerfile`:
 
 ```console
 sudo apt-get update
@@ -375,27 +375,23 @@ Expected output:
 1 + 2 = 3
 ```
 
-### Option B: Run with Docker (`Dockerfile.host`)
+### Option B: Run with Docker
 
 Instead of installing the Wasmtime C API, you can use the provided Dockerfile which builds the C application. 
 
 From `component-model/examples/example-c-host`:
 
 ```console
-cp ../../examples/example-host/add.wasm ./adder.wasm
-
-docker build \
-  -f Dockerfile.host \
-  -t example-c-host:latest \
-  .
+cd component-model/examples/example-c-host
+docker build -t example-c-host:latest .
 ```
 
-Then run the container, passing in the component as a volume.
+Then run the container, passing in the component as a volume:
 
 ```console
 docker run --rm \
-  -v /absolute/path/to/component-docs/component-model/examples/example-c-host/adder.wasm:/component/add.wasm:ro \
-  example-c-host:latest 1 2 /component/add.wasm
+  -v "$(pwd)/../example-host/add.wasm":/component/add.wasm:ro \
+  example-c-host:latest
 ```
 
 Expected output:
@@ -404,11 +400,11 @@ Expected output:
 1 + 2 = 3
 ```
 
-`Dockerfile.guest_and_host` is also provided in the same directory if you want
-an all-in-one image that builds both the guest component and the C host.
+The default command runs `adder-host 1 2 /component/add.wasm`,
+so you can also override the arguments:
 
-Its guest build path follows the same sequence described in steps 2-4:
-`wit-bindgen c ...`, then `/opt/wasi-sdk/bin/wasm32-wasip2-clang ...`.
-The Dockerfile additionally automates fetching `world.wit` and `component.c`
-from this repository and pins tool versions for reproducibility.
-At the time of writing, `Dockerfile.guest_and_host` is Linux `x86_64`-specific.
+```console
+docker run --rm \
+  -v "$(pwd)/../example-host/add.wasm":/component/add.wasm:ro \
+  example-c-host:latest 40 2 /component/add.wasm
+```

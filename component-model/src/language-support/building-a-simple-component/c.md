@@ -302,7 +302,22 @@ world root {
 ...
 ```
 
-## 6. Run the component from the example C host
+## 6. Run the component with `wasmtime --invoke`
+
+If you want to quickly run the `add` export without writing a host application that embeds Wasmtime,
+you can invoke it directly with the Wasmtime CLI.
+
+```console
+wasmtime run --invoke 'add(2, 2)' adder.wasm
+```
+
+Depending on your Wasmtime version, the shorthand form may also work:
+
+```console
+wasmtime --invoke 'add(2,2)' adder.wasm
+```
+
+## 7. Run the component from the example C host
 
 This repository includes a C application that can execute components that implement the add interface. This application embeds Wasmtime using the Wasmtime C API:
 `component-model/examples/example-c-host/host.c`.
@@ -367,7 +382,7 @@ Instead of installing the Wasmtime C API, you can use the provided Dockerfile wh
 From `component-model/examples/example-c-host`:
 
 ```console
-cp ../../examples/example-host/add.wasm ./add.wasm
+cp ../../examples/example-host/add.wasm ./adder.wasm
 
 docker build \
   -f Dockerfile.host \

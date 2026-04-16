@@ -325,7 +325,7 @@ if you followed the manual instructions above):
 
 ## 7. Run the component from C/C++ Applications
 
-You can use [Wasmtime's C API](https://docs.wasmtime.dev/c-api/) to enbed wasmtime into your C application and run components.
+You can use [Wasmtime's C API](https://docs.wasmtime.dev/c-api/) to embed wasmtime into your C/C++ application and run components.
 
 [!NOTE]: #
 [!WARNING]: #

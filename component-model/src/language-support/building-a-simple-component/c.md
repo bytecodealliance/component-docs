@@ -325,18 +325,7 @@ if you followed the manual instructions above):
 
 ## 7. Run the component from C/C++ Applications
 
-It is not yet possible to run a WebAssembly Component using the `wasmtime` C API.
-See [`wasmtime` issue #6987](https://github.com/bytecodealliance/wasmtime/issues/6987) for more details.
-The C API is preferred over directly using the example host Rust crate in C++.
-
-However, C/C++ language guest components can be composed with components written in any other language
-and run by their toolchains,
-or even composed with a C language command component and run via the `wasmtime` CLI
-or any other host.
-
-See the [Rust Tooling guide](./rust.md#running-a-component-from-rust-applications)
-for instructions on how to run this component from the Rust `example-host`
-(replacing the path to `add.wasm` with your `adder.wasm` or `adder.component.wasm` above).
+You can use [Wasmtime's C API](https://docs.wasmtime.dev/c-api/) to embed wasmtime into your C/C++ application and run components.
 
 [!NOTE]: #
 [!WARNING]: #

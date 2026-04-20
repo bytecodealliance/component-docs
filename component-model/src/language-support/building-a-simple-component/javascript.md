@@ -292,6 +292,7 @@ With `jco transpile`, any WebAssembly binary (compiled from any language) can be
 [jco-example]: https://github.com/bytecodealliance/jco/tree/main/examples/components/adder
 [wasm-core-module]: https://webassembly.github.io/spec/core/binary/modules.html
 [core-wasm]: https://webassembly.github.io/spec/core/
+[ts-decl-file]: https://www.typescriptlang.org/docs/handbook/declaration-files/deep-dive.html#declaration-file-theory-a-deep-dive
 
 [!TIP]: #
 [!NOTE]: #

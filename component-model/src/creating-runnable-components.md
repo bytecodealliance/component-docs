@@ -27,7 +27,7 @@ wasmtime run --invoke 'add(1, 2)' add.component.wasm
 Wasmtime contains code that can generically interpret exports, convert arguments to WebAssembly arguments, and execute
 an existing component dynamically.
 
-[example-host](https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/README.md)
+[example-host]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/
 
 ## Creating components that behave like binaries
 
@@ -38,7 +38,7 @@ At a high level there are at least two ways to create components that are more l
 (i.e. that are easy to run from a tool like `wasmtime run`):
 
 1. Creating a "command" component
-2. Exporting the [`wasi:cli/run` interface][wasi-cli-run]
+2. Exporting the [`wasi:cli/run` interface][wasi-cli-iface-run]
 
 While command components simply have a `_start` export, components that export the [`wasi:cli/run` run interface][wasi-cli-iface-run]
 are able to make use of more robust standardized interfaces that mimic a CLI environment like stdout, stderr, via WASI.

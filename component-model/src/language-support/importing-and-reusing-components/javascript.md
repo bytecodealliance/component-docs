@@ -306,7 +306,12 @@ With the help of `jco`, we have:
 - Converted the compiled WebAssembly module (which could be from *any* language) to a module that can be used from any compliant JS runtime (`jco transpile`)
 - Run the transpiled WebAssembly component from a JavaScript native runtime (NodeJS)
 
-[repo]: https://github.com/bytecodealliance/component-docs
+[docs-wit]: ../../design/wit.md
 [jco-examples-string-reverse]: https://github.com/bytecodealliance/jco/tree/main/examples/components/string-reverse
-[ts-decl-file]: https://www.typescriptlang.org/docs/handbook/declaration-files/deep-dive.html#declaration-file-theory-a-deep-dive
 [string-reverse-package-json]: https://github.com/bytecodealliance/jco/blob/main/examples/components/string-reverse/package.json#L6
+[ts-decl-file]: https://www.typescriptlang.org/docs/handbook/declaration-files/deep-dive.html#declaration-file-theory-a-deep-dive
+[wasi]: https://wasi.dev/
+
+[!NOTE]: #
+[!TIP]: #
+[!WARNING]: #

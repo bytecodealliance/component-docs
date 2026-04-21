@@ -8,7 +8,8 @@ title = "The WebAssembly Component Model"
 [output.html]
 git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/main/component-model"
 edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"
-additional-css = ["theme/head.hbs"]
+additional-css = ["theme/head.hbs", "theme/tabs.css", "theme/version-notice.css"]
+additional-js = ["theme/tabs.js"]
 
 [output.html.fold]
 enable = true
@@ -33,5 +34,7 @@ level = 1
 "/language-support/wat.html" = "/language-support/building-a-simple-component/wat.html"
 
 [preprocessor.alerts]
+
+[preprocessor.tabs]
 
 [output.linkcheck]

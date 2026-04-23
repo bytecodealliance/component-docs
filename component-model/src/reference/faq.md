@@ -79,9 +79,9 @@ expect to access—WASI enables building interfaces on top of a shared standard 
 
 ## Q: I see the terms Preview 1 and Preview 2 frequently. What do those refer to?
 
-Preview 1 refers to [the first iteration of the Component Model](https://github.com/WebAssembly/WASI/tree/main/legacy)
+Preview 1 refers to [the first iteration of the Component Model](https://github.com/WebAssembly/WASI/tree/wasi-0.1)
 which was based on WITX and is now deprecated.
-Preview 2 refers to [a newer iteration of the Component Model](https://github.com/WebAssembly/WASI/tree/main/wasip2)
+Preview 2 refers to [a newer iteration of the Component Model](https://github.com/WebAssembly/WASI/blob/main/docs/Preview2.md)
 which uses WebAssembly Interface Types (WIT).
 
 Many programming language toolchains may only support Preview 1 components natively,

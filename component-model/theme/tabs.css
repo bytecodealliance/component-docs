@@ -1,46 +1,19 @@
 .mdbook-tabs {
     display: flex;
-    border-bottom: 1px solid var(--table-border-color);
 }
 
 .mdbook-tab {
     background-color: var(--table-alternate-bg);
-    color: var(--fg);
     padding: 0.5rem 1rem;
     cursor: pointer;
     border: none;
-    border-bottom: 2px solid transparent;
     font-size: 1.6rem;
     line-height: 1.45em;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .mdbook-tab {
-        transition: color 120ms ease, border-color 120ms ease;
-    }
-}
-
-.mdbook-tab:hover:not(.active) {
-    color: var(--sidebar-active, var(--fg));
-}
-
 .mdbook-tab.active {
     background-color: var(--table-header-bg);
-    color: var(--sidebar-active, var(--fg));
-    border-bottom-color: var(--sidebar-active, var(--fg));
     font-weight: bold;
-}
-
-/* Rust theme: --sidebar-active (#e69f67) has low contrast against the warm
-   tan tab backgrounds. Fall back to --fg for the label text; the accent
-   color still carries the active signal via the bottom border. */
-.rust .mdbook-tab.active {
-    color: var(--fg);
-}
-
-.rust .mdbook-tab:hover:not(.active) {
-    color: var(--fg);
-    border-bottom-color: var(--sidebar-active, var(--fg));
 }
 
 .mdbook-tab-content {

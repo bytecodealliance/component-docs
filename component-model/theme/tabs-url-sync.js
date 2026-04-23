@@ -27,12 +27,40 @@
         }
     }
 
+    // If `element` lives inside a tab pane, activate that pane's tab.
+    // Returns true if a tab was activated.
+    function activateTabContainingElement(element) {
+        const pane = element.closest && element.closest('.mdbook-tab-content');
+        if (!pane) return false;
+        const container = pane.closest('.mdbook-tabs-container');
+        if (!container) return false;
+        const name = pane.dataset.tabname;
+        if (!name) return false;
+        const tab = container.querySelector('.mdbook-tab[data-tabname="' + name + '"]');
+        if (!tab) return false;
+        tab.click();
+        return true;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
+        // Apply URL-param tab selection first.
         const slug = readSlugFromUrl();
         if (slug) {
             activateByName(SLUG_TO_NAME[slug]);
         }
 
+        // If the page was loaded with a hash pointing to an element inside a
+        // hidden tab pane, activate that pane and re-scroll. Hash wins over
+        // the ?wasi= param since the hash targets a specific element.
+        if (window.location.hash.length > 1) {
+            const targetId = decodeURIComponent(window.location.hash.slice(1));
+            const target = document.getElementById(targetId);
+            if (target && activateTabContainingElement(target)) {
+                target.scrollIntoView();
+            }
+        }
+
+        // Reflect wasi-version tab clicks back into the URL.
         document.addEventListener('click', function (event) {
             const tab = event.target.closest && event.target.closest('.mdbook-tab');
             if (!tab) return;

@@ -95,9 +95,9 @@ that is, code which fulfills the definition of the interface function declared i
 
 ## 4. Compile a WebAssembly Preview 2 component with `wasi-sdk`'s `wasm32-wasip2-clang`
 
-"P1" refers to [WASI Preview 1](https://github.com/WebAssembly/WASI/blob/main/legacy/README.md),
+"P1" refers to [WASI Preview 1](https://github.com/WebAssembly/WASI/tree/wasi-0.1),
 the initial version of the WASI APIs.
-"P2" refers to [WASI Preview 2](https://github.com/WebAssembly/WASI/blob/main/wasip2/README.md),
+"P2" refers to [WASI Preview 2](https://github.com/WebAssembly/WASI/blob/main/docs/Preview2.md),
 which introduced the component model.
 
 While in the past building a P2 component required conversion from a P1 component,

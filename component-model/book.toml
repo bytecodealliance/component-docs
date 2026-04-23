@@ -9,7 +9,7 @@ title = "The WebAssembly Component Model"
 git-repository-url = "https://github.com/bytecodealliance/component-docs/tree/main/component-model"
 edit-url-template = "https://github.com/bytecodealliance/component-docs/tree/main/component-model/{path}"
 additional-css = ["theme/head.hbs", "theme/tabs.css", "theme/version-notice.css"]
-additional-js = ["theme/tabs.js"]
+additional-js = ["theme/tabs.js", "theme/tabs-url-sync.js"]
 
 [output.html.fold]
 enable = true

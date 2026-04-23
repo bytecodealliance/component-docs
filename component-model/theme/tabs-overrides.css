@@ -1,0 +1,68 @@
+/* Custom overrides to the mdbook-tabs plugin's default styling.
+   Kept separate from theme/tabs.css so plugin updates (via
+   `mdbook-tabs install`) do not overwrite these rules. */
+
+/* Container: left rail marking version-specific content. */
+.mdbook-tabs-container {
+    border-left: 3px solid var(--sidebar-active, var(--table-border-color));
+    padding-left: 1.25rem;
+}
+
+/* Nav: thin baseline below the tab row. */
+.mdbook-tabs {
+    border-bottom: 1px solid var(--table-border-color);
+}
+
+/* Tab button: explicit foreground color and transparent active
+   indicator so hover and active states have somewhere to land. */
+.mdbook-tab {
+    color: var(--fg);
+    border-bottom: 2px solid transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .mdbook-tab {
+        transition: color 120ms ease, border-color 120ms ease;
+    }
+}
+
+.mdbook-tab:hover:not(.active) {
+    color: var(--sidebar-active, var(--fg));
+}
+
+.mdbook-tab.active {
+    color: var(--sidebar-active, var(--fg));
+    border-bottom-color: var(--sidebar-active, var(--fg));
+}
+
+/* Rust theme: --sidebar-active (#e69f67) has low contrast against the
+   warm tan tab backgrounds. Fall back to --fg for the label text; the
+   accent still carries the active signal via the bottom border. */
+.rust .mdbook-tab.active {
+    color: var(--fg);
+}
+
+.rust .mdbook-tab:hover:not(.active) {
+    color: var(--fg);
+    border-bottom-color: var(--sidebar-active, var(--fg));
+}
+
+/* Print: show every tab pane with a heading-like label, and hide the
+   interactive nav since clicking has no meaning on paper. */
+@media print {
+    .mdbook-tabs {
+        display: none;
+    }
+
+    .mdbook-tab-content.hidden {
+        display: block;
+    }
+
+    .mdbook-tab-content::before {
+        content: attr(data-tabname);
+        display: block;
+        font-size: 1.3em;
+        font-weight: bold;
+        margin: 1em 0 0.5em;
+    }
+}

@@ -1,0 +1,61 @@
+name: c-host
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WASMTIME_VERSION: "42.0.1"
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install Wasmtime C API
+        run: |
+          curl -sL "https://github.com/bytecodealliance/wasmtime/releases/download/v${WASMTIME_VERSION}/wasmtime-v${WASMTIME_VERSION}-x86_64-linux-c-api.tar.xz" \
+            | sudo tar xJ --strip-components=1 -C /usr/local
+          sudo ldconfig
+
+      - name: Build the C host
+        working-directory: component-model/examples/example-c-host
+        run: gcc -o adder-host host.c -lwasmtime
+
+      - name: Run the C host
+        working-directory: component-model/examples/example-c-host
+        run: |
+          ./adder-host 1 2 ../example-host/add.wasm | tee output.txt
+          grep -q '1 + 2 = 3' output.txt
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build Docker image
+        working-directory: component-model/examples/example-c-host
+        run: docker build -t example-c-host:latest .
+
+      - name: Test Docker image
+        working-directory: component-model/examples/example-c-host
+        run: |
+          docker run --rm \
+            -v "$(pwd)/../example-host/add.wasm":/component/add.wasm:ro \
+            example-c-host:latest | tee output.txt
+          grep -q '1 + 2 = 3' output.txt

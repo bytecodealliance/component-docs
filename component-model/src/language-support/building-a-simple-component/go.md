@@ -93,7 +93,7 @@ $ wkg wit build
 WIT package written to docs:adder@0.1.0.wasm
 ```
 
-[wasi-cli]: https://github.com/WebAssembly/wasi-cli
+[wasi-cli]: https://github.com/WebAssembly/WASI/tree/main/proposals/cli
 
 ## 3. Generate bindings for the Wasm component
 

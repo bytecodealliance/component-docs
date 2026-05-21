@@ -45,7 +45,7 @@ are able to make use of more robust standardized interfaces that mimic a CLI env
 
 This section explores how to create components that are trivially runanbel (like binaries) in relevant languages.
 
-[wasi-cli-iface-run]: https://github.com/WebAssembly/wasi-cli/tree/main/wit/run.wit
+[wasi-cli-iface-run]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/run.wit
 
 ## Languages
 

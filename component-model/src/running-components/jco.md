@@ -1,7 +1,7 @@
 # jco
 
 [jco](https://github.com/bytecodealliance/jco) is a fully native JavaScript tool for working with components in JavaScript.
-It supports the [`wasi:cli/command` world](https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit).
+It supports the [`wasi:cli/command` world](https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/command.wit).
 `jco` also provides features for transpiling WebAssembly components to ECMAScript modules (ES modules),
 and for building WebAssembly components from JavaScript and WIT.
 

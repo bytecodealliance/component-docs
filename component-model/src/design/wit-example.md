@@ -7,7 +7,7 @@ For a full WIT reference, see [the next section](./wit.md).
 ## Clocks
 
 The following is a simplified version of the world defined in
-the [wasi:clocks](https://github.com/WebAssembly/wasi-clocks) package.
+the [wasi:clocks](https://github.com/WebAssembly/WASI/tree/main/proposals/clocks) package.
 
 Suppose we want to write a component that provides clock functionality.
 This component will represent a "wall clock", which can be reset
@@ -102,7 +102,7 @@ That was just a warm-up; let's look at an example that uses
 more of WIT's built-in and user-defined types.
 
 The following is a very simplified version of the main interface
-defined in the [wasi-filesystem](https://github.com/WebAssembly/wasi-filesystem) package.
+defined in the [wasi-filesystem](https://github.com/WebAssembly/WASI/tree/main/proposals/filesystem) package.
 Much of the functionality has been removed.
 Here, a file descriptor supports just two operations:
 * `open-at()`: Open a file.

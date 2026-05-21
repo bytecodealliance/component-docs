@@ -70,8 +70,8 @@ command line interface.
 Unlike command components, library components have no `_start`, but by exporting the `wasi:cli/run` interface,
 tooling that recognizes these exports can easily execute a given WebAssembly binary (e.g. `wasmtime run`).
 
-[wasi-cli-iface-run]: https://github.com/WebAssembly/wasi-cli/tree/main/wit/run.wit
-[wasi-cli]: https://github.com/WebAssembly/wasi-cli
+[wasi-cli-iface-run]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/run.wit
+[wasi-cli]: https://github.com/WebAssembly/WASI/tree/main/proposals/cli
 
 ### 1. Create a new Rust library project
 

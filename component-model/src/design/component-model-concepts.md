@@ -61,7 +61,7 @@ must be invoked in an environment that implements those interfaces.
  A [_package_](./packages.md) is a set of WIT files
 containing a related set of interfaces and worlds.
  
-For example, the [wasi-http](https://github.com/WebAssembly/wasi-http/blob/main/wit/proxy.wit) package includes
+For example, the [wasi-http](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/proxy.wit) package includes
 an `imports` world encapsulating the interfaces that an HTTP proxy depends on,
 and a `proxy` world that depends on `imports`.
 
@@ -102,9 +102,9 @@ standardizing the functionality components depend on.
 [design-choices]: https://github.com/WebAssembly/component-model/blob/main/design/high-level/Choices.md
 [wit]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md
 [wasi]: https://wasi.dev/
-[wasi-cli]: https://github.com/WebAssembly/wasi-cli/
-[wasi-cli-stdio]: https://github.com/WebAssembly/wasi-cli/blob/main/wit/stdio.wit
-[wasi-cli-command]: https://github.com/WebAssembly/wasi-cli/blob/main/wit/command.wit
-[wasi-http]: https://github.com/WebAssembly/wasi-http
+[wasi-cli]: https://github.com/WebAssembly/WASI/tree/main/proposals/cli
+[wasi-cli-stdio]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/stdio.wit
+[wasi-cli-command]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/command.wit
+[wasi-http]: https://github.com/WebAssembly/WASI/tree/main/proposals/http
 
 [!NOTE]: #

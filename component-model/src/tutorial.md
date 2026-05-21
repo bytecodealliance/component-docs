@@ -101,7 +101,7 @@ A _command_ is a component with a specific export that allows it to be executed 
 `wasmtime` (or other `wasi:cli` hosts).
 
 The WebAssembly host expects it to export the [`wasi:cli/run`
-interface](https://github.com/WebAssembly/wasi-cli/blob/main/wit/run.wit), which is the equivalent
+interface](https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/run.wit), which is the equivalent
 of the [`main` function][wiki-entrypoint] to WASI.
 
 To build a command component, [`cargo`][cargo] should be configured to build a `--lib` crate which

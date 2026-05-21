@@ -52,7 +52,7 @@ and imports anything imported by the "wall clock" interface.
 Interfaces are defined using [the WIT language](./wit.md).
 
 [wp-contract]: https://en.wikipedia.org/wiki/Design_by_contract
-[wasi-http-handler]: https://github.com/WebAssembly/wasi-http/blob/main/wit/handler.wit
-[wasi-clocks-wall-clock]: https://github.com/WebAssembly/wasi-clocks/blob/main/wit/wall-clock.wit
+[wasi-http-handler]: https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/handler.wit
+[wasi-clocks-wall-clock]: https://github.com/WebAssembly/WASI/blob/main/proposals/clocks/wit/wall-clock.wit
 
 > For a more formal definition of an interface, take a look at the [WIT specification](https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md).

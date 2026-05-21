@@ -75,7 +75,7 @@ With WIT, platform builders can define *any* interface that WebAssembly componen
 expect to access—WASI enables building interfaces on top of a shared standard set of abstractions.
 
 [wit]: https://component-model.bytecodealliance.org/design/wit.html
-[wasi-http]: https://github.com/WebAssembly/wasi-http
+[wasi-http]: https://github.com/WebAssembly/WASI/tree/main/proposals/http
 
 ## Q: I see the terms Preview 1 and Preview 2 frequently. What do those refer to?
 
@@ -116,7 +116,7 @@ for interacting with environment variables.
 The component is said to "import" the `wasi:cli/environment` interface,
 using the available functions and types therein.
 
-[wasi-cli-env]: https://github.com/WebAssembly/wasi-cli/blob/main/wit/environment.wit
+[wasi-cli-env]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/environment.wit
 
 ## Q: What are component exports?
 

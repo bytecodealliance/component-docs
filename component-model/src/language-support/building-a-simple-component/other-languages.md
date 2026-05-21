@@ -1,6 +1,6 @@
 # Other Languages with Component Model Support
 
-This guide is a work in progress and does not example for all langauge toolchains
+This guide is a work in progress and does not example for all language toolchains
 with WebAssembly component support.
 
 As more languages continue to add support for the component model, we welcome

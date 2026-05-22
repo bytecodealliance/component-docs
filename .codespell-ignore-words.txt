@@ -3,4 +3,3 @@
 # Used by .github/workflows/codespell.yml.
 
 wit
-re-use

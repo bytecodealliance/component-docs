@@ -1,0 +1,5 @@
+# Words for codespell to ignore (one lowercase word per line).
+# Entries are case-insensitive: `wit` covers both `wit` and `WIT`.
+# Used by .github/workflows/codespell.yml.
+
+wit

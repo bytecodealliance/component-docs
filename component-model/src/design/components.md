@@ -39,7 +39,7 @@ of one or many traditional ("core") WebAssembly modules and sub-components,
 composed together via their imports and exports.
 Two modules or components can be composed if the
 imports of one are satisfied by the exports of another.
-Composition can be repeated arbitarily, composing a
+Composition can be repeated arbitrarily, composing a
 single component out of many interlocking modules and components.
 [Interfaces](./interfaces.md) enable checking that
 a particular composition makes sense.
@@ -54,7 +54,7 @@ the component internally defines the code to implement the world.
 
 Two modules or components can be composed if the
 imports of one are satisfied by the exports of another.
-Composition can be repeated arbitarily, composing a
+Composition can be repeated arbitrarily, composing a
 single component out of many interlocking modules and components.
 [Interfaces](./interfaces.md) enable checking that
 a particular composition makes sense.

@@ -1,0 +1,37 @@
+.version-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 0.75rem 1.25rem;
+    margin: 0 0 1.5rem 0;
+    background-color: var(--quote-bg);
+    border-left: 4px solid var(--sidebar-active, var(--fg));
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.version-notice::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.15em;
+    height: 1.15em;
+    margin-top: 0.15em;
+    background-color: var(--sidebar-active, var(--fg));
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><line x1='6' y1='3' x2='6' y2='15'/><circle cx='18' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><path d='M18 9a9 9 0 0 1-9 9'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><line x1='6' y1='3' x2='6' y2='15'/><circle cx='18' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><path d='M18 9a9 9 0 0 1-9 9'/></svg>");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+.version-notice > *:first-child {
+    margin-top: 0;
+}
+
+.version-notice > *:last-child {
+    margin-bottom: 0;
+}

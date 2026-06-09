@@ -25,12 +25,12 @@ inputs:
     description: |
       Version of mdbook to use (ex. '0.5.3')
 
-  mdbook-linkcheck-version:
+  mdbook-linkcheck2-version:
     type: string
     required: false
-    default: "0.7.7"
+    default: "0.12.0"
     description: |
-      Version of mdbook-linkcheck to use (ex. '0.7.7')
+      Version of mdbook-linkcheck2 to use (ex. '0.12.0')
 
   mdbook-tabs-version:
     type: string
@@ -52,7 +52,7 @@ runs:
 
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:
-        tool: "mdbook-linkcheck@${{ inputs.mdbook-linkcheck-version }}"
+        tool: "mdbook-linkcheck2@${{ inputs.mdbook-linkcheck2-version }}"
 
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:

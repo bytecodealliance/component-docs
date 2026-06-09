@@ -13,9 +13,9 @@ To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/gui
 This repository also makes use of mdBook plugins. To install mdBook and the plugins for this project, you can use [`cargo`][cargo]:
 
 ```console
-cargo install --version 0.5.3 mdbook
-cargo install --version 0.7.7 mdbook-linkcheck
-cargo install --version 1.0.1 mdbook-tabs
+cargo install --version 0.5.3 --locked mdbook
+cargo install --version 0.12.0 --locked mdbook-linkcheck2
+cargo install --version 1.0.1 --locked mdbook-tabs
 ```
 
 [cargo]: https://doc.rust-lang.org/cargo
@@ -36,17 +36,17 @@ cd component-model
 mdbook serve --open
 ```
 
-You can use mdbook-linkcheck to check the links in the docs automatically. First, add the lines following lines in `book.toml`.
+You can use mdbook-linkcheck2 to check the links in the docs automatically. First, add the lines following lines in `book.toml`.
 
 ```toml
-[output.linkcheck]
+[output.linkcheck2]
 follow-web-links = true
 ```
 
 After this, install the extension and build the project again. You should see the link checker do its work in the console output.
 
 ```bash
-cargo install mdbook-linkcheck
+cargo install --version 0.12.0 --locked mdbook-linkcheck2
 mdbook build
 ```
 

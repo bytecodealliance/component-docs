@@ -39,6 +39,13 @@ inputs:
     description: |
       Version of mdbook-linkcheck to use (ex. '0.7.7')
 
+  mdbook-tabs-version:
+    type: string
+    required: false
+    default: "0.3.4"
+    description: |
+      Version of mdbook-tabs to use (ex. '0.3.4')
+
 runs:
   using: composite
   steps:
@@ -57,6 +64,10 @@ runs:
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:
         tool: "mdbook-linkcheck@${{ inputs.mdbook-linkcheck-version }}"
+
+    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
+      with:
+        tool: "mdbook-tabs@${{ inputs.mdbook-tabs-version }}"
 
     - name: Setup Python
       uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5.5.0

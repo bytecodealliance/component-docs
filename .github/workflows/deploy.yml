@@ -30,12 +30,6 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  MDBOOK_VERSION: 0.4.21
-  MDBOOK_ALERTS_VERSION: 0.6.7
-  MDBOOK_LINKCHECK_VERSION: 0.7.7
-  ARTIFACT_PATH: ./component-model/book/html
-
 jobs:
   build:
     runs-on: ubuntu-latest

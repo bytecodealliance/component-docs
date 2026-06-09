@@ -21,16 +21,9 @@ inputs:
   mdbook-version:
     type: string
     required: false
-    default: "0.4.21"
+    default: "0.5.3"
     description: |
-      Version of mdbook to use (ex. '0.4.21')
-
-  mdbook-alerts-version:
-    type: string
-    required: false
-    default: "0.6.7"
-    description: |
-      Version of mdbook-alerts to use (ex. '0.6.7')
+      Version of mdbook to use (ex. '0.5.3')
 
   mdbook-linkcheck-version:
     type: string
@@ -42,9 +35,9 @@ inputs:
   mdbook-tabs-version:
     type: string
     required: false
-    default: "0.3.4"
+    default: "1.0.1"
     description: |
-      Version of mdbook-tabs to use (ex. '0.3.4')
+      Version of mdbook-tabs to use (ex. '1.0.1')
 
 runs:
   using: composite
@@ -56,10 +49,6 @@ runs:
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:
         tool: "mdbook@${{ inputs.mdbook-version }}"
-
-    - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
-      with:
-        tool: "mdbook-alerts@${{ inputs.mdbook-alerts-version }}"
 
     - uses: taiki-e/cache-cargo-install-action@4d586f211d9b0bca9e7b59e57e2a0febf36c0929 # v2.1.1
       with:

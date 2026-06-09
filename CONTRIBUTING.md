@@ -13,10 +13,9 @@ To use this repository, you need [mdBook](https://rust-lang.github.io/mdBook/gui
 This repository also makes use of mdBook plugins. To install mdBook and the plugins for this project, you can use [`cargo`][cargo]:
 
 ```console
-cargo install --version 0.4.21 mdbook
-cargo install --version 0.6.7 mdbook-alerts
+cargo install --version 0.5.3 mdbook
 cargo install --version 0.7.7 mdbook-linkcheck
-cargo install --version 0.3.4 mdbook-tabs
+cargo install --version 1.0.1 mdbook-tabs
 ```
 
 [cargo]: https://doc.rust-lang.org/cargo

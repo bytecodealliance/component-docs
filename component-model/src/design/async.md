@@ -2,41 +2,31 @@
 
 WASI P3 is built on three new Canonical ABI primitives in the Component Model: `async func`, `stream<T>`, and `future<T>`. Together, they let interfaces express asynchronous operations that compose across component boundaries.
 
-## Why native async?
+For migration mechanics (e.g., how a WASI P2 component maps onto these primitives) see [Migrating from WASI P2 to WASI P3](./migrating-to-p3.md). For the WASI release view, including the full per-interface diff, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev. This page focuses on the Component Model concepts themselves.
 
-WASI P2 modeled asynchronous I/O through the `wasi:io` package, which exposed three resources:
+## Native async
 
-- `pollable`: an opaque handle representing readiness
-- `input-stream`: a byte source
-- `output-stream`: a byte sink
+The Component Model's Canonical ABI defines how typed values cross component boundaries. Until WASI P3, that vocabulary had no notion of suspension or asynchronous completion; every interface call returned synchronously, and asynchronous I/O was modeled with resources (`pollable` for readiness, `input-stream` and `output-stream` for byte channels) scoped to whichever component obtained them.
 
-These work fine when a component talks directly to its host. They break down when components are composed. Consider a three-layer chain:
+That arrangement holds up for two-party interactions, but it falters once components are composed in a chain. If a component awaits work that another component delegates further, the readiness signal has to travel back up the chain. When readiness is expressed as a resource scoped to a single component, the intermediate component is stuck running an event loop purely to forward the wake-up to its caller; the runtime cannot help, because the resource doesn't live in a place the runtime can reach across. This is sometimes called the **sandwich problem**: an async vocabulary that describes a single hop just fine but cannot propagate readiness past one.
 
-```
-A → B → Host
-```
-
-Component A makes a call into Component B that requires waiting on the Host. B calls the Host, which returns a `pollable` representing the eventual completion of the work. That `pollable` is a Component Model resource scoped to B's instance — A cannot hold it, poll it, or name it. B would have to actively check the `pollable` and forward the wake-up to A, but there is no Canonical ABI hook for "when this `pollable` becomes ready, run this code in B." In practice the wake-up gets dropped, and B has to actively poll its own `pollable` just to relay readiness back to A.
-
-This is sometimes called the **sandwich problem**: WASI P2 could express async, but could not compose it across component boundaries.
-
-The Component Model solves this by pushing async down into the Canonical ABI. The runtime owns scheduling and wake-up propagation, so async works correctly regardless of how many components sit between a producer and a consumer.
+Native primitives close the gap. With `async func`, `stream<T>`, and `future<T>` in the Canonical ABI, scheduling and wake-up propagation become the runtime's job rather than any individual component's. Components can pass futures and streams along the chain without keeping their own event loops running to relay readiness.
 
 ## The three primitives
 
 ### `async func`
 
-A function declared as asynchronous in WIT:
+A WIT function declared `async` tells the runtime that the call may suspend before producing its result. The Canonical ABI handles the suspension and resumption; the guest doesn't see a `pollable`, and the host doesn't see a polling loop.
 
 ```wit
 handle: async func(request: request) -> result<response, error-code>;
 ```
 
-Bindings generators emit language-native async constructs: `async fn` in Rust, `Promise` in JavaScript, coroutines in Python.
+Code generated from the WIT picks up each language's natural async idiom: `async fn` in Rust, a `Promise`-returning function in JavaScript, a coroutine in Python.
 
 ### `stream<T>`
 
-A typed, asynchronous data channel. Unlike `input-stream` and `output-stream` in WASI P2, a `stream<T>` is a *value* that can be passed across component boundaries the same way a `u32` can.
+A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource: it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer. The same value can also be passed straight through a middle component without that component having to relay any wake-ups.
 
 ```wit
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
@@ -44,44 +34,32 @@ read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 
 ### `future<T>`
 
-A single-value async completion. Where WASI P2 used `pollable` resources, WASI P3 uses `future<T>` values.
+A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. A function returning `future<T>` does not block; the caller awaits the result when it needs it.
 
 ```wit
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
-## Common patterns
+## How the primitives work in WASI P3
 
-### The stream-plus-future pattern
+### Stream plus terminal future
 
-A recurring pattern in WASI P3 pairs a `stream<T>` with a `future` that signals completion or error:
+Reads return both a data channel and a completion handle, packed into a tuple:
 
 ```wit
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
-The stream delivers data incrementally. Once the stream closes, the future resolves to indicate whether the operation completed successfully or encountered an error. This pattern appears in stdin, filesystem reads, TCP receives, and directory listings.
+The two halves are independent. The caller can consume the stream eagerly, sample it, or drop it part-way through; either way the future resolves once the operation has terminated, carrying the success-or-failure outcome. The same shape appears in stdin, filesystem reads, TCP receives, and directory listings.
 
-### The write-direction flip
+### Stream parameter, future return
 
-In WASI P2, write operations gave you an `output-stream` that you wrote into. In WASI P3, the direction is reversed: you pass in a `stream<u8>` and receive a `future<result>` that resolves when the write completes. This applies to stdout, stderr, filesystem writes, and TCP sends.
+Writes use the symmetric shape: the guest supplies the data as a `stream<u8>` parameter, and the host returns a `future` that resolves once it has consumed the stream. Stdout, stderr, filesystem writes, and TCP sends all follow this shape:
 
 ```wit
-// WASI P2: get a stream, write to it
-get-stdout: func() -> output-stream;
-
-// WASI P3: pass data in, get a completion future
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
-## Tooling support
+## Where to go next
 
-`async func`, `stream<T>`, and `future<T>` are native Canonical ABI features in the Component Model, supported by:
-
-- [Wasmtime](https://wasmtime.dev/) 43 and later, via `-Sp3 -W component-model-async=y` when running components.
-- [`wit-bindgen`](https://github.com/bytecodealliance/wit-bindgen) with the `async` feature enabled, for Rust guest bindings.
-- [jco](https://github.com/bytecodealliance/jco) for JavaScript environments, via the `preview3-shim` package.
-
-For an end-to-end Rust example, see [Creating Runnable Components in Rust](../language-support/creating-runnable-components/rust.md). For the WIT-level details of how to declare these types in your own interfaces, see [WIT Reference](./wit.md).
-
-> For a broader overview of what changed in WASI P3, including per-interface diffs, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
+For an end-to-end Rust example that uses these primitives in practice, see [Creating Runnable Components in Rust](../language-support/creating-runnable-components/rust.md). For runtime support and CLI flags, see [Wasmtime](../running-components/wasmtime.md). For the WIT syntax in detail, see [WIT Reference](./wit.md).

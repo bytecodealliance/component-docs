@@ -8,8 +8,8 @@ This page covers the mapping between concepts in WASI P2 and WASI P3. For a WIT-
 
 Not immediately. WASI P3 runtimes can polyfill P2 by mapping P2 imports onto native P3 primitives at the host boundary, and Wasmtime's `wasmtime serve` already runs both P3 and P2 components from the same binary, dispatching per component. Migration is the right call when you want:
 
-- Composable async across component boundaries (the [sandwich problem](./async.md#why-native-async) goes away).
-- The newer interface shapes — in particular, `wasi:http`'s collapse of eight resources down to two.
+- Composable async across component boundaries (the [sandwich problem](./async.md#native-async) goes away).
+- The newer interface shapes — in particular, `wasi:http`'s collapse of nine resources down to two.
 - First-class support in P3-targeted toolchains as they continue to land.
 
 ## Concept mapping
@@ -29,7 +29,7 @@ WASI P3 replaces every `wasi:io` resource with a Canonical ABI primitive. The tr
 
 ### Stream-plus-future for reads
 
-In P2, a read call returned an `input-stream`. In P3, it returns a tuple of a `stream<u8>` plus a `future<result<_, error-code>>` that resolves once the stream closes:
+A P2 read call returned a single `input-stream` resource and surfaced terminal errors only as you consumed it. P3 splits those concerns: the call returns a `stream<u8>` for the data and a `future<result<_, error-code>>` for the outcome, packed into a tuple.
 
 ```wit
 // WASI P2 (filesystem read)
@@ -39,17 +39,17 @@ read-via-stream: func(offset: filesize) -> result<input-stream, error-code>;
 read-via-stream: func(offset: filesize) -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
-The stream delivers data incrementally. The future signals terminal success or failure independently of how much of the stream the caller consumes.
+In P3 the caller does not have to drain the stream to learn whether the read finished cleanly; the future resolves either way.
 
 ### Write-direction flip
 
-P2 write calls handed you an `output-stream` to write into. P3 reverses the direction: you pass a `stream<u8>` *into* the call and receive a `future<result>` that resolves when the write completes:
+P2 write paths handed a guest some host-owned resource (an `output-stream`) and let the guest push bytes into it. P3 inverts that: the guest supplies the data as a `stream<u8>` value, and the host returns a `future` that resolves once it has finished consuming the stream.
 
 ```wit
-// WASI P2: get a stream, write into it
+// WASI P2: receive an output-stream resource, write into it
 get-stdout: func() -> output-stream;
 
-// WASI P3: pass data in, get a completion future
+// WASI P3: pass a stream value in, receive a completion future
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
@@ -68,15 +68,12 @@ connect: async func(remote-address: ip-socket-address) -> result<_, error-code>;
 
 The collapsed call is `async func` when the operation needs to suspend in the host (such as `connect`); operations that historically only used the two-step shape for non-blocking dispatch may collapse to plain `func` instead (`bind`, `listen`).
 
-## Interface notes
+## Interface highlights
 
-### `wasi:io` (removed)
+The complete per-interface diff lives on [WASI P3](https://wasi.dev/releases/wasi-p3#what-changed-in-each-interface) at WASI.dev. The three changes most likely to drive migration work are:
 
-The package is gone. Everything it expressed is now Canonical ABI primitives.
-
-### `wasi:http`
-
-The most dramatic restructuring. The eight P2 resources (`incoming-request`, `outgoing-request`, `incoming-response`, `outgoing-response`, `incoming-body`, `outgoing-body`, `future-trailers`, and `future-incoming-response`) collapse to two: `request` and `response`. Bodies are `stream<u8>`; trailers are a `future`. The handler is an `async func`:
+- **`wasi:io` is gone.** The package has no 0.3.0 release. Every resource it exposed (`pollable`, `input-stream`, `output-stream`) is replaced by a Component Model primitive, per the [concept mapping](#concept-mapping) above.
+- **`wasi:http` collapses from nine resources to two.** The incoming/outgoing × request/response/body matrix plus `future-trailers`, `future-incoming-response`, and `response-outparam` all become `request` and `response`, with `stream<u8>` bodies and a `future` for trailers. The handler is now an `async func`:
 
 ```wit
 // WASI P2
@@ -86,27 +83,10 @@ handle: func(request: incoming-request, response-out: response-outparam);
 handle: async func(request: request) -> result<response, error-code>;
 ```
 
-The `proxy` world is replaced by `service`, with a new `middleware` world that imports and exports the handler.
+The `proxy` world is replaced by `service`, and a new `middleware` world both imports and exports the handler.
+- **`wasi:sockets` drops its `network` resource.** Network access is granted at the world level instead of being threaded through every `bind`, `connect`, and DNS lookup. The seven P2 socket interfaces consolidate into one `types` interface plus `ip-name-lookup`, and TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` loop.
 
-### `wasi:sockets`
-
-The seven P2 interfaces (`network`, `instance-network`, `tcp`, `tcp-create-socket`, `udp`, `udp-create-socket`, `ip-name-lookup`) collapse to a unified `types` interface containing both `tcp-socket` and `udp-socket` resources, plus `ip-name-lookup`. The `network` resource is removed entirely; network access is now granted at the world level. `start-*` / `finish-*` pairs collapse as described above. TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` call.
-
-### `wasi:filesystem`
-
-Most `descriptor` methods are `async func`. Streaming reads and writes use the stream-plus-future pattern; `read-directory` returns `stream<directory-entry>`. The `error-code` enum gains a catch-all `other(option<string>)` variant.
-
-### `wasi:cli`
-
-stdin, stdout, and stderr use `stream<u8>` with the stream-plus-future pattern. `run` becomes `async func`. A shared `wasi:cli/types` interface carries an `error-code` variant. The `exit-with-code` function stabilizes alongside `exit`.
-
-### `wasi:clocks`
-
-`wall-clock` is renamed to `system-clock`, and `datetime` is renamed to `instant`. The `instant` record uses `s64` seconds (instead of `u64`), supporting pre-epoch timestamps. `subscribe-instant` and `subscribe-duration` are replaced by `wait-until` and `wait-for` `async func`s.
-
-### `wasi:random`
-
-The `len` parameter is renamed to `max-len` on `get-random-bytes` and `get-insecure-random-bytes`. Implementations may now return fewer bytes than requested, so callers should loop.
+Smaller per-interface changes — filesystem methods becoming `async func`, the `wasi:clocks` rename pass (`wall-clock` → `system-clock`, `datetime` → `instant`), the `max-len` rename in `wasi:random`, the new shared `wasi:cli/types` interface — are documented in the WASI.dev page linked above.
 
 ## Tooling requirements
 

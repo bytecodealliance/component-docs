@@ -1,5 +1,11 @@
 # Creating Runnable Components (Rust)
 
+<div class="version-notice">
+
+This page has content for both **WASI P2** and **WASI P3**. Use the tabs below to switch between versions where they differ.
+
+</div>
+
 ## Creating a command component
 
 A _command_ is a component with a specific export that allows it to be executed directly by `wasmtime`
@@ -37,6 +43,8 @@ pub fn main() {
 
 ### 3. Build the component
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 To build the component, use `cargo`:
 
 ```sh
@@ -45,17 +53,50 @@ cargo build --target=wasm32-wasip2
 
 The component can also be built in release mode:
 
-```console
+```sh
 cargo build --target=wasm32-wasip2 --release
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+The [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is Tier 3 and requires a nightly Rust toolchain. Install nightly and add the target:
+
+```sh
+rustup toolchain install nightly
+rustup +nightly target add wasm32-wasip3
+```
+
+Build the component:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3
+```
+
+Release mode:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3 --release
+```
+{{#endtab }}
+{{#endtabs }}
 
 ### 4. Run the component with `wasmtime`
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 To run your command component:
 
 ```sh
 wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+Enable the WASI P3 ABI when running a P3 component:
+
+```sh
+wasmtime run -Sp3 -W component-model-async=y ./target/wasm32-wasip3/debug/runnable-example.wasm
+```
+{{#endtab }}
+{{#endtabs }}
 
 ## Enabling a library component to be run via the `wasi:cli/run` interface
 
@@ -91,15 +132,28 @@ crate-type = ['cdylib']
 
 We'll also be generating Rust bindings from WIT interfaces, so add `wit-bindgen`:
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 ```sh
 cargo add wit-bindgen
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+```sh
+cargo add wit-bindgen --features async
+```
+
+The `async` feature enables `wit-bindgen`'s async code generation, which is needed for the P3 `async func run()` signature.
+{{#endtab }}
+{{#endtabs }}
 
 ### 2. Add the appropriate WIT interfaces
 
 Then, add the appropriate WIT interfaces. For example a simple component that prints "Hello World", add the following
 contents to `runnable-example/wit/component.wit`:
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 ```wit
 package example:runnable;
 
@@ -112,6 +166,24 @@ world greeter {
     export wasi:cli/run@0.2.7;
 }
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+```wit
+package example:runnable;
+
+interface greet {
+    greet: func(name: string) -> string;
+}
+
+world greeter {
+    export greet;
+    export wasi:cli/run@0.3.0;
+}
+```
+
+In WASI P3, `wasi:cli/run` is declared as `run: async func() -> result`, so the generated `Guest` trait expects an `async fn`.
+{{#endtab }}
+{{#endtabs }}
 
 Building a library component this way does two things:
 
@@ -139,6 +211,8 @@ with any tooling (ex. `wasmtime run`) that supports/recognizes the `wasi:cli` in
 
 The following code can be inserted into `runnable-example/src/lib.rs`:
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 ```rust
 mod bindings {
     use super::Component;
@@ -166,9 +240,43 @@ impl bindings::exports::wasi::cli::run::Guest for Component {
     }
 }
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+```rust
+mod bindings {
+    use super::Component;
+
+    wit_bindgen::generate!();
+
+    export!(Component);
+}
+
+/// Component off of which implementation will hang (this can be named anything)
+struct Component;
+
+/// Implementation for the `greet` interface export
+impl bindings::exports::example::runnable::greet::Guest for Component {
+    fn greet(name: String) -> String {
+        format!("Hello {name}!")
+    }
+}
+
+/// Implementation for `wasi:cli/run` interface export.
+/// In WASI P3 the `run` function is asynchronous.
+impl bindings::exports::wasi::cli::run::Guest for Component {
+    async fn run() -> Result<(), ()> {
+        eprintln!("Hello World!");
+        Ok(())
+    }
+}
+```
+{{#endtab }}
+{{#endtabs }}
 
 ### 4. Build the component
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 To build the component, use `cargo`:
 
 ```sh
@@ -177,12 +285,29 @@ cargo build --target=wasm32-wasip2
 
 The component can also be built in release mode:
 
-```console
+```sh
 cargo build --target=wasm32-wasip2 --release
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+The [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is Tier 3 and requires a nightly Rust toolchain:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3
+```
+
+Release mode:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3 --release
+```
+{{#endtab }}
+{{#endtabs }}
 
 ### 5. Run the component with `wasmtime`
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI P2" }}
 You can run the component with `wasmtime`, and unlike a generic reactor component, you do not need to specify
 the interface and function to run (`wasi:cli/run` is detected and used automatically):
 
@@ -190,3 +315,15 @@ the interface and function to run (`wasi:cli/run` is detected and used automatic
 $ wasmtime run target/wasm32-wasip2/runnable-example.wasm
 Hello World!
 ```
+{{#endtab }}
+{{#tab name="WASI P3" }}
+Enable the WASI P3 ABI when running a P3 component:
+
+```console
+$ wasmtime run -Sp3 -W component-model-async=y target/wasm32-wasip3/debug/runnable-example.wasm
+Hello World!
+```
+{{#endtab }}
+{{#endtabs }}
+
+> **Version pinning.** WASI P3 tools (wit-bindgen, Wasmtime, jco, and so on) must all target the same WIT version. WASI 0.3.0 is the stable target; some toolchains still ship the `0.3.0-rc-2026-03-15` WIT pending a refresh against the final tag. Mismatched pins surface as confusing `wrong type` errors at instantiation.

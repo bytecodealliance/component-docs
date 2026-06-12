@@ -196,6 +196,54 @@ tuple<u64, string, u64> // An integer, then a string, then an integer
 
 This is similar to tuples in Rust or OCaml.
 
+### Streams
+
+`stream<T>` for any type `T` denotes an asynchronous, ordered sequence of values of type `T`.
+Unlike a `list<T>`, which contains all of its values at once,
+a `stream<T>` delivers values incrementally:
+the producer pushes elements as they become available,
+and the consumer receives them as they arrive.
+
+```wit
+stream<u8>        // a stream of bytes
+stream<log-entry> // a stream of records
+```
+
+A `stream<T>` is a Canonical ABI value, not a resource:
+it can be returned from a function, accepted as a parameter,
+and passed across component boundaries the same way a primitive type is.
+A middle component can also hand a stream along without consuming it.
+
+Streams were added for WASI 0.3 and are most often paired with a [`future`](#futures)
+that signals when the stream has terminated;
+the stream-plus-future tuple shape appears throughout
+[`wasi:filesystem`](https://github.com/WebAssembly/WASI/tree/main/proposals/filesystem),
+[`wasi:cli`](https://github.com/WebAssembly/WASI/tree/main/proposals/cli),
+and [`wasi:sockets`](https://github.com/WebAssembly/WASI/tree/main/proposals/sockets).
+
+For the underlying motivation, see [Async, Streams, and Futures](./async.md).
+
+### Futures
+
+`future<T>` for any type `T` is a typed handle for a single value of type `T`
+that will become available later.
+A function returning a `future<T>` does not block on the value being produced;
+the caller awaits the future when it needs the value.
+
+```wit
+future<u32>                          // a future that will resolve to a u32
+future<result<response, error-code>> // a future that will resolve to either a response or an error
+```
+
+Like `stream<T>`, `future<T>` is a Canonical ABI value rather than a resource,
+so it travels across component boundaries the same way primitives do.
+
+Futures were added for WASI 0.3.
+They are similar to a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in JavaScript
+or a [`std::future::Future`](https://doc.rust-lang.org/std/future/trait.Future.html) in Rust.
+
+For the underlying motivation, see [Async, Streams, and Futures](./async.md).
+
 ## User-defined types
 
 New domain-specific types can be defined within an `interface` or `world`.
@@ -392,6 +440,22 @@ get-customers-paged: func(cont: continuation-token) -> tuple<list<customer>, con
 
 A function can be declared inside an [interface](#interfaces),
 or can be declared as an import or export in a [world](#worlds).
+
+### Asynchronous functions
+
+A function can be declared `async`, indicating that the call may suspend before producing its result:
+
+```wit
+// An async function returning a result
+handle: async func(request: request) -> result<response, error-code>;
+```
+
+The runtime owns the scheduling; from the WIT perspective, the call looks like an ordinary function.
+Bindings generators emit each side in the host language's natural async idiom:
+an `async fn` in Rust, a `Promise`-returning function in JavaScript, and so on.
+
+Asynchronous functions were added for WASI 0.3, alongside [`stream<T>`](#streams) and [`future<T>`](#futures).
+For the underlying motivation, see [Async, Streams, and Futures](./async.md).
 
 ## Interfaces
 

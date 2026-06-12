@@ -65,6 +65,10 @@ For example, the [wasi-http](https://github.com/WebAssembly/WASI/blob/main/propo
 an `imports` world encapsulating the interfaces that an HTTP proxy depends on,
 and a `proxy` world that depends on `imports`.
 
+### Async, Streams, and Futures
+
+The Component Model includes [`async func`, `stream<T>`, and `future<T>`](./async.md) as native Canonical ABI primitives, introduced alongside WASI P3. Together, they let interfaces express asynchronous operations that compose across component boundaries.
+
 ### Platforms
 
 In the context of WebAssembly, a _host_ refers to a WebAssembly runtime

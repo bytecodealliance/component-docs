@@ -1,8 +1,8 @@
 # Migrating from WASI P2 to WASI P3
 
-WASI P3 reshapes WASI's interfaces around the [native async primitives](./async.md) — `async func`, `stream<T>`, and `future<T>` — that the Component Model added for this release. Most of the per-package changes in `wasi:cli`, `wasi:http`, `wasi:filesystem`, and `wasi:sockets` are mechanical consequences of moving onto these primitives.
+WASI P3 reshapes WASI's interfaces around the [native async primitives](./async.md) `async func`, `stream<T>`, and `future<T>`. Most of the changes in `wasi:cli`, `wasi:http`, `wasi:filesystem`, and `wasi:sockets` are consequences of moving to these primitives.
 
-This page covers the mapping. For a worked WIT-level diff of every WASI P3 interface, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
+This page covers the mapping between concepts in WASI P2 and WASI P3. For a WIT-level comparison of every WASI P3 interface, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
 
 ## Do you need to migrate?
 
@@ -26,8 +26,6 @@ WASI P3 replaces every `wasi:io` resource with a Canonical ABI primitive. The tr
 | `start-foo` / `finish-foo`       | a single `func` or `async func`          |
 
 ## What changed in WIT
-
-Three patterns appear over and over in the rebased interfaces.
 
 ### Stream-plus-future for reads
 
@@ -70,7 +68,7 @@ connect: async func(remote-address: ip-socket-address) -> result<_, error-code>;
 
 The collapsed call is `async func` when the operation needs to suspend in the host (such as `connect`); operations that historically only used the two-step shape for non-blocking dispatch may collapse to plain `func` instead (`bind`, `listen`).
 
-## Per-interface notes
+## Interface notes
 
 ### `wasi:io` (removed)
 
@@ -78,7 +76,7 @@ The package is gone. Everything it expressed is now Canonical ABI primitives.
 
 ### `wasi:http`
 
-The most dramatic restructuring. The eight P2 resources — `incoming-request`, `outgoing-request`, `incoming-response`, `outgoing-response`, `incoming-body`, `outgoing-body`, `future-trailers`, and `future-incoming-response` — collapse to two: `request` and `response`. Bodies are `stream<u8>`; trailers are a `future`. The handler is an `async func`:
+The most dramatic restructuring. The eight P2 resources (`incoming-request`, `outgoing-request`, `incoming-response`, `outgoing-response`, `incoming-body`, `outgoing-body`, `future-trailers`, and `future-incoming-response`) collapse to two: `request` and `response`. Bodies are `stream<u8>`; trailers are a `future`. The handler is an `async func`:
 
 ```wit
 // WASI P2
@@ -92,7 +90,7 @@ The `proxy` world is replaced by `service`, with a new `middleware` world that i
 
 ### `wasi:sockets`
 
-The seven P2 interfaces (`network`, `instance-network`, `tcp`, `tcp-create-socket`, `udp`, `udp-create-socket`, `ip-name-lookup`) collapse to a unified `types` interface containing both `tcp-socket` and `udp-socket` resources, plus `ip-name-lookup`. The `network` resource is removed entirely — network access is now granted at the world level. `start-*` / `finish-*` pairs collapse as described above. TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` call.
+The seven P2 interfaces (`network`, `instance-network`, `tcp`, `tcp-create-socket`, `udp`, `udp-create-socket`, `ip-name-lookup`) collapse to a unified `types` interface containing both `tcp-socket` and `udp-socket` resources, plus `ip-name-lookup`. The `network` resource is removed entirely; network access is now granted at the world level. `start-*` / `finish-*` pairs collapse as described above. TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` call.
 
 ### `wasi:filesystem`
 

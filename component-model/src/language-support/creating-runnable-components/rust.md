@@ -4,6 +4,8 @@
 
 This page has content for both **WASI P2** and **WASI P3**. Use the tabs below to switch between versions where they differ.
 
+> **P3 toolchain note.** Rust's [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is currently Tier 3 with no prebuilt artifacts; building for it requires constructing the standard library from source. The P3 example on this page therefore uses the library/reactor pattern targeting `wasm32-wasip2`, where [`wit-bindgen`](https://crates.io/crates/wit-bindgen)'s `async` feature handles the P3 binding generation. There is no Rust-idiomatic P3 path for the `fn main()` command-component pattern yet.
+
 </div>
 
 ## Creating a command component
@@ -43,8 +45,6 @@ pub fn main() {
 
 ### 3. Build the component
 
-{{#tabs global="wasi-version" }}
-{{#tab name="WASI P2" }}
 To build the component, use `cargo`:
 
 ```sh
@@ -56,47 +56,16 @@ The component can also be built in release mode:
 ```sh
 cargo build --target=wasm32-wasip2 --release
 ```
-{{#endtab }}
-{{#tab name="WASI P3" }}
-The [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is Tier 3 and requires a nightly Rust toolchain. Install nightly and add the target:
-
-```sh
-rustup toolchain install nightly
-rustup +nightly target add wasm32-wasip3
-```
-
-Build the component:
-
-```sh
-cargo +nightly build --target=wasm32-wasip3
-```
-
-Release mode:
-
-```sh
-cargo +nightly build --target=wasm32-wasip3 --release
-```
-{{#endtab }}
-{{#endtabs }}
 
 ### 4. Run the component with `wasmtime`
 
-{{#tabs global="wasi-version" }}
-{{#tab name="WASI P2" }}
 To run your command component:
 
 ```sh
 wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 ```
-{{#endtab }}
-{{#tab name="WASI P3" }}
-Enable the WASI P3 ABI when running a P3 component:
 
-```sh
-wasmtime run -Sp3 -W component-model-async=y ./target/wasm32-wasip3/debug/runnable-example.wasm
-```
-{{#endtab }}
-{{#endtabs }}
+> For a runnable component that exports the P3 `wasi:cli/run` interface, see the library/reactor pattern below.
 
 ## Enabling a library component to be run via the `wasi:cli/run` interface
 
@@ -177,11 +146,13 @@ interface greet {
 
 world greeter {
     export greet;
-    export wasi:cli/run@0.3.0;
+    export wasi:cli/run@0.3.0-rc-2026-03-15;
 }
 ```
 
 In WASI P3, `wasi:cli/run` is declared as `run: async func() -> result`, so the generated `Guest` trait expects an `async fn`.
+
+> The pin here is `0.3.0-rc-2026-03-15` rather than the published `0.3.0` because Wasmtime, `wit-bindgen`, and other toolchain components currently ship this snapshot of the WIT. They are expected to refresh to `0.3.0` in upcoming releases.
 {{#endtab }}
 {{#endtabs }}
 
@@ -197,6 +168,8 @@ using `wkg`:
 ```sh
 wkg wit fetch
 ```
+
+> For WASI P3, use `wkg` 0.15 or later. Earlier versions fail to decode the `wasi:cli@0.3.0-rc-2026-03-15` package.
 
 At this point, you should have a `wit` folder with a `deps` subfolder and your original `component.wit`.
 
@@ -290,17 +263,19 @@ cargo build --target=wasm32-wasip2 --release
 ```
 {{#endtab }}
 {{#tab name="WASI P3" }}
-The [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is Tier 3 and requires a nightly Rust toolchain:
+Build the component against `wasm32-wasip2` using a nightly Rust toolchain:
 
 ```sh
-cargo +nightly build --target=wasm32-wasip3
+cargo +nightly build --target=wasm32-wasip2
 ```
 
 Release mode:
 
 ```sh
-cargo +nightly build --target=wasm32-wasip3 --release
+cargo +nightly build --target=wasm32-wasip2 --release
 ```
+
+> A nightly toolchain is required because the `wasm-component-ld` bundled with current stable Rust cannot decode the component-type custom section that `wit-bindgen` 0.58 emits for P3 worlds. Nightly ships a newer linker that handles it.
 {{#endtab }}
 {{#endtabs }}
 
@@ -312,18 +287,20 @@ You can run the component with `wasmtime`, and unlike a generic reactor componen
 the interface and function to run (`wasi:cli/run` is detected and used automatically):
 
 ```console
-$ wasmtime run target/wasm32-wasip2/runnable-example.wasm
+$ wasmtime run target/wasm32-wasip2/debug/runnable_example.wasm
 Hello World!
 ```
+
+> Cargo converts hyphens to underscores in library crate names, so the artifact is `runnable_example.wasm` even though the package was created as `runnable-example`.
 {{#endtab }}
 {{#tab name="WASI P3" }}
-Enable the WASI P3 ABI when running a P3 component:
+Enable the WASI P3 ABI when running a P3 component, with Wasmtime 43 or later:
 
 ```console
-$ wasmtime run -Sp3 -W component-model-async=y target/wasm32-wasip3/debug/runnable-example.wasm
+$ wasmtime run -Sp3 -W component-model-async=y target/wasm32-wasip2/debug/runnable_example.wasm
 Hello World!
 ```
 {{#endtab }}
 {{#endtabs }}
 
-> **Version pinning.** WASI P3 tools (wit-bindgen, Wasmtime, jco, and so on) must all target the same WIT version. WASI 0.3.0 is the stable target; some toolchains still ship the `0.3.0-rc-2026-03-15` WIT pending a refresh against the final tag. Mismatched pins surface as confusing `wrong type` errors at instantiation.
+> **Version pinning.** WASI P3 tools (`wit-bindgen`, Wasmtime, jco, and so on) must all target the same WIT version. As of WASI 0.3.0's release on 2026-06-11, `wit-bindgen` 0.58 and Wasmtime 45 still ship the `0.3.0-rc-2026-03-15` snapshot of the WIT; pinning to the published `0.3.0` produces `no exported instance named wasi:cli/run@0.2.6` (or similar) errors at run time until those tools refresh. Use the RC pin until then.

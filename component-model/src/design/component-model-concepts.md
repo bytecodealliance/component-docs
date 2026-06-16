@@ -67,7 +67,7 @@ and a `proxy` world that depends on `imports`.
 
 ### Async, Streams, and Futures
 
-The Component Model includes [`async func`, `stream<T>`, and `future<T>`](./async.md) as native Canonical ABI primitives, introduced alongside WASI P3. Together, they let interfaces express asynchronous operations that compose across component boundaries.
+The Component Model includes [`async func`, `stream<T>`, and `future<T>`](./async.md) as native Canonical ABI primitives, introduced alongside WASI 0.3. Together, they let interfaces express asynchronous operations that compose across component boundaries.
 
 ### Platforms
 

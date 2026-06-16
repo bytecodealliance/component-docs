@@ -1,12 +1,12 @@
 # Async, Streams, and Futures
 
-WASI P3 is built on three new Canonical ABI primitives in the Component Model: `async func`, `stream<T>`, and `future<T>`. Together, they let interfaces express asynchronous operations that compose across component boundaries.
+WASI 0.3 is built on three new Canonical ABI primitives in the Component Model: `async func`, `stream<T>`, and `future<T>`. Together, they let interfaces express asynchronous operations that compose across component boundaries.
 
-For migration mechanics (e.g., how a WASI P2 component maps onto these primitives) see [Migrating from WASI P2 to WASI P3](./migrating-to-p3.md). For the WASI release view, including the full per-interface diff, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev. This page focuses on the Component Model concepts themselves.
+For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). For the WASI release view, including the full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. This page focuses on the Component Model concepts themselves.
 
 ## Native async
 
-The Component Model's Canonical ABI defines how typed values cross component boundaries. Until WASI P3, that vocabulary had no notion of suspension or asynchronous completion; every interface call returned synchronously, and asynchronous I/O was modeled with resources (`pollable` for readiness, `input-stream` and `output-stream` for byte channels) scoped to whichever component obtained them.
+The Component Model's Canonical ABI defines how typed values cross component boundaries. Until WASI 0.3, that vocabulary had no notion of suspension or asynchronous completion; every interface call returned synchronously, and asynchronous I/O was modeled with resources (`pollable` for readiness, `input-stream` and `output-stream` for byte channels) scoped to whichever component obtained them.
 
 That arrangement holds up for two-party interactions, but it falters once components are composed in a chain. If a component awaits work that another component delegates further, the readiness signal has to travel back up the chain. When readiness is expressed as a resource scoped to a single component, the intermediate component is stuck running an event loop purely to forward the wake-up to its caller; the runtime cannot help, because the resource doesn't live in a place the runtime can reach across. This is sometimes called the **sandwich problem**: an async vocabulary that describes a single hop just fine but cannot propagate readiness past one.
 
@@ -40,7 +40,7 @@ A typed handle for a single value that will become available later. Like `stream
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
-## How the primitives work in WASI P3
+## How the primitives work in WASI 0.3
 
 ### Stream plus terminal future
 

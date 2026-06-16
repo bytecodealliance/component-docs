@@ -96,7 +96,7 @@ More precisely, a Preview 1 "component" is a WebAssembly core module with a well
 
 ## Q: What is WASI 0.3?
 
-WASI 0.3 (WASI 0.3) is the latest milestone release of WASI, published on June 11, 2026.
+WASI 0.3 is the latest milestone release of WASI, published on June 11, 2026.
 It rebases WASI's interfaces onto three new Canonical ABI primitives that the Component Model added for this release:
 [`async func`, `stream<T>`, and `future<T>`](../design/async.md).
 The `wasi:io` package is removed; its functionality is now provided by the Component Model directly.

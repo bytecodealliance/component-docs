@@ -29,7 +29,7 @@ WASI 0.3 replaces every `wasi:io` resource with a Canonical ABI primitive. The t
 
 ### Stream-plus-future for reads
 
-A 0.2 read call returned a single `input-stream` resource and surfaced terminal errors only as you consumed it. 0.3 splits those concerns: the call returns a `stream<u8>` for the data and a `future<result<_, error-code>>` for the outcome, packed into a tuple.
+A WASI 0.2 read call returned a single `input-stream` resource and surfaced terminal errors only as you consumed it. WASI 0.3 splits those concerns: the call returns a `stream<u8>` for the data and a `future<result<_, error-code>>` for the outcome, packed into a tuple.
 
 ```wit
 // WASI 0.2 (filesystem read)
@@ -39,11 +39,11 @@ read-via-stream: func(offset: filesize) -> result<input-stream, error-code>;
 read-via-stream: func(offset: filesize) -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
-In 0.3 the caller does not have to drain the stream to learn whether the read finished cleanly; the future resolves either way.
+In WASI 0.3, the caller does not have to drain the stream to learn whether the read finished cleanly; the future resolves either way.
 
 ### Write-direction flip
 
-0.2 write paths handed a guest some host-owned resource (an `output-stream`) and let the guest push bytes into it. 0.3 inverts that: the guest supplies the data as a `stream<u8>` value, and the host returns a `future` that resolves once it has finished consuming the stream.
+WASI 0.2 write paths handed a guest some host-owned resource (an `output-stream`) and let the guest push bytes into it. WASI 0.3 inverts that: the guest supplies the data as a `stream<u8>` value, and the host returns a `future` that resolves once it has finished consuming the stream.
 
 ```wit
 // WASI 0.2: receive an output-stream resource, write into it
@@ -55,7 +55,7 @@ write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 
 ### Two-step calls collapsed
 
-0.2 modeled operations that could suspend as a `start-foo` / `finish-foo` pair, with a `pollable` for readiness in between. 0.3 collapses each pair into a single call:
+WASI 0.2 modeled operations that could suspend as a `start-foo` / `finish-foo` pair, with a `pollable` for readiness in between. WASI 0.3 collapses each pair into a single call:
 
 ```wit
 // WASI 0.2
@@ -84,7 +84,7 @@ handle: async func(request: request) -> result<response, error-code>;
 ```
 
 The `proxy` world is replaced by `service`, and a new `middleware` world both imports and exports the handler.
-- **`wasi:sockets` drops its `network` resource.** Network access is granted at the world level instead of being threaded through every `bind`, `connect`, and DNS lookup. The seven 0.2 socket interfaces consolidate into one `types` interface plus `ip-name-lookup`, and TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` loop.
+- **`wasi:sockets` drops its `network` resource.** Network access is granted at the world level instead of being threaded through every `bind`, `connect`, and DNS lookup. The seven WASI 0.2 socket interfaces consolidate into one `types` interface plus `ip-name-lookup`, and TCP `listen` returns `stream<tcp-socket>` directly instead of requiring a separate `accept` loop.
 
 Smaller per-interface changes — filesystem methods becoming `async func`, the `wasi:clocks` rename pass (`wall-clock` → `system-clock`, `datetime` → `instant`), the `max-len` rename in `wasi:random`, the new shared `wasi:cli/types` interface — are documented in the WASI.dev page linked above.
 

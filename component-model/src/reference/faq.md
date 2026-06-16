@@ -86,7 +86,7 @@ which uses WebAssembly Interface Types (WIT).
 Preview 3 (WASI 0.3, released June 11, 2026) adds native async to the Component Model:
 `async func`, `stream<T>`, and `future<T>` are now Canonical ABI primitives, and the `wasi:io` package is removed.
 See [Async, Streams, and Futures](../design/async.md) for the conceptual underpinnings
-and [Migrating from WASI P2 to WASI P3](../design/migrating-to-p3.md) for what changes for an existing component.
+and [Migrating from WASI 0.2 to WASI 0.3](../design/migrating-to-p3.md) for what changes for an existing component.
 
 Many programming language toolchains may only support Preview 1 components natively,
 but this isn't a problem in practice as Preview 1 components can be *adapted* into Preview 2 components automatically.
@@ -94,9 +94,9 @@ but this isn't a problem in practice as Preview 1 components can be *adapted* in
 While somewhat confusing, a WASI Preview 1 "component" is in fact a *WebAssembly core module*.
 More precisely, a Preview 1 "component" is a WebAssembly core module with a well-defined set of imports and exports ([legacy specification][wasi-p1]).
 
-## Q: What is WASI P3?
+## Q: What is WASI 0.3?
 
-WASI P3 (WASI 0.3) is the latest milestone release of WASI, published on June 11, 2026.
+WASI 0.3 (WASI 0.3) is the latest milestone release of WASI, published on June 11, 2026.
 It rebases WASI's interfaces onto three new Canonical ABI primitives that the Component Model added for this release:
 [`async func`, `stream<T>`, and `future<T>`](../design/async.md).
 The `wasi:io` package is removed; its functionality is now provided by the Component Model directly.
@@ -106,23 +106,23 @@ The `wasi:http` handler is an `async func` returning a response;
 stdin, stdout, and stderr use `stream<u8>`;
 and async operations propagate readiness across component boundaries without each component running its own event loop.
 
-For a per-interface overview of what changed, see [WASI P3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
+For a per-interface overview of what changed, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
 
-## Q: Do I need to migrate from WASI P2 to WASI P3?
+## Q: Do I need to migrate from WASI 0.2 to WASI 0.3?
 
 Not immediately.
-WASI P3 runtimes can polyfill P2 by mapping P2 imports onto native P3 primitives at the host boundary,
-and Wasmtime's `wasmtime serve` already runs both P3 and P2 components from the same binary, dispatching per component.
+WASI 0.3 runtimes can polyfill 0.2 by mapping 0.2 imports onto native 0.3 primitives at the host boundary,
+and Wasmtime's `wasmtime serve` already runs both 0.3 and 0.2 components from the same binary, dispatching per component.
 
 Migrating is the right call when you want composable async across component boundaries
 or the newer interface shapes — in particular, `wasi:http`'s collapse of nine resources down to two.
 
-See [Migrating from WASI P2 to WASI P3](../design/migrating-to-p3.md) for the concept mapping
+See [Migrating from WASI 0.2 to WASI 0.3](../design/migrating-to-p3.md) for the concept mapping
 and per-interface highlights.
 
 ## Q: What happened to `wasi:io`?
 
-WASI P3 removes the `wasi:io` package entirely.
+WASI 0.3 removes the `wasi:io` package entirely.
 The resources it provided (`pollable`, `input-stream`, and `output-stream`)
 are replaced by the Component Model's native Canonical ABI primitives
 `future<T>`, `stream<u8>`, and `stream<u8>` (used as a function parameter), respectively.

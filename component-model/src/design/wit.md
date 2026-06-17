@@ -538,6 +538,9 @@ As with `use` directives, you can `include` worlds from other packages.
 
 A package is a set of interfaces and worlds,
 potentially defined across multiple files.
+All files are contained in some package, 
+which is declared either directly in that file or in a peer file in the same directory.
+
 To declare a package, use the `package` directive to specify the package ID.
 A package ID must include a namespace and name, separated by a colon,
 and may optionally include a [semver](https://semver.org/)-compliant version number:

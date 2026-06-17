@@ -251,5 +251,3 @@ With this, we have successfully built and run a basic WebAssembly component with
 [crates-wasmtime]: https://crates.io/crates/wasmtime
 [repo-component-docs]: https://github.com/bytecodealliance/component-docs
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
-[!NOTE]: #
-[!WARNING]: #

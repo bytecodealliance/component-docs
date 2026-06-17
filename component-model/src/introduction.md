@@ -93,5 +93,3 @@ The [WASI.dev roadmap](https://wasi.dev/roadmap) tracks upcoming releases.
 If you find a mistake, omission, ambiguity, or other problem, please let us know via [GitHub issues](https://github.com/bytecodealliance/component-docs/issues).
 
 If you'd like to contribute content to the guide, please see the [contribution guide](https://github.com/bytecodealliance/component-docs/blob/main/CONTRIBUTING.md) for information on how to contribute.
-
-[!NOTE]: #

@@ -311,7 +311,3 @@ With the help of `jco`, we have:
 [string-reverse-package-json]: https://github.com/bytecodealliance/jco/blob/main/examples/components/string-reverse/package.json#L6
 [ts-decl-file]: https://www.typescriptlang.org/docs/handbook/declaration-files/deep-dive.html#declaration-file-theory-a-deep-dive
 [wasi]: https://wasi.dev/
-
-[!NOTE]: #
-[!TIP]: #
-[!WARNING]: #

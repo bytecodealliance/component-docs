@@ -203,5 +203,3 @@ expanded enum.
 Another extension of this tutorial could be to remove the `op` enum and instead modify
 `eval-expression` to take in a string that can then be parsed to determine which operator component
 to call. Maybe this parser is a component of its own?!
-
-[!NOTE]: #

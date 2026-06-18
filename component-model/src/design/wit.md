@@ -537,8 +537,8 @@ As with `use` directives, you can `include` worlds from other packages.
 ## Packages
 
 A package is a set of interfaces and worlds,
-potentially defined across multiple files.
-All files are contained in some package, 
+potentially defined across multiple files in the same directory.
+Each WIT file is associated with one package, 
 which is declared either directly in that file or in a peer file in the same directory.
 
 To declare a package, use the `package` directive to specify the package ID.

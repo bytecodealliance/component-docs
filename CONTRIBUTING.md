@@ -16,6 +16,7 @@ This repository also makes use of mdBook plugins. To install mdBook and the plug
 cargo install --version 0.4.21 mdbook
 cargo install --version 0.6.7 mdbook-alerts
 cargo install --version 0.7.7 mdbook-linkcheck
+cargo install --version 0.1.13 mdbook-tabs
 ```
 
 [cargo]: https://doc.rust-lang.org/cargo

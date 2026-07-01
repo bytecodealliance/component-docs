@@ -233,6 +233,3 @@ to the Wasmtime runtime; other runtimes may express things differently.
     ```
 
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
-
-[!NOTE]: #
-[!WARNING]: #

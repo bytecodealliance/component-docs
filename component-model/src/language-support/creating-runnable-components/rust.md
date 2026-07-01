@@ -133,8 +133,6 @@ or platforms can use the `greet` interface export. More importantly, the compone
 recognized as a generically runnable component thanks to `wasi:cli/run`, so it can work
 with any tooling (ex. `wasmtime run`) that supports/recognizes the `wasi:cli` interface.
 
-[!WARNING]: #
-
 ### 3. Write the code for the component
 
 The following code can be inserted into `runnable-example/src/lib.rs`:

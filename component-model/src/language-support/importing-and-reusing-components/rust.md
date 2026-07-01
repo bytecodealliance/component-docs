@@ -101,5 +101,3 @@ As the import is unfulfilled, the `calculator.wasm` component could not run by i
 
 The process of fulfilling imports via other component's exports is called "composition". Learn more about how to compose the calculator.wasm
 with an adder.wasm into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
-
-[!NOTE]: #

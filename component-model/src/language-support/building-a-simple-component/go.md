@@ -324,6 +324,3 @@ A successful run should show the following output
 
 [example-host]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/example-host
 [rust]: https://www.rust-lang.org/learn/get-started
-
-[!NOTE]: #
-[!WARNING]: #

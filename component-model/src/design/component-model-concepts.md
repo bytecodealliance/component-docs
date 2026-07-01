@@ -60,7 +60,7 @@ must be invoked in an environment that implements those interfaces.
 
  A [_package_](./packages.md) is a set of WIT files
 containing a related set of interfaces and worlds.
- 
+
 For example, the [wasi-http](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/proxy.wit) package includes
 an `imports` world encapsulating the interfaces that an HTTP proxy depends on,
 and a `proxy` world that depends on `imports`.
@@ -106,5 +106,3 @@ standardizing the functionality components depend on.
 [wasi-cli-stdio]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/stdio.wit
 [wasi-cli-command]: https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/command.wit
 [wasi-http]: https://github.com/WebAssembly/WASI/tree/main/proposals/http
-
-[!NOTE]: #

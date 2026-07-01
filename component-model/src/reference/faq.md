@@ -142,5 +142,3 @@ Please contribute to the Component Book by filing your question (or one that you
 as [an issue on GitHub][gh-issues-new].
 
 [gh-issues-new]: https://github.com/bytecodealliance/component-docs/issues/new
-
-[!NOTE]: #

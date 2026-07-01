@@ -293,7 +293,3 @@ With `jco transpile`, any WebAssembly binary (compiled from any language) can be
 [wasm-core-module]: https://webassembly.github.io/spec/core/binary/modules.html
 [core-wasm]: https://webassembly.github.io/spec/core/
 [ts-decl-file]: https://www.typescriptlang.org/docs/handbook/declaration-files/deep-dive.html#declaration-file-theory-a-deep-dive
-
-[!TIP]: #
-[!NOTE]: #
-[!WARNING]: #

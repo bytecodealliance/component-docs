@@ -133,5 +133,3 @@ You can find another example of a Python host usage via `wasmtime-py` in the [co
 [add-wasm]: https://github.com/bytecodealliance/component-docs/blob/main/component-model/examples/example-host/add.wasm
 
 [adder-wit]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
-
-[!NOTE]: #

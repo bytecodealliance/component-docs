@@ -222,6 +222,3 @@ wasmtime run ./dist/main.wasm
 Check out the [componentize-dotnet docs][componentize-dotnet-docs] for more configuration options.
 
 [componentize-dotnet-docs]: https://github.com/bytecodealliance/componentize-dotnet
-
-[!NOTE]: #
-[!WARNING]: #

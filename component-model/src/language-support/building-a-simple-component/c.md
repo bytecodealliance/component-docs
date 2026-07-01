@@ -408,3 +408,5 @@ docker run --rm \
   -v "$(pwd)/../example-host/add.wasm":/component/add.wasm:ro \
   example-c-host:latest 40 2 /component/add.wasm
 ```
+
+[!NOTE]: #

@@ -1,7 +1,6 @@
 [book]
 authors = ["Bytecode Alliance"]
 language = "en"
-multilingual = false
 src = "src"
 title = "The WebAssembly Component Model"
 
@@ -33,8 +32,6 @@ level = 1
 "/language-support/rust.html" = "/language-support/building-a-simple-component/rust.html"
 "/language-support/wat.html" = "/language-support/building-a-simple-component/wat.html"
 
-[preprocessor.alerts]
-
 [preprocessor.tabs]
 
-[output.linkcheck]
+[output.linkcheck2]

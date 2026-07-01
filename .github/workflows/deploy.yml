@@ -21,24 +21,18 @@ on:
         description: |
           The domain to which to publish (ex. 'component-model.bytecodealliance.org')
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: {}
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  MDBOOK_VERSION: 0.4.21
-  MDBOOK_ALERTS_VERSION: 0.6.7
-  MDBOOK_LINKCHECK_VERSION: 0.7.7
-  ARTIFACT_PATH: ./component-model/book/html
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -53,6 +47,9 @@ jobs:
   deploy:
     if: ${{ github.repository_owner == 'bytecodealliance' }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     needs:
       - build
     environment:

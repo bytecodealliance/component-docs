@@ -7,7 +7,11 @@ WASI 0.3 adds new Canonical ABI primitives to the Component Model that enable as
 
 These new types let interfaces express asynchronous operations that compose across component boundaries.
 
-For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). For the WASI release view, including the full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. This page focuses on the Component Model concepts themselves.
+For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). 
+
+For the a closer look at WASI 0.3 release, including a full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. 
+
+This page focuses on the Component Model concepts themselves.
 
 ## Native async
 

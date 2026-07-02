@@ -9,9 +9,12 @@ These new types let interfaces express asynchronous operations that compose acro
 
 For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). 
 
-For the a closer look at WASI 0.3 release, including a full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. 
+For a closer look at the WASI 0.3 release, including a full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. 
 
 This page focuses on the Component Model concepts themselves.
+
+> [!NOTE]
+> WASI 0.3 builds on WASI 0.2 rather than replacing it. Runtimes can host both versions side by side, and a 0.3 host can polyfill 0.2 imports at the boundary, so applications can migrate incrementally as toolchains and dependencies land 0.3 support.
 
 ## The async problem that WASI 0.3 solves
 
@@ -32,6 +35,7 @@ A WIT function declared `async` tells the runtime that the call may suspend befo
 ```diff
 - handle: func(request: request) -> result<response, error-code>;
 + handle: async func(request: request) -> result<response, error-code>;
+```
 
 Code generated from the WIT picks up each language's natural async idiom: `async fn` in Rust, a `Promise`-returning function in JavaScript, a coroutine in Python.
 
@@ -39,7 +43,7 @@ Code generated from the WIT picks up each language's natural async idiom: `async
 
 A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource (as opposed to WASI 0.2) -- it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer. 
 
-The same value can also be passed straight through a one or more components without those component(s) having to relay any wake-ups.
+The same value can also be passed straight through one or more intermediate components without those components having to relay any wake-ups.
 
 ```wit
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
@@ -49,7 +53,7 @@ read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 
 A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. 
 
-Note that synchronous functions which return `future<T>`s *cannot* block; the caller can awaits the result when it needs it.
+Note that synchronous functions which return `future<T>`s *cannot* block; the caller can await the result when it needs it.
 
 ```wit
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
@@ -59,7 +63,7 @@ write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 
 ### Stream plus terminal future
 
-Reads return both a data channel and a completion handle, packed into a tuple:
+Reads return both a data channel and a completion handle, packed into a tuple ([`read-via-stream`](https://github.com/WebAssembly/wasi-filesystem/blob/main/wit/types.wit#L308) in `wasi-filesystem`):
 
 ```wit
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
@@ -69,7 +73,7 @@ The two halves are independent. The caller can consume the stream eagerly, sampl
 
 ### Stream parameter, future return
 
-Writes use the symmetric shape: the guest supplies the data as a `stream<u8>` parameter, and the host returns a `future` that resolves once it has consumed the stream. Stdout, stderr, filesystem writes, and TCP sends all follow this shape:
+Writes use the symmetric shape: the guest supplies the data as a `stream<u8>` parameter, and the host returns a `future` that resolves once it has consumed the stream. Stdout, stderr, filesystem writes, and TCP sends all follow this shape ([`write-via-stream`](https://github.com/WebAssembly/wasi-filesystem/blob/main/wit/types.wit#L320) in `wasi-filesystem`):
 
 ```wit
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;

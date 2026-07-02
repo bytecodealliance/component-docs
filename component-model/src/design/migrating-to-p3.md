@@ -10,7 +10,7 @@ Not immediately -- WASI 0.2 can be used in hosts just as before, WASI 0.3 is a p
 
 Separately, WASI 0.3 runtimes can polyfill 0.2 by mapping 0.2 imports onto native 0.3 primitives at the host boundary, and Wasmtime's `wasmtime serve` already runs both 0.3 and 0.2 components from the same binary, dispatching per component. Migration is the right call when you want:
 
-- Composable async across component boundaries (the [sandwich problem](./async.md#native-async) goes away).
+- Composable async across component boundaries (the [sandwich problem](./async.md#the-async-problem-that-wasi-03-solves) goes away).
 - The newer interface shapes — in particular, `wasi:http`'s collapse of nine resources down to two.
 - First-class support in 0.3-targeted toolchains as they continue to land.
 
@@ -94,13 +94,11 @@ Smaller per-interface changes — filesystem methods becoming `async func`, the 
 
 | Tool          | Minimum                                                         | Notes                                                               |
 | ------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Wasmtime      | 43+ for `wasmtime run`; 44+ for `wasmtime serve`                | Enable with `-Sp3 -W component-model-async=y`.                      |
+| Wasmtime      | 46+                                                             | WASI 0.3 and `component-model-async` are on by default.              |
 | `wit-bindgen` | 0.46+                                                           | Use the `async` feature for 0.3 binding generation.                  |
 | jco           | latest                                                          | 0.3 host bindings ship in the `preview3-shim` package.               |
-| `wkg`         | 0.15+                                                           | Required to fetch `wasi:cli@0.3.0-rc-2026-03-15` and related packages. |
+| `wkg`         | 0.15+                                                           | Required to fetch `wasi:cli@0.3.0` and related packages.             |
 | Rust          | nightly                                                         | Current stable bundles a `wasm-component-ld` too old for 0.3 outputs of `wit-bindgen` 0.58. |
-
-> **Version pinning.** As of WASI 0.3.0's release on 2026-06-11, Wasmtime and `wit-bindgen` still vendor the `0.3.0-rc-2026-03-15` snapshot of the WIT. Components pinning to the published `0.3.0` will fail to instantiate against current Wasmtime; use the RC pin until those tools refresh.
 
 ## Further reading
 

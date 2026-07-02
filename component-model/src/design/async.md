@@ -23,7 +23,7 @@ Native async primitives help close this expressivity gap. With updated Component
 
 Components can pass futures and streams along without keeping their own event loops running to relay readiness, as was necessary with WASI 0.2.
 
-## The three primitives
+## Async functions, Streams, and Futures
 
 ### `async func`
 

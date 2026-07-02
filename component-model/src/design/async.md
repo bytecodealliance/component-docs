@@ -25,7 +25,7 @@ Components can pass futures and streams along without keeping their own event lo
 
 ## Async functions, Streams, and Futures
 
-### `async func`
+### Async Functions (`async func`)
 
 A WIT function declared `async` tells the runtime that the call may suspend before producing its result. The Canonical ABI handles the suspension and resumption; the guest doesn't see a `pollable`, and the host doesn't see a polling loop.
 

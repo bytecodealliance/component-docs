@@ -11,8 +11,10 @@
   - [Interfaces](./design/interfaces.md)
   - [Worlds](./design/worlds.md)
   - [Packages](./design/packages.md)
+  - [Async, Streams, and Futures](./design/async.md)
 - [WIT By Example](./design/wit-example.md)
 - [WIT Reference](./design/wit.md)
+- [Migrating from WASI 0.2 to WASI 0.3](./design/migrating-to-p3.md)
 
 # Using WebAssembly Components
 

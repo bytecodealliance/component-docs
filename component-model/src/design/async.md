@@ -1,6 +1,11 @@
 # Async, Streams, and Futures
 
-WASI 0.3 is built on three new Canonical ABI primitives in the Component Model: `async func`, `stream<T>`, and `future<T>`. Together, they let interfaces express asynchronous operations that compose across component boundaries.
+WASI 0.3 adds new Canonical ABI primitives to the Component Model that enable async functionality. Components that target WASI 0.3 can use the new features in their WIT files:
+* `async func` 
+* `stream<T>`
+* `future<T>`
+
+These new types let interfaces express asynchronous operations that compose across component boundaries.
 
 For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). For the WASI release view, including the full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. This page focuses on the Component Model concepts themselves.
 

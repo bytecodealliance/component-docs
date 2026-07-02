@@ -29,9 +29,9 @@ Components can pass futures and streams along without keeping their own event lo
 
 A WIT function declared `async` tells the runtime that the call may suspend before producing its result. The Canonical ABI handles the suspension and resumption; the guest doesn't see a `pollable`, and the host doesn't see a polling loop.
 
-```wit
-handle: async func(request: request) -> result<response, error-code>;
-```
+```diff
+- handle: func(request: request) -> result<response, error-code>;
++ handle: async func(request: request) -> result<response, error-code>;
 
 Code generated from the WIT picks up each language's natural async idiom: `async fn` in Rust, a `Promise`-returning function in JavaScript, a coroutine in Python.
 

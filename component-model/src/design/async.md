@@ -19,7 +19,9 @@ The Component Model's Canonical ABI defines how typed values cross component bou
 
 That arrangement holds up for two-party interactions, but it falters once components are composed in a chain. If a component awaits work that another component delegates further, the readiness signal has to travel back up the chain. When readiness is expressed as a resource scoped to a single component, the intermediate component is stuck running an event loop purely to forward the wake-up to its caller; the runtime cannot help, because the resource doesn't live in a place the runtime can reach across. This is sometimes called the **sandwich problem**: an async vocabulary that describes a single hop just fine but cannot propagate readiness past one.
 
-Native primitives close the gap. With `async func`, `stream<T>`, and `future<T>` in the Canonical ABI, scheduling and wake-up propagation become the runtime's job rather than any individual component's. Components can pass futures and streams along the chain without keeping their own event loops running to relay readiness.
+Native async primitives help close this expressivity gap. With updated Component ABI mechanics that enable `async func`, `stream<T>`, and `future<T>` available at the WIT level, scheduling and wake-up propagation become the runtime's job rather than any individual component's. 
+
+Components can pass futures and streams along without keeping their own event loops running to relay readiness, as was necessary with WASI 0.2.
 
 ## The three primitives
 

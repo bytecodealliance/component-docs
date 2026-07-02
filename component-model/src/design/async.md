@@ -45,7 +45,7 @@ The same value can also be passed straight through a one or more components with
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
-### `future<T>`
+### Futures (`future<T>`)
 
 A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. A function returning `future<T>` does not block; the caller awaits the result when it needs it.
 

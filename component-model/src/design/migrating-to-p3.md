@@ -6,7 +6,9 @@ This page covers the mapping between concepts in WASI 0.2 and WASI 0.3. For a WI
 
 ## Do you need to migrate?
 
-Not immediately. WASI 0.3 runtimes can polyfill 0.2 by mapping 0.2 imports onto native 0.3 primitives at the host boundary, and Wasmtime's `wasmtime serve` already runs both 0.3 and 0.2 components from the same binary, dispatching per component. Migration is the right call when you want:
+Not immediately -- WASI 0.2 can be used in hosts just as before, WASI 0.3 is a purely additive change.
+
+Separately, WASI 0.3 runtimes can polyfill 0.2 by mapping 0.2 imports onto native 0.3 primitives at the host boundary, and Wasmtime's `wasmtime serve` already runs both 0.3 and 0.2 components from the same binary, dispatching per component. Migration is the right call when you want:
 
 - Composable async across component boundaries (the [sandwich problem](./async.md#native-async) goes away).
 - The newer interface shapes — in particular, `wasi:http`'s collapse of nine resources down to two.

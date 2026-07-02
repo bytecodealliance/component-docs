@@ -37,7 +37,9 @@ Code generated from the WIT picks up each language's natural async idiom: `async
 
 ### Streams (`stream<T>`)
 
-A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource: it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer. The same value can also be passed straight through a middle component without that component having to relay any wake-ups.
+A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource (as opposed to WASI 0.2) -- it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer. 
+
+The same value can also be passed straight through a one or more components without those component(s) having to relay any wake-ups.
 
 ```wit
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;

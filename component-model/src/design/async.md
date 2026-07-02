@@ -55,7 +55,7 @@ Note that synchronous functions which return `future<T>`s *cannot* block; the ca
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
-## How the primitives work in WASI 0.3
+## A look at async patterns in WASI 0.3
 
 ### Stream plus terminal future
 

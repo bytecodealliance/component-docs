@@ -1,4 +1,4 @@
-# Async, Streams, and Futures
+# Native Async with WASI 0.3
 
 WASI 0.3 adds new Canonical ABI primitives to the Component Model that enable async functionality. Components that target WASI 0.3 can use the new features in their WIT files:
 * `async func` 

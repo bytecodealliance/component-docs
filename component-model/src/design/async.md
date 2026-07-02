@@ -47,7 +47,9 @@ read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 
 ### Futures (`future<T>`)
 
-A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. A function returning `future<T>` does not block; the caller awaits the result when it needs it.
+A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. 
+
+Note that synchronous functions which return `future<T>`s *cannot* block; the caller can awaits the result when it needs it.
 
 ```wit
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;

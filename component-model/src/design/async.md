@@ -13,7 +13,7 @@ For the a closer look at WASI 0.3 release, including a full per-interface diff, 
 
 This page focuses on the Component Model concepts themselves.
 
-## Native async
+## The async problem that WASI 0.3 solves
 
 The Component Model's Canonical ABI defines how typed values cross component boundaries. Until WASI 0.3, that vocabulary had no notion of suspension or asynchronous completion; every interface call returned synchronously, and asynchronous I/O was modeled with resources (`pollable` for readiness, `input-stream` and `output-stream` for byte channels) scoped to whichever component obtained them.
 

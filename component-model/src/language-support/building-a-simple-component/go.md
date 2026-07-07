@@ -54,7 +54,7 @@ $ tree
 ```
 
 Here's a breakdown of what each of these files do:
-- `go.mod` contains a required library of shared WIT types (see [go.bytecodealliance.org/pkg](go.bytecodealliance.org/pkg))
+- `go.mod` contains a required library of shared WIT types (see [go.bytecodealliance.org/pkg](https://go.bytecodealliance.org/pkg))
 - `wit_exports.go` defines the `//go:wasmexport` methods for the Go WebAssembly compiler.
 
 If you try to compile this, you'll get an error from the `wit_exports.go` file:

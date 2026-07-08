@@ -7,7 +7,7 @@ which contains an `add` interface with an `add` function.
 
 Keep in mind that this is a basic intro. For more examples, please see the [componentize-go][componentize-go] repository examples.
 
-If you still have questions, feel free to reach out to to the componentize-go maintainers on [Zulip](https://bytecodealliance.zulipchat.com/).
+If you still have questions, feel free to reach out to to the componentize-go maintainers on [Zulip](https://bytecodealliance.zulipchat.com/) or open an issue on the repository.
 
 ## 1. Install the tools
 

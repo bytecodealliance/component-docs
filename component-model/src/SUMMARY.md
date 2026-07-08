@@ -26,6 +26,7 @@
     - [JavaScript](./language-support/building-a-simple-component/javascript.md)
     - [Python](./language-support/building-a-simple-component/python.md)
     - [Rust](./language-support/building-a-simple-component/rust.md)
+    - [TinyGo](./language-support/building-a-simple-component/tinygo.md)
     - [MoonBit](./language-support/building-a-simple-component/moonbit.md)
     - [WebAssembly Text Format (WAT)](./language-support/building-a-simple-component/wat.md)
     - [Other Languages](./language-support/building-a-simple-component/other-languages.md)

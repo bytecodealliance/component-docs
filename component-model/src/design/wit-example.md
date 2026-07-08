@@ -1,7 +1,7 @@
 # WIT By Example
 
-This section includes two examples to introduce WIT:
-a simpler "clocks" example and a more complicated "filesystems" example.
+This section includes three examples to introduce WIT: a simple "clocks" example, a more elaborate "filesystems" example, and a WASI 0.3 "CLI" example that introduces async functions, streams, and futures.
+
 For a full WIT reference, see [the next section](./wit.md).
 
 ## Clocks
@@ -196,6 +196,90 @@ open-at: func(
 ```
 
 `open-at()` returns a new descriptor, given a path string and flags.
+
+## WASI 0.3 CLI
+
+The two examples above use WIT features that have been part of the language since WASI 0.2.
+WASI 0.3 added three new primitives to the Component Model's Canonical ABI:
+[`async func`, `stream<T>`, and `future<T>`](./async.md).
+This example walks through a simplified version of the
+[`wasi:cli`](https://github.com/WebAssembly/WASI/tree/main/proposals/cli) package,
+which exercises all three.
+
+### Async functions
+
+A function declared `async` may suspend before returning a result.
+The runtime owns the scheduling; the guest sees an ordinary call and the host sees no busy loop:
+
+```wit
+package wasi-example:cli;
+
+interface run {
+  run: async func() -> result;
+}
+```
+
+The `result` return type with no parameters means "either success or failure, with no value attached to either."
+Bindings generators emit each side in the host language's natural async idiom —
+an `async fn` in Rust, a `Promise`-returning function in JavaScript, and so on.
+
+### Streams plus terminal futures
+
+Reading from standard input pairs a `stream<T>` with a `future`:
+
+```wit
+interface stdin {
+  use types.{error-code};
+  read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
+}
+```
+
+The `stream<u8>` delivers bytes incrementally.
+The `future` resolves once the operation has terminated, carrying either success
+(the underscore means "no value attached") or an `error-code` (defined as an `enum` in the `types` interface).
+The two halves are independent:
+the caller can consume the stream eagerly, sample it, or drop it part-way through,
+and the future signals the outcome either way.
+
+Unlike resources, `stream<T>` and `future<T>` are *values*.
+They can be returned from functions, accepted as parameters,
+and passed across component boundaries the same way primitive types are.
+
+### Inverted writes
+
+Writing to standard output reverses the direction.
+Instead of the host handing the guest a resource to write into,
+the guest supplies its data as a `stream<u8>` parameter
+and the host returns a `future` that resolves once the bytes are consumed:
+
+```wit
+interface stdout {
+  use types.{error-code};
+  write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
+}
+```
+
+This shape — stream parameter, future return — appears throughout WASI 0.3 wherever a guest
+writes data: stdout, stderr, filesystem writes, and TCP sends all follow it.
+
+### Aggregating into a world
+
+A world ties imports and exports together.
+The `command` world below imports the I/O interfaces and exports `run`:
+
+```wit
+world command {
+  import stdin;
+  import stdout;
+  export run;
+}
+```
+
+A component implementing this world supplies an implementation of `run`,
+and from inside that implementation may call `read-via-stream` on stdin and `write-via-stream` on stdout.
+
+For a deeper look at the three primitives, including the composition story that motivated adding them,
+see [Async, Streams, and Futures](./async.md).
 
 ## Further reading
 

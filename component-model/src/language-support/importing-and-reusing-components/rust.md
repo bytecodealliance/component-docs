@@ -56,7 +56,9 @@ To invoke the imported `add` interface from the `calculate` implementation:
 // (but usable) imports (e.g. the add).
 mod bindings {
     use super::Component;
-    wit_bindgen::generate!();
+    wit_bindgen::generate!({
+        generate_all
+    });
     export!(Component);
 }
 

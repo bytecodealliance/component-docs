@@ -62,7 +62,7 @@ To implement the calculator in Rust:
         export!(Component);
     }
 
-    use bindings::exports::docs::rpn::types::{GuestEngine, Operation};
+    use bindings::exports::docs::rpn::types::{Guest, GuestEngine, Operation};
 
     impl GuestEngine for CalcEngine {
         fn new() -> Self {
@@ -101,11 +101,10 @@ To implement the calculator in Rust:
 
     struct Component;
 
-    impl bindings::Guest for Component {
+    impl Guest for Component {
         type Engine = CalcEngine;
     }
 
-    bindings::export!(Component);
     ```
 
 This completes the implementation of the calculator `engine` resource. Run `cargo build --target=wasm32-wasip2` to create a component `.wasm` file.

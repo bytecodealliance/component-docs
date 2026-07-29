@@ -4,7 +4,8 @@
 
 ## An example stack-based Reverse Polish Notation (RPN) calculator
 
-In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.)
+In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) 
+calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.)
 
 A RPN calculator is a stateful entity: a consumer pushes operands and operations onto a stack
 maintained within the calculator, then evaluates the stack to produce a value.
@@ -39,7 +40,20 @@ world calculator {
 
 To implement the calculator in Rust:
 
-1. Create a library component as shown in previous sections, with the WIT given above.
+1. [Create a library component](../building-a-simple-component/rust.md), save the
+   WIT above as `wit/world.wit`, and add `wit-bindgen`:
+
+    ```sh
+    cargo add wit-bindgen
+    ```
+
+    The crate must also use the `cdylib` crate type. Add this section to
+    `Cargo.toml`:
+
+    ```toml
+    [lib]
+    crate-type = ["cdylib"]
+    ```
 
 2. Define a Rust `struct` to represent the calculator state:
 
@@ -57,9 +71,7 @@ To implement the calculator in Rust:
 
     ```rust
     mod bindings {
-        use super::Component;
         wit_bindgen::generate!();
-        export!(Component);
     }
 
     use bindings::exports::docs::rpn::types::{Guest, GuestEngine, Operation};
@@ -97,14 +109,13 @@ To implement the calculator in Rust:
 4. We now have a working calculator type which implements the `engine` contract, but we must still connect that type to the `engine` resource type. This is done by implementing the generated `Guest` trait. For this WIT, the `Guest` trait contains nothing except an associated type. You can use an empty `struct` to implement the `Guest` trait on. Set the associated type for the resource - in our case, `Engine` - to the type which implements the resource trait - in our case, the `CalcEngine` `struct` which implements `GuestEngine`. Then use the `export!` macro to export the mapping:
 
     ```rust
-    // ... bindings & CalcEngine impl code ...
-
     struct Component;
 
     impl Guest for Component {
         type Engine = CalcEngine;
     }
 
+    bindings::export!(Component);
     ```
 
 This completes the implementation of the calculator `engine` resource. Run `cargo build --target=wasm32-wasip2` to create a component `.wasm` file.
@@ -139,7 +150,7 @@ To use the calculator engine in another component, that component must import th
     ```rust
     mod bindings {
         wit_bindgen::generate!({
-            generate_all
+            generate_all,
         });
     }
 
@@ -160,7 +171,7 @@ Building the component as is creates a WebAssembly component with an *unsatisfie
 After building the component, it must be [composed with a `.wasm` component that implements the resource.](../../composing-and-distributing/composing.md). After composition creates a component with no unsatisfied imports, the composed command component can be run with `wasmtime run`.
 
 Alternatively, a host that can provide the `docs:rpn/types` import (and related resource) can also be used to run the component
-in it's "incomplete" state (as the host will "complete" the component by providing the expected import).
+in its "incomplete" state (as the host will "complete" the component by providing the expected import).
 
 ## Implementing and exporting a resource implementation in a host
 
@@ -200,8 +211,20 @@ to the Wasmtime runtime; other runtimes may express things differently.
 
     ```rust
     impl docs::rpn::types::HostEngine for MyHost {
-        fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> { /* ... */ }
-        fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) { /* ... */ }
+        fn new(
+            &mut self,
+        ) -> wasmtime::Result<wasmtime::component::Resource<docs::rpn::types::Engine>> {
+            /* ... */
+        }
+
+        fn push_operand(
+            &mut self,
+            self_: wasmtime::component::Resource<docs::rpn::types::Engine>,
+            operand: u32,
+        ) -> wasmtime::Result<()> {
+            /* ... */
+        }
+
         // etc.
     }
     ```
@@ -220,13 +243,23 @@ to the Wasmtime runtime; other runtimes may express things differently.
 
     ```rust
     impl docs::rpn::types::HostEngine for MyHost {
-        fn new(&mut self) -> wasmtime::component::Resource<docs::rpn::types::Engine> {
-            self.calcs.push(CalcEngine::new()).unwrap() // TODO: error handling
+        fn new(
+            &mut self,
+        ) -> wasmtime::Result<wasmtime::component::Resource<docs::rpn::types::Engine>> {
+            self.calcs.push(CalcEngine::new())
         }
-        fn push_operand(&mut self, self_: wasmtime::component::Resource<docs::rpn::types::Engine>) {
-            let calc_engine = self.calcs.get(&self_).unwrap();
+
+        fn push_operand(
+            &mut self,
+            self_: wasmtime::component::Resource<docs::rpn::types::Engine>,
+            operand: u32,
+        ) -> wasmtime::Result<()> {
+            let calc_engine = self.calcs.get(&self_)?;
             // calc_engine is a CalcEngine - call its functions
+            calc_engine.push_operand(operand);
+            Ok(())
         }
+
         // etc.
     }
     ```

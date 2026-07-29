@@ -138,9 +138,9 @@ To use the calculator engine in another component, that component must import th
 
     ```rust
     mod bindings {
-        use super::Component;
-        wit_bindgen::generate!();
-        export!(Component);
+        wit_bindgen::generate!({
+            generate_all
+        });
     }
 
     use bindings::docs::rpn::types::{Engine, Operation};

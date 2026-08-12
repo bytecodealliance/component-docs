@@ -17,7 +17,7 @@ curl https://wasmtime.dev/install.sh -sSf | bash
 
 [wasmtime]: https://github.com/bytecodealliance/wasmtime#installation
 
-## 2. Creating a Rust WebAssemly project
+## 2. Creating a Rust WebAssembly project
 
 Create a new Rust project with `cargo new`:
 

@@ -47,8 +47,7 @@ To implement the calculator in Rust:
     cargo add wit-bindgen
     ```
 
-    The crate must also use the `cdylib` crate type. Add this section to
-    `Cargo.toml`:
+    Be sure to include the `cdylib` crate type in the `Cargo.toml` as well:
 
     ```toml
     [lib]

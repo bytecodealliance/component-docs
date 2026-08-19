@@ -10,14 +10,33 @@ Contributions are welcome - see [Contributing](./CONTRIBUTING.md) for more info.
 
 ## Related Projects
 
-The Bytecode Alliance maintains several related projects:
+The Bytecode Alliance maintains several related projects across different categories:
 
-- **[wasmtime](https://github.com/bytecodealliance/wasmtime)** - A runtime for WebAssembly components
-- **[wrpc](https://github.com/bytecodealliance/wrpc)** - Wasm component-native RPC framework
-- **[wasm-tools](https://github.com/bytecodealliance/wasm-tools)** - WebAssembly tooling
-- **[wit-bindgen](https://github.com/bytecodealliance/wit-bindgen)** - WIT bindings generator
-- **[cargo-component](https://github.com/bytecodealliance/cargo-component)** - Component tooling
-- **[ComponentizeJS](https://github.com/bytecodealliance/ComponentizeJS)** - JavaScript component tooling
-- **[sample-wasi-http-js](https://github.com/bytecodealliance/sample-wasi-http-js)** - WASI HTTP JavaScript sample
-- **[sample-wasi-http-rust](https://github.com/bytecodealliance/sample-wasi-http-rust)** - WASI HTTP Rust sample
-- **[go-modules](https://github.com/bytecodealliance/go-modules)** - Go modules support
+### Runtimes & Frameworks
+
+| Name | Description |
+|------|-------------|
+| [wasmtime](https://github.com/bytecodealliance/wasmtime) | Runtime for WebAssembly components |
+| [wrpc](https://github.com/bytecodealliance/wrpc) | Wasm component-native RPC framework |
+
+### Tools
+
+| Name | Description |
+|------|-------------|
+| [wasm-tools](https://github.com/bytecodealliance/wasm-tools) | WebAssembly tooling |
+| [wit-bindgen](https://github.com/bytecodealliance/wit-bindgen) | WIT bindings generator |
+| [cargo-component](https://github.com/bytecodealliance/cargo-component) | Component tooling |
+
+### Language Tooling
+
+| Name | Description |
+|------|-------------|
+| [ComponentizeJS](https://github.com/bytecodealliance/ComponentizeJS) | JavaScript component tooling |
+| [go-modules](https://github.com/bytecodealliance/go-modules) | Go modules support |
+
+### Templates & Samples
+
+| Name | Description |
+|------|-------------|
+| [sample-wasi-http-js](https://github.com/bytecodealliance/sample-wasi-http-js) | WASI HTTP JavaScript sample |
+| [sample-wasi-http-rust](https://github.com/bytecodealliance/sample-wasi-http-rust) | WASI HTTP Rust sample |

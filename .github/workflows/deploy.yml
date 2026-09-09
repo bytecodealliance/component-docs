@@ -21,6 +21,10 @@ on:
         description: |
           The domain to which to publish (ex. 'component-model.bytecodealliance.org')
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions: {}
 
 concurrency:

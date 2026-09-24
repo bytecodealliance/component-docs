@@ -27,6 +27,7 @@ without using a higher-level language front-end.
     - [Building a Component with `wit-bindgen` and `wasm-tools`](./language-support/building-a-simple-component/c.md#building-a-component-with-wit-bindgen-and-wasm-tools)
     - [Running a Component from C/C++ Applications](./language-support/building-a-simple-component/c.md#running-a-component-from-cc-applications)
   - [C# Tooling](./language-support/building-a-simple-component/csharp.md)
+  - [Dart Tooling](./language-support/building-a-simple-component/dart.md)
   - [Go Tooling](./language-support/building-a-simple-component/go.md)
   - [JavaScript Tooling](./language-support/building-a-simple-component/javascript.md)
     - [Building a Component with `jco`](./language-support/building-a-simple-component/javascript.md#building-a-component-with-jco)

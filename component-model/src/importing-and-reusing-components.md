@@ -21,6 +21,7 @@ This guide is implemented for various languages:
 
 | Language                                                                                  |
 |-------------------------------------------------------------------------------------------|
+| [Dart](./language-support/importing-and-reusing-components/dart.md)                       |
 | [Rust](./language-support/importing-and-reusing-components/rust.md)                       |
 | [Javascript](./language-support/importing-and-reusing-components/javascript.md)           |
 | [Other languages](./language-support/importing-and-reusing-components/other-languages.md) |

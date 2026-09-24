@@ -53,6 +53,7 @@ This guide is implemented for various languages:
 
 | Language                                                                              |
 |---------------------------------------------------------------------------------------|
+| [Dart](./language-support/creating-runnable-components/dart.md)                       |
 | [Rust](./language-support/creating-runnable-components/rust.md)                       |
 | [Javascript](./language-support/creating-runnable-components/javascript.md)           |
 | [Other Languages](./language-support/creating-runnable-components/other-languages.md) |

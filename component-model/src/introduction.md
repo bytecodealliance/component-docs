@@ -15,11 +15,12 @@ This documentation is aimed at _users_ of the component model: developers of lib
 |--------------------------|----------------------|-------------------|
 | [Why Components?]        | [C/C++]              | [Composing]       |
 | [Components]             | [C#]                 | [Running]         |
-| [Interfaces]             | [Go]                 | [Distributing]    |
-| [Worlds]                 | [JavaScript]         |                   |
+| [Interfaces]             | [Dart]               | [Distributing]    |
+| [Worlds]                 | [Go]                 | [Distributing]    |
+|                          | [JavaScript]         |                   |
 |                          | [Python]             |                   |
 |                          | [Rust]               |                   |
-|                          | [MoonBit]               |                   |
+|                          | [MoonBit]            |                   |
 
 [Why Components?]: ./design/why-component-model.md
 [Components]: ./design/components.md
@@ -28,6 +29,7 @@ This documentation is aimed at _users_ of the component model: developers of lib
 
 [C/C++]: ./language-support/building-a-simple-component/c.md
 [C#]: ./language-support/building-a-simple-component/csharp.md
+[Dart]: ./language-support/building-a-simple-component/dart.md
 [Go]: ./language-support/building-a-simple-component/go.md
 [JavaScript]: ./language-support/building-a-simple-component/javascript.md
 [Python]: ./language-support/building-a-simple-component/python.md

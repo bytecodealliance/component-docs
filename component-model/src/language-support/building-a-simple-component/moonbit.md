@@ -193,12 +193,12 @@ The WIT printed should be similar if not exactly the same as the following:
 package root:component;
 
 world root {
-  export docs:adder/add@0.1.0;
+   export docs:adder/add@0.1.0;
 }
 package docs:adder@0.1.0 {
-  interface add {
-    add: func(x: u32, y: u32) -> u32;
-  }
+   interface add {
+      add: func(x: u32, y: u32) -> u32;
+   }
 }
 ```
 

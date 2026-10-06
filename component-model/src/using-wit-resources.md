@@ -11,28 +11,28 @@ An example of a resource:
 package docs:calc-resource@0.1.0;
 
 interface types {
-    enum operation {
-        add,
-        sub,
-        mul,
-        div,
-    }
+   enum operation {
+      add,
+      sub,
+      mul,
+      div,
+   }
 
-    variant execute-error {
-        divide-by-zero,
-        unexpected(string),
-    }
+   variant execute-error {
+      divide-by-zero,
+      unexpected(string),
+   }
 
-    resource stack-calculator {
-        constructor();
-        push-operand: func(operand: u32);
-        push-operation: func(operation: operation);
-        execute: func() -> result<u32, error>;
-    }
+   resource stack-calculator {
+      constructor();
+      push-operand: func(operand: u32);
+      push-operation: func(operation: operation);
+      execute: func() -> result<u32, error>;
+   }
 }
 
 world calculator {
-    export types;
+   export types;
 }
 ```
 

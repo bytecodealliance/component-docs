@@ -53,7 +53,7 @@ In this case, declarations are _type declarations_ or _function declarations_.
 
 _Record types_ are one of the possible types that can be declared in WIT.
 
-```wit
+```wit nofmt
 record datetime {
     seconds: u64,
     nanoseconds: u32,
@@ -78,7 +78,7 @@ an unsigned 32-bit integer.
 
 The following declares a function named `now`:
 
-```wit
+```wit nofmt
 now: func() -> datetime;
 ```
 
@@ -116,7 +116,7 @@ Let's look at some WIT features used in this interface.
 
 ### Enums
 
-```wit
+```wit nofmt
 enum error-code {
     access,
     bad-descriptor,
@@ -145,7 +145,7 @@ Let's look at the method declarations one at a time:
 
 #### Reading from files
 
-```wit
+```wit nofmt
 read: func(
     length: filesize,
     offset: filesize,
@@ -189,7 +189,7 @@ The `open-at()` method is a constructor, which we know because
 it returns a `descriptor` when it doesn't fail (remember that
 these methods are attached to the resource type `descriptor`):
 
-```wit
+```wit nofmt
 open-at: func(
     path: string,
 ) -> result<descriptor, error-code>;
@@ -215,7 +215,7 @@ The runtime owns the scheduling; the guest sees an ordinary call and the host se
 package wasi-example:cli;
 
 interface run {
-  run: async func() -> result;
+   run: async func() -> result;
 }
 ```
 
@@ -229,8 +229,8 @@ Reading from standard input pairs a `stream<T>` with a `future`:
 
 ```wit
 interface stdin {
-  use types.{error-code};
-  read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
+   use types.{error-code};
+   read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 }
 ```
 
@@ -254,8 +254,8 @@ and the host returns a `future` that resolves once the bytes are consumed:
 
 ```wit
 interface stdout {
-  use types.{error-code};
-  write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
+   use types.{error-code};
+   write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 }
 ```
 
@@ -269,9 +269,9 @@ The `command` world below imports the I/O interfaces and exports `run`:
 
 ```wit
 world command {
-  import stdin;
-  import stdout;
-  export run;
+   import stdin;
+   import stdout;
+   export run;
 }
 ```
 

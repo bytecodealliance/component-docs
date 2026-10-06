@@ -64,7 +64,7 @@ WIT defines special comment formats for documentation:
 
 For example:
 
-```wit
+```wit nofmt
 /// Prints "hello".
 print-hello: func();
 
@@ -124,7 +124,7 @@ WIT defines the following primitive types:
 `list<T>` for any type `T` denotes an ordered sequence of values of type `T`.
 `T` can be any type, built-in or user-defined:
 
-```wit
+```wit nofmt
 list<u8>       // byte buffer
 list<customer> // a list of customers
 ```
@@ -138,7 +138,7 @@ This is similar to Rust `Vec`, or Java `List`.
 For example, a lookup function might return an option in order to allow
 for the possibility that the lookup key wasn't found:
 
-```wit
+```wit nofmt
 option<customer>
 ```
 
@@ -158,7 +158,7 @@ For example, a HTTP request function might return a result,
 with the success case (the `T` type) representing a HTTP response,
 and the error case (the `E` type) representing the various kinds of error that might occur:
 
-```wit
+```wit nofmt
 result<http-response, http-error>
 ```
 
@@ -174,7 +174,7 @@ For example, a `print` function could return an error code if it fails,
 but has nothing to return if it succeeds.
 In this case, you can omit the corresponding type as follows:
 
-```wit
+```wit nofmt
 result<u32>     // no data associated with the error case
 result<_, u32>  // no data associated with the success case
 result          // no data associated with either case
@@ -189,7 +189,7 @@ A `tuple` type is an ordered _fixed-length_ sequence of values of specified type
 It is similar to a [_record_](#records), except that the fields are identified by indices
 instead of by names.
 
-```wit
+```wit nofmt
 tuple<u64, string>      // An integer and a string
 tuple<u64, string, u64> // An integer, then a string, then an integer
 ```
@@ -204,7 +204,7 @@ a `stream<T>` delivers values incrementally:
 the producer pushes elements as they become available,
 and the consumer receives them as they arrive.
 
-```wit
+```wit nofmt
 stream<u8>        // a stream of bytes
 stream<log-entry> // a stream of records
 ```
@@ -230,7 +230,7 @@ that will become available later.
 A function returning a `future<T>` does not block on the value being produced;
 the caller awaits the future when it needs the value.
 
-```wit
+```wit nofmt
 future<u32>                          // a future that will resolve to a u32
 future<result<response, error-code>> // a future that will resolve to either a response or an error
 ```
@@ -256,7 +256,7 @@ A record instance contains a value for every field.
 Field types can be built-in or user-defined.
 The syntax is as follows:
 
-```wit
+```wit nofmt
 record customer {
     id: u64,
     name: string,
@@ -280,7 +280,7 @@ An instance of a variant type matches exactly one case.
 Cases are separated by commas.
 The syntax is as follows:
 
-```wit
+```wit nofmt
 variant allowed-destinations {
     none,
     any,
@@ -303,7 +303,7 @@ and enforce the correct data shape for each tag.
 
 An `enum` type is a variant type where none of the cases have associated data:
 
-```wit
+```wit nofmt
 enum color {
     hot-pink,
     lime-green,
@@ -335,7 +335,7 @@ For example, we could model a blob (binary large object) as a resource.
 The following WIT defines the `blob` resource type,
 which contains a constructor, two methods, and a static function:
 
-```wit
+```wit nofmt
 resource blob {
     constructor(init: list<u8>);
     write: func(bytes: list<u8>);
@@ -362,7 +362,7 @@ and a constructor can be rewritten to a function that returns a value
 owned by the caller.
 For example, the `blob` resource [above](#resources) could be approximated as:
 
-```wit
+```wit nofmt
 resource blob;
 blob-constructor: func(bytes: list<u8>) -> blob;
 blob-write: func(self: borrow<blob>, bytes: list<u8>);
@@ -387,7 +387,7 @@ or returning without transferring ownership to another function.)
 
 A `flags` type is a set of named booleans.
 
-```wit
+```wit nofmt
 flags allowed-methods {
     get,
     post,
@@ -404,7 +404,7 @@ flags allowed-methods {
 You can define a new type alias using `type ... = ...`.
 Type aliases are useful for giving shorter or more meaningful names to types:
 
-```wit
+```wit nofmt
 type buffer = list<u8>;
 type http-result = result<http-response, http-error>;
 ```
@@ -414,7 +414,7 @@ type http-result = result<http-response, http-error>;
 A function is defined by a name and a function type.
 As with record fields, the name is separated from the type by a colon:
 
-```wit
+```wit nofmt
 do-nothing: func();
 ```
 
@@ -422,7 +422,7 @@ The function type is the keyword `func`,
 followed by a parenthesised, comma-separated list of parameters (names and types).
 If the function returns a value, this is expressed as an arrow symbol (`->`) followed by the return type:
 
-```wit
+```wit nofmt
 // This function does not return a value
 print: func(message: string);
 
@@ -434,7 +434,7 @@ lookup: func(store: kv-store, key: string) -> option<string>;
 To express a function that returns multiple values,
 you can use any compound type (such as [tuples](#tuple) or [records](#record)).
 
-```wit
+```wit nofmt
 get-customers-paged: func(cont: continuation-token) -> tuple<list<customer>, continuation-token>;
 ```
 
@@ -445,7 +445,7 @@ or can be declared as an import or export in a [world](#worlds).
 
 A function can be declared `async`, indicating that the call may suspend before producing its result:
 
-```wit
+```wit nofmt
 // An async function returning a result
 handle: async func(request: request) -> result<response, error-code>;
 ```
@@ -464,14 +464,13 @@ enclosed in braces and introduced with the `interface` keyword:
 
 ```wit
 interface canvas {
-    type canvas-id = u64;
+   type canvas-id = u64;
 
-    record point {
-        x: u32,
-        y: u32,
-    }
-
-    draw-line: func(canvas: canvas-id, from: point, to: point);
+   record point {
+      x: u32,
+      y: u32,
+   }
+   draw-line: func(canvas: canvas-id, from: point, to: point);
 }
 ```
 
@@ -486,17 +485,17 @@ The interface can then refer to the types named in the `use`.
 
 ```wit
 interface types {
-    type dimension = u32;
-    record point {
-        x: dimension,
-        y: dimension,
-    }
+   type dimension = u32;
+   record point {
+      x: dimension,
+      y: dimension,
+   }
 }
 
 interface canvas {
-    use types.{dimension, point};
-    type canvas-id = u64;
-    draw-line: func(canvas: canvas-id, from: point, to: point, thickness: dimension);
+   use types.{dimension, point};
+   type canvas-id = u64;
+   draw-line: func(canvas: canvas-id, from: point, to: point, thickness: dimension);
 }
 ```
 
@@ -519,22 +518,22 @@ Imports describe the interfaces or functions that a component depends on.
 
 ```wit
 interface printer {
-    print: func(text: string);
+   print: func(text: string);
 }
 
 interface error-reporter {
-    report-error: func(error-message: string);
+   report-error: func(error-message: string);
 }
 
 world multi-function-device {
-    // The component implements the `printer` interface
-    export printer;
+   // The component implements the `printer` interface
+   export printer;
 
-    // The component implements the `scan` function
-    export scan: func() -> list<u8>;
+   // The component implements the `scan` function
+   export scan: func() -> list<u8>;
 
-    // The component needs to be supplied with an `error-reporter`
-    import error-reporter;
+   // The component needs to be supplied with an `error-reporter`
+   import error-reporter;
 }
 ```
 
@@ -555,8 +554,8 @@ you can use `package/name` syntax:
 
 ```wit
 world http-proxy {
-    export wasi:http/incoming-handler;
-    import wasi:http/outgoing-handler;
+   export wasi:http/incoming-handler;
+   import wasi:http/outgoing-handler;
 }
 ```
 
@@ -573,9 +572,9 @@ Interfaces can be declared inline in a world:
 
 ```wit
 world toy {
-    export example: interface {
-        do-nothing: func();
-    }
+   export example: interface {
+      do-nothing: func();
+   }
 }
 ```
 
@@ -587,12 +586,12 @@ and import all that world's imports.
 
 ```wit
 world glow-in-the-dark-multi-function-device {
-    // The component provides all the same exports, and depends on
-    // all the same imports, as a `multi-function-device`...
-    include multi-function-device;
+   // The component provides all the same exports, and depends on
+   // all the same imports, as a `multi-function-device`...
+   include multi-function-device;
 
-    // ...but also exports a function to make it glow in the dark
-    export glow: func(brightness: u8);
+   // ...but also exports a function to make it glow in the dark
+   export glow: func(brightness: u8);
 }
 ```
 
@@ -602,7 +601,7 @@ As with `use` directives, you can `include` worlds from other packages.
 
 A package is a set of interfaces and worlds,
 potentially defined across multiple files in the same directory.
-Each WIT file is associated with one package, 
+Each WIT file is associated with one package,
 which is declared either directly in that file or in a peer file in the same directory.
 
 To declare a package, use the `package` directive to specify the package ID.
@@ -624,28 +623,32 @@ the package IDs must all match each other.
 ```wit
 // types.wit
 interface types {
-    record request { /* ... */ }
-    record response { /* ... */ }
+   record request {
+      id: usize /* ... */
+   }
+   record response {
+      id: usize /* ... */
+   }
 }
 
 // incoming.wit
 interface incoming-handler {
-    use types.{request, response};
-    // ...
+   use types.{request, response};
+   // ...
 }
 
 // outgoing.wit
 interface outgoing-handler {
-    use types.{request, response};
-    // ...
+   use types.{request, response};
+   // ...
 }
 
 // http.wit
 package documentation:http@1.0.0;
 
 world proxy {
-    export incoming-handler;
-    import outgoing-handler;
+   export incoming-handler;
+   import outgoing-handler;
 }
 ```
 

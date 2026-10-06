@@ -18,6 +18,5 @@ interface types {
         open-at: func(
             path: string,
         ) -> result<descriptor, error-code>;
-
     }
 }

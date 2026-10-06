@@ -33,7 +33,7 @@ WASI 0.3 replaces every `wasi:io` resource with a Canonical ABI primitive. The t
 
 A WASI 0.2 read call returned a single `input-stream` resource and surfaced terminal errors only as you consumed it. WASI 0.3 splits those concerns: the call returns a `stream<u8>` for the data and a `future<result<_, error-code>>` for the outcome, packed into a tuple.
 
-```wit
+```wit nofmt
 // WASI 0.2 (filesystem read)
 read-via-stream: func(offset: filesize) -> result<input-stream, error-code>;
 
@@ -47,7 +47,7 @@ In WASI 0.3, the caller does not have to drain the stream to learn whether the r
 
 WASI 0.2 write paths handed a guest some host-owned resource (an `output-stream`) and let the guest push bytes into it. WASI 0.3 inverts that: the guest supplies the data as a `stream<u8>` value, and the host returns a `future` that resolves once it has finished consuming the stream.
 
-```wit
+```wit nofmt
 // WASI 0.2: receive an output-stream resource, write into it
 get-stdout: func() -> output-stream;
 
@@ -59,7 +59,7 @@ write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 
 WASI 0.2 modeled operations that could suspend as a `start-foo` / `finish-foo` pair, with a `pollable` for readiness in between. WASI 0.3 collapses each pair into a single call:
 
-```wit
+```wit nofmt
 // WASI 0.2
 start-connect: func(network: borrow<network>, remote-address: ip-socket-address) -> result<_, error-code>;
 finish-connect: func() -> result<tuple<input-stream, output-stream>, error-code>;
@@ -77,7 +77,7 @@ The complete per-interface diff lives on [WASI 0.3](https://wasi.dev/releases/wa
 - **`wasi:io` is gone.** The package has no 0.3.0 release. Every resource it exposed (`pollable`, `input-stream`, `output-stream`) is replaced by a Component Model primitive, per the [concept mapping](#concept-mapping) above.
 - **`wasi:http` collapses from nine resources to two.** The incoming/outgoing × request/response/body matrix plus `future-trailers`, `future-incoming-response`, and `response-outparam` all become `request` and `response`, with `stream<u8>` bodies and a `future` for trailers. The handler is now an `async func`:
 
-```wit
+```wit nofmt
 // WASI 0.2
 handle: func(request: incoming-request, response-out: response-outparam);
 

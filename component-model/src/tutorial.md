@@ -36,32 +36,32 @@ These files can be found in the component book repository in the [`examples/tuto
   package docs:adder@0.1.0;
 
   interface add {
-      add: func(x: u32, y: u32) -> u32;
+     add: func(x: u32, y: u32) -> u32;
   }
 
   world adder {
-      export add;
+     export add;
   }
-```
+  ```
 
-```wit
+  ```wit
   // wit/calculator/world.wit
   package docs:calculator@0.1.0;
 
   interface calculate {
-      enum op {
-          add,
-      }
-      eval-expression: func(op: op, x: u32, y: u32) -> u32;
+     enum op {
+        add,
+     }
+     eval-expression: func(op: op, x: u32, y: u32) -> u32;
   }
 
   world calculator {
-      export calculate;
-      import docs:adder/add@0.1.0;
+     export calculate;
+     import docs:adder/add@0.1.0;
   }
 
   world app {
-      import calculate;
+     import calculate;
   }
   ```
 
@@ -142,7 +142,7 @@ default_registry = "ghcr.io"
 
 [namespace_registries]
 # Tell wkg that the component-book WITs can be found at ghcr.io/bytecodealliance/docs
-docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
+docs = { registry = "docs", metadata = { preferredProtocol = "oci", "oci" = { registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
 ```
 
 > [!NOTE]

@@ -4,7 +4,7 @@
 
 ## An example stack-based Reverse Polish Notation (RPN) calculator
 
-In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) 
+In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
 calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.)
 
 A RPN calculator is a stateful entity: a consumer pushes operands and operations onto a stack
@@ -20,7 +20,7 @@ interface types {
         add,
         sub,
         mul,
-        div
+        div,
     }
 
     resource engine {

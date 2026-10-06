@@ -6,6 +6,5 @@ interface add {
 
 world adder {
     include wasi:cli/imports@0.2.0;
-
     export add;
 }

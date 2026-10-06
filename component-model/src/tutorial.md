@@ -42,9 +42,9 @@ These files can be found in the component book repository in the [`examples/tuto
   world adder {
       export add;
   }
-```
+  ```
 
-```wit
+  ```wit
   // wit/calculator/world.wit
   package docs:calculator@0.1.0;
 
@@ -142,7 +142,7 @@ default_registry = "ghcr.io"
 
 [namespace_registries]
 # Tell wkg that the component-book WITs can be found at ghcr.io/bytecodealliance/docs
-docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
+docs = { registry = "docs", metadata = { preferredProtocol = "oci", "oci" = { registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
 ```
 
 > [!NOTE]

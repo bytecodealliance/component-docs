@@ -10,5 +10,6 @@
       },
       queries.injections.source.path = "queries/injections.scm",
     },
+    wit.indent = "   ", # 4 spaces
   },
 }

@@ -16,23 +16,23 @@ In WIT, the resource looks like the following:
 package docs:rpn@0.1.0;
 
 interface types {
-    enum operation {
-        add,
-        sub,
-        mul,
-        div,
-    }
+   enum operation {
+      add,
+      sub,
+      mul,
+      div,
+   }
 
-    resource engine {
-        constructor();
-        push-operand: func(operand: u32);
-        push-operation: func(operation: operation);
-        execute: func() -> u32;
-    }
+   resource engine {
+      constructor();
+      push-operand: func(operand: u32);
+      push-operation: func(operation: operation);
+      execute: func() -> u32;
+   }
 }
 
 world calculator {
-    export types;
+   export types;
 }
 ```
 
@@ -131,7 +131,7 @@ To use the calculator engine in another component, that component must import th
     package docs:rpn-cmd;
 
     world app {
-        import docs:rpn/types@0.1.0;
+       import docs:rpn/types@0.1.0;
     }
     ```
 

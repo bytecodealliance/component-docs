@@ -113,7 +113,7 @@ You should see output like the following:
 package root:component;
 
 world root {
-    export example:string-reverse-upper/reversed-upper@0.1.0;
+   export example:string-reverse-upper/reversed-upper@0.1.0;
 }
 ```
 

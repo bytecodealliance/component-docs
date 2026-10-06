@@ -15,12 +15,12 @@ that component in a calculator component. Here is a partial example world for a 
 package docs:calculator;
 
 interface calculate {
-    eval-expression: func(expr: string) -> u32;
+   eval-expression: func(expr: string) -> u32;
 }
 
 world calculator {
-    import docs:adder/add@0.1.0;
-    export calculate;
+   import docs:adder/add@0.1.0;
+   export calculate;
 }
 ```
 

@@ -127,12 +127,12 @@ contents to `runnable-example/wit/component.wit`:
 package example:runnable;
 
 interface greet {
-    greet: func(name: string) -> string;
+   greet: func(name: string) -> string;
 }
 
 world greeter {
-    export greet;
-    export wasi:cli/run@0.2.7;
+   export greet;
+   export wasi:cli/run@0.2.7;
 }
 ```
 {{#endtab }}
@@ -141,12 +141,12 @@ world greeter {
 package example:runnable;
 
 interface greet {
-    greet: func(name: string) -> string;
+   greet: func(name: string) -> string;
 }
 
 world greeter {
-    export greet;
-    export wasi:cli/run@0.3.0-rc-2026-03-15;
+   export greet;
+   export wasi:cli/run@0.3.0-rc-2026-03-15;
 }
 ```
 

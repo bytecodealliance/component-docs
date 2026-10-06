@@ -8,7 +8,6 @@ has an `add` operation:
 ```wit adder
 package docs:adder@0.1.0;
 
-
 interface add {
     add: func(x: u32, y: u32) -> u32;
 }

@@ -20,7 +20,6 @@ interface calculate {
 
 world calculator {
     import docs:adder/add@0.1.0;
-
     export calculate;
 }
 ```
@@ -32,7 +31,7 @@ custom `wkg.toml` to our project:
 
 ```toml
 [overrides]
-"docs:adder" = { path = "../adder/wit" }  # directory containing the WIT package
+"docs:adder" = { path = "../adder/wit" } # directory containing the WIT package
 ```
 
 After adding this configuration file, when we run `wkg wit fetch`, `wkg` will assume that the package `docs:adder` can be found

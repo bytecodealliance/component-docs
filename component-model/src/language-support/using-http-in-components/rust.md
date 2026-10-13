@@ -4,7 +4,7 @@
 
 Add the `wasm32-wasip2` target to the Rust toolchain.
 
-```rust
+```console
 rustup target add wasm32-wasip2
 ```
 

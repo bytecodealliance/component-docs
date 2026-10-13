@@ -1,15 +1,15 @@
 # Native Async with WASI 0.3
 
 WASI 0.3 adds new Canonical ABI primitives to the Component Model that enable async functionality. Components that target WASI 0.3 can use the new features in their WIT files:
-* `async func` 
+* `async func`
 * `stream<T>`
 * `future<T>`
 
 These new types let interfaces express asynchronous operations that compose across component boundaries.
 
-For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md). 
+For migration mechanics (e.g., how a WASI 0.2 component maps onto these primitives) see [Migrating from WASI 0.2 to WASI 0.3](./migrating-to-p3.md).
 
-For a closer look at the WASI 0.3 release, including a full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev. 
+For a closer look at the WASI 0.3 release, including a full per-interface diff, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
 
 This page focuses on the Component Model concepts themselves.
 
@@ -22,7 +22,7 @@ The Component Model's Canonical ABI defines how typed values cross component bou
 
 That arrangement holds up for two-party interactions, but it falters once components are composed in a chain. If a component awaits work that another component delegates further, the readiness signal has to travel back up the chain. When readiness is expressed as a resource scoped to a single component, the intermediate component is stuck running an event loop purely to forward the wake-up to its caller; the runtime cannot help, because the resource doesn't live in a place the runtime can reach across. This is sometimes called the **sandwich problem**: an async vocabulary that describes a single hop just fine but cannot propagate readiness past one.
 
-Native async primitives help close this expressivity gap. With updated Component ABI mechanics that enable `async func`, `stream<T>`, and `future<T>` available at the WIT level, scheduling and wake-up propagation become the runtime's job rather than any individual component's. 
+Native async primitives help close this expressivity gap. With updated Component ABI mechanics that enable `async func`, `stream<T>`, and `future<T>` available at the WIT level, scheduling and wake-up propagation become the runtime's job rather than any individual component's.
 
 Components can pass futures and streams along without keeping their own event loops running to relay readiness, as was necessary with WASI 0.2.
 
@@ -41,21 +41,21 @@ Code generated from the WIT picks up each language's natural async idiom: `async
 
 ### Streams (`stream<T>`)
 
-A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource (as opposed to WASI 0.2) -- it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer. 
+A typed, asynchronous channel for a sequence of `T` values. Crucially, `stream<T>` is a Canonical ABI *value*, not a resource (as opposed to WASI 0.2) -- it can be returned from a call, accepted as a parameter, and handed from one component to another without giving up ownership of the underlying buffer.
 
 The same value can also be passed straight through one or more intermediate components without those components having to relay any wake-ups.
 
-```wit
+```wit nofmt
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
 ### Futures (`future<T>`)
 
-A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does. 
+A typed handle for a single value that will become available later. Like `stream<T>`, `future<T>` is a value rather than a resource, so it crosses component boundaries the same way a primitive does.
 
 Note that synchronous functions which return `future<T>`s *cannot* block; the caller can await the result when it needs it.
 
-```wit
+```wit nofmt
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 
@@ -65,7 +65,7 @@ write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 
 Reads return both a data channel and a completion handle, packed into a tuple ([`read-via-stream`](https://github.com/WebAssembly/wasi-filesystem/blob/main/wit/types.wit#L308) in `wasi-filesystem`):
 
-```wit
+```wit nofmt
 read-via-stream: func() -> tuple<stream<u8>, future<result<_, error-code>>>;
 ```
 
@@ -75,7 +75,7 @@ The two halves are independent. The caller can consume the stream eagerly, sampl
 
 Writes use the symmetric shape: the guest supplies the data as a `stream<u8>` parameter, and the host returns a `future` that resolves once it has consumed the stream. Stdout, stderr, filesystem writes, and TCP sends all follow this shape ([`write-via-stream`](https://github.com/WebAssembly/wasi-filesystem/blob/main/wit/types.wit#L320) in `wasi-filesystem`):
 
-```wit
+```wit nofmt
 write-via-stream: func(data: stream<u8>) -> future<result<_, error-code>>;
 ```
 

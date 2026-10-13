@@ -8,13 +8,12 @@ has an `add` operation:
 ```wit adder
 package docs:adder@0.1.0;
 
-
 interface add {
-    add: func(x: u32, y: u32) -> u32;
+   add: func(x: u32, y: u32) -> u32;
 }
 
 world adder {
-    export add;
+   export add;
 }
 ```
 
@@ -22,19 +21,19 @@ world adder {
 package docs:calculator@0.1.0;
 
 interface calculate {
-    enum op {
-        add,
-    }
-    eval-expression: func(op: op, x: u32, y: u32) -> u32;
+   enum op {
+      add,
+   }
+   eval-expression: func(op: op, x: u32, y: u32) -> u32;
 }
 
 world calculator {
-    export calculate;
-    import docs:adder/add;
+   export calculate;
+   import docs:adder/add;
 }
 
 world app {
-    import calculate;
+   import calculate;
 }
 ```
 

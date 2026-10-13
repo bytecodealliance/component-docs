@@ -23,6 +23,6 @@ The above component can be made recognizable as "runnable" to `wasi:cli`-aware t
 package runnable:js-component;
 
 world component {
-    export wasi:cli/run@0.2.4;
+   export wasi:cli/run@0.2.4;
 }
 ```

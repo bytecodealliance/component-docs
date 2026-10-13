@@ -1,5 +1,5 @@
 package foo:wasi-http-service;
 
 world target-world {
-  include wasi:http/proxy@0.2.3;
+    include wasi:http/proxy@0.2.3;
 }

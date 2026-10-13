@@ -77,7 +77,7 @@ default_registry = "ghcr.io"
 [namespace_registries]
 # Tell wkg that packages with the `wasi` namespace are in an OCI registry
 # under ghcr.io/webassembly
-wasi = { registry = "wasi",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "webassembly/" } } }
+wasi = { registry = "wasi", metadata = { preferredProtocol = "oci", "oci" = { registry = "ghcr.io", namespacePrefix = "webassembly/" } } }
 ```
 
 As a more generic example, the following configuration instructs `wkg` to use
@@ -89,7 +89,7 @@ default_registry = "ghcr.io"
 
 [namespace_registries]
 # Instruct wkg to use the OCI protocol to fetch packages with the `docs` namespace from ttl.sh/wasm-components
-docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ttl.sh", namespacePrefix = "wasm-components/" } } }
+docs = { registry = "docs", metadata = { preferredProtocol = "oci", "oci" = { registry = "ttl.sh", namespacePrefix = "wasm-components/" } } }
 ```
 
 > Note: the registry name can be referenced in the `package_registry_overrides` section of the `wkg` config

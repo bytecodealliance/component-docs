@@ -4,7 +4,7 @@
 
 ## An example stack-based Reverse Polish Notation (RPN) calculator
 
-In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation) 
+In this section, our example resource will be a [Reverse Polish Notation (RPN)](https://en.wikipedia.org/wiki/Reverse_Polish_notation)
 calculator. (Engineers of a certain vintage will remember this from handheld calculators of the 1970s.)
 
 A RPN calculator is a stateful entity: a consumer pushes operands and operations onto a stack
@@ -16,23 +16,23 @@ In WIT, the resource looks like the following:
 package docs:rpn@0.1.0;
 
 interface types {
-    enum operation {
-        add,
-        sub,
-        mul,
-        div
-    }
+   enum operation {
+      add,
+      sub,
+      mul,
+      div,
+   }
 
-    resource engine {
-        constructor();
-        push-operand: func(operand: u32);
-        push-operation: func(operation: operation);
-        execute: func() -> u32;
-    }
+   resource engine {
+      constructor();
+      push-operand: func(operand: u32);
+      push-operation: func(operation: operation);
+      execute: func() -> u32;
+   }
 }
 
 world calculator {
-    export types;
+   export types;
 }
 ```
 
@@ -131,7 +131,7 @@ To use the calculator engine in another component, that component must import th
     package docs:rpn-cmd;
 
     world app {
-        import docs:rpn/types@0.1.0;
+       import docs:rpn/types@0.1.0;
     }
     ```
 

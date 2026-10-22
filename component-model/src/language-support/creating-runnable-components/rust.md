@@ -4,7 +4,15 @@
 
 This page has content for both **WASI 0.2** and **WASI 0.3**. Use the tabs below to switch between versions where they differ.
 
-> **WASI 0.3 toolchain note.** Rust's [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html) is currently Tier 3 with no prebuilt artifacts; building for it requires constructing the standard library from source. The 0.3 example on this page therefore uses the library/reactor pattern targeting `wasm32-wasip2`, where [`wit-bindgen`](https://docs.rs/wit-bindgen)'s `async` feature handles the 0.3 binding generation. There is no Rust-idiomatic 0.3 path for the `fn main()` command-component pattern yet.
+> **WASI 0.3 toolchain note.** The 0.3 examples on this page use Rust's Tier 2 [`wasm32-wasip3` target](https://doc.rust-lang.org/nightly/rustc/platform-support/wasm32-wasip3.html), which targets WASI 0.3.0. The target is not yet available on stable Rust, so the 0.3 commands on this page use the nightly toolchain. Install the target with:
+>
+> ```sh
+> rustup target add wasm32-wasip3 --toolchain nightly
+> ```
+>
+> Once Rust 1.100 is released (scheduled for 2026-11-12), nightly is no longer required: install the target with `rustup target add wasm32-wasip3` and drop `+nightly` from the `cargo` commands.
+>
+> Running the resulting components requires Wasmtime 46 or later.
 
 </div>
 
@@ -45,6 +53,8 @@ pub fn main() {
 
 ### 3. Build the component
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI 0.2" }}
 To build the component, use `cargo`:
 
 ```sh
@@ -56,16 +66,42 @@ The component can also be built in release mode:
 ```sh
 cargo build --target=wasm32-wasip2 --release
 ```
+{{#endtab }}
+{{#tab name="WASI 0.3" }}
+To build the component, use `cargo` with the `wasm32-wasip3` target on the nightly toolchain:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3
+```
+
+The component can also be built in release mode:
+
+```sh
+cargo +nightly build --target=wasm32-wasip3 --release
+```
+
+> Nightly is only needed until Rust 1.100 is released (scheduled for 2026-11-12); from then on, `cargo build --target=wasm32-wasip3` works on stable.
+{{#endtab }}
+{{#endtabs }}
 
 ### 4. Run the component with `wasmtime`
 
 To run your command component:
 
+{{#tabs global="wasi-version" }}
+{{#tab name="WASI 0.2" }}
 ```sh
 wasmtime run ./target/wasm32-wasip2/debug/runnable-example.wasm
 ```
+{{#endtab }}
+{{#tab name="WASI 0.3" }}
+With Wasmtime 46 or later:
 
-> For a runnable component that exports the 0.3 `wasi:cli/run` interface, see the library/reactor pattern below.
+```sh
+wasmtime run ./target/wasm32-wasip3/debug/runnable-example.wasm
+```
+{{#endtab }}
+{{#endtabs }}
 
 ## Enabling a library component to be run via the `wasi:cli/run` interface
 
@@ -112,7 +148,7 @@ cargo add wit-bindgen
 cargo add wit-bindgen --features async
 ```
 
-The `async` feature enables `wit-bindgen`'s async code generation, which is needed for the 0.3 `async func run()` signature.
+The `async` feature enables `wit-bindgen`'s async code generation, which is needed for the 0.3 `async func run()` signature. Recent `wit-bindgen` releases enable it by default; it is listed explicitly here for older ones.
 {{#endtab }}
 {{#endtabs }}
 
@@ -146,13 +182,9 @@ interface greet {
 
 world greeter {
     export greet;
-    export wasi:cli/run@0.3.0-rc-2026-03-15;
+    export wasi:cli/run@0.3.0;
 }
 ```
-
-In WASI 0.3, `wasi:cli/run` is declared as `run: async func() -> result`, so the generated `Guest` trait expects an `async fn`.
-
-> The pin here is `0.3.0-rc-2026-03-15` rather than the published `0.3.0` because Wasmtime, `wit-bindgen`, and other toolchain components currently ship this snapshot of the WIT. They are expected to refresh to `0.3.0` in upcoming releases.
 {{#endtab }}
 {{#endtabs }}
 
@@ -169,7 +201,7 @@ using `wkg`:
 wkg wit fetch
 ```
 
-> For WASI 0.3, use `wkg` 0.15 or later. Earlier versions fail to decode the `wasi:cli@0.3.0-rc-2026-03-15` package.
+> For WASI 0.3, use `wkg` 0.15 or later. Earlier versions fail to decode the `wasi:cli@0.3.0` package.
 
 At this point, you should have a `wit` folder with a `deps` subfolder and your original `component.wit`.
 
@@ -261,19 +293,19 @@ cargo build --target=wasm32-wasip2 --release
 ```
 {{#endtab }}
 {{#tab name="WASI 0.3" }}
-Build the component against `wasm32-wasip2` using a nightly Rust toolchain:
+To build the component, use `cargo` with the `wasm32-wasip3` target on the nightly toolchain:
 
 ```sh
-cargo +nightly build --target=wasm32-wasip2
+cargo +nightly build --target=wasm32-wasip3
 ```
 
-Release mode:
+The component can also be built in release mode:
 
 ```sh
-cargo +nightly build --target=wasm32-wasip2 --release
+cargo +nightly build --target=wasm32-wasip3 --release
 ```
 
-> A nightly toolchain is required because the `wasm-component-ld` bundled with current stable Rust cannot decode the component-type custom section that `wit-bindgen` 0.58 emits for 0.3 worlds. Nightly ships a newer linker that handles it.
+> Nightly is only needed until Rust 1.100 is released (scheduled for 2026-11-12); from then on, `cargo build --target=wasm32-wasip3` works on stable.
 {{#endtab }}
 {{#endtabs }}
 
@@ -292,13 +324,16 @@ Hello World!
 > Cargo converts hyphens to underscores in library crate names, so the artifact is `runnable_example.wasm` even though the package was created as `runnable-example`.
 {{#endtab }}
 {{#tab name="WASI 0.3" }}
-Enable the WASI 0.3 ABI when running a 0.3 component, with Wasmtime 43 or later:
+You can run the component with Wasmtime 46 or later, which enables WASI 0.3 by default.
+`wasi:cli/run` is detected and used automatically:
 
 ```console
-$ wasmtime run -Sp3 -W component-model-async=y target/wasm32-wasip2/debug/runnable_example.wasm
+$ wasmtime run target/wasm32-wasip3/debug/runnable_example.wasm
 Hello World!
 ```
+
+> Cargo converts hyphens to underscores in library crate names, so the artifact is `runnable_example.wasm` even though the package was created as `runnable-example`.
 {{#endtab }}
 {{#endtabs }}
 
-> **Version pinning.** WASI 0.3 tools (`wit-bindgen`, Wasmtime, jco, and so on) must all target the same WIT version. As of WASI 0.3.0's release on 2026-06-11, `wit-bindgen` 0.58 and Wasmtime 45 still ship the `0.3.0-rc-2026-03-15` snapshot of the WIT; pinning to the published `0.3.0` produces `no exported instance named wasi:cli/run@0.2.6` (or similar) errors at run time until those tools refresh. Use the RC pin until then.
+> **Version pinning.** WASI 0.3 tools (`wit-bindgen`, Wasmtime, jco, and so on) must all target the same WIT version. Wasmtime 46 and later implement `0.3.0`; Wasmtime 43–45 implement the earlier `0.3.0-rc-2026-03-15` snapshot and cannot run components built against `0.3.0`.

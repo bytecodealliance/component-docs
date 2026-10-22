@@ -98,7 +98,7 @@ Smaller per-interface changes — filesystem methods becoming `async func`, the 
 | `wit-bindgen` | 0.46+                                                           | Use the `async` feature for 0.3 binding generation.                  |
 | jco           | latest                                                          | 0.3 host bindings ship in the `preview3-shim` package.               |
 | `wkg`         | 0.15+                                                           | Required to fetch `wasi:cli@0.3.0` and related packages.             |
-| Rust          | nightly                                                         | Current stable bundles a `wasm-component-ld` too old for 0.3 outputs of `wit-bindgen` 0.58. |
+| Rust          | nightly                                                         | Tier 2 `wasm32-wasip3` target. Nightly is no longer required once Rust 1.100 is released (2026-11-12). |
 
 ## Further reading
 

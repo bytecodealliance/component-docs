@@ -80,7 +80,7 @@ A system or platform may expose some or all of the WASI APIs to components.
 
 ### Status
 
-The current stable release of WASI is [WASI 0.3.1](https://github.com/WebAssembly/WASI/releases/tag/v0.3.1).
+The current stable release of WASI is [WASI 0.3.2](https://github.com/WebAssembly/WASI/releases/tag/v0.3.2).
 
 [WASI 0.3](https://github.com/WebAssembly/WASI/blob/v0.3.1/specifications/wasi-0.3.0/Overview.md)
 is based on the WebAssembly Component Model and introduces native async support

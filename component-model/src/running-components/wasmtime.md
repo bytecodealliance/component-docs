@@ -14,7 +14,7 @@ and serving components that implement the [`wasi:http/proxy` world](https://gith
 Wasmtime can also invoke functions exported from a component.
 {{#endtab }}
 {{#tab name="WASI 0.3" }}
-[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. WASI 0.3 runtime support is available in Wasmtime 43 and later, which implements the WASI 0.3 ABI (`async func`, `stream<T>`, `future<T>`). Both `wasmtime run` and `wasmtime serve` can run 0.3 components when the 0.3 ABI is enabled at the command line.
+[Wasmtime](https://github.com/bytecodealliance/wasmtime/) is the reference implementation of the Component Model. Wasmtime 46 and later implement WASI 0.3.0, including the Component Model's async primitives (`async func`, `stream<T>`, `future<T>`), and enable it by default. Both `wasmtime run` and `wasmtime serve` run 0.3 components without extra flags.
 
 Wasmtime supports running components that implement the [`wasi:cli/command` world](https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/command.wit), and serving components that implement either the [`wasi:http/service` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit) or the [`wasi:http/middleware` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit), which both imports and exports the HTTP handler interface. Wasmtime can also invoke functions exported from a component.
 {{#endtab }}
@@ -34,13 +34,13 @@ wasmtime run <path-to-wasm-file>
 > to specify that you are running a component rather than a core module.
 {{#endtab }}
 {{#tab name="WASI 0.3" }}
-To run a 0.3 command component with Wasmtime 43 or later, enable the WASI 0.3 ABI:
+To run a 0.3 command component with Wasmtime 46 or later, execute:
 
 ```sh
-wasmtime run -Sp3 -W component-model-async=y <path-to-wasm-file>
+wasmtime run <path-to-wasm-file>
 ```
 
-`-Sp3` enables WASI 0.3 imports. `-W component-model-async=y` enables the Component Model's async primitives (`async func`, `stream<T>`, `future<T>`).
+WASI 0.3 and the `component-model-async` feature are enabled by default. Wasmtime runs the component as a 0.3 or 0.2 command depending on which version of `wasi:cli/run` it exports.
 {{#endtab }}
 {{#endtabs }}
 
@@ -67,17 +67,17 @@ Try out building and running HTTP components with one of these tutorials
 2. [HTTP Auth Middleware tutorial](https://github.com/fermyon/http-auth-middleware#running-with-wasmtime) - compose a HTTP authentication middleware component with a business logic component
 {{#endtab }}
 {{#tab name="WASI 0.3" }}
-`wasmtime serve` runs 0.3 HTTP components that implement the [`wasi:http/service` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit) or the [`wasi:http/middleware` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit). Pass the same flags that enable the 0.3 ABI for `wasmtime run`:
+`wasmtime serve` runs 0.3 HTTP components that implement the [`wasi:http/service` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit) or the [`wasi:http/middleware` world](https://github.com/WebAssembly/WASI/blob/main/proposals/http/wit/worlds.wit). With Wasmtime 46 or later, no extra flags are needed:
 
 ```sh
-wasmtime serve -Sp3 -W component-model-async=y <path-to-wasm-file>
+wasmtime serve <path-to-wasm-file>
 ```
 
 If the component does not export a 0.3 `service` world, `wasmtime serve` falls back to the WASI 0.2 `wasi:http/proxy` world automatically, so the same binary serves both 0.2 and 0.3 components.
 
 For an overview of the WASI 0.3 HTTP interfaces, see [WASI 0.3](https://wasi.dev/releases/wasi-p3) on WASI.dev.
 
-> **Version pinning.** WASI 0.3 tools (wit-bindgen, Wasmtime, jco, and so on) must all target the same WIT version. WASI 0.3.0 is the stable target; some toolchains still ship the `0.3.0-rc-2026-03-15` WIT pending a refresh against the final tag. Mismatched pins surface as confusing `wrong type` errors at instantiation. See [wit-bindgen #1554](https://github.com/bytecodealliance/wit-bindgen/issues/1554) for tracking.
+> **Version pinning.** WASI 0.3 tools (wit-bindgen, Wasmtime, jco, and so on) must all target the same WIT version. Wasmtime 46 and later implement `0.3.0`; Wasmtime 43–45 implement the earlier `0.3.0-rc-2026-03-15` snapshot and cannot run components built against `0.3.0`. Mismatched pins surface as confusing `wrong type` errors at instantiation.
 {{#endtab }}
 {{#endtabs }}
 

@@ -8,4 +8,5 @@ This guide is implemented for various languages:
 
 | Language                                               |
 |--------------------------------------------------------|
+| [Dart](./language-support/using-http-in-components/dart.md) |
 | [Rust](./language-support/using-http-in-components/rust.md) |

@@ -18,8 +18,8 @@ that component in a calculator component. Here is a partial example world for a 
 
 ### Referencing the package to import
 
-To generate code for multiple wit packages, we need multiple `.wit` files. 
-Unlike the single `.wit` file a previous tutorials stored in the root directory
+To generate code for multiple WIT packages, we need multiple `.wit` files.
+Unlike the single `.wit` file the previous tutorials stored in the root directory
 of your project, complex `.wit` files are typically stored in a `wit/` directory:
 
 ```
@@ -74,7 +74,7 @@ After building a component with `dart run wasm_tools compile`, the `add` interfa
 remains unsatisfied (i.e. imported).
 
 The calculator has taken a dependency on the `add` _interface_, but has not linked the `adder` implementation of
-that interface - this is not like referencing the `Add` Dart class (Indeed, `calculator` could import the `add` interface even if there was no Dart implementation of the WIT file) .
+that interface - this is not like referencing the `Add` Dart class (Indeed, `calculator` could import the `add` interface even if there was no Dart implementation of the WIT file).
 
 You can see this by running [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the calculator's world:
 
@@ -91,9 +91,9 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculate.wasm` component could not run by itself in its current form. The next step is to fulfill the `add` import, so that only `calculate` is exported, and the component can be run.
+As the import is unfulfilled, the `calculate.wasm` component could not run by itself in its current form. The next step is to fulfill the `add` import, creating a runnable component exporting `calculate` without any imports.
 
-The process of fulfilling imports via other component's exports is called "composition". Learn more about how to compose the calculator.wasm
+The process of fulfilling imports via other components' exports is called "composition". Learn more about how to compose the calculator.wasm
 with an adder.wasm into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
 
 [adder world file]: ../../importing-and-reusing-components.md

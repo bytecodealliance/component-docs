@@ -9,7 +9,7 @@ an `adder` world:
 {{#include ../../../examples/tutorial/wit/adder/world.wit}}
 ```
 
-Keep in mind that this is a basic intro. For more examples, please see the [dart-samples][examples]
+Keep in mind that this is a basic intro. For more examples, please see [examples]
 from the `wasm_tools` package or [Creating Runnable Components].
 
 If you still have questions, feel free to open an issue on [the repository][wasm_tools]
@@ -36,7 +36,7 @@ All tools required to create WebAssembly components from Dart can be installed v
 dart pub add wasm_components dev:wasm_tools
 ```
 
-The `wasm_components` package provides runtime support for component models
+The `wasm_components` package provides runtime support for the Component Model
 (like an allocator or async task management), while `wasm_tools` contains tools
 to generate Dart code from `.wit` interface definitions and to compile Dart to
 components.

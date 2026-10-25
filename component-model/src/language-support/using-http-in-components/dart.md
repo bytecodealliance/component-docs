@@ -6,7 +6,7 @@
 
 ### 1. Create a new Dart project
 
-Again, we'll start with a fresh Dart package:
+To begin, we'll start with a fresh Dart package:
 
 ```sh
 dart create -t cli dart_wasm_service
@@ -26,8 +26,8 @@ The following code can be inserted into `bin/dart_wasm_service.dart`:
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:wasi/src/components/wasi_http_service.dart';
-import 'package:wasi/src/components/wasi_http.dart';
+import 'package:wasi/http.dart';
+import 'package:wasi/http/service.dart';
 import 'package:wasm_components/wasm_components.dart';
 
 void main() {

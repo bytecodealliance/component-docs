@@ -16,7 +16,7 @@ This documentation is aimed at _users_ of the component model: developers of lib
 | [Why Components?]        | [C/C++]              | [Composing]       |
 | [Components]             | [C#]                 | [Running]         |
 | [Interfaces]             | [Dart]               | [Distributing]    |
-| [Worlds]                 | [Go]                 | [Distributing]    |
+| [Worlds]                 | [Go]                 |                   |
 |                          | [JavaScript]         |                   |
 |                          | [Python]             |                   |
 |                          | [Rust]               |                   |

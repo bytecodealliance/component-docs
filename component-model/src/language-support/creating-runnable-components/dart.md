@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0-251.0.dev` or later.
+> This guide requires Dart version `3.14.0` or later.
 
 ## Creating a command component
 
@@ -19,8 +19,6 @@ dart create -t cli dart_wasm_cli
 ```
 
 To configure this package for WebAssembly components, add tooling dependencies.
-Additionally, the `wasi` package provides generated bindings to WASI definitions,
-meaning that running `dart run wasm_tools witgen` won't be necessary.
 
 ```sh
 dart pub add wasi wasm_components dev:wasm_tools
@@ -66,6 +64,10 @@ To build the component, use `wasm_tools compile`:
 dart run wasm_tools compile bin/dart_wasm_cli.dart
 ```
 
+> [!TIP]
+> Because this program uses the `wasi` package for bindings to WASI
+> definitions, running `dart run wasm_tools witgen` is not necessary.
+
 The [link hook] of the `wasi` package detects that this Dart program defines a
 command component and configures the relevant imports and exports.
 This allows the component to target `wasi:cli/command@0.3.0`.
@@ -74,8 +76,9 @@ This allows the component to target `wasi:cli/command@0.3.0`.
 
 To run your command component:
 
-```sh
-wasmtime run bin/dart_wasm_cli.wasm
+```console
+$ wasmtime run bin/dart_wasm_cli.wasm
+Hello world!
 ```
 
 [link hook]: https://github.com/simolus3/wasm.dart/blob/ec9f801ebe258fc4c8dc0dceec35af8b9447627f/pkg/wasi/hook/link.dart#L17-L21

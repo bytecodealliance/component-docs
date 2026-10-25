@@ -2,14 +2,14 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0-251.0.dev` or later.
+> This guide requires Dart version `3.14.0` or later.
 
 ## Importing an interface
 
-The world file (`wit/world.wit`) we generated doesn't specify any imports.
-If your component consumes other components, you can edit the `world.wit` file to import their interfaces.
+The simple [adder world file] doesn't specify any imports.
+If your component consumes other components, you can edit the relevant `.wit` file to import their interfaces.
 
-For example, suppose you have created and built the adder component as explained in the earlier tutorials and want to use
+For example, suppose you have created and built the adder component as explained in the [earlier tutorials] and want to use
 that component in a calculator component. Here is a partial example world for a calculator that imports the add interface:
 
 ```wit
@@ -18,8 +18,9 @@ that component in a calculator component. Here is a partial example world for a 
 
 ### Referencing the package to import
 
-To generate code for multiple wit packages, we need multiple `.wit` files. Treating the
-calculator as the entrypoint, use a file structure like this:
+To generate code for multiple wit packages, we need multiple `.wit` files. 
+Unlike the single `.wit` file a previous tutorials stored in the root directory
+of your project, complex `.wit` files are typically stored in a `wit/` directory:
 
 ```
 pubspec.yaml
@@ -38,8 +39,9 @@ dart run wasm_tools witgen -i ./wit -w "docs:calculator/calculator"
 
 ### Calling the import from Dart
 
-Now the declaration of `add` in the adder's WIT file is visible as an import when
-defining the `Calculate` component:
+Because the `calculator` world imports the `add` interface, the declaration of
+`add` in the adder's WIT file is visible as an import when defining the
+`Calculate` component:
 
 ```dart
 import 'package:dart_wasm_adder/src/components/docs_adder.dart';
@@ -68,8 +70,8 @@ final class const _Calculator({required final Add add}) implements Calculate {
 
 ### Fulfilling the import
 
-When you build this using `dart run wasm_tools compile`, the `add` interface remains unsatisfied
-(i.e. imported).
+After building a component with `dart run wasm_tools compile`, the `add` interface
+remains unsatisfied (i.e. imported).
 
 The calculator has taken a dependency on the `add` _interface_, but has not linked the `adder` implementation of
 that interface - this is not like referencing the `Add` Dart class (Indeed, `calculator` could import the `add` interface even if there was no Dart implementation of the WIT file) .
@@ -93,3 +95,6 @@ As the import is unfulfilled, the `calculate.wasm` component could not run by it
 
 The process of fulfilling imports via other component's exports is called "composition". Learn more about how to compose the calculator.wasm
 with an adder.wasm into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
+
+[adder world file]: ../../importing-and-reusing-components.md
+[earlier tutorials]: ../building-a-simple-component/dart.md

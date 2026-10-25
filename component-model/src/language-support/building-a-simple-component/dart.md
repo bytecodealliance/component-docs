@@ -1,17 +1,16 @@
 # Dart Tooling
 
-> [!WARNING]
-> Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0-251.0.dev` or later.
-
 WebAssembly components in Dart can be built with the [wasm_tools package](https://github.com/simolus3/wasm.dart/) on pub.dev.
 
 This guide walks through building a Dart component that implements
-the `adder` world defined in the [`adder/world.wit` package][docs-adder].
-The component will implement the `adder` world, which contains an `add` interface with an `add` function.
+an `adder` world:
+
+```wit
+{{#include ../../../examples/tutorial/wit/adder/world.wit}}
+```
 
 Keep in mind that this is a basic intro. For more examples, please see the [dart-samples][examples]
-from the `wasm_tools` package or TODO: running a component.
+from the `wasm_tools` package or [Creating Runnable Components].
 
 If you still have questions, feel free to open an issue on [the repository][wasm_tools]
 or reach out on [Zulip][chat].
@@ -25,17 +24,28 @@ dart create -t cli dart_wasm_adder
 cd dart_wasm_adder
 ```
 
-## 2. Install the tools
+## 2. Install Dart Component Model tooling
 
-All tools requires to create WebAssembly components from Dart can be installed via pub:
+> [!WARNING]
+> Compiling Dart to non-web WebAssembly targets is experimental.
+> This guide requires Dart version `3.14.0` or later.
+
+All tools required to create WebAssembly components from Dart can be installed via `dart pub`:
 
 ```sh
 dart pub add wasm_components dev:wasm_tools
 ```
 
 The `wasm_components` package provides runtime support for component models
-(like an allocator or async task management), while `wasm_tools` contains `witgen`
-and tools to compile Dart to components.
+(like an allocator or async task management), while `wasm_tools` contains tools
+to generate Dart code from `.wit` interface definitions and to compile Dart to
+components.
+
+> [!TIP]
+> The `wasm_tools` Dart package is not affiliated with the
+> [`wasm-tools` Bytecode Alliance project][bca-wasm-tools].
+> You can install both without conflict, as the Dart package is always invoked
+> through `dart run wasm_tools`.
 
 ## 3. Generate bindings for the Wasm component
 
@@ -52,17 +62,39 @@ Generate Dart code and required metadata for the compiler with
 dart run wasm_tools witgen -i adder.wit
 ```
 
-This generates:
+After running the generator, the project structure should look like this:
 
-- `lib/src/components/docs_adder.dart` containing interfaces (only `add` in this example).
-- `lib/src/components/docs_adder_adder.dart` containing bindings for the `adder` world.
-- `lib/src/components/docs_adder_adder.json` containing metadata used to turn WebAssembly
+```
+.
+├── adder.wit
+├── analysis_options.yaml
+├── bin
+│   └── dart_wasm_adder.dart
+├── CHANGELOG.md
+├── lib
+│   └── src
+│       └── components
+│           ├── docs_adder_adder.dart
+│           ├── docs_adder_adder.json
+│           └── docs_adder.dart
+├── pubspec.lock
+├── pubspec.yaml
+└── README.md
+```
+
+All generated code is in `lib/src/components`. Specifically,
+
+- `docs_adder.dart` contains interfaces (only `add` in this example).
+- `docs_adder_adder.dart` contains bindings for the `adder` world.
+- `docs_adder_adder.json` contains metadata used to turn WebAssembly
   modules emitted by `dart2wasm` into components.
 
-The JSON file describe which component imports and exports a Dart program needs.
-The toolchain reads it via [link hooks]. All packages defining component imports
-or exports need one, including the `dart_wasm_adder` package. Create a
-`hook/link.dart` file with these contents:
+The JSON file describes which component imports and exports a Dart program needs.
+The toolchain reads it via [link hooks].
+
+All packages defining component imports or exports need a link hook,
+including the `dart_wasm_adder` package. Create a `hook/link.dart` file with
+these contents:
 
 ```dart
 import 'dart:convert';
@@ -89,7 +121,8 @@ void main(List<String> args) => link(args, (input, output) async {
 
 ## 4. Implement the `add` function
 
-The generated `adderComponent` function is used to define this component:
+Part of the `docs_adder_adder.dart` file generated with `dart run wasm_tools witgen`
+is the `adderComponent` function used to define this component:
 It receives imported interfaces as parameters (in this case, there aren't any)
 and returns the exported interface.
 
@@ -102,7 +135,14 @@ import 'package:dart_wasm_adder/src/components/docs_adder_adder.dart';
 import 'package:wasm_components/wasm_components.dart';
 
 void main() {
-  adderComponent((_) => const _Add());
+  // For components, main() should only contain a single call to a generated
+  // component function.
+  adderComponent((_) {
+    // This callback returns exported interfaces (only Add in this case). It
+    // also receives imports through its parameter, in this example the adder
+    // world has none.
+    return const _Add();
+  });
 }
 
 final class const _Add() implements Add {
@@ -113,7 +153,7 @@ final class const _Add() implements Add {
 }
 ```
 
-## 5. Testing the `add` component
+## 5. Running the `add` component
 
 With all generated bindings set up, the component can be compiled:
 
@@ -133,6 +173,8 @@ With this, we have successfully built and run a basic WebAssembly component with
 
 [wasm_tools]: https://github.com/simolus3/wasm.dart/
 [examples]: https://github.com/simolus3/wasm.dart/tree/main/pkg/wasm_tools/example
+[Creating Runnable Components]: ../creating-runnable-components/dart.md
+[bca-wasm-tools]: https://github.com/bytecodealliance/wasm-tools
 [docs-adder]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
 [chat]: https://bytecodealliance.zulipchat.com/#narrow/channel/394175-SIG-Guest-Languages/topic/Dart.20subgroup/with/614175797
 [link hooks]: https://dart.dev/tools/hooks

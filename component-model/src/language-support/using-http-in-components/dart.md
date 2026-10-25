@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0-251.0.dev` or later.
+> This guide requires Dart version `3.14.0` or later.
 
 ### 1. Create a new Dart project
 
@@ -12,9 +12,7 @@ Again, we'll start with a fresh Dart package:
 dart create -t cli dart_wasm_service
 ```
 
-To configure this package for WebAssembly components, add tooling dependencies.
-Additionally, the `wasi` package provides generated bindings to WASI definitions,
-meaning that running `dart run wasm_tools witgen` won't be necessary.
+To configure this package for WebAssembly components, add tooling dependencies:
 
 ```sh
 dart pub add wasi wasm_components dev:wasm_tools
@@ -81,6 +79,10 @@ To build the component, use `wasm_tools compile`:
 ```sh
 dart run wasm_tools compile bin/dart_wasm_service.dart
 ```
+
+> [!TIP]
+> Because this program uses the `wasi` package for bindings to WASI
+> definitions, running `dart run wasm_tools witgen` is not necessary.
 
 ### 4. Serve the component with `wasmtime`
 

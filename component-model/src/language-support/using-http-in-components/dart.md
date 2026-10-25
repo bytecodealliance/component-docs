@@ -10,6 +10,7 @@ To begin, we'll start with a fresh Dart package:
 
 ```sh
 dart create -t cli dart_wasm_service
+cd dart_wasm_service
 ```
 
 To configure this package for WebAssembly components, add tooling dependencies:

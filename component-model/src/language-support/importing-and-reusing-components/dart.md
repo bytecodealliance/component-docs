@@ -20,7 +20,17 @@ that component in a calculator component. Here is a partial example world for a 
 
 To generate code for multiple WIT packages, we need multiple `.wit` files.
 Unlike the single `.wit` file the previous tutorials stored in the root directory
-of your project, complex `.wit` files are typically stored in a `wit/` directory:
+of your project, complex `.wit` files are typically stored in a `wit/` directory.
+
+Begin with a new Dart project:
+
+```sh
+dart create -t cli dart_calculator
+cd dart_calculator
+dart pub add wasm_components dev:wasm_tools
+```
+
+Next, create a `wit/` directory with this layout (you can copy files from [here][adder world file]):
 
 ```
 pubspec.yaml
@@ -41,14 +51,12 @@ dart run wasm_tools witgen -i ./wit -w "docs:calculator/calculator"
 
 Because the `calculator` world imports the `add` interface, the declaration of
 `add` in the adder's WIT file is visible as an import when defining the
-`Calculate` component:
+`Calculate` component (in `bin/dart_calculator.dart`):
 
 ```dart
-import 'package:dart_wasm_adder/src/components/docs_adder.dart';
-import 'package:dart_wasm_adder/src/components/docs_calculator.dart';
-import 'package:dart_wasm_adder/src/components/docs_calculator_calculator.dart';
-
-import 'package:wasm_components/wasm_components.dart';
+import 'package:dart_calculator/src/components/docs_adder.dart';
+import 'package:dart_calculator/src/components/docs_calculator.dart';
+import 'package:dart_calculator/src/components/docs_calculator_calculator.dart';
 
 void main() {
   calculatorComponent((imports) => _Calculator(add: imports.adderAdd));
@@ -68,6 +76,32 @@ final class const _Calculator({required final Add add}) implements Calculate {
 }
 ```
 
+Again, a link hook needs to define imports and exports:
+
+```dart
+// hook/link.dart
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:hooks/hooks.dart';
+import 'package:wasm_tools/hooks.dart';
+
+void main(List<String> args) => link(args, (input, output) async {
+  if (input.config.buildWasmComponent) {
+    final abi = input.packageRoot.resolve('lib/src/components/docs_calculator_calculator.json');
+
+    output.dependencies.add(abi);
+    output.assets.webAssemblyComponents.add(
+      WasmComponentAsset(
+        encoded: json.decode(
+          File(abi.toFilePath()).readAsStringSync(),
+        ) as Map<String, Object?>,
+      ),
+    );
+  }
+});
+```
+
 ### Fulfilling the import
 
 After building a component with `dart run wasm_tools compile`, the `add` interface
@@ -79,9 +113,9 @@ that interface - this is not like referencing the `Add` Dart class (Indeed, `cal
 You can see this by running [`wasm-tools component wit`](https://github.com/bytecodealliance/wasm-tools/tree/main/crates/wit-component) to view the calculator's world:
 
 ```
-$ dart run wasm_tools compile bin/calculate.dart --no-implicit-wasi-imports
+$ dart run wasm_tools compile bin/dart_calculator.dart --no-implicit-wasi-imports
 
-$ wasm-tools component wit ./bin/calculate.wasm
+$ wasm-tools component wit ./bin/dart_calculator.wasm
 package root:component;
 
 world root {

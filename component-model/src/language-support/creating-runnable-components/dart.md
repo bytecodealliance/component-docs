@@ -16,6 +16,7 @@ To create a command with Dart, start with a fresh Dart package:
 
 ```sh
 dart create -t cli dart_wasm_cli
+cd dart_wasm_cli
 ```
 
 To configure this package for WebAssembly components, add tooling dependencies.

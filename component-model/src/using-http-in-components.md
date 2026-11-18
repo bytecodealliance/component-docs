@@ -6,6 +6,7 @@ This section contains language-specific guides on how to serve a simple HTTP ser
 
 This guide is implemented for various languages:
 
-| Language                                               |
-|--------------------------------------------------------|
+| Language                                                    |
+|-------------------------------------------------------------|
+| [Dart](./language-support/using-http-in-components/dart.md) |
 | [Rust](./language-support/using-http-in-components/rust.md) |

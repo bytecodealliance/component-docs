@@ -15,6 +15,7 @@ This guide is implemented for various languages:
 |----------------------------------------------------------------------------------------|
 | [C/C++](./language-support/building-a-simple-component/c.md)                           |
 | [C#](./language-support/building-a-simple-component/csharp.md)                         |
+| [Dart](./language-support/building-a-simple-component/dart.md)                         |
 | [Go](./language-support/building-a-simple-component/go.md)                             |
 | [JavaScript](./language-support/building-a-simple-component/javascript.md)             |
 | [Python](./language-support/building-a-simple-component/python.md)                     |

@@ -2,9 +2,9 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0` or later.
+> This guide requires Dart `3.14.0` or later and Wasmtime `47.0.0` or later.
 
-### 1. Create a new Dart project
+## 1. Create a new Dart project
 
 To begin, we'll start with a fresh Dart package:
 
@@ -19,7 +19,7 @@ To configure this package for WebAssembly components, add tooling dependencies:
 dart pub add wasi wasm_components dev:wasm_tools
 ```
 
-### 2. Writing the HTTP handler
+## 2. Writing the HTTP handler
 
 The following code can be inserted into `bin/dart_wasm_service.dart`:
 
@@ -43,6 +43,11 @@ final class _RequestHandler(final ServiceImports _imports) implements Handler {
     required Owned<TypesRequest> request,
   }) async {
     final headers = _imports.httpTypes.constructorFields();
+    _imports.httpTypes.methodFieldsAppend(
+      self: headers.borrow(),
+      name: 'content-type',
+      value: utf8.encode('text/html; charset=utf-8'),
+    );
 
     final responseText =
         '''
@@ -73,7 +78,7 @@ This is request number ${_requestId++} served by this server.
 }
 ```
 
-### 3. Build the component
+## 3. Build the component
 
 To build the component, use `wasm_tools compile`:
 
@@ -85,12 +90,19 @@ dart run wasm_tools compile bin/dart_wasm_service.dart
 > Because this program uses the `wasi` package for bindings to WASI
 > definitions, running `dart run wasm_tools witgen` is not necessary.
 
-### 4. Serve the component with `wasmtime`
+## 4. Serve the component with `wasmtime`
 
 To run your HTTP service component:
 
 ```sh
 wasmtime serve bin/dart_wasm_service.wasm -O pooling-max-tables-per-module=4
+```
+
+Then, send a request from another terminal:
+
+```console
+$ curl -s localhost:8080 | grep request
+This is request number 0 served by this server.
 ```
 
 > [!NOTE]

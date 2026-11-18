@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0` or later.
+> This guide requires Dart `3.14.0` or later and Wasmtime `47.0.0` or later.
 
 ## Importing an interface
 
@@ -27,10 +27,11 @@ Begin with a new Dart project:
 ```sh
 dart create -t cli dart_calculator
 cd dart_calculator
-dart pub add wasm_components dev:wasm_tools
+dart pub add wasm_components hooks dev:wasm_tools
 ```
 
-Next, create a `wit/` directory with this layout (you can copy files from [here][adder world file]):
+Next, create a `wit/` directory with this layout, copying the [adder world file] to `adder.wit`
+and the [calculator world file] to `calculator.wit`:
 
 ```
 pubspec.yaml
@@ -106,6 +107,8 @@ void main(List<String> args) => link(args, (input, output) async {
 
 After building a component with `dart run wasm_tools compile`, the `add` interface
 remains unsatisfied (i.e. imported).
+The `--no-implicit-wasi-imports` flag used below omits the `wasi:random` import
+that Dart components get by default.
 
 The calculator has taken a dependency on the `add` _interface_, but has not linked the `adder` implementation of
 that interface - this is not like referencing the `Add` Dart class (Indeed, `calculator` could import the `add` interface even if there was no Dart implementation of the WIT file).
@@ -125,10 +128,12 @@ world root {
 }
 ```
 
-As the import is unfulfilled, the `calculate.wasm` component could not run by itself in its current form. The next step is to fulfill the `add` import, creating a runnable component exporting `calculate` without any imports.
+As the import is unfulfilled, the `dart_calculator.wasm` component could not run by itself in its current form. The next step is to fulfill the `add` import, creating a runnable component exporting `calculate` without any imports.
 
-The process of fulfilling imports via other components' exports is called "composition". Learn more about how to compose the calculator.wasm
-with an adder.wasm into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
+The process of fulfilling imports via other components' exports is called "composition". Learn more about how to compose `dart_calculator.wasm`
+with `dart_wasm_adder.wasm` into a single, self-contained component in the [component composition guide](../../composing-and-distributing/composing.md).
+For a result without any imports, build the adder with `--no-implicit-wasi-imports` too.
 
-[adder world file]: ../../importing-and-reusing-components.md
+[adder world file]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/adder/world.wit
+[calculator world file]: https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator/world.wit
 [earlier tutorials]: ../building-a-simple-component/dart.md

@@ -2,7 +2,7 @@
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0` or later.
+> This guide requires Dart `3.14.0` or later and Wasmtime `47.0.0` or later.
 
 ## Creating a command component
 

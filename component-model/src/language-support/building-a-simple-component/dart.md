@@ -28,18 +28,18 @@ cd dart_wasm_adder
 
 > [!WARNING]
 > Compiling Dart to non-web WebAssembly targets is experimental.
-> This guide requires Dart version `3.14.0` or later.
+> This guide requires Dart `3.14.0` or later and Wasmtime `47.0.0` or later.
 
 All tools required to create WebAssembly components from Dart can be installed via `dart pub`:
 
 ```sh
-dart pub add wasm_components dev:wasm_tools
+dart pub add wasm_components hooks dev:wasm_tools
 ```
 
 The `wasm_components` package provides runtime support for the Component Model
 (like an allocator or async task management), while `wasm_tools` contains tools
 to generate Dart code from `.wit` interface definitions and to compile Dart to
-components.
+components. The `hooks` package is needed for the [link hook](#4-add-a-link-hook).
 
 > [!TIP]
 > The `wasm_tools` Dart package is not affiliated with the
@@ -89,6 +89,8 @@ All generated code is in `lib/src/components`. Specifically,
 - `docs_adder_adder.json` contains metadata used to turn WebAssembly
   modules emitted by `dart2wasm` into components.
 
+## 4. Add a link hook
+
 The JSON file describes which component imports and exports a Dart program needs.
 The toolchain reads it via [link hooks].
 
@@ -119,7 +121,7 @@ void main(List<String> args) => link(args, (input, output) async {
 });
 ```
 
-## 4. Implement the `add` function
+## 5. Implement the `add` function
 
 Part of the `docs_adder_adder.dart` file generated with `dart run wasm_tools witgen`
 is the `adderComponent` function used to define this component:
@@ -131,8 +133,6 @@ For this example, replace `bin/dart_wasm_adder.dart` with:
 ```dart
 import 'package:dart_wasm_adder/src/components/docs_adder.dart';
 import 'package:dart_wasm_adder/src/components/docs_adder_adder.dart';
-
-import 'package:wasm_components/wasm_components.dart';
 
 void main() {
   // For components, main() should only contain a single call to a generated
@@ -153,7 +153,7 @@ final class const _Add() implements Add {
 }
 ```
 
-## 5. Running the `add` component
+## 6. Running the `add` component
 
 With all generated bindings set up, the component can be compiled:
 

@@ -105,25 +105,44 @@ interface](https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/run.w
 of the [`main` function][wiki-entrypoint] to WASI.
 
 To build a command component, [`cargo`][cargo] should be configured to build a `--lib` crate which
-adheres to the `wasi:cli` interface. Crucially the component must export `wasi:cli/run`
+adheres to the `wasi:cli` interface. Crucially the component must export `wasi:cli/run`.
+
+> [!NOTE]
+> There are two ways to build a command component in Rust:
+>
+> - As a *library* crate that explicitly exports `wasi:cli/run`, with bindings generated from WIT.
+>   This is the approach used below, as it works the same way for *any* WIT interface.
+> - As a regular *binary* crate with a `main` function, built for the `wasm32-wasip2` target. In this case
+>   Rust's standard library provides the `wasi:cli/run` export for you, so the WIT world does not need to export it.
+>
+> See [Creating Runnable Components (Rust)](./language-support/creating-runnable-components/rust.md) for more
+> information on both approaches.
 
 To scaffold a new runnable Wasm application:
 
 ```console
-cargo new --lib example
-cd example
+cargo new --lib command
+cd command
 ```
-
-This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator/world.wit) world, which
-imports the `calculate` interface.
 
 In `Cargo.toml`, configure this crate as a `cdylib`:
 
 ```toml
 [lib]
-crate-type = "cdylib"
+crate-type = ["cdylib"]
 ```
-In addition, we'll need to modify the WIT interface that *imports* the calculation function and makes use of it to be runnable:
+
+We'll be generating Rust bindings from WIT interfaces, so add [`wit-bindgen`][wit-bindgen]:
+
+```console
+cargo add wit-bindgen
+```
+
+This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator/world.wit) world, which
+imports the `calculate` interface.
+
+Copy `wit/calculator/world.wit` to `wit/world.wit` in the new project. We'll need to modify the world that *imports*
+the calculation function and makes use of it to be runnable, by exporting `wasi:cli/run`:
 
 ```diff
 world app {
@@ -134,7 +153,7 @@ world app {
 
 Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
-To do this, we can [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. We must first configure wkg to find the `docs:adder` repository:
+To do this, we can use [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. We must first configure `wkg` to find the `docs:adder` package:
 
 ```toml
 # $XDG_CONFIG_HOME/wasm-pkg/config.toml
@@ -150,18 +169,67 @@ docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {re
 >
 > To make your own custom WITs available, please use the [`wkg publish`](./composing-and-distributing/distributing.md#distributing-wit-and-components-by-package-name-with-wkg-publish) command.
 
+Then, fetch the WIT dependencies (both `docs:adder` and the well-known `wasi:cli` package) into `wit/deps`:
+
+```console
+wkg wit fetch
+```
+
 With the project scaffolded, now we must actually *implement* a command line application that:
 
 1. Takes in three arguments: two operands and the name of an operator ("1 2 add")
 2. Parses the operator name and ensures it is supported in the `op` enum
 3. Calls the `calculate` interface's `eval_expression`, passing in the arguments.
 
-For reference, see the [completed code listing](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/).
+Rather than writing a `main` function, the entrypoint of the application is our implementation of the
+`run` function of the `wasi:cli/run` interface. In `src/lib.rs`:
+
+```rust
+mod bindings {
+    use super::Component;
+
+    // Generate bindings for the `app` world in `wit/world.wit`
+    wit_bindgen::generate!({
+        world: "app",
+    });
+
+    export!(Component);
+}
+
+use bindings::docs::calculator::calculate::{self, Op};
+
+/// Struct off of which the implementation will hang (this can be named anything)
+struct Component;
+
+/// Implementation of the `wasi:cli/run` export
+impl bindings::exports::wasi::cli::run::Guest for Component {
+    fn run() -> Result<(), ()> {
+        // TODO: parse the operands and the operator from the command line arguments
+        let (x, y, op) = (1, 2, Op::Add);
+        let res = calculate::eval_expression(op, x, y);
+        println!("{x} + {y} = {res}");
+        Ok(())
+    }
+}
+```
+
+Finally, build the component:
+
+```console
+cargo build --target=wasm32-wasip2 --release
+```
+
+The resulting component can be found at `target/wasm32-wasip2/release/command.wasm`.
+
+For reference, see the [completed code listing](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/),
+which parses the command line arguments with [`clap`][clap].
 
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 [wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
 [wiki-entrypoint]: https://en.wikipedia.org/wiki/Entry_point
 [cargo]: https://doc.rust-lang.org/cargo
+[wit-bindgen]: https://github.com/bytecodealliance/wit-bindgen
+[clap]: https://docs.rs/clap
 
 ## Composing the calculator
 

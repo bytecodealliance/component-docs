@@ -38,6 +38,19 @@ world app {
 }
 ```
 
+The `command` component is a library crate that explicitly exports `wasi:cli/run`, so it uses its own copy of the
+calculator WIT ([`command/wit/world.wit`](./command/wit/world.wit)) in which the `app` world has an additional export:
+
+```wit
+world app {
+    import calculate;
+    export wasi:cli/run@0.2.7;
+}
+```
+
+The WIT dependencies of the `command` component (`docs:adder` and `wasi:cli`) are checked in to `command/wit/deps`,
+and can be refreshed by running [`wkg wit fetch`](https://github.com/bytecodealliance/wasm-pkg-tools) in the `command` directory.
+
 To expand the exercise to add more components, add another operator world, expand the enum, and modify the `command` component to call it.
 
 ## Building and running the example

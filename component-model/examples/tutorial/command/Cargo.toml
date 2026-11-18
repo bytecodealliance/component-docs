@@ -1,16 +1,12 @@
 [package]
 name = "command"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
 
 [dependencies]
 anyhow = "1"
-wit-bindgen-rt = { version = "0.24.0", features = ["bitflags"] }
-clap = { version = "4.3.19", features = ["derive"] }
-
-[package.metadata.component.target]
-path = "../wit/calculator"
-world = "app"
-
-[package.metadata.component.target.dependencies]
-"docs:adder" = { path = "../wit/adder" }
+clap = { version = "4.6.8", features = ["derive"] }
+wit-bindgen = "0.63.0"

@@ -10,9 +10,7 @@ let adder-instance = new docs:adder-impl { };
 let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
 
 // Instantiate a command-impl component that implements the app world.
-// The command component might import other interfaces, such as WASI interfaces, but we want to leave  
-// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.  
-// The command's exports (in this case, `wasi:cli/run`) remain unaffected in the resulting instance.
+// Pass through the reactor's WASI imports so the host can provide them at run time.
 let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
 
 // Export the `wasi:cli/run` interface from the command instance

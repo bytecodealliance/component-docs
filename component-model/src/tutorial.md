@@ -95,28 +95,15 @@ For reference, see the completed
 
 Once complete, the component should import the `add` function from the `adder` world and call it if the `op` enum matches `add`.
 
-## Create a `command` component
+<a id="create-a-command-component"></a>
 
-A _command_ is a component with a specific export that allows it to be executed directly by
-`wasmtime` (or other `wasi:cli` hosts).
+## Target the CLI world with a reactor component
 
-The WebAssembly host expects it to export the [`wasi:cli/run`
-interface](https://github.com/WebAssembly/WASI/blob/main/proposals/cli/wit/run.wit), which is the equivalent
-of the [`main` function][wiki-entrypoint] to WASI.
+This Rust library builds a reactor component that targets the CLI world by implementing `wasi:cli/run`.
+A Rust binary crate can target the same world, with the toolchain providing `wasi:cli/run` and calling `main`.
 
-To build a command component, [`cargo`][cargo] should be configured to build a `--lib` crate which
-adheres to the `wasi:cli` interface. Crucially the component must export `wasi:cli/run`.
-
-> [!NOTE]
-> There are two ways to build a command component in Rust:
->
-> - As a *library* crate that explicitly exports `wasi:cli/run`, with bindings generated from WIT.
->   This is the approach used below, as it works the same way for *any* WIT interface.
-> - As a regular *binary* crate with a `main` function, built for the `wasm32-wasip2` target. In this case
->   Rust's standard library provides the `wasi:cli/run` export for you, so the WIT world does not need to export it.
->
-> See [Creating Runnable Components (Rust)](./language-support/creating-runnable-components/rust.md) for more
-> information on both approaches.
+See [Creating Runnable Components (Rust)](./language-support/creating-runnable-components/rust.md) for more
+information on both approaches.
 
 To scaffold a new runnable Wasm application:
 
@@ -152,7 +139,7 @@ world app {
 }
 ```
 
-Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
+Since the calculator world imports the `add` interface, the `command` crate needs to pull in the `adder` WIT as a dependency, as well.
 
 To do this, we can use [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. Configure `wkg` to resolve the `docs` packages from GHCR and the `wasi` packages from `wasi.dev`.
 
@@ -195,8 +182,6 @@ You can find the [complete command project](https://github.com/bytecodealliance/
 
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 [wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
-[wiki-entrypoint]: https://en.wikipedia.org/wiki/Entry_point
-[cargo]: https://doc.rust-lang.org/cargo
 [wit-bindgen]: https://github.com/bytecodealliance/wit-bindgen
 [clap]: https://docs.rs/clap
 
@@ -208,10 +193,9 @@ Now, we are ready to bring our components together into one runnable calculator 
 We will:
 
 1. Compose the calculator component with the add component to satisfy the calculator component's `adder` import
-2. Compose that resolved calculator component once more with the command component to satisfy the command component's `calculate` import.
+2. Compose that resolved calculator component once more with the `command` reactor to satisfy its `calculate` import.
 
-The result is a fully-formed command component that has all its imports satisfied and has a single
-export (the `wasi:cli/run` interface), which can be executed by [`wasmtime`][wasmtime].
+The composed calculator exports `wasi:cli/run`. [`wasmtime`][wasmtime] supplies its WASI imports and calls `run`.
 
 ```sh
 wac plug calculator.wasm --plug adder.wasm -o composed.wasm

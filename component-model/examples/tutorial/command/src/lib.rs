@@ -58,8 +58,7 @@ impl Command {
 /// The name of this struct is not significant.
 struct Component;
 
-/// Implementation of the `wasi:cli/run` export, which is the
-/// equivalent of a `main` function for a command component.
+/// CLI entry point that the reactor exports through `wasi:cli/run`.
 impl bindings::exports::wasi::cli::run::Guest for Component {
     fn run() -> Result<(), ()> {
         match Command::try_parse() {

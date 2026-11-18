@@ -107,8 +107,7 @@ let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
 let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
 
 // Export the `wasi:cli/run` interface from the command instance
-// This could also have been expressed using the postfix access expression `command-instance.run`
-export command-instance["wasi:cli/run@0.2.0"];
+export command-instance.run;
 ```
 
 Now, perform your composition by passing the WAC file to `wac compose`.

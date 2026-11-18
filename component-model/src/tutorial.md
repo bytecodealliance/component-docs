@@ -153,13 +153,12 @@ world app {
 
 Since the calculator world imports the `add` interface, the command component needs to pull in the `adder` WIT as a dependency, as well.
 
-To do this, we can use [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. We must first configure `wkg` to find the `docs:adder` package:
+To do this, we can use [`wkg`][wkg] from [`wasm-pkg-tools`][wasm-pkg-tools]. Configure `wkg` to resolve the `docs` packages from GHCR and the `wasi` packages from `wasi.dev`.
 
 ```toml
 # $XDG_CONFIG_HOME/wasm-pkg/config.toml
-default_registry = "ghcr.io"
-
 [namespace_registries]
+wasi = "wasi.dev"
 # Tell wkg that the component-book WITs can be found at ghcr.io/bytecodealliance/docs
 docs = { registry = "docs",  metadata = { preferredProtocol = "oci", "oci" = {registry = "ghcr.io", namespacePrefix = "bytecodealliance/" } } }
 ```

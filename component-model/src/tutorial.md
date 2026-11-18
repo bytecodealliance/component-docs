@@ -132,10 +132,11 @@ In `Cargo.toml`, configure this crate as a `cdylib`:
 crate-type = ["cdylib"]
 ```
 
-We'll be generating Rust bindings from WIT interfaces, so add [`wit-bindgen`][wit-bindgen]:
+Add [`wit-bindgen`][wit-bindgen] to generate the WIT bindings. The CLI uses [`clap`][clap] to parse arguments and `anyhow` to report an unknown operator.
 
-```console
-cargo add wit-bindgen
+```sh
+cargo add wit-bindgen anyhow
+cargo add clap --features derive
 ```
 
 This component will implement the [`app`](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/wit/calculator/world.wit) world, which
@@ -174,42 +175,12 @@ Then, fetch the WIT dependencies (both `docs:adder` and the well-known `wasi:cli
 wkg wit fetch
 ```
 
-With the project scaffolded, now we must actually *implement* a command line application that:
-
-1. Takes in three arguments: two operands and the name of an operator ("1 2 add")
-2. Parses the operator name and ensures it is supported in the `op` enum
-3. Calls the `calculate` interface's `eval_expression`, passing in the arguments.
-
-Rather than writing a `main` function, the entrypoint of the application is our implementation of the
-`run` function of the `wasi:cli/run` interface. In `src/lib.rs`:
+Replace `src/lib.rs` with the code below. The host calls `wasi:cli/run`, where `Command::try_parse()`
+reads the two operands and the operator. For a supported operator, `Command::run` passes all three
+values to the calculator component's `eval_expression` function and prints the result.
 
 ```rust
-mod bindings {
-    use super::Component;
-
-    // Generate bindings for the `app` world in `wit/world.wit`
-    wit_bindgen::generate!({
-        world: "app",
-    });
-
-    export!(Component);
-}
-
-use bindings::docs::calculator::calculate::{self, Op};
-
-/// Struct off of which the implementation will hang (this can be named anything)
-struct Component;
-
-/// Implementation of the `wasi:cli/run` export
-impl bindings::exports::wasi::cli::run::Guest for Component {
-    fn run() -> Result<(), ()> {
-        // TODO: parse the operands and the operator from the command line arguments
-        let (x, y, op) = (1, 2, Op::Add);
-        let res = calculate::eval_expression(op, x, y);
-        println!("{x} + {y} = {res}");
-        Ok(())
-    }
-}
+{{#include ../examples/tutorial/command/src/lib.rs}}
 ```
 
 Finally, build the component:
@@ -220,8 +191,7 @@ cargo build --target=wasm32-wasip2 --release
 
 The resulting component can be found at `target/wasm32-wasip2/release/command.wasm`.
 
-For reference, see the [completed code listing](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/),
-which parses the command line arguments with [`clap`][clap].
+You can find the [complete command project](https://github.com/bytecodealliance/component-docs/tree/main/component-model/examples/tutorial/command/) in the examples directory.
 
 [wkg]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main/crates/wkg
 [wasm-pkg-tools]: https://github.com/bytecodealliance/wasm-pkg-tools/tree/main
@@ -254,9 +224,11 @@ Now it all adds up! Run the final component with the `wasmtime` CLI, ensuring yo
 [recent release][wasmtime-releases] (`v14.0.0` or greater), as earlier releases of
 the `wasmtime` CLI do not include component model support.
 
-```
-wasmtime run final.wasm 1 2 add
+```console
+$ wasmtime run final.wasm 1 2 add
 1 + 2 = 3
+$ wasmtime run final.wasm 8 5 add
+8 + 5 = 13
 ```
 
 [wasmtime-releases]: https://github.com/bytecodealliance/wasmtime/releases

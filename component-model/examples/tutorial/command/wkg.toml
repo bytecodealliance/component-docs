@@ -1,0 +1,2 @@
+[overrides]
+"docs:adder" = { path = "../wit/adder" }  # directory containing the WIT package

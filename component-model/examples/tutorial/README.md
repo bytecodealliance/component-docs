@@ -38,6 +38,23 @@ world app {
 }
 ```
 
+The `command` library crate builds a **reactor component that targets the CLI world**
+(`wasi:cli/command`). Its [`app` world](./command/wit/world.wit) imports the calculator interface
+and exports `wasi:cli/run`. Wasmtime calls `run` to execute the composed calculator as a CLI program.
+
+```wit
+world app {
+    import calculate;
+    export wasi:cli/run@0.2.7;
+}
+```
+
+Rust builds a **command component** from a binary crate. A binary built for `wasm32-wasip2` also
+targets the CLI world, with the toolchain providing `wasi:cli/run` for its `main` function.
+
+The WIT dependencies of the `command` component (`docs:adder` and `wasi:cli`) are checked in to `command/wit/deps`,
+and can be refreshed by running [`wkg wit fetch`](https://github.com/bytecodealliance/wasm-pkg-tools) in the `command` directory.
+
 To expand the exercise to add more components, add another operator world, expand the enum, and modify the `command` component to call it.
 
 ## Building and running the example
@@ -73,7 +90,7 @@ cp command/target/wasm32-wasip2/release/command.wasm deps/docs/command-impl.wasm
 ```
 
 Now we are ready to construct a WAC file to define our composition. Ours instantiates our three components, declaring
-which components satisfy each of their imports. It ends with an export of the `wasi:cli/run` interface from the command component. This is the export that the Wasmtime CLI requires in order to execute the final component on the command line.
+which components satisfy each of their imports. It ends with an export of the `wasi:cli/run` interface from the `command` reactor. This is the export that the Wasmtime CLI requires in order to execute the final component on the command line.
 
 ```wac
 // Provide a package name for the resulting composition
@@ -88,14 +105,11 @@ let adder-instance = new docs:adder-impl { };
 let calculator-instance = new docs:calculator-impl { add: adder-instance.add };
 
 // Instantiate a command-impl component that implements the app world.
-// The command component might import other interfaces, such as WASI interfaces, but we want to leave
-// those as imports in the final component, so supply `...` to allow those other imports to remain unresolved.
-// The command's exports (in this case, `wasi:cli/run`) remain unaffected in the resulting instance.
+// Pass through the reactor's WASI imports so the host can provide them at run time.
 let command-instance = new docs:command-impl { calculate: calculator-instance.calculate,... };
 
 // Export the `wasi:cli/run` interface from the command instance
-// This could also have been expressed using the postfix access expression `command-instance.run`
-export command-instance["wasi:cli/run@0.2.0"];
+export command-instance.run;
 ```
 
 Now, perform your composition by passing the WAC file to `wac compose`.
